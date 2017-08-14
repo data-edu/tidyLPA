@@ -1,0 +1,9 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+# tidymixmod
+
+Latent profile analysis (LPA) and latent class analysis (LCA) are data models for categorical latent variables which explain observed continuous (for LPA) or dichotomous (for LCA) variables, or combinations of continuous and dichotomous variables. Different from many implementations of cluster analysis (i.e., those using hierarchical and k-means clustering algorithms), LPA and LCA are model-based, 
