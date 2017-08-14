@@ -6,4 +6,8 @@ output:
 
 # tidymixmod
 
-Latent profile analysis (LPA) and latent class analysis (LCA) are data models for categorical latent variables which explain observed continuous (for LPA) or dichotomous (for LCA) variables, or combinations of continuous and dichotomous variables. Different from many implementations of cluster analysis (i.e., those using hierarchical and k-means clustering algorithms), LPA and LCA are model-based, 
+The goal of tidymixmod is to interface to the general latent variable model software OpenMx to carry out Latent Profile Analysis (LPA) and Latent Class Analysis. 
+
+This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis, and may be merged with it in the future. 
+
+Please follow along if interested!

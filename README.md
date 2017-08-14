@@ -1,14 +1,8 @@
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 tidymixmod
 ==========
 
-The goal of tidymixmod is to ...
+The goal of tidymixmod is to interface to the general latent variable model software OpenMx to carry out Latent Profile Analysis (LPA) and Latent Class Analysis.
 
-Example
--------
+This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis, and may be merged with it in the future.
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-## basic example code
-```
+Please follow along if interested!
