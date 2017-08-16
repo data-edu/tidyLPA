@@ -28,12 +28,12 @@ means        <- mxPath( from="one", to=c("x1","x2","x3","y1","y2","y3","F1","F2"
                         labels=c("meanx1","meanx2","meanx3",
                                  "meany1","meany2","meany3",NA,NA) )
 
-class1 <- mxModel("Class1", type="RAM",
+class1 <- mxModel("Two Factor Model Path Specification", type="RAM",
                   manifestVars=c("x1", "x2", "x3", "y1", "y2", "y3"),
                   latentVars=c("F1","F2"),
                   dataRaw, resVars, latVars, facLoadsX, facLoadsY, means)
 
-class2       <- mxModel(class1, name="Class2", latVars, means)
+class2       <- mxModel(twoFactorModel, name="Class2", latVars, means)
 
 # --------------------------------------------------
 # Class probabilities
