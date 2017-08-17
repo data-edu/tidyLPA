@@ -24,16 +24,15 @@ facLoadsY    <- mxPath( from="F2", to=c("y1","y2","y3"), arrows=1,
 # means
 means        <- mxPath( from="one", to=c("x1","x2","x3","y1","y2","y3","F1","F2"),
                         arrows=1,
-                        free=c(T,T,T,T,T,T,F,F), values=c(1,1,1,1,1,1,0,0),
-                        labels=c("meanx1","meanx2","meanx3",
-                                 "meany1","meany2","meany3",NA,NA) )
+                        free=c(T,T,T,T,T,T,F,F), values=c(1,1,1,1,1,1,0,0)
+                        )
 
-class1 <- mxModel("Two Factor Model Path Specification", type="RAM",
+class1 <- mxModel("Class1", type="RAM",
                   manifestVars=c("x1", "x2", "x3", "y1", "y2", "y3"),
                   latentVars=c("F1","F2"),
                   dataRaw, resVars, latVars, facLoadsX, facLoadsY, means)
 
-class2       <- mxModel(twoFactorModel, name="Class2", latVars, means)
+class2       <- mxModel(class1, name="Class2", latVars, means)
 
 # --------------------------------------------------
 # Class probabilities
