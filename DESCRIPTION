@@ -1,11 +1,15 @@
 Package: tidymixmod
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Easily perform mixture modeling for model-based clustering
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com")
+Maintainer: Joshua M. Rosenberg <jmichaelrosenberg@gmail.com>
+Description: Easily perform mixture modeling for model-based clustering based on the MCLUST package. 
+    Provides functionality in terms of how the residual covariance matrix of the clustered variables is
+    structured familiar to those who use Latent Profile Analysis. Follows a tidy philosophy, in that 
+    output is in the form of a tibble (a data.frame) that can subsequently be computed on.
+License: MIT + file LICENSE
+Imports: dplyr, tibble, mclust, tidyr, ggplot2, forcats, magrittr
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
