@@ -5,7 +5,7 @@
 \title{Explore BIC of mclust models}
 \usage{
 explore_models_mclust(df, n_profiles_range = 1:9, model_names = c("EII",
-  "EEE", "VVV"))
+  "EEE", "VVV"), statistic = "BIC")
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}

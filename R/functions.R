@@ -135,6 +135,8 @@ extract_mclust_classifications <- function(x) {
 #' @details Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model
 #' @param df data.frame with two or more columns with continuous variables
 #' @param model_names names of one or more models ?run mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)
+#' @importFrom magrittr '%>%'
+#' @export
 
 bootstrap_LRT_mclust <- function(df, model_names, ...) {
     if (length(model_names) == 1) {
