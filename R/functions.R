@@ -12,9 +12,15 @@
 #' explore_models_mclust(df)
 #' @export
 
-explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("EII", "EEE", "VVV")) {
+explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("EII", "EEE", "VVV"), statistic = "BIC") {
 
-    x <- mclust::mclustBIC(df, G = n_profiles_range, modelNames = model_names)
+    if (statistic == "BIC") {
+        x <- mclust::mclustBIC(df, G = n_profiles_range, modelNames = model_names)
+    } else if (statistic == "ICL") {
+        x <- mclust::mclustICL(df, G = n_profiles_range, modelNames = model_names)
+    } else {
+        stop("This statistic cannot presently be computed")
+    }
 
     y <- x %>%
         as.data.frame.matrix() %>%
@@ -38,7 +44,7 @@ explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("E
     ggplot2::ggplot(to_plot, ggplot2::aes(x = n_profiles, y = val, color = `Covariance matrix structure`, group = `Covariance matrix structure`)) +
         ggplot2::geom_line() +
         ggplot2::geom_point() +
-        ggplot2::ylab("BIC (smaller value is better)")
+        ggplot2::ylab(paste0(statistic, " (smaller value is better)"))
 
 }
 
@@ -51,12 +57,12 @@ explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("E
 #' @param model_name the mclust model to explore, such as constrained variance, fixed variances ("EII"), constrained variance, constrained covariance ("EEE"), and freed variance, freed covariance ("VVV"); or others (run mclust::mclustModelNames() to see all of the possible models and their names / abbreviations); if specified, arguments variance_structure and covariance_structure are ignored
 #' @return a ggplot2 plot of the BIC values for the explored models
 #' @importFrom magrittr '%>%'
+#' @importFrom mclust 'mclustBIC'
 #' @examples
 #' library(dplyr)
 #' df <- select(iris, -Species)
 #' create_profiles_mclust(df, n_profiles = 3, variance_structure = "freed", covariance_structure = "freed")
 #' @export
-
 
 create_profiles_mclust <- function(df,
                                    n_profiles,
@@ -123,4 +129,17 @@ extract_mclust_output <- function(x) {
 
 extract_mclust_classifications <- function(x) {
     attributes(x)$mclust_output$classification
+}
+
+#' Bootstrap the likelihood-ratio test statistic for mixture components
+#' @details Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model
+#' @param df data.frame with two or more columns with continuous variables
+#' @param model_names names of one or more models ?run mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)
+
+bootstrap_LRT_mclust <- function(df, model_names, ...) {
+    if (length(model_names) == 1) {
+        mclust::mclustBootstrapLRT(data = df, modelName = model_names, ...)
+    } else if (length(model_names) > 1) {
+        model_names %>% purrr::map(~ mclust::mclustBootstrapLRT(data = df, modelName = .))
+    }
 }
