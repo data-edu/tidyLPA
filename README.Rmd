@@ -18,6 +18,7 @@ First, we can explore the Bayesian Information Criteria (BIC) or the Integrated 
 
 ```{r}
 library(dplyr)
+library(tidymixmod)
 df <- select(iris, -Species)
 explore_models_mclust(df)
 ```
