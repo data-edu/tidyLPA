@@ -12,7 +12,7 @@
 #' explore_models_mclust(df)
 #' @export
 
-explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("EII", "EEE", "VVV"), statistic = "BIC") {
+explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("EEI", "EEE", "VVV"), statistic = "BIC", return_table = FALSE) {
 
     if (statistic == "BIC") {
         x <- mclust::mclustBIC(df, G = n_profiles_range, modelNames = model_names)
@@ -25,7 +25,7 @@ explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("E
     y <- x %>%
         as.data.frame.matrix() %>%
         tibble::rownames_to_column("n_profiles") %>%
-        dplyr::rename(`Constrained variance, fixed covariance` = EII,
+        dplyr::rename(`Constrained variance, fixed covariance` = EEI,
                       `Constrained variance, constrained covariance` = EEE,
                       `Freed variance, freed covariance` = VVV)
 
@@ -40,6 +40,10 @@ explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("E
                                                                   "Constrained variance, constrained covariance",
                                                                   "Freed variance, freed covariance")
 
+
+    if(return_table == TRUE) {
+        return(to_plot)
+    }
 
     ggplot2::ggplot(to_plot, ggplot2::aes(x = n_profiles, y = val, color = `Covariance matrix structure`, group = `Covariance matrix structure`)) +
         ggplot2::geom_line() +
@@ -70,7 +74,7 @@ create_profiles_mclust <- function(df,
                                    covariance_structure = "freed",
                                    model_name = NULL){
 
-    if (!is.null(model_name)) {
+    if (is.null(model_name)) {
 
         if (variance_structure == "constrained" & covariance_structure == "fixed") {
 
@@ -95,22 +99,26 @@ create_profiles_mclust <- function(df,
         }
     }
 
+    print(model_name)
+
     x <- mclust::Mclust(df, G = n_profiles, modelNames = model_name)
 
     dff <- dplyr::bind_cols(df, classification = x$classification)
 
-    proc_df <- dff %>%
-        dplyr::mutate_at(vars(-classification), scale) %>%
-        dplyr::group_by(classification) %>%
-        dplyr::summarize_all(funs(mean)) %>%
-        dplyr::mutate(classification = paste0("Profile ", 1:n_profiles)) %>%
-        dplyr::mutate_at(vars(-classification), function(x) round(x, 3)) %>%
-        dplyr::rename(profile = classification)
+    attributes(dff)$mclust_output <- x
 
-    attributes(proc_df)$mclust_output <- x
+    return(dff)
 
-    return(proc_df)
+    # proc_df <- dff %>%
+    #     dplyr::mutate_at(vars(-classification), scale) %>%
+    #     dplyr::group_by(classification) %>%
+    #     dplyr::summarize_all(funs(mean)) %>%
+    #     dplyr::mutate(classification = paste0("Profile ", 1:n_profiles)) %>%
+    #     dplyr::mutate_at(vars(-classification), function(x) round(x, 3)) %>%
+    #     dplyr::rename(profile = classification)
 
+
+    # return(proc_df)
 }
 
 #' Extract mclust output from the function create_profiles_mclust()
@@ -129,6 +137,15 @@ extract_mclust_output <- function(x) {
 
 extract_mclust_classifications <- function(x) {
     attributes(x)$mclust_output$classification
+}
+
+#' Extract mclust classifications from the function create_profiles_mclust()
+#' @details Extract the classifications, in the form of posterior probabilties, for specific observations from the mclust output from the function create_profiles_mclust() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed
+#' @param x an object of class `Mclust`
+#' @export
+
+extract_mclust_classification_certainty <- function(x) {
+    1 - attributes(x)$mclust_output$uncertainty
 }
 
 #' Bootstrap the likelihood-ratio test statistic for mixture components
