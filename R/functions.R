@@ -166,7 +166,7 @@ bootstrap_LRT_mclust <- function(df, model_names, ...) {
     }
 }
 
-#' Extract mclust variances and covariances
+#' Extract mclust variances
 #' @details Extract the variances and covariances
 #' @param x an object of class `Mclust`
 #' @export
@@ -181,6 +181,26 @@ extract_variance <- function(x, profile_n) {
         mutate(class = paste0("class_", profile_n),
                est = round(est, 3)) %>%
         select(param_name, var_name, class, est)
+}
+
+#' Extract mclust covariance
+#' @details Extract the covariances
+#' @param x an object of class `Mclust`
+#' @export
+
+extract_covariance <- function(x, profile_n) {
+    x$parameters$variance$sigma[, , profile_n] %>%
+        as.data.frame() %>%
+        rownames_to_column("param_name") %>%
+        as.tibble() %>%
+        gather(key, val, -param_name) %>%
+        rename(var_name = key, est = val) %>%
+        mutate(param_name = toupper(str_sub(param_name, start = 1L, end = 8L)),
+               param_name = paste0(param_name, ".WITH"),
+               param_name = str_replace(param_name, "\\.", "_"),
+               var_name = toupper(var_name),
+               var_name = str_replace(var_name, "\\.", "_"),
+               var_name = str_sub(var_name, start = 1L, end = 10L))
 }
 
 #' Extract mclust means
