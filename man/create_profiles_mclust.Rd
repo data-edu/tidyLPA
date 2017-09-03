@@ -5,18 +5,16 @@
 \title{Create profiles for a specific mclust model}
 \usage{
 create_profiles_mclust(df, n_profiles, variance_structure = "freed",
-  covariance_structure = "freed", model_name = NULL)
+  covariance_structure = "freed", model_name = NULL, to_return = "tibble")
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 
-\item{variance_structure}{specification for residual variances, either "constrained" (to be equivalent across profiles) or "freed" (to be freely-estimated across profiles)}
+\item{model_name}{the mclust model to explore: "means", "means_varying_covariance", and "means_varying_covariance" specify the three most common models, in order from most to least constrained; run ?mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)}
 
-\item{covariance_structure}{specification for residual variance, either "fixed" (to be zero inall profiles), "constrained" (to be equivalent across profiles), or "freed" (to be freely-estimated across profiles)}
-
-\item{model_name}{the mclust model to explore, such as constrained variance, fixed variances ("EII"), constrained variance, constrained covariance ("EEE"), and freed variance, freed covariance ("VVV"); or others (run mclust::mclustModelNames() to see all of the possible models and their names / abbreviations); if specified, arguments variance_structure and covariance_structure are ignored}
+\item{to_return}{character string for whether to return a tibble or the mclust output; if a tibble is returned, the mclust output can be viewed using the extract_mclust_output() function, with the tibble as its only argument}
 }
 \value{
 a ggplot2 plot of the BIC values for the explored models
