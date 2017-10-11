@@ -16,14 +16,14 @@ select_create_profiles <- function(df, ...){
 }
 
 #' Create profiles for a specific mclust model
-#' @details Creates profiles (or estimates the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
+#' @details Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
 #' @param df data.frame with two or more columns with continuous variables
 #' @param ... unquoted variable names separated by commas
 #' @param n_profiles the number of profiles (or mixture components) to be estimated
 #' @param model the mclust model to explore: "means", "means_varying_covariance", and "means_varying_covariance" specify the three most common models, in order from most to least constrained; run ?mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)
 #' @param to_return character string for whether to return a tibble or the mclust output; if a tibble is returned, the mclust output can be viewed using the extract_mclust_output() function, with the tibble as its only argument
 #' @import mclust
-#' @return a ggplot2 plot of the BIC values for the explored models
+#' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
 
 create_profiles_mclust <- function(df,
