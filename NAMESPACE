@@ -3,6 +3,7 @@
 export(bootstrap_LRT_mclust)
 export(calculate_centroids_mclust)
 export(create_profiles_mclust)
+export(explore_models_mclust)
 export(extract_covariance)
 export(extract_mclust_classification_certainty)
 export(extract_mclust_classifications)
