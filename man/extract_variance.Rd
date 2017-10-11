@@ -8,6 +8,8 @@ extract_variance(x, profile_n)
 }
 \arguments{
 \item{x}{an object of class `Mclust`}
+
+\item{profile_n}{the number of profiles}
 }
 \description{
 Extract mclust variances

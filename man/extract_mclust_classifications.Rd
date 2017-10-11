@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{extract_mclust_classifications}
 \alias{extract_mclust_classifications}
-\title{Extract mclust classifications from the function create_profiles_mclust()}
+\title{Extract mclust classifications from the function create_profiles()}
 \usage{
 extract_mclust_classifications(x)
 }
@@ -10,8 +10,8 @@ extract_mclust_classifications(x)
 \item{x}{an object of class `Mclust`}
 }
 \description{
-Extract mclust classifications from the function create_profiles_mclust()
+Extract mclust classifications from the function create_profiles()
 }
 \details{
-Extract the classifications, in the form of posterior probabilties, for specific observations from the mclust output from the function create_profiles_mclust() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed
+Extract the classifications, in the form of posterior probabilties, for specific observations from the mclust output from the function create_profiles() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed
 }

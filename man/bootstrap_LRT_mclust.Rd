@@ -10,6 +10,8 @@ bootstrap_LRT_mclust(df, model_names, ...)
 \item{df}{data.frame with two or more columns with continuous variables}
 
 \item{model_names}{names of one or more models ?run mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)}
+
+\item{...}{additional arguments to be passed to mclustBootstrapLRT()}
 }
 \description{
 Bootstrap the likelihood-ratio test statistic for mixture components
