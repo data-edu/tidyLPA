@@ -3,8 +3,8 @@
 select_create_profiles <- function(df, ...){
     if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
     df <- tibble::as_tibble(df)
+    print(rlang::quos(...))
     df_ss <- dplyr::select(df, ...)
-
     cases_to_keep <- stats::complete.cases(df_ss) # to use later for comparing function to index which cases to keep
 
     # cases_to_keep <- dplyr::data_frame(row_names = 1:nrow(df_ss),
@@ -136,19 +136,20 @@ bootstrap_LRT_mclust <- function(df, model_names, ...) {
 extract_variance <- function(x, profile_n) {
     x$parameters$variance$sigma[, , profile_n] %>%
         diag() %>%
-        as.tibble() %>%
-        rename(est = value) %>%
-        rownames_to_column("var_name") %>%
-        mutate(param_name = "Variances") %>%
-        mutate(class = paste0("class_", profile_n),
+        dplyr::as_tibble() %>%
+        dplyr::rename(est = value) %>%
+        tibble::rownames_to_column("var_name") %>%
+        dplyr::mutate(param_name = "Variances") %>%
+        dplyr::mutate(class = paste0("class_", profile_n),
                est = round(est, 3)) %>%
-        select(param_name, var_name, class, est)
+        dplyr::select(param_name, var_name, class, est)
 }
 
 #' Extract mclust covariance
 #' @details Extract the covariances
 #' @param x an object of class `Mclust`
 #' @param profile_n the number of profiles
+#' @import dplyr
 #' @export
 
 extract_covariance <- function(x, profile_n) {
@@ -169,6 +170,7 @@ extract_covariance <- function(x, profile_n) {
 #' Extract mclust means
 #' @details Extract the means
 #' @param x an object of class `Mclust`
+#' @import dplyr
 #' @export
 
 extract_means <- function(x) {
@@ -179,6 +181,23 @@ extract_means <- function(x) {
                class1 = round(class_1, 3),
                class2 = round(class_2, 3)) %>%
         select(param_name, var_name, class_1, class_2)
+}
+
+#' Plot mclust centroids
+#' @details Plot the centroids for Mclust output
+#' @param x an object of class `Mclust`
+#' @import dplyr
+#' @import ggplot2
+#' @importFrom dplyt %>%
+#' @export
+#'
+plot_mclust <- function(x) {
+    o <- tibble::rownames_to_column(as.data.frame(x$parameters$mean))
+    names(o) <- c("Variable", paste0("Profile", 1:m3$G))
+    o %>%
+        tidyr::gather(key, val, -Variable) %>%
+        ggplot2::ggplot(ggplot2::aes(x = key, y = val, group = Variable, fill = Variable)) +
+        ggplot2::geom_col(position = "dodge")
 }
 
 #' Extract mclust summary statistics
