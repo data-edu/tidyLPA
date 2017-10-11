@@ -3,7 +3,6 @@
 select_create_profiles <- function(df, ...){
     if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
     df <- tibble::as_tibble(df)
-    print(rlang::quos(...))
     df_ss <- dplyr::select(df, ...)
     cases_to_keep <- stats::complete.cases(df_ss) # to use later for comparing function to index which cases to keep
 
