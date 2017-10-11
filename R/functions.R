@@ -60,7 +60,7 @@ explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("E
 #' @param to_return character string for whether to return a tibble or the mclust output; if a tibble is returned, the mclust output can be viewed using the extract_mclust_output() function, with the tibble as its only argument
 #' @return a ggplot2 plot of the BIC values for the explored models
 #' @importFrom magrittr '%>%'
-#' @importFrom mclust 'mclustBIC'
+#' @import mclust
 #' @examples
 #' library(dplyr)
 #' df <- select(iris, -Species)
@@ -107,13 +107,13 @@ create_profiles_mclust <- function(df,
 calculate_centroids_mclust <- function(x) {
     y <- attributes(x)
     as.data.frame(x$parameters$mean)
-#     x %>%
-#         dplyr::mutate_at(vars(-profile), scale) %>%
-#         dplyr::group_by(profile) %>%
-#         dplyr::summarize_all(funs(mean)) %>%
-#         dplyr::mutate(profile = paste0("Profile ", 1:length(unique(x$profile)))) %>%
-#         dplyr::mutate_at(vars(-profile), function(x) round(x, 3)) %>%
-#         dplyr::rename(profile = profile)
+    #     x %>%
+    #         dplyr::mutate_at(vars(-profile), scale) %>%
+    #         dplyr::group_by(profile) %>%
+    #         dplyr::summarize_all(funs(mean)) %>%
+    #         dplyr::mutate(profile = paste0("Profile ", 1:length(unique(x$profile)))) %>%
+    #         dplyr::mutate_at(vars(-profile), function(x) round(x, 3)) %>%
+    #         dplyr::rename(profile = profile)
 }
 
 # proc_df <- dff %>%

@@ -7,7 +7,7 @@ Maintainer: Joshua M. Rosenberg <jmichaelrosenberg@gmail.com>
 Description: Easily perform mixture modeling for model-based clustering based on the MCLUST package. 
     Provides functionality in terms of how the residual covariance matrix of the clustered variables is
     structured familiar to those who use Latent Profile Analysis. Follows a tidy philosophy, in that 
-    output is in the form of a tibble (a data.frame) that can subsequently be computed on.
+    output is in the form of a tibble (a data.frame) that can subsequently be computed on. 
 License: MIT + file LICENSE
 Imports: dplyr, tibble, mclust, tidyr, ggplot2, forcats, magrittr
 Encoding: UTF-8
