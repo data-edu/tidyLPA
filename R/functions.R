@@ -188,7 +188,7 @@ extract_means <- function(x) {
 #' @param x an object of class `Mclust`
 #' @import dplyr
 #' @import ggplot2
-#' @importFrom dplyt %>%
+#' @importFrom dplyr %>%
 #' @export
 #'
 plot_mclust <- function(x) {
