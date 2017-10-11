@@ -65,16 +65,15 @@ create_profiles_mclust <- function(df,
     }
 }
 
+#' Calculate centroids from an mclust model object
+#' @details Extract the output of the mclust output from the function create_profiles() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed
+#' @param x an object of class `Mclust`
+#' @export
+
 calculate_centroids_mclust <- function(x) {
-    y <- attributes(x)
-    as.data.frame(x$parameters$mean)
-    #     x %>%
-    #         dplyr::mutate_at(vars(-profile), scale) %>%
-    #         dplyr::group_by(profile) %>%
-    #         dplyr::summarize_all(funs(mean)) %>%
-    #         dplyr::mutate(profile = paste0("Profile ", 1:length(unique(x$profile)))) %>%
-    #         dplyr::mutate_at(vars(-profile), function(x) round(x, 3)) %>%
-    #         dplyr::rename(profile = profile)
+    o <- tibble::rownames_to_column(as.data.frame(x$parameters$mean))
+    names(o) <- c("Variable", paste0("Profile", 1:m3$G))
+    o
 }
 
 # proc_df <- dff %>%
