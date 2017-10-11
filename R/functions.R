@@ -72,7 +72,7 @@ create_profiles_mclust <- function(df,
 
 calculate_centroids_mclust <- function(x) {
     o <- tibble::rownames_to_column(as.data.frame(x$parameters$mean))
-    names(o) <- c("Variable", paste0("Profile", 1:m3$G))
+    names(o) <- c("Variable", paste0("Profile", 1:x$G))
     o
 }
 
@@ -192,7 +192,7 @@ extract_means <- function(x) {
 #'
 plot_mclust <- function(x) {
     o <- tibble::rownames_to_column(as.data.frame(x$parameters$mean))
-    names(o) <- c("Variable", paste0("Profile", 1:m3$G))
+    names(o) <- c("Variable", paste0("Profile", 1:x$G))
     o %>%
         tidyr::gather(key, val, -Variable) %>%
         ggplot2::ggplot(ggplot2::aes(x = key, y = val, group = Variable, fill = Variable)) +
