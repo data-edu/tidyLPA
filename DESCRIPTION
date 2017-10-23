@@ -1,7 +1,7 @@
 Package: tidymixmod
 Type: Package
 Title: Easily perform mixture modeling for model-based clustering
-Version: 0.1.0
+Version: 0.1.1
 Author: person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com")
 Maintainer: Joshua M. Rosenberg <jmichaelrosenberg@gmail.com>
 Description: Easily perform mixture modeling for model-based clustering based on the MCLUST package. 
