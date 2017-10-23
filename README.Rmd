@@ -6,54 +6,35 @@ output:
 
 # tidymixmod
 
-The (present, possibly changing) goal of tidymixmod is to provide tools to make it easier to use MCLUST for latent profile analysis-like analyses.
+The goal of tidymixmod is to provide tools to make it easier to use the `R` package `MCLUST` for Latent Profile Analysis analyses.
 
 This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis, and may be merged with it in the future. 
 
-A candidate feature or change is to (also? in addition to its present functionality?) provide an interface to the general latent variable model software OpenMx to carry out Latent Profile Analysis (LPA) and Latent Class Analysis (LCA), as while presently MCLUST provides great functionality, it does not work with categorical variables, and therefore cannot be used to carry out LCA.
+A candidate feature or change is to provide an interface to the general latent variable model software `OpenMx` to carry out Latent Profile Analysis (LPA) and Latent Class Analysis (LCA), as while presently `MCLUST` provides great functionality, it does not work with categorical variables, and therefore cannot be used to carry out LCA. Moreover, some more fine-grained specifications for how observed variables' residuals covary can be specified in `OpenMx` (i.e., specific correlations between specific variables' residuals).
 
 # Example
 
 First, we can explore the Bayesian Information Criteria (BIC) or the Integrated Complete-data Likelihood (ICL) values, using the `explore_models_clust()` function:
 
-```{r}
-library(dplyr)
+```{r, echo = F}
+devtools::load_all(".")
+```
+
+```{r, eval = F}
 library(tidymixmod)
-df <- select(iris, -Species)
-explore_models_mclust(df)
 ```
 
-We can then specify a model, using either character strings for the variance and covariance_structure:
+Using the built-in `pisaUSA15` dataset and variables for broad interest, instrumental motivation, and self-efficacy, we can quickly explore a three profile solution:
 
 ```{r}
-m_free_3 <- create_profiles_mclust(df, n_profiles = 3, variance_structure = "freed", covariance_structure = "freed")
-m_free_3
+d <- pisaUSA15
+m3 <- create_profiles_mclust(d, broad_interest, instrumental_mot, self_efficacy, n_profiles = 3, to_return = "tibble")
+summary_mclust(m3)
+plot_profiles_mclust(m3)
 ```
 
-Or an MClust model name:
+We can also explore a range of models:
 
 ```{r}
-m_free_3 <- create_profiles_mclust(df, n_profiles = 3, model_name = "VVV")
-m_free_3
+explore_models_mclust(d, broad_interest, instrumental_mot, self_efficacy)
 ```
-
-If we like, we can carry out a test for the number of mixture components, using a bootstrapped likelihood-ratio test. Here, we are testing for the freed variance, freed covariance model (nboot is set to 100 so that this runs more quickly for illustrative purposes):
-
-```{r}
-bootstrap_LRT_mclust(df, model_names = c("VVV"), nboot = 100)
-```
-
-We can also provide a list of models, such as the constrained variance, fixed covariance model and the freed variance, freed covariance model, from the example above:
-
-```{r}
-bootstrap_LRT_mclust(df, model_names = c("EEE", "VVV"), nboot = 100)
-```
-
-We can easily extract the classifications from the posterior probabilities:
-
-```{r}
-classifications <- extract_mclust_classifications(m_free_3)
-classifications
-```
-
-Please provide feedback and follow along.

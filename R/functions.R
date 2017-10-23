@@ -22,6 +22,14 @@ select_create_profiles <- function(df, ...){
 #' @param model the mclust model to explore: "means", "means_varying_covariance", and "means_varying_covariance" specify the three most common models, in order from most to least constrained; run ?mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)
 #' @param to_return character string for whether to return a tibble or the mclust output; if a tibble is returned, the mclust output can be viewed using the extract_mclust_output() function, with the tibble as its only argument
 #' @import mclust
+#' @examples
+#' \dontrun{
+#' d <- pisaUSA15
+#' d <- dplyr::sample_n(d, 200)
+#' m3 <- create_profiles_mclust(d,
+#'                              broad_interest, enjoyment, instrumental_mot, self_efficacy,
+#'                              n_profiles = 3, to_return="tibble")
+#' }
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
 
@@ -53,7 +61,7 @@ create_profiles_mclust <- function(df,
 
     message("Fit model with ", n_profiles, " profiles using the '", model_print, "' model.")
     message("Model BIC is ", round(abs(as.vector(x$BIC)), 3))
-    dff <- as.data.frame(dplyr::bind_cols(df, profile = x$classification)) # replace with tibble
+    dff <- as.data.frame(dplyr::bind_cols(d, profile = x$classification)) # replace with tibble
 
     attributes(dff)$mclust_output <- x
 
@@ -108,6 +116,19 @@ extract_mclust_classifications <- function(x) {
 
 extract_mclust_classification_certainty <- function(x) {
     1 - attributes(x)$mclust_output$uncertainty
+}
+
+#' Calculate summary statistics for mclust output
+#' @details groups by profile and calculates the mean
+#' @param x output from create_profiles_mclust() when to_return is set to TRUE
+#' @import dplyr
+#' @importFrom magrittr %>%
+#' @export
+
+summary_mclust <- function(x) {
+    x %>%
+        group_by(profile) %>%
+        summarize_all(mean)
 }
 
 #' Bootstrap the likelihood-ratio test statistic for mixture components
@@ -181,21 +202,28 @@ extract_means <- function(x) {
         select(param_name, var_name, class_1, class_2)
 }
 
-#' Plot mclust centroids
+#' Plot profile centroids
 #' @details Plot the centroids for Mclust output
-#' @param x an object of class `Mclust`
-#' @import dplyr
+#' @param d output from create_profiles_mclust()
+#' @param to_center whether to center the data before plotting
+#' @param to_scale whether to scale the data before plotting
 #' @import ggplot2
-#' @importFrom dplyr %>%
+#' @importFrom magrittr %>%
 #' @export
 #'
-plot_mclust <- function(x) {
-    o <- tibble::rownames_to_column(as.data.frame(x$parameters$mean))
-    names(o) <- c("Variable", paste0("Profile", 1:x$G))
-    o %>%
-        tidyr::gather(key, val, -Variable) %>%
-        ggplot2::ggplot(ggplot2::aes(x = key, y = val, group = Variable, fill = Variable)) +
-        ggplot2::geom_col(position = "dodge")
+
+plot_profiles_mclust <- function(d, to_center = F, to_scale = F){
+
+    d %>%
+        dplyr::mutate_if(is.double, scale, center = to_center, scale = to_scale) %>%
+        group_by(profile) %>%
+        summarize_all(mean) %>%
+        tidyr::gather(key, val, -profile) %>%
+        ggplot(aes(x = profile, y = val, fill = key)) +
+        geom_col(position = "dodge") +
+        theme_bw() +
+        scale_fill_brewer("", type = "qual", palette=6)
+
 }
 
 #' Extract mclust summary statistics
@@ -213,6 +241,7 @@ extract_mclust_summary <- function(x) {
 #' Explore BIC of mclust models
 #' @details Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 #' @param df data.frame with two or more columns with continuous variables
+#' @param ... unquoted variable names separated by commas
 #' @param n_profiles_range a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)
 #' @param model_names mclust models to explore; defaults to constrained variance, fixed variances ("EII"), constrained variance, constrained covariance ("EEE"), and freed variance, freed covariance ("VVV"); run mclustModelNames() from mclust to see all of the possible models and their names / abbreviations
 #' @param statistic what statistic to plot; BIC or ICL are presently available as options
@@ -220,17 +249,21 @@ extract_mclust_summary <- function(x) {
 #' @return a ggplot2 plot of the BIC values for the explored models
 #' @import mclust
 #' @examples
-#' library(dplyr)
-#' df <- select(iris, -Species)
-#' explore_models_mclust(df)
+#' \dontrun{
+#'    d <- pisaUSA15
+#'    explore_models_mclust(d, broad_interest, instrumental_mot, self_efficacy)
+#' }
 #' @export
 
-explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("EEI", "EEE", "VVV"), statistic = "BIC", return_table = FALSE) {
+explore_models_mclust <- function(df, ..., n_profiles_range = 1:9, model_names = c("EEI", "EEE", "VVV"), statistic = "BIC", return_table = FALSE) {
 
+    d <- select_create_profiles(df, ...)
+
+    print(d)
     if (statistic == "BIC") {
-        x <- mclust::mclustBIC(df, G = n_profiles_range, modelNames = model_names)
+        x <- mclust::mclustBIC(d, G = n_profiles_range, modelNames = model_names)
     } else if (statistic == "ICL") {
-        x <- mclust::mclustICL(df, G = n_profiles_range, modelNames = model_names)
+        x <- mclust::mclustICL(d, G = n_profiles_range, modelNames = model_names)
     } else {
         stop("This statistic cannot presently be computed")
     }
@@ -246,7 +279,6 @@ explore_models_mclust <- function(df, n_profiles_range = 1:9, model_names = c("E
         tidyr::gather(`Covariance matrix structure`, val, -n_profiles) %>%
         dplyr::mutate(`Covariance matrix structure` = as.factor(`Covariance matrix structure`),
                       val = abs(val)) # this is to make the BIC values positive (to align with more common formula / interpretation of BIC)
-
 
     to_plot$`Covariance matrix structure` <- forcats::fct_relevel(to_plot$`Covariance matrix structure`,
                                                                   "Constrained variance, fixed covariance",

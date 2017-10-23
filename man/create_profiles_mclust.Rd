@@ -26,3 +26,12 @@ Create profiles for a specific mclust model
 \details{
 Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
 }
+\examples{
+\dontrun{
+d <- pisaUSA15
+d <- dplyr::sample_n(d, 200)
+m3 <- create_profiles_mclust(d,
+                             broad_interest, enjoyment, instrumental_mot, self_efficacy,
+                             n_profiles = 3, to_return="tibble")
+}
+}

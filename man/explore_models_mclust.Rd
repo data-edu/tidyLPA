@@ -4,11 +4,14 @@
 \alias{explore_models_mclust}
 \title{Explore BIC of mclust models}
 \usage{
-explore_models_mclust(df, n_profiles_range = 1:9, model_names = c("EEI",
-  "EEE", "VVV"), statistic = "BIC", return_table = FALSE)
+explore_models_mclust(df, ..., n_profiles_range = 1:9,
+  model_names = c("EEI", "EEE", "VVV"), statistic = "BIC",
+  return_table = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
+
+\item{...}{unquoted variable names separated by commas}
 
 \item{n_profiles_range}{a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)}
 
@@ -28,7 +31,8 @@ Explore BIC of mclust models
 Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 }
 \examples{
-library(dplyr)
-df <- select(iris, -Species)
-explore_models_mclust(df)
+\dontrun{
+   d <- pisaUSA15
+   explore_models_mclust(d, broad_interest, instrumental_mot, self_efficacy)
+}
 }
