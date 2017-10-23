@@ -215,7 +215,7 @@ extract_means <- function(x) {
 plot_profiles_mclust <- function(d, to_center = F, to_scale = F){
 
     d %>%
-        dplyr::mutate_if(is.double, scale, center = to_center, scale = to_scale) %>%
+        dplyr::mutate_at(vars(-profile), scale, center = to_center, scale = to_scale) %>%
         group_by(profile) %>%
         summarize_all(mean) %>%
         tidyr::gather(key, val, -profile) %>%
