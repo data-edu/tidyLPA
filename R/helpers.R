@@ -15,3 +15,7 @@
 
 # quiets concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation
 if (getRversion() >= "2.15.1") utils::globalVariables(c("key", "val", "EEI", "EEV", "VVV", "profile"))
+
+1:10
+
+sd(scale(1:10, center = T, scale = T))

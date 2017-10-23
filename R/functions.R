@@ -211,6 +211,7 @@ extract_means <- function(x) {
 #' @importFrom magrittr %>%
 #' @export
 #'
+#
 
 plot_profiles_mclust <- function(d, to_center = F, to_scale = F){
 
