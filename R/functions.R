@@ -186,22 +186,6 @@ extract_covariance <- function(x, profile_n) {
                var_name = str_sub(var_name, start = 1L, end = 10L))
 }
 
-#' Extract mclust means
-#' @details Extract the means
-#' @param x an object of class `Mclust`
-#' @import dplyr
-#' @export
-
-extract_means <- function(x) {
-    calculate_centroids_mclust(x) %>%
-        rownames_to_column("var_name") %>%
-        rename(class_1 = V1, class_2 = V2) %>%
-        mutate(param_name = "Means",
-               class1 = round(class_1, 3),
-               class2 = round(class_2, 3)) %>%
-        select(param_name, var_name, class_1, class_2)
-}
-
 #' Plot profile centroids
 #' @details Plot the centroids for Mclust output
 #' @param d output from create_profiles_mclust()

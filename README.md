@@ -1,23 +1,25 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-tidymixmod
-==========
+tidyLPA
+=======
 
-The goal of tidymixmod is to provide tools to make it easier to use the `R` package `MCLUST` for Latent Profile Analysis analyses.
+The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package `MCLUST` for Latent Profile Analysis analyses.
 
-This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis, and may be merged with it in the future.
+This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis.
 
-A candidate feature or change is to provide an interface to the general latent variable model software `OpenMx` to carry out Latent Profile Analysis (LPA) and Latent Class Analysis (LCA), as while presently `MCLUST` provides great functionality, it does not work with categorical variables, and therefore cannot be used to carry out LCA. Moreover, some more fine-grained specifications for how observed variables' residuals covary can be specified in `OpenMx` (i.e., specific correlations between specific variables' residuals).
+tidyLPA has been benchmarked to LPA, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)). You can find the results of the benchmarking [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). Further benchmarking with data that are more complex and particularly data that are not as normally distributed as the continuous variables in the iris data set are is an important issue and future direction.
 
 Example
 =======
 
 First, we can explore the Bayesian Information Criteria (BIC) or the Integrated Complete-data Likelihood (ICL) values, using the `explore_models_clust()` function:
 
-    #> Loading tidymixmod
+    #> Loading tidyLPA
+    #> Warning in setup_ns_exports(pkg, export_all): Objects listed as exports,
+    #> but not present in namespace: extract_means
 
 ``` r
-library(tidymixmod)
+library(tidyLPA)
 ```
 
 Using the built-in `pisaUSA15` dataset and variables for broad interest, instrumental motivation, and self-efficacy, we can quickly explore a three profile solution:

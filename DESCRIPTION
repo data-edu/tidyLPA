@@ -1,6 +1,6 @@
-Package: tidymixmod
+Package: tidyLPA
 Type: Package
-Title: Easily perform mixture modeling for model-based clustering
+Title: Provide n interface to MCLUST to perform Latent Profile Analysis in R
 Version: 0.1.1
 Author: person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com")
 Maintainer: Joshua M. Rosenberg <jmichaelrosenberg@gmail.com>
