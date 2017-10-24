@@ -3,11 +3,11 @@
 tidyLPA
 =======
 
-The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package `MCLUST` for Latent Profile Analysis analyses.
+The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [MCLUST](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
 
 This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis.
 
-tidyLPA has been benchmarked to LPA, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)). You can find the results of the benchmarking [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). Further benchmarking with data that are more complex and particularly data that are not as normally distributed as the continuous variables in the iris data set are is an important issue and future direction.
+tidyLPA (which, again, is an interface to the `MCLUST` package) has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)). You can find the results of that benchmarking, which showed the results to be nearly, identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/).
 
 Example
 =======
@@ -15,8 +15,6 @@ Example
 First, we can explore the Bayesian Information Criteria (BIC) or the Integrated Complete-data Likelihood (ICL) values, using the `explore_models_clust()` function:
 
     #> Loading tidyLPA
-    #> Warning in setup_ns_exports(pkg, export_all): Objects listed as exports,
-    #> but not present in namespace: extract_means
 
 ``` r
 library(tidyLPA)
