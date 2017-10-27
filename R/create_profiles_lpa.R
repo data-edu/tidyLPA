@@ -11,8 +11,7 @@
 #' @examples
 #' \dontrun{
 #' d <- pisaUSA15
-#' d <- dplyr::sample_n(d, 200)
-#' m3 <- create_profiles_mclust(d,
+#' m3 <- create_profiles_lpa(d,
 #'                              broad_interest, enjoyment, instrumental_mot, self_efficacy,
 #'                              n_profiles = 3, to_return="tibble")
 #' }
