@@ -56,6 +56,7 @@ compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 
     ggplot2::ggplot(to_plot, ggplot2::aes(x = n_profiles, y = val, color = `Covariance matrix structure`, group = `Covariance matrix structure`)) +
         ggplot2::geom_line() +
         ggplot2::geom_point() +
-        ggplot2::ylab(paste0(statistic, " (smaller value is better)"))
+        ggplot2::ylab(paste0(statistic, " (smaller value is better)")) +
+        ggplot2::theme_bw()
 
 }

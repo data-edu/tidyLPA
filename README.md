@@ -16,16 +16,26 @@ First, we can explore the Bayesian Information Criteria (BIC) or the Integrated 
 library(tidyLPA)
 ```
 
-Using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a three profile solution:
+Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a three profile solution:
 
 ``` r
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 d <- pisaUSA15
+d <- sample_n(pisaUSA15, 200)
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 #> Model with 3 profiles using the 'varying means, equal variances and covariances' model.
-#> AIC is 32198.704
-#> BIC is 32310.725
-#> ICL is 33168.746
-#> Entropy is 0.93051
+#> AIC is 1177.4
+#> BIC is 1232.51
+#> ICL is 1263.251
+#> Entropy is 0.93032
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
 
@@ -36,25 +46,25 @@ We can also extract the posterior probabilities by setting `return_posterior_pro
 ``` r
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, return_posterior_probs = TRUE)
 #> Model with 3 profiles using the 'varying means, equal variances and covariances' model.
-#> AIC is 32198.704
-#> BIC is 32310.725
-#> ICL is 33168.746
-#> Entropy is 0.93051
+#> AIC is 1177.4
+#> BIC is 1232.51
+#> ICL is 1263.251
+#> Entropy is 0.93032
 m3
-#> # A tibble: 5,375 x 5
+#> # A tibble: 189 x 5
 #>    broad_interest enjoyment self_efficacy profile posterior_prob
 #>  *          <dbl>     <dbl>         <dbl>   <dbl>          <dbl>
-#>  1            3.8       4.0         1.000       1        0.96594
-#>  2            3.0       3.0         2.750       2        0.97333
-#>  3            1.8       2.8         3.375       2        0.98003
-#>  4            1.4       1.0         2.750       3        0.99949
-#>  5            1.8       2.2         2.000       2        0.98567
-#>  6            1.6       1.6         1.875       3        0.87652
-#>  7            3.0       3.8         2.250       1        0.92046
-#>  8            2.6       2.2         2.000       2        0.95714
-#>  9            1.0       2.8         2.625       2        0.94357
-#> 10            2.2       2.0         1.750       2        0.80086
-#> # ... with 5,365 more rows
+#>  1            3.4       3.0      1.750000       1        0.99836
+#>  2            2.8       3.4      2.125000       1        0.98890
+#>  3            1.4       2.0      2.375000       2        0.98077
+#>  4            3.2       3.0      1.750000       1        0.99643
+#>  5            3.0       3.0      1.375000       1        0.99416
+#>  6            3.4       3.8      2.000000       1        0.99956
+#>  7            2.6       2.8      1.666667       1        0.94932
+#>  8            3.4       2.8      1.625000       1        0.99782
+#>  9            3.2       3.0      2.625000       1        0.99276
+#> 10            3.4       3.0      1.375000       1        0.99880
+#> # ... with 179 more rows
 ```
 
 See `?create_profiles_lpa` for a description of the models; model `2` as specified in this example is for a model with varying means but equal variances and covariances across profiles.

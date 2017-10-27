@@ -14,15 +14,15 @@ plot_profiles_lpa <- function(d, to_center = F, to_scale = F, plot_what = "tibbl
 
     if (plot_what == "tibble") {
 
-        d %>%
-            dplyr::mutate_at(vars(-profile), scale, center = to_center, scale = to_scale) %>%
+        m3 %>%
+            dplyr::mutate_at(vars(-profile, -posterior_prob), scale, center = to_center, scale = to_scale) %>%
             group_by(profile) %>%
             summarize_all(mean) %>%
             tidyr::gather(key, val, -profile) %>%
             ggplot(aes(x = profile, y = val, fill = key)) +
             geom_col(position = "dodge") +
-            theme_bw() +
-            scale_fill_brewer("", type = "qual", palette=6)
+            scale_fill_brewer("", type = "qual", palette=6) +
+            theme_bw()
 
     } else if (plot_what == "mclust") {
 

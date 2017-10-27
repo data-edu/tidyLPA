@@ -32,10 +32,12 @@ devtools::load_all(".")
 library(tidyLPA)
 ```
 
-Using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a three profile solution:
+Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a three profile solution:
 
 ```{r, warning = F}
+library(dplyr)
 d <- pisaUSA15
+d <- sample_n(pisaUSA15, 200)
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
