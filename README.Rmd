@@ -38,8 +38,17 @@ Using the built-in `pisaUSA15` dataset (using just 200 observations for illustra
 library(dplyr)
 d <- pisaUSA15
 d <- sample_n(pisaUSA15, 200)
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
+m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 1)
 plot_profiles_lpa(m3, to_center = TRUE)
+```
+
+See `?create_profiles_lpa` for a description of the models; model `2` as specified in this example is for a model with varying means across profiles, but  equal variances across profiles, and residual covariances fixed to zero.
+
+We could specify other models:
+
+```{r}
+m3i <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
+m3ii <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 3)
 ```
 
 We can also extract the posterior probabilities by setting `return_posterior_probs` to `TRUE`:
@@ -47,8 +56,6 @@ We can also extract the posterior probabilities by setting `return_posterior_pro
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, return_posterior_probs = TRUE)
 m3
 ```
-
-See `?create_profiles_lpa` for a description of the models; model `2` as specified in this example is for a model with varying means but equal variances and covariances across profiles.
 
 We can also explore a range of models (here using the built-in `iris` dataset, as this function takes longer to run with larger datasets):
 
