@@ -19,8 +19,9 @@ select_create_profiles <- function(df, ...){
 #' @param df data.frame with two or more columns with continuous variables
 #' @param ... unquoted variable names separated by commas
 #' @param n_profiles the number of profiles (or mixture components) to be estimated
-#' @param model the mclust model to explore: "means", "means_varying_covariance", and "means_varying_covariance" specify the three most common models, in order from most to least constrained; run ?mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)
-#' @param to_return character string for whether to return a tibble or the mclust output; if a tibble is returned, the mclust output can be viewed using the extract_mclust_output() function, with the tibble as its only argument
+#' @param model the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to zero); 2 (varying means, equal variances and covariances; and 3 (varying means, variances, and covariances), in order from most to least constrained; run ?mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)
+#' @param to_return character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
+#' @param return_posterior_probs TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to FALSE
 #' @import mclust
 #' @examples
 #' \dontrun{
@@ -33,11 +34,12 @@ select_create_profiles <- function(df, ...){
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
 
-create_profiles_mclust <- function(df,
-                                   ...,
-                                   n_profiles,
-                                   model = 1,
-                                   to_return = "tibble"){
+create_profiles_lpa <- function(df,
+                                ...,
+                                n_profiles,
+                                model = 1,
+                                to_return = "tibble",
+                                return_posterior_probs = TRUE){
 
     d <- select_create_profiles(df, ...)
 
@@ -50,20 +52,31 @@ create_profiles_mclust <- function(df,
     } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
         model <- model
     } else {
-        stop("Model name is not correctly specified: use 'constrained_variance', 'constrained_variance_and_covariance', 'freed_variance_and_covariance' or one of the model names specified from mclustModelNames() from mclust")
+        stop("Model name is not correctly specified: use 1, 2, or 3 (see ?create_profiles_lpa for descriptions) or one of the model names specified from mclustModelNames() from mclust")
     }
 
-    model_print <- ifelse(model == "EEI", "constrained variance",
-                          ifelse(model == "EEE", "constrained variance and covariance",
-                                 ifelse(model == "VVV", "freed variance and covariance", model)))
+    model_print <- ifelse(model == "EEI", "varying means, equal variances, and residual covariances fixed to zero",
+                          ifelse(model == "EEE", "varying means, equal variances and covariances",
+                                 ifelse(model == "VVV", "varying means, variances, and covariances", model)))
 
-    x <- mclust::Mclust(d, G = n_profiles, modelNames = model)
+    m <- mclust::Mclust(d, G = n_profiles, modelNames = model)
 
-    message("Fit model with ", n_profiles, " profiles using the '", model_print, "' model.")
-    message("Model BIC is ", round(abs(as.vector(x$BIC)), 3))
-    dff <- as.data.frame(dplyr::bind_cols(d, profile = x$classification)) # replace with tibble
+    message("Model with ", n_profiles, " profiles using the '", model_print, "' model.")
 
-    attributes(dff)$mclust_output <- x
+    AIC <- (2*m$df - 2*m$loglik)
+
+    message("Model AIC is ", round(abs(as.vector(AIC)), 3))
+    message("Model BIC is ", round(abs(as.vector(m$BIC)), 3))
+    message("Model ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
+
+    dff <- as.data.frame(dplyr::bind_cols(d, profile = m$classification)) # replace with tibble
+
+    if (return_posterior_probs == TRUE) {
+        col <- 1 - round(m$uncertainty, 5)
+        dff <- dplyr::bind_cols(dff, posterior_prob = col)
+    }
+
+    attributes(dff)$mclust_output <- m
 
     if (to_return == "tibble") {
         return(tibble::as_tibble(dff))
@@ -160,7 +173,7 @@ extract_variance <- function(x, profile_n) {
         tibble::rownames_to_column("var_name") %>%
         dplyr::mutate(param_name = "Variances") %>%
         dplyr::mutate(class = paste0("class_", profile_n),
-               est = round(est, 3)) %>%
+                      est = round(est, 3)) %>%
         dplyr::select(param_name, var_name, class, est)
 }
 
@@ -187,27 +200,34 @@ extract_covariance <- function(x, profile_n) {
 }
 
 #' Plot profile centroids
-#' @details Plot the centroids for Mclust output
+#' @details Plot the centroids for tibble or mclust output from create_profiles_lpa()
 #' @param d output from create_profiles_mclust()
 #' @param to_center whether to center the data before plotting
 #' @param to_scale whether to scale the data before plotting
+#' @param plot_what whether to plot tibble or mclust output from create_profiles_lpa(); defaults to tibble
 #' @import ggplot2
 #' @importFrom magrittr %>%
 #' @export
 #'
 #
 
-plot_profiles_mclust <- function(d, to_center = F, to_scale = F){
+plot_profiles_lpa <- function(d, to_center = F, to_scale = F, plot_what = "tibble") {
 
-    d %>%
-        dplyr::mutate_at(vars(-profile), scale, center = to_center, scale = to_scale) %>%
-        group_by(profile) %>%
-        summarize_all(mean) %>%
-        tidyr::gather(key, val, -profile) %>%
-        ggplot(aes(x = profile, y = val, fill = key)) +
-        geom_col(position = "dodge") +
-        theme_bw() +
-        scale_fill_brewer("", type = "qual", palette=6)
+    if (plot_what == "tibble") {
+
+        d %>%
+            dplyr::mutate_at(vars(-profile), scale, center = to_center, scale = to_scale) %>%
+            group_by(profile) %>%
+            summarize_all(mean) %>%
+            tidyr::gather(key, val, -profile) %>%
+            ggplot(aes(x = profile, y = val, fill = key)) +
+            geom_col(position = "dodge") +
+            theme_bw() +
+            scale_fill_brewer("", type = "qual", palette=6)
+
+    } else if (plot_what == "mclust") {
+
+    }
 
 }
 
@@ -225,28 +245,30 @@ extract_mclust_summary <- function(x) {
 
 #' Explore BIC of mclust models
 #' @details Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
-#' @param df data.frame with two or more columns with continuous variables
-#' @param ... unquoted variable names separated by commas
 #' @param n_profiles_range a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)
-#' @param model_names mclust models to explore; defaults to constrained variance, fixed variances ("EII"), constrained variance, constrained covariance ("EEE"), and freed variance, freed covariance ("VVV"); run mclustModelNames() from mclust to see all of the possible models and their names / abbreviations
 #' @param statistic what statistic to plot; BIC or ICL are presently available as options
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output intsead of a plot; defaults to FALSE
+#' @inheritParams create_profiles_lpa
 #' @return a ggplot2 plot of the BIC values for the explored models
 #' @import mclust
 #' @examples
-#' \dontrun{
-#'    d <- pisaUSA15
-#'    explore_models_mclust(d, broad_interest, instrumental_mot, self_efficacy)
-#' }
+#' d <- iris
+#' compare_models_lpa(d, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
 #' @export
 
-explore_models_mclust <- function(df, ..., n_profiles_range = 1:9, model_names = c("EEI", "EEE", "VVV"), statistic = "BIC", return_table = FALSE) {
+compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3), statistic = "BIC", return_table = FALSE) {
 
     d <- select_create_profiles(df, ...)
 
-    print(d)
+    model <- dplyr::case_when(
+        model == 1 ~ "EEI",
+        model == 2 ~ "EEE",
+        model == 3 ~ "VVV",
+        TRUE ~ as.character(model)
+    )
+
     if (statistic == "BIC") {
-        x <- mclust::mclustBIC(d, G = n_profiles_range, modelNames = model_names)
+        x <- mclust::mclustBIC(d, G = n_profiles_range, modelNames = model)
     } else if (statistic == "ICL") {
         x <- mclust::mclustICL(d, G = n_profiles_range, modelNames = model_names)
     } else {
