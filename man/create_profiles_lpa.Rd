@@ -32,7 +32,7 @@ Creates profiles (or estimates of the mixture components) for a specific mclust 
 \examples{
 \dontrun{
 d <- pisaUSA15
-m3 <- create_profiles_mclust(d,
+m3 <- create_profiles_lpa(d,
                              broad_interest, enjoyment, instrumental_mot, self_efficacy,
                              n_profiles = 3, to_return="tibble")
 }

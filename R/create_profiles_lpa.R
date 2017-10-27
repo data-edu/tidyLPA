@@ -12,8 +12,8 @@
 #' \dontrun{
 #' d <- pisaUSA15
 #' m3 <- create_profiles_lpa(d,
-#'                              broad_interest, enjoyment, instrumental_mot, self_efficacy,
-#'                              n_profiles = 3, to_return="tibble")
+#'                           broad_interest, enjoyment, self_efficacy,
+#'                           n_profiles = 3, to_return="tibble")
 #' }
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
@@ -48,16 +48,18 @@ create_profiles_lpa <- function(df,
     message("Model with ", n_profiles, " profiles using the '", model_print, "' model.")
 
     AIC <- (2*m$df - 2*m$loglik)
+    posterior_prob <- 1 - round(m$uncertainty, 5)
 
-    message("Model AIC is ", round(abs(as.vector(AIC)), 3))
-    message("Model BIC is ", round(abs(as.vector(m$BIC)), 3))
-    message("Model ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
+
+    message("AIC is ", round(abs(as.vector(AIC)), 3))
+    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+    message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
+    message("Entropy is ", round(mean(posterior_prob), 5))
 
     dff <- as.data.frame(dplyr::bind_cols(d, profile = m$classification)) # replace with tibble
 
     if (return_posterior_probs == TRUE) {
-        col <- 1 - round(m$uncertainty, 5)
-        dff <- dplyr::bind_cols(dff, posterior_prob = col)
+        dff <- dplyr::bind_cols(dff, posterior_prob = posterior_prob)
     }
 
     attributes(dff)$mclust_output <- m

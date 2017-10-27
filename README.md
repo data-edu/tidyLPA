@@ -16,18 +16,17 @@ First, we can explore the Bayesian Information Criteria (BIC) or the Integrated 
 library(tidyLPA)
 ```
 
-Using the built-in `pisaUSA15` dataset and variables for broad interest, instrumental motivation, and self-efficacy, we can quickly explore a three profile solution:
+Using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a three profile solution:
 
 ``` r
 d <- pisaUSA15
-m3 <- create_profiles_lpa(d, broad_interest, instrumental_mot, self_efficacy, n_profiles = 3, model = 2)
+m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 #> Model with 3 profiles using the 'varying means, equal variances and covariances' model.
-#> Model AIC is 34679.893
-#> Model BIC is 34791.889
-#> Model ICL is 39511.702
+#> AIC is 32198.704
+#> BIC is 32310.725
+#> ICL is 33168.746
+#> Entropy is 0.93051
 plot_profiles_lpa(m3, to_center = TRUE)
-#> Warning: attributes are not identical across measure variables;
-#> they will be dropped
 ```
 
 ![](README-unnamed-chunk-4-1.png)
@@ -35,26 +34,27 @@ plot_profiles_lpa(m3, to_center = TRUE)
 We can also extract the posterior probabilities by setting `return_posterior_probs` to `TRUE`:
 
 ``` r
-m3 <- create_profiles_lpa(d, broad_interest, instrumental_mot, self_efficacy, n_profiles = 3, model = 2, return_posterior_probs = TRUE)
+m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, return_posterior_probs = TRUE)
 #> Model with 3 profiles using the 'varying means, equal variances and covariances' model.
-#> Model AIC is 34679.893
-#> Model BIC is 34791.889
-#> Model ICL is 39511.702
+#> AIC is 32198.704
+#> BIC is 32310.725
+#> ICL is 33168.746
+#> Entropy is 0.93051
 m3
-#> # A tibble: 5,367 x 5
-#>    broad_interest instrumental_mot self_efficacy profile posterior_prob
-#>  *          <dbl>            <dbl>         <dbl>   <dbl>          <dbl>
-#>  1            3.8             2.00         1.000       2        0.51205
-#>  2            3.0             2.50         2.750       2        0.63810
-#>  3            1.8             3.50         3.375       2        0.80200
-#>  4            1.4             2.75         2.750       2        0.81043
-#>  5            1.8             2.00         2.000       2        0.74737
-#>  6            1.6             2.75         1.875       2        0.79362
-#>  7            3.0             1.25         2.250       2        0.57589
-#>  8            2.6             2.00         2.000       2        0.66186
-#>  9            1.0             1.00         2.625       2        0.78366
-#> 10            2.2             1.00         1.750       2        0.65999
-#> # ... with 5,357 more rows
+#> # A tibble: 5,375 x 5
+#>    broad_interest enjoyment self_efficacy profile posterior_prob
+#>  *          <dbl>     <dbl>         <dbl>   <dbl>          <dbl>
+#>  1            3.8       4.0         1.000       1        0.96594
+#>  2            3.0       3.0         2.750       2        0.97333
+#>  3            1.8       2.8         3.375       2        0.98003
+#>  4            1.4       1.0         2.750       3        0.99949
+#>  5            1.8       2.2         2.000       2        0.98567
+#>  6            1.6       1.6         1.875       3        0.87652
+#>  7            3.0       3.8         2.250       1        0.92046
+#>  8            2.6       2.2         2.000       2        0.95714
+#>  9            1.0       2.8         2.625       2        0.94357
+#> 10            2.2       2.0         1.750       2        0.80086
+#> # ... with 5,365 more rows
 ```
 
 See `?create_profiles_lpa` for a description of the models; model `2` as specified in this example is for a model with varying means but equal variances and covariances across profiles.

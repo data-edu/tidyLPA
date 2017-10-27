@@ -13,8 +13,8 @@
 
 "pisaUSA15"
 
-#' Calculate centroids from an mclust model object
-#' @details Extract the output of the mclust output from the function create_profiles() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed
+#' Calculate centroids from the output of create_profiles_lpa()
+#' @details Extract the output of create_profiles_lpa()) so that statistics related to the estimation, and other output can be viewed
 #' @param x an object of class `Mclust`
 #' @export
 
