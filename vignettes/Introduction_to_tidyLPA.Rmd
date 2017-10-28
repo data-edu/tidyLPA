@@ -1,0 +1,63 @@
+---
+title: "Introduction to tidyLPA"
+author: "Joshua M. Rosenberg"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Example
+
+```{r, echo = F, message = F}
+devtools::load_all(".")
+```
+
+```{r, eval = F}
+library(tidyLPA)
+```
+
+Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a number of models - both in terms of **the specification of the model** and **the number of profiles** using the  Bayesian Information Criteria (BIC) values.
+
+```{r}
+library(dplyr)
+d <- pisaUSA15
+d <- sample_n(pisaUSA15, 200)
+compare_models_lpa(d, broad_interest, enjoyment, self_efficacy)
+```
+
+We can explore a three profile solution, with, for example, `4` profiles, and varying means across profiles, but equal variances and covariances (specified with model = `2`:
+
+```{r, warning = F}
+m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
+plot_profiles_lpa(m3, to_center = TRUE)
+```
+
+See `?create_profiles_lpa` for a description for the models.
+
+We could specify them as follows, whereby model `1` is for a model with varying means across profiles, but equal variances across profiles, and residual covariances fixed to zero, and model `3` is for a model with varying means, variances, and covariances across profiles:
+
+```{r}
+m3i <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 1)
+```
+
+This model has some trouble being fit, so is shown but is not run:
+
+```{r, eval = F}
+m3ii <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 3)
+```
+
+To test profile solutions for a specific model, you can carry out a bootstrapped likelihood-ratio test:
+
+```{r}
+bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy)
+```
+
+For use in subsequent analyses, we can extract the posterior probabilities by setting `return_posterior_probs` to `TRUE`:
+
+```{r}
+m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, return_posterior_probs = TRUE)
+m3
+```

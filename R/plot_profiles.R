@@ -14,7 +14,7 @@ plot_profiles_lpa <- function(d, to_center = F, to_scale = F, plot_what = "tibbl
 
     if (plot_what == "tibble") {
 
-        m3 %>%
+        d %>%
             dplyr::mutate_at(vars(-profile, -posterior_prob), scale, center = to_center, scale = to_scale) %>%
             group_by(profile) %>%
             summarize_all(mean) %>%

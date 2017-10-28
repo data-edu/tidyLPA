@@ -9,7 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "README-",
-  warning = T
+  warning = T, 
+  error = F
 )
 ```
 
@@ -32,34 +33,11 @@ devtools::load_all(".")
 library(tidyLPA)
 ```
 
-Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a three profile solution:
+Here is a brief exampleuUsing the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details and view the `Introduction to tidyLPA` vignette for more information.
 
 ```{r, warning = F}
-library(dplyr)
 d <- pisaUSA15
-d <- sample_n(pisaUSA15, 200)
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 1)
-plot_profiles_lpa(m3, to_center = TRUE)
-```
-
-See `?create_profiles_lpa` for a description of the models; model `2` as specified in this example is for a model with varying means across profiles, but  equal variances across profiles, and residual covariances fixed to zero.
-
-We could specify other models:
-
-```{r}
-m3i <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
-m3ii <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 3)
-```
-
-We can also extract the posterior probabilities by setting `return_posterior_probs` to `TRUE`:
-```{r}
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, return_posterior_probs = TRUE)
+m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 m3
-```
-
-We can also explore a range of models (here using the built-in `iris` dataset, as this function takes longer to run with larger datasets):
-
-```{r}
-d <- iris
-compare_models_lpa(d, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+plot_profiles_lpa(m3, to_center = TRUE)
 ```

@@ -16,81 +16,32 @@ First, we can explore the Bayesian Information Criteria (BIC) or the Integrated 
 library(tidyLPA)
 ```
 
-Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a three profile solution:
+Here is a brief exampleuUsing the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details and view the `Introduction to tidyLPA` vignette for more information.
 
 ``` r
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 d <- pisaUSA15
-d <- sample_n(pisaUSA15, 200)
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 1)
-#> Model with 3 profiles using the 'varying means, equal variances, and residual covariances fixed to zero' model.
-#> AIC is 1167.482
-#> BIC is 1212.792
-#> ICL is 1285.864
-#> Entropy is 0.83877
+m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
+#> Model with 4 profiles using the 'varying means, equal variances and covariances' model.
+#> AIC is 32204.043
+#> BIC is 32342.423
+#> ICL is 34776.451
+#> Entropy is 0.80708
+m3
+#> # A tibble: 5,375 x 5
+#>    broad_interest enjoyment self_efficacy profile posterior_prob
+#>  *          <dbl>     <dbl>         <dbl>   <dbl>          <dbl>
+#>  1            3.8       4.0         1.000       1        0.96454
+#>  2            3.0       3.0         2.750       2        0.75999
+#>  3            1.8       2.8         3.375       2        0.81157
+#>  4            1.4       1.0         2.750       3        0.99951
+#>  5            1.8       2.2         2.000       2        0.87555
+#>  6            1.6       1.6         1.875       3        0.88153
+#>  7            3.0       3.8         2.250       1        0.91827
+#>  8            2.6       2.2         2.000       2        0.83843
+#>  9            1.0       2.8         2.625       2        0.80674
+#> 10            2.2       2.0         1.750       2        0.71589
+#> # ... with 5,365 more rows
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
 
 ![](README-unnamed-chunk-4-1.png)
-
-See `?create_profiles_lpa` for a description of the models; model `2` as specified in this example is for a model with varying means across profiles, but equal variances across profiles, and residual covariances fixed to zero.
-
-We could specify other models:
-
-``` r
-m3i <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
-#> Model with 3 profiles using the 'varying means, equal variances and covariances' model.
-#> AIC is 1132.2
-#> BIC is 1187.22
-#> ICL is 1196.975
-#> Entropy is 0.978
-m3ii <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 3)
-#> Model with 3 profiles using the 'varying means, variances, and covariances' model.
-#> AIC is 1159.533
-#> BIC is 1253.39
-#> ICL is 1302.717
-#> Entropy is 0.88996
-```
-
-We can also extract the posterior probabilities by setting `return_posterior_probs` to `TRUE`:
-
-``` r
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, return_posterior_probs = TRUE)
-#> Model with 3 profiles using the 'varying means, equal variances and covariances' model.
-#> AIC is 1132.2
-#> BIC is 1187.22
-#> ICL is 1196.975
-#> Entropy is 0.978
-m3
-#> # A tibble: 188 x 5
-#>    broad_interest enjoyment self_efficacy profile posterior_prob
-#>  *          <dbl>     <dbl>         <dbl>   <dbl>          <dbl>
-#>  1            3.2       3.0         2.125       1        0.99986
-#>  2            1.0       1.0         2.750       2        0.99890
-#>  3            2.0       2.2         2.625       1        0.95880
-#>  4            4.0       3.0         2.000       1        0.99737
-#>  5            1.0       1.0         2.125       2        0.99972
-#>  6            1.2       1.0         2.500       2        0.99934
-#>  7            2.8       2.8         1.375       1        0.99623
-#>  8            3.8       3.2         1.250       1        0.99983
-#>  9            4.0       3.2         1.000       1        0.99970
-#> 10            2.8       3.0         1.500       1        0.99946
-#> # ... with 178 more rows
-```
-
-We can also explore a range of models (here using the built-in `iris` dataset, as this function takes longer to run with larger datasets):
-
-``` r
-d <- iris
-compare_models_lpa(d, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
-```
-
-![](README-unnamed-chunk-7-1.png)

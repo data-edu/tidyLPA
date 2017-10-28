@@ -11,6 +11,7 @@
 #' @examples
 #' \dontrun{
 #' d <- pisaUSA15
+#' d <- dplyr::sample_n(d, 200)
 #' m3 <- create_profiles_lpa(d,
 #'                           broad_interest, enjoyment, self_efficacy,
 #'                           n_profiles = 3, to_return="tibble")
@@ -44,6 +45,8 @@ create_profiles_lpa <- function(df,
                                  ifelse(model == "VVV", "varying means, variances, and covariances", model)))
 
     m <- mclust::Mclust(d, G = n_profiles, modelNames = model)
+
+    if(is.null(m)) stop("Model could not be fitted")
 
     message("Model with ", n_profiles, " profiles using the '", model_print, "' model.")
 

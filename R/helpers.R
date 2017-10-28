@@ -17,8 +17,17 @@ select_create_profiles <- function(df, ...){
 }
 
 # quiets concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation
-if (getRversion() >= "2.15.1") utils::globalVariables(c("key", "val", "EEI", "EEV", "VVV", "profile"))
+if (getRversion() >= "2.15.1") utils::globalVariables(c("matrix", "structure", "EEE", "EEI", "VVV", "est", "key", "model_names"))
 
-1:10
+#' student questionnaire data with four variables from the 2015 PISA for students in the United States
+#'
+#' @source http://www.oecd.org/pisa/data/
+#' @format Data frame with columns
+#' #' \describe{
+#'   \item{CNTSTUID}{international student ID}
+#'   \item{SCHID}{international school ID}
+#'   ...
+#' }
+#' @import tibble
 
-sd(scale(1:10, center = T, scale = T))
+"pisaUSA15"
