@@ -11,11 +11,7 @@ vignette: >
 
 # Example
 
-```{r, echo = F, message = F}
-devtools::load_all(".")
-```
-
-```{r, eval = F}
+```{r}
 library(tidyLPA)
 ```
 
@@ -25,7 +21,7 @@ Using the built-in `pisaUSA15` dataset (using just 200 observations for illustra
 library(dplyr)
 d <- pisaUSA15
 d <- sample_n(pisaUSA15, 100)
-compare_models_lpa(d, broad_interest, enjoyment, self_efficacy)
+compare_models_lpa(d, broad_interest, enjoyment, self_efficacy, statistic = "BIC")
 ```
 
 We can explore a three profile solution, with, for example, `4` profiles, and varying means across profiles, but equal variances and covariances (specified with model = `2`):
@@ -49,10 +45,10 @@ This model has some trouble being fit, so is shown but is not run:
 m3ii <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 3)
 ```
 
-To test profile solutions for a specific model, you can carry out a bootstrapped likelihood-ratio test:
+To test profile solutions for a specific model, you can carry out a bootstrapped likelihood-ratio test (presently not run because it can take substantial time):
 
-```{r}
-bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy)
+```{r, eval = F}
+bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 1)
 ```
 
 For use in subsequent analyses, we can extract the posterior probabilities by setting `return_posterior_probs` to `TRUE`:

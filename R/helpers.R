@@ -16,7 +16,7 @@ select_create_profiles <- function(df, ...){
     return(d)
 }
 
-# quiets concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation
+# addresses concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation
 if (getRversion() >= "2.15.1") utils::globalVariables(c("matrix", "structure", "EEE", "EEI", "VVV", "est", "key", "model_names", "Covariance matrix structure", "n_profiles", "param_name", "posterior_prob", "profile", "val", "value", "var_name"))
 
 #' student questionnaire data with four variables from the 2015 PISA for students in the United States

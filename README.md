@@ -10,13 +10,11 @@ This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-st
 Example
 =======
 
-First, we can explore the Bayesian Information Criteria (BIC) or the Integrated Complete-data Likelihood (ICL) values, using the `explore_models_clust()` function:
+Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details and view the `Introduction to tidyLPA` vignette for more information.
 
 ``` r
 library(tidyLPA)
 ```
-
-Here is a brief exampleuUsing the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details and view the `Introduction to tidyLPA` vignette for more information.
 
 ``` r
 d <- pisaUSA15
@@ -44,4 +42,4 @@ m3
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
 
-![](README-unnamed-chunk-4-1.png)
+![](README-unnamed-chunk-3-1.png)

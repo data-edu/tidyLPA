@@ -23,17 +23,11 @@ tidyLPA (which, again, is an interface to the `MCLUST` package) has been benchma
 
 # Example
 
-First, we can explore the Bayesian Information Criteria (BIC) or the Integrated Complete-data Likelihood (ICL) values, using the `explore_models_clust()` function:
+Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details and view the `Introduction to tidyLPA` vignette for more information.
 
-```{r, echo = F, message = F}
-devtools::load_all(".")
-```
-
-```{r, eval = F}
+```{r}
 library(tidyLPA)
 ```
-
-Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details and view the `Introduction to tidyLPA` vignette for more information.
 
 ```{r, warning = F}
 d <- pisaUSA15
