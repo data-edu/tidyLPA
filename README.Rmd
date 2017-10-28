@@ -30,7 +30,9 @@ library(tidyLPA)
 ```
 
 ```{r, warning = F}
+library(dplyr)
 d <- pisaUSA15
+d <- sample_frac(d, .5)
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 m3
 plot_profiles_lpa(m3, to_center = TRUE)

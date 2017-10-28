@@ -17,8 +17,8 @@ library(tidyLPA)
 
 Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a number of models - both in terms of **the specification of the model** and **the number of profiles** using the  Bayesian Information Criteria (BIC) values.
 
-```{r}
-library(dplyr)
+```{r, fig.width = 7, fig.height = 5}
+library(dplyr, warn.conflicts = FALSE)
 d <- pisaUSA15
 d <- sample_n(pisaUSA15, 100)
 compare_models_lpa(d, broad_interest, enjoyment, self_efficacy, statistic = "BIC")

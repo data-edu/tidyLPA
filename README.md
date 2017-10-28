@@ -17,28 +17,38 @@ library(tidyLPA)
 ```
 
 ``` r
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 d <- pisaUSA15
+d <- sample_frac(d, .5)
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 #> Model with 4 profiles using the 'varying means, equal variances and covariances' model.
-#> AIC is 32204.043
-#> BIC is 32342.423
-#> ICL is 34776.451
-#> Entropy is 0.80708
+#> AIC is 15110.863
+#> BIC is 15234.659
+#> ICL is 15429.776
+#> Entropy is 0.9677
 m3
-#> # A tibble: 5,375 x 5
+#> # A tibble: 2,684 x 5
 #>    broad_interest enjoyment self_efficacy profile posterior_prob
 #>  *          <dbl>     <dbl>         <dbl>   <dbl>          <dbl>
-#>  1            3.8       4.0         1.000       1        0.96454
-#>  2            3.0       3.0         2.750       2        0.75999
-#>  3            1.8       2.8         3.375       2        0.81157
-#>  4            1.4       1.0         2.750       3        0.99951
-#>  5            1.8       2.2         2.000       2        0.87555
-#>  6            1.6       1.6         1.875       3        0.88153
-#>  7            3.0       3.8         2.250       1        0.91827
-#>  8            2.6       2.2         2.000       2        0.83843
-#>  9            1.0       2.8         2.625       2        0.80674
-#> 10            2.2       2.0         1.750       2        0.71589
-#> # ... with 5,365 more rows
+#>  1            3.2       4.0      2.000000       1        0.99999
+#>  2            2.6       3.0      2.000000       2        0.99990
+#>  3            2.4       3.0      2.000000       2        0.99989
+#>  4            1.0       1.0      1.428571       3        1.00000
+#>  5            3.2       3.0      2.500000       2        0.99993
+#>  6            2.8       2.8      1.750000       2        0.99756
+#>  7            3.0       3.0      2.000000       2        0.99991
+#>  8            3.0       3.8      2.750000       1        0.99955
+#>  9            3.0       3.0      2.000000       2        0.99991
+#> 10            2.8       2.6      2.500000       2        0.92567
+#> # ... with 2,674 more rows
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
 
