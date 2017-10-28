@@ -73,24 +73,26 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>pisaUSA15
 d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <span class="dv">100</span>)
 <span class="kw"><a href="../reference/compare_models_lpa.html">compare_models_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">statistic =</span> <span class="st">"BIC"</span>)</code></pre></div>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_path).</code></pre>
+<pre><code>## Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
 <p>We can explore a three profile solution, with, for example, <code>4</code> profiles, and varying means across profiles, but equal variances and covariances (specified with model = <code>2</code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)</code></pre></div>
 <pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
-<pre><code>## AIC is 610.191</code></pre>
-<pre><code>## BIC is 663.601</code></pre>
-<pre><code>## ICL is 682.328</code></pre>
-<pre><code>## Entropy is 0.91543</code></pre>
+<pre><code>## AIC is 619.605</code></pre>
+<pre><code>## BIC is 673.456</code></pre>
+<pre><code>## ICL is 714.647</code></pre>
+<pre><code>## Entropy is 0.82467</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>See <code><a href="../reference/create_profiles_lpa.html">?create_profiles_lpa</a></code> for a description for the models.</p>
 <p>We could specify them as follows, whereby model <code>1</code> is for a model with varying means across profiles, but equal variances across profiles, and residual covariances fixed to zero, and model <code>3</code> is for a model with varying means, variances, and covariances across profiles:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3i &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">1</span>)</code></pre></div>
 <pre><code>## Model with 3 profiles using the 'varying means, equal variances, and residual covariances fixed to zero' model.</code></pre>
-<pre><code>## AIC is 625.478</code></pre>
-<pre><code>## BIC is 661.085</code></pre>
-<pre><code>## ICL is 711.183</code></pre>
-<pre><code>## Entropy is 0.78626</code></pre>
+<pre><code>## AIC is 612.32</code></pre>
+<pre><code>## BIC is 648.221</code></pre>
+<pre><code>## ICL is 679.774</code></pre>
+<pre><code>## Entropy is 0.85893</code></pre>
 <p>This model has some trouble being fit, so is shown but is not run:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3ii &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">3</span>)</code></pre></div>
 <p>To test profile solutions for a specific model, you can carry out a bootstrapped likelihood-ratio test (presently not run because it can take substantial time):</p>
@@ -98,25 +100,25 @@ d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <spa
 <p>For use in subsequent analyses, we can extract the posterior probabilities by setting <code>return_posterior_probs</code> to <code>TRUE</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>, <span class="dt">return_posterior_probs =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Model with 3 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
-<pre><code>## AIC is 608.386</code></pre>
-<pre><code>## BIC is 651.622</code></pre>
-<pre><code>## ICL is 660.138</code></pre>
-<pre><code>## Entropy is 0.96017</code></pre>
+<pre><code>## AIC is 614.188</code></pre>
+<pre><code>## BIC is 657.782</code></pre>
+<pre><code>## ICL is 700.835</code></pre>
+<pre><code>## Entropy is 0.81746</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3</code></pre></div>
-<pre><code>## # A tibble: 94 x 5
+<pre><code>## # A tibble: 96 x 5
 ##    broad_interest enjoyment self_efficacy profile posterior_prob
 ##  *          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;
-##  1            2.0       2.0         2.000       1        0.99460
-##  2            3.0       2.2         2.500       3        0.98820
-##  3            2.4       3.0         2.625       3        0.99828
-##  4            1.0       2.2         2.625       1        1.00000
-##  5            3.0       3.0         1.000       3        0.99904
-##  6            3.4       4.0         2.250       2        0.93555
-##  7            4.2       2.8         3.000       2        0.99996
-##  8            2.6       2.8         1.750       3        0.99177
-##  9            4.0       3.0         2.000       2        0.97699
-## 10            3.0       2.4         2.000       3        0.99831
-## # ... with 84 more rows</code></pre>
+##  1            1.8       2.2         1.500       1        0.98140
+##  2            1.6       1.8         1.000       1        0.99966
+##  3            3.0       1.0         2.000       1        0.99754
+##  4            1.0       1.0         2.375       1        0.99946
+##  5            2.6       2.0         2.375       1        0.54725
+##  6            3.6       3.6         2.125       2        0.76158
+##  7            1.4       2.4         3.375       3        0.98946
+##  8            2.2       1.8         2.375       1        0.85657
+##  9            2.2       2.0         3.000       3        0.84778
+## 10            3.6       2.8         2.375       2        0.71316
+## # ... with 86 more rows</code></pre>
 </div>
 </div>
   </div>
