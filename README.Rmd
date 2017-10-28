@@ -33,7 +33,7 @@ devtools::load_all(".")
 library(tidyLPA)
 ```
 
-Here is a brief exampleuUsing the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details and view the `Introduction to tidyLPA` vignette for more information.
+Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details and view the `Introduction to tidyLPA` vignette for more information.
 
 ```{r, warning = F}
 d <- pisaUSA15
