@@ -1,6 +1,7 @@
 #' Bootstrap the likelihood-ratio test statistic for mixture components
 #' @details Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.
 #' @inheritParams create_profiles_lpa
+#' @importFrom rlang .data
 #' @examples
 #' \dontrun{
 #' d <- pisaUSA15

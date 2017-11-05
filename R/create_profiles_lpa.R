@@ -22,6 +22,7 @@ select_create_profiles <- function(df, ...){
 #' @param to_return character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
 #' @param return_posterior_probs TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE
 #' @import mclust
+#' @importFrom rlang .data
 #' @examples
 #' d <- pisaUSA15
 #' d <- dplyr::sample_n(d, 200)

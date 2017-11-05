@@ -41,6 +41,7 @@ extract_mclust_classification_certainty <- function(x) {
 #' @inheritParams calculate_centroids_mclust
 #' @param profile_n the number of profiles
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
 #' @export
 
 extract_variance <- function(x, profile_n) {
@@ -60,6 +61,7 @@ extract_variance <- function(x, profile_n) {
 #' @inheritParams calculate_centroids_mclust
 #' @param profile_n the number of profiles
 #' @import dplyr
+#' @importFrom rlang .data
 #' @export
 
 extract_covariance <- function(x, profile_n) {
