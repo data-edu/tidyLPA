@@ -9,6 +9,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# Background
+
+`tidyLPA` provides an interface to the powerful MCLUST package to easily carry out Latent Profile Analysis (LPA). Its main contribution is corresponding that are commonly specified when carrying out LPA. Its secondary contribution is to make it easier to use the output in subsequent analysis through a tidy user interface, in that
+output is in the form of a tibble (closely related to a data.frame) that can subsequently be computed on.
+
+The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [MCLUST](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
+
+This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis. 
+`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the most common model specifications. You can find the results of that benchmarking, which showed the results to be nearly, identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
+
 # Example
 
 ```{r, echo = F, eval = F}
@@ -20,45 +30,82 @@ devtools::load_all(".")
 library(tidyLPA)
 ```
 
-Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a number of models - both in terms of **the specification of the model** and **the number of profiles** using the  Bayesian Information Criteria (BIC) values.
+### A data-first, tidy approach
+
+`tidyLPA` is presently designed to be used in two ways:
+
+1. In a "data-first" (or tidy) way, akin to the interface popularized in the `dplyr` and `tidyr` (and other) packages - this approach is termed a "[tidy](https://www.tidyverse.org/)" approach in large parts of the R users community
+
+1. In a more conventional, object-oriented way - this approach will be familiar to those who have used functions such as the built-in `lm()` function for general linear models (i.e., regression and ANOVA)
+
+This example makes use of the first, data-first, tidy approach, in which a `data.frame` (or a `tibble` to those who use packages such as `dplyr` and other "tidy" packages) is both input and output by the main function in this package.
+
+Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can explore a three profile solution, with, for example, `4` profiles, and varying means across profiles, but equal variances and covariances (specified with model = `2`, which happens to be the default model if none is specified)
 
 ```{r, fig.width = 7, fig.height = 5}
 library(dplyr, warn.conflicts = FALSE)
 d <- pisaUSA15
 d <- sample_n(pisaUSA15, 100)
-compare_models_lpa(d, broad_interest, enjoyment, self_efficacy, statistic = "BIC")
+create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 ```
 
-We can explore a three profile solution, with, for example, `4` profiles, and varying means across profiles, but equal variances and covariances (specified with model = `2`):
+You can see the output is simply the same `tibble` that is input as the first function to `create_profiles_LPA`, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).
+
+A bit more information the models. While `MCLUST` has a wide variety of models available (see `mclust::mclustModelNames()` for a full list), the three that are most commonly specified when carrying out LPA.
+
+1. Varying means, equal variances, and residual covariances fixed to zero (specified with the argument `model = 1` to `create_profiles_lpa()`)
+1. Varying means, equal variances and covariances (`model = 2`; the default)
+1. Varying means, variances, and covariances (`model = 3`)
+
+We can then plot this output using the `plot_profiles_lpa()` function and the pipe (`%>%`) from the `dplyr` package:
+
+```{r}
+create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2) %>% 
+    plot_profiles_lpa()
+```
+
+Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object `m3`, and then call the `plot_profiles_lpa()` function on the output that it points to.
 
 ```{r, warning = F}
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
 
-See `?create_profiles_lpa` for a description for the models.
+### A more conventional, object-oriented approach
 
-We could specify them as follows, whereby model `1` is for a model with varying means across profiles, but equal variances across profiles, and residual covariances fixed to zero, and model `3` is for a model with varying means, variances, and covariances across profiles:
+In addition to being used as part of a "tidy" approach, there is also an option to use it as part of a more conventional, object-oriented approach. In this example, instead of outputting a `tibble`, we will output an object of class  `Mclust`.
 
 ```{r}
-m3i <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 1)
+m3_mclust <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2, to_return = "mclust")
 ```
 
-This model has some trouble being fit, so is shown but is not run:
+Any of the functions from the [MCLUST package](http://www.stat.washington.edu/mclust/) that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the `create_profiles_lpa()` function) instead of the `Mclust()` function from the `MCLUST package`. 
 
-```{r, eval = F}
-m3ii <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 3)
+In addition, a number of helper functions are available for extracting various model information.
+
+```{r}
+extract_mclust_summary(m3_mclust)
+extract_variance(m3_mclust)
+extract_covariance(m3_mclust)
 ```
 
-To test profile solutions for a specific model, you can carry out a bootstrapped likelihood-ratio test (presently not run because it can take substantial time):
+### Comparing many models using information criteria
+
+We can quickly explore a number of models - both in terms of **the specification of the model** and **the number of profiles** using the Bayesian Information Criteria (BIC) values or the Integrated Completed Likelihood (ICL).
+
+```{r}
+compare_models_lpa(d, broad_interest, enjoyment, self_efficacy, statistic = "BIC")
+compare_models_lpa(d, broad_interest, enjoyment, self_efficacy, statistic = "ICL")
+```
+
+### Carrying out a bootstrapped likelihood-ratio test to choose the number of profiles for a specific model
+
+To determine the number of profies for a specified model (i.e., models `1`-`3` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset (this code with only 200 observations and three variables takes about 15 seconds to run on my computer with 2.2 GHZ Macbook Pro with 16 GB RAM). 
 
 ```{r, eval = F}
 bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 1)
 ```
 
-For use in subsequent analyses, we can extract the posterior probabilities by setting `return_posterior_probs` to `TRUE`:
+# How to contribute and get in touch
 
-```{r}
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, return_posterior_probs = TRUE)
-m3
-```
+To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email or Twitter](https://jrosen48.github.io/about/).

@@ -4,7 +4,7 @@
 \alias{extract_covariance}
 \title{Extract mclust covariances}
 \usage{
-extract_covariance(x, profile_n)
+extract_covariance(x)
 }
 \arguments{
 \item{x}{object of class Mclust}

@@ -1,20 +1,20 @@
 #' Extract mclust variances
 #' @details Extract the variances and covariances
 #' @param x object of class Mclust
-#' @param profile_n the number of profiles in the fitted model
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @export
 
-extract_variance <- function(x, profile_n) {
+extract_variance <- function(x) {
     profile_n <- x$G
+    print(profile_n)
     x$parameters$variance$sigma[, , profile_n] %>%
         diag() %>%
         dplyr::as_tibble() %>%
         dplyr::rename("est" = .data$value) %>%
         tibble::rownames_to_column("var_name") %>%
         dplyr::mutate(param_name = "Variances") %>%
-        dplyr::mutate(class = paste0("class_", .data$profile_n),
+        dplyr::mutate(class = paste0("class_", profile_n),
                       est = round(.data$est, 3)) %>%
         dplyr::select(.data$param_name, .data$var_name, .data$class, .data$est)
 }
@@ -26,7 +26,7 @@ extract_variance <- function(x, profile_n) {
 #' @importFrom rlang .data
 #' @export
 
-extract_covariance <- function(x, profile_n) {
+extract_covariance <- function(x) {
     profile_n <- x$G
     x$parameters$variance$sigma[, , profile_n] %>%
         as.data.frame() %>%
