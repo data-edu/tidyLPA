@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Provide n interface to MCLUST to perform Latent Profile Analysis in R • tidyLPA</title>
+<title>Provide an Interface to MCLUST to Perform Latent Profile Analysis • tidyLPA</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -77,25 +77,25 @@ d &lt;-<span class="st"> </span>pisaUSA15
 d &lt;-<span class="st"> </span><span class="kw">sample_frac</span>(d, .<span class="dv">5</span>)
 m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Model with 3 profiles using the 'varying means, equal variances and covariances' model.</span>
-<span class="co">#&gt; AIC is 15942.164</span>
-<span class="co">#&gt; BIC is 16042.43</span>
-<span class="co">#&gt; ICL is 16403.878</span>
-<span class="co">#&gt; Entropy is 0.94135</span>
+<span class="co">#&gt; AIC is 16125.341</span>
+<span class="co">#&gt; BIC is 16225.519</span>
+<span class="co">#&gt; ICL is 19589.186</span>
+<span class="co">#&gt; Entropy is 0.54397</span>
 m3
-<span class="co">#&gt; # A tibble: 2,692 x 5</span>
+<span class="co">#&gt; # A tibble: 2,678 x 5</span>
 <span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
 <span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1            1.4       1.0         3.000       1        0.99970</span>
-<span class="co">#&gt;  2            4.6       4.0         1.000       2        0.94924</span>
-<span class="co">#&gt;  3            2.6       3.0         2.000       3        0.96331</span>
-<span class="co">#&gt;  4            3.0       1.2         1.250       1        0.99977</span>
-<span class="co">#&gt;  5            3.0       2.8         2.125       3        0.99499</span>
-<span class="co">#&gt;  6            2.8       2.0         2.000       3        0.73546</span>
-<span class="co">#&gt;  7            2.0       2.4         2.625       3        0.99821</span>
-<span class="co">#&gt;  8            2.6       3.0         2.500       3        0.97117</span>
-<span class="co">#&gt;  9            2.6       3.0         1.625       3        0.95610</span>
-<span class="co">#&gt; 10            2.4       2.4         2.125       3        0.99710</span>
-<span class="co">#&gt; # ... with 2,682 more rows</span>
+<span class="co">#&gt;  1            1.6       2.0         3.000       2        0.46898</span>
+<span class="co">#&gt;  2            3.4       3.8         1.000       3        0.53517</span>
+<span class="co">#&gt;  3            2.6       2.2         3.125       2        0.51038</span>
+<span class="co">#&gt;  4            3.0       2.4         2.375       2        0.50348</span>
+<span class="co">#&gt;  5            4.4       3.0         1.500       3        0.53357</span>
+<span class="co">#&gt;  6            3.0       3.0         1.000       2        0.50654</span>
+<span class="co">#&gt;  7            3.4       3.2         1.375       3        0.51145</span>
+<span class="co">#&gt;  8            2.6       1.0         1.875       1        0.98630</span>
+<span class="co">#&gt;  9            2.4       3.0         2.500       2        0.51382</span>
+<span class="co">#&gt; 10            3.0       2.6         3.000       2        0.50538</span>
+<span class="co">#&gt; # ... with 2,668 more rows</span>
 <span class="kw"><a href="reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="README-unnamed-chunk-3-1.png" width="672"></p>
 </div>
@@ -109,6 +109,8 @@ m3
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Joshua M Rosenberg <br><small class="roles"> Author, maintainer </small> </li>
+<li>Jennifer A Schmidt <br><small class="roles"> Author </small> </li>
+<li>Patrick N Beymer <br><small class="roles"> Author </small> </li>
 </ul>
 </div>
 
@@ -116,7 +118,7 @@ m3
 
 
       <footer><div class="copyright">
-  <p>Developed by Joshua M Rosenberg.</p>
+  <p>Developed by Joshua M Rosenberg, Jennifer A Schmidt, Patrick N Beymer.</p>
 </div>
 
 <div class="pkgdown">

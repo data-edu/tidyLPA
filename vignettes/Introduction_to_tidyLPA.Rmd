@@ -19,8 +19,7 @@ knitr::opts_chunk$set(
 
 # Background
 
-`tidyLPA` provides an interface to the powerful MCLUST package to easily carry out Latent Profile Analysis (LPA). Its main contribution is corresponding that are commonly specified when carrying out LPA. Its secondary contribution is to make it easier to use the output in subsequent analysis through a tidy user interface, in that
-output is in the form of a tibble (closely related to a data.frame) that can subsequently be computed on.
+`tidyLPA` provides an interface to the powerful MCLUST package to easily carry out Latent Profile Analysis (LPA). Its main contribution is corresponding that are commonly specified when carrying out LPA. Its secondary contribution is to make it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a `tibble` (closely related to a `data.frame`) that can subsequently be computed on.
 
 The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [MCLUST](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
 

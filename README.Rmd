@@ -8,9 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-",
-  warning = T, 
-  error = F
+  fig.path = "README-"
 )
 ```
 
@@ -20,6 +18,15 @@ The goal of `tidyLPA` is to provide tools to make it easier to use the `R` packa
 
 This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis. 
 tidyLPA (which, again, is an interface to the `MCLUST` package) has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)). You can find the results of that benchmarking, which showed the results to be nearly, identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
+
+## Installation
+
+You can install tidyLPA from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("jrosen48/tidymixmod")
+```
 
 # Example
 
