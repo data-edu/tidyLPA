@@ -107,7 +107,7 @@
     </tr>
     <tr>
       <th>return_posterior_probs</th>
-      <td><p>TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to FALSE</p></td>
+      <td><p>TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE</p></td>
     </tr>
     </table>
     
@@ -121,13 +121,12 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
-  <span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_lpa</span>(<span class='no'>d</span>,
-                            <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>,
-                            <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)
-})</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
+<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_lpa</span>(<span class='no'>d</span>,
+                          <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>,
+                          <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)</div><div class='output co'>#&gt; fitting ...
+#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Model with 3 profiles using the 'varying means, equal variances, and residual covariances fixed to zero' model.</span></div><div class='output co'>#&gt; <span class='message'>AIC is 1080.234</span></div><div class='output co'>#&gt; <span class='message'>BIC is 1125.619</span></div><div class='output co'>#&gt; <span class='message'>ICL is 1188.789</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.8607</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

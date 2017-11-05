@@ -50,67 +50,141 @@
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2017-10-28</h4>
+            <h4 class="date">2017-11-05</h4>
           </div>
 
     
     
 <div class="contents">
+<div id="background" class="section level1">
+<h1 class="hasAnchor">
+<a href="#background" class="anchor"></a>Background</h1>
+<p><code>tidyLPA</code> provides an interface to the powerful MCLUST package to easily carry out Latent Profile Analysis (LPA). Its main contribution is corresponding that are commonly specified when carrying out LPA. Its secondary contribution is to make it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a tibble (closely related to a data.frame) that can subsequently be computed on.</p>
+<p>The goal of <code>tidyLPA</code> is to provide tools to make it easier to use the <code>R</code> package <a href="http://www.stat.washington.edu/mclust/">MCLUST</a> for Latent Profile Analysis analyses.</p>
+<p>This is a sister-project to <a href="https://github.com/jrosen48/prcr">prcr</a>, for two-step cluster analysis. <code>tidyLPA</code> has been benchmarked to MPlus, at least for a simple dataset (the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris dataset</a>) and with three of the most common model specifications. You can find the results of that benchmarking, which showed the results to be nearly, identical, <a href="https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/">here</a>.</p>
+</div>
 <div id="example" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)</code></pre></div>
-<p>Using the built-in <code>pisaUSA15</code> dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can quickly explore a number of models - both in terms of <strong>the specification of the model</strong> and <strong>the number of profiles</strong> using the Bayesian Information Criteria (BIC) values.</p>
+<div id="a-data-first-tidy-approach" class="section level3">
+<h3 class="hasAnchor">
+<a href="#a-data-first-tidy-approach" class="anchor"></a>A data-first, tidy approach</h3>
+<p><code>tidyLPA</code> is presently designed to be used in two ways:</p>
+<ol style="list-style-type: decimal">
+<li><p>In a “data-first” (or tidy) way, akin to the interface popularized in the <code>dplyr</code> and <code>tidyr</code> (and other) packages - this approach is termed a “<a href="https://www.tidyverse.org/">tidy</a>” approach in large parts of the R users community</p></li>
+<li><p>In a more conventional, object-oriented way - this approach will be familiar to those who have used functions such as the built-in <code>lm()</code> function for general linear models (i.e., regression and ANOVA)</p></li>
+</ol>
+<p>This example makes use of the first, data-first, tidy approach, in which a <code>data.frame</code> (or a <code>tibble</code> to those who use packages such as <code>dplyr</code> and other “tidy” packages) is both input and output by the main function in this package.</p>
+<p>Using the built-in <code>pisaUSA15</code> dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can explore a three profile solution, with, for example, <code>4</code> profiles, and varying means across profiles, but equal variances and covariances (specified with model = <code>2</code>, which happens to be the default model if none is specified)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
 d &lt;-<span class="st"> </span>pisaUSA15
 d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <span class="dv">100</span>)
-<span class="kw"><a href="../reference/compare_models_lpa.html">compare_models_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">statistic =</span> <span class="st">"BIC"</span>)</code></pre></div>
-<pre><code>## Warning: Removed 1 rows containing missing values (geom_path).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
-<p>We can explore a three profile solution, with, for example, <code>4</code> profiles, and varying means across profiles, but equal variances and covariances (specified with model = <code>2</code>):</p>
+<span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)</code></pre></div>
+<pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
+<pre><code>## AIC is 562.731</code></pre>
+<pre><code>## BIC is 616.8</code></pre>
+<pre><code>## ICL is 632.31</code></pre>
+<pre><code>## Entropy is 0.93296</code></pre>
+<pre><code>## # A tibble: 97 x 5
+##    broad_interest enjoyment self_efficacy profile posterior_prob
+##             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;
+##  1            2.8       2.2      3.000000       4        0.89043
+##  2            1.8       2.8      1.857143       2        0.50701
+##  3            3.0       3.0      1.000000       4        0.99324
+##  4            3.0       2.8      1.571429       4        0.99267
+##  5            3.0       3.0      2.500000       4        0.99021
+##  6            3.0       4.0      2.125000       4        0.98817
+##  7            2.4       1.0      2.875000       1        0.94516
+##  8            2.2       3.0      1.750000       1        0.99701
+##  9            2.6       4.0      2.000000       1        0.70472
+## 10            1.4       2.8      1.625000       2        0.99997
+## # ... with 87 more rows</code></pre>
+<p>You can see the output is simply the same <code>tibble</code> that is input as the first function to <code>create_profiles_LPA</code>, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).</p>
+<p>A bit more information the models. While <code>MCLUST</code> has a wide variety of models available (see <code>mclust::mclustModelNames()</code> for a full list), the three that are most commonly specified when carrying out LPA.</p>
+<ol style="list-style-type: decimal">
+<li>Varying means, equal variances, and residual covariances fixed to zero (specified with the argument <code>model = 1</code> to <code><a href="../reference/create_profiles_lpa.html">create_profiles_lpa()</a></code>)</li>
+<li>Varying means, equal variances and covariances (<code>model = 2</code>; the default)</li>
+<li>Varying means, variances, and covariances (<code>model = 3</code>)</li>
+</ol>
+<p>We can then plot this output using the <code><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa()</a></code> function and the pipe (<code>%&gt;%</code>) from the <code>dplyr</code> package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>()</code></pre></div>
+<pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
+<pre><code>## AIC is 562.731</code></pre>
+<pre><code>## BIC is 616.8</code></pre>
+<pre><code>## ICL is 632.31</code></pre>
+<pre><code>## Entropy is 0.93296</code></pre>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
+<p>Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object <code>m3</code>, and then call the <code><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa()</a></code> function on the output that it points to.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)</code></pre></div>
 <pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
-<pre><code>## AIC is 594.788</code></pre>
-<pre><code>## BIC is 649.285</code></pre>
-<pre><code>## ICL is 742.078</code></pre>
-<pre><code>## Entropy is 0.6508</code></pre>
+<pre><code>## AIC is 562.731</code></pre>
+<pre><code>## BIC is 616.8</code></pre>
+<pre><code>## ICL is 632.31</code></pre>
+<pre><code>## Entropy is 0.93296</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
-<p>See <code><a href="../reference/create_profiles_lpa.html">?create_profiles_lpa</a></code> for a description for the models.</p>
-<p>We could specify them as follows, whereby model <code>1</code> is for a model with varying means across profiles, but equal variances across profiles, and residual covariances fixed to zero, and model <code>3</code> is for a model with varying means, variances, and covariances across profiles:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3i &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">1</span>)</code></pre></div>
-<pre><code>## Model with 3 profiles using the 'varying means, equal variances, and residual covariances fixed to zero' model.</code></pre>
-<pre><code>## AIC is 589.707</code></pre>
-<pre><code>## BIC is 626.039</code></pre>
-<pre><code>## ICL is 636.858</code></pre>
-<pre><code>## Entropy is 0.95304</code></pre>
-<p>This model has some trouble being fit, so is shown but is not run:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3ii &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">3</span>)</code></pre></div>
-<p>To test profile solutions for a specific model, you can carry out a bootstrapped likelihood-ratio test (presently not run because it can take substantial time):</p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+</div>
+<div id="a-more-conventional-object-oriented-approach" class="section level3">
+<h3 class="hasAnchor">
+<a href="#a-more-conventional-object-oriented-approach" class="anchor"></a>A more conventional, object-oriented approach</h3>
+<p>In addition to being used as part of a “tidy” approach, there is also an option to use it as part of a more conventional, object-oriented approach. In this example, instead of outputting a <code>tibble</code>, we will output an object of class <code>Mclust</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>, <span class="dt">to_return =</span> <span class="st">"mclust"</span>)</code></pre></div>
+<pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
+<pre><code>## AIC is 562.731</code></pre>
+<pre><code>## BIC is 616.8</code></pre>
+<pre><code>## ICL is 632.31</code></pre>
+<pre><code>## Entropy is 0.93296</code></pre>
+<p>Any of the functions from the <a href="http://www.stat.washington.edu/mclust/">MCLUST package</a> that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the <code><a href="../reference/create_profiles_lpa.html">create_profiles_lpa()</a></code> function) instead of the <code>Mclust()</code> function from the <code>MCLUST package</code>.</p>
+<p>In addition, a number of helper functions are available for extracting various model information.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/extract_mclust_summary.html">extract_mclust_summary</a></span>(m3_mclust)</code></pre></div>
+<pre><code>##         LL   BIC Entropy
+## 1 -260.365 616.8   0.933</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/extract_variance.html">extract_variance</a></span>(m3_mclust)</code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<pre><code>## # A tibble: 3 x 4
+##   param_name       var_name   class   est
+##        &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
+## 1  Variances broad_interest class_4 0.053
+## 2  Variances      enjoyment class_4 0.421
+## 3  Variances  self_efficacy class_4 0.302</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/extract_covariance.html">extract_covariance</a></span>(m3_mclust)</code></pre></div>
+<pre><code>## # A tibble: 9 x 3
+##      param_name   var_name         est
+##           &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;
+## 1 BROAD_IN_WITH BROAD_INTE  0.05339194
+## 2 ENJOYMEN_WITH BROAD_INTE  0.04469877
+## 3 SELF_EFF_WITH BROAD_INTE -0.02398336
+## 4 BROAD_IN_WITH  ENJOYMENT  0.04469877
+## 5 ENJOYMEN_WITH  ENJOYMENT  0.42057458
+## 6 SELF_EFF_WITH  ENJOYMENT -0.03145560
+## 7 BROAD_IN_WITH SELF_EFFIC -0.02398336
+## 8 ENJOYMEN_WITH SELF_EFFIC -0.03145560
+## 9 SELF_EFF_WITH SELF_EFFIC  0.30172368</code></pre>
+</div>
+<div id="comparing-many-models-using-information-criteria" class="section level3">
+<h3 class="hasAnchor">
+<a href="#comparing-many-models-using-information-criteria" class="anchor"></a>Comparing many models using information criteria</h3>
+<p>We can quickly explore a number of models - both in terms of <strong>the specification of the model</strong> and <strong>the number of profiles</strong> using the Bayesian Information Criteria (BIC) values or the Integrated Completed Likelihood (ICL).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_models_lpa.html">compare_models_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">statistic =</span> <span class="st">"BIC"</span>)</code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_models_lpa.html">compare_models_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">statistic =</span> <span class="st">"ICL"</span>)</code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-8-2.png" width="672"></p>
+</div>
+<div id="carrying-out-a-bootstrapped-likelihood-ratio-test-to-choose-the-number-of-profiles-for-a-specific-model" class="section level3">
+<h3 class="hasAnchor">
+<a href="#carrying-out-a-bootstrapped-likelihood-ratio-test-to-choose-the-number-of-profiles-for-a-specific-model" class="anchor"></a>Carrying out a bootstrapped likelihood-ratio test to choose the number of profiles for a specific model</h3>
+<p>To determine the number of profies for a specified model (i.e., models <code>1</code>-<code>3</code> described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset (this code with only 200 observations and three variables takes about 15 seconds to run on my computer with 2.2 GHZ Macbook Pro with 16 GB RAM).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bootstrap_lrt.html">bootstrap_lrt</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>)</code></pre></div>
-<p>For use in subsequent analyses, we can extract the posterior probabilities by setting <code>return_posterior_probs</code> to <code>TRUE</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>, <span class="dt">return_posterior_probs =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Model with 3 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
-<pre><code>## AIC is 586.77</code></pre>
-<pre><code>## BIC is 630.887</code></pre>
-<pre><code>## ICL is 641.521</code></pre>
-<pre><code>## Entropy is 0.95541</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3</code></pre></div>
-<pre><code>## # A tibble: 99 x 5
-##    broad_interest enjoyment self_efficacy profile posterior_prob
-##  *          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;
-##  1            4.0       4.0         1.000       1        0.99746
-##  2            3.2       4.0         1.500       3        0.89297
-##  3            3.6       4.0         1.000       1        0.90484
-##  4            1.0       1.0         4.000       2        1.00000
-##  5            2.6       2.2         1.625       3        0.99911
-##  6            2.8       3.0         3.000       3        0.99942
-##  7            2.0       2.0         3.000       2        0.66222
-##  8            3.0       3.0         2.875       3        0.99575
-##  9            2.4       3.0         1.875       3        0.99881
-## 10            2.4       3.2         1.000       3        0.99938
-## # ... with 89 more rows</code></pre>
+</div>
+</div>
+<div id="how-to-contribute-and-get-in-touch" class="section level1">
+<h1 class="hasAnchor">
+<a href="#how-to-contribute-and-get-in-touch" class="anchor"></a>How to contribute and get in touch</h1>
+<p>To contribute, file issues via GitHub <a href="https://github.com/jrosen48/tidyLPA/issues">here</a> or get in touch <a href="https://jrosen48.github.io/about/">via email or Twitter</a>.</p>
 </div>
 </div>
   </div>
@@ -120,7 +194,9 @@ d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <spa
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#example">Example</a></li>
+<li><a href="#background">Background</a></li>
+      <li><a href="#example">Example</a></li>
+      <li><a href="#how-to-contribute-and-get-in-touch">How to contribute and get in touch</a></li>
       </ul>
 </div>
       </div>

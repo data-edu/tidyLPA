@@ -61,7 +61,8 @@
 <div id="example" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h1>
-<p>Here is a brief example using the built-in <code>pisaUSA15</code> dataset and variables for broad interest, enjoyment, and self-efficacy. See <code><a href="reference/create_profiles_lpa.html">?create_profiles_lpa</a></code> for more details and view the <code>Introduction to tidyLPA</code> vignette for more information.</p>
+<p>Here is a brief example using the built-in <code>pisaUSA15</code> dataset and variables for broad interest, enjoyment, and self-efficacy. See <code><a href="reference/create_profiles_lpa.html">?create_profiles_lpa</a></code> for more details.</p>
+<p>Also, please view the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA vignette</a> for more information.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
 <span class="co">#&gt; </span>
@@ -74,27 +75,27 @@
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 d &lt;-<span class="st"> </span>pisaUSA15
 d &lt;-<span class="st"> </span><span class="kw">sample_frac</span>(d, .<span class="dv">5</span>)
-m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)
-<span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
-<span class="co">#&gt; AIC is 15244.941</span>
-<span class="co">#&gt; BIC is 15368.729</span>
-<span class="co">#&gt; ICL is 15533.514</span>
-<span class="co">#&gt; Entropy is 0.97248</span>
+m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
+<span class="co">#&gt; Model with 3 profiles using the 'varying means, equal variances and covariances' model.</span>
+<span class="co">#&gt; AIC is 16102.193</span>
+<span class="co">#&gt; BIC is 16202.485</span>
+<span class="co">#&gt; ICL is 18603.364</span>
+<span class="co">#&gt; Entropy is 0.65049</span>
 m3
-<span class="co">#&gt; # A tibble: 2,683 x 5</span>
+<span class="co">#&gt; # A tibble: 2,696 x 5</span>
 <span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
-<span class="co">#&gt;  *          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1            1.0       2.8         2.875       3        0.99813</span>
-<span class="co">#&gt;  2            2.2       1.8         2.000       1        0.99681</span>
-<span class="co">#&gt;  3            2.8       3.2         1.125       3        0.99754</span>
-<span class="co">#&gt;  4            3.0       3.0         2.000       3        0.99995</span>
-<span class="co">#&gt;  5            2.6       4.0         2.375       2        1.00000</span>
-<span class="co">#&gt;  6            3.2       4.0         2.000       2        1.00000</span>
-<span class="co">#&gt;  7            2.0       2.6         1.000       3        0.82037</span>
-<span class="co">#&gt;  8            3.8       4.0         1.125       2        1.00000</span>
-<span class="co">#&gt;  9            4.0       3.0         3.250       3        0.99997</span>
-<span class="co">#&gt; 10            3.8       3.0         2.000       3        0.99996</span>
-<span class="co">#&gt; # ... with 2,673 more rows</span>
+<span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt;  1            3.0       3.0         2.500       2        0.65859</span>
+<span class="co">#&gt;  2            3.0       4.0         1.875       2        0.70967</span>
+<span class="co">#&gt;  3            2.6       4.0         1.875       2        0.69602</span>
+<span class="co">#&gt;  4            3.4       4.0         1.250       2        0.72327</span>
+<span class="co">#&gt;  5            3.0       3.0         2.625       2        0.65873</span>
+<span class="co">#&gt;  6            3.0       2.8         3.625       2        0.64817</span>
+<span class="co">#&gt;  7            3.2       3.0         1.750       2        0.66401</span>
+<span class="co">#&gt;  8            1.8       2.4         2.750       2        0.55773</span>
+<span class="co">#&gt;  9            3.4       3.2         2.125       2        0.68387</span>
+<span class="co">#&gt; 10            2.0       3.0         2.375       2        0.62004</span>
+<span class="co">#&gt; # ... with 2,686 more rows</span>
 <span class="kw"><a href="reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="README-unnamed-chunk-3-1.png" width="672"></p>
 </div>
