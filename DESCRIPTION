@@ -2,7 +2,10 @@ Package: tidyLPA
 Type: Package
 Title: Provide n interface to MCLUST to perform Latent Profile Analysis in R
 Version: 0.1.1
-Authors@R: person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com")
+Authors@R: c(
+    person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com"),
+    person(c("Jennifer", "A"), "Schmidt", role = "aut", email = "jaschmid@msu.edu"),
+    person(c("Patrick", "N"), "Beymer", role = "aut", email = "beymerpa@msu.edu"))
 Maintainer: Joshua M. Rosenberg <jmichaelrosenberg@gmail.com>
 Description: An interface to MCLUST to easily carry out Latent Profile Analysis. Provides functionality in terms of how the residual covariance matrix of the clustered variables is
     structured familiar to those who use Latent Profile Analysis. Follows a tidy philosophy, in that 
