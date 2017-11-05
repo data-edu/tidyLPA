@@ -18,7 +18,7 @@ compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3),
 
 \item{statistic}{what statistic to plot; BIC or ICL are presently available as options}
 
-\item{return_table}{logical (TRUE or FALSE) for whether to return a table of the output intsead of a plot; defaults to FALSE}
+\item{return_table}{logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE}
 }
 \value{
 a ggplot2 plot of the BIC values for the explored models
