@@ -79,27 +79,27 @@
 <p>Using the built-in <code>pisaUSA15</code> dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can explore a three profile solution, with, for example, <code>4</code> profiles, and varying means across profiles, but equal variances and covariances (specified with model = <code>2</code>, which happens to be the default model if none is specified)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
 d &lt;-<span class="st"> </span>pisaUSA15
-d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <span class="dv">100</span>)
-<span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)</code></pre></div>
-<pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
-<pre><code>## AIC is 562.731</code></pre>
-<pre><code>## BIC is 616.8</code></pre>
-<pre><code>## ICL is 632.31</code></pre>
-<pre><code>## Entropy is 0.93296</code></pre>
-<pre><code>## # A tibble: 97 x 5
-##    broad_interest enjoyment self_efficacy profile posterior_prob
-##             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;
-##  1            2.8       2.2      3.000000       4        0.89043
-##  2            1.8       2.8      1.857143       2        0.50701
-##  3            3.0       3.0      1.000000       4        0.99324
-##  4            3.0       2.8      1.571429       4        0.99267
-##  5            3.0       3.0      2.500000       4        0.99021
-##  6            3.0       4.0      2.125000       4        0.98817
-##  7            2.4       1.0      2.875000       1        0.94516
-##  8            2.2       3.0      1.750000       1        0.99701
-##  9            2.6       4.0      2.000000       1        0.70472
-## 10            1.4       2.8      1.625000       2        0.99997
-## # ... with 87 more rows</code></pre>
+d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <span class="dv">500</span>)
+<span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)
+<span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
+<span class="co">#&gt; AIC is 2842.748</span>
+<span class="co">#&gt; BIC is 2929.911</span>
+<span class="co">#&gt; ICL is 3170.918</span>
+<span class="co">#&gt; Entropy is 0.78671</span>
+<span class="co">#&gt; # A tibble: 469 x 5</span>
+<span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
+<span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt;  1           3.00       3.2         2.000       1        0.52042</span>
+<span class="co">#&gt;  2           4.00       4.0         1.750       2        0.98139</span>
+<span class="co">#&gt;  3           2.00       2.2         2.625       1        0.81540</span>
+<span class="co">#&gt;  4           2.00       2.0         1.000       1        0.69438</span>
+<span class="co">#&gt;  5           1.00       1.0         1.000       3        0.88757</span>
+<span class="co">#&gt;  6           1.75       1.0         3.000       3        0.98965</span>
+<span class="co">#&gt;  7           1.00       2.2         2.000       4        0.91386</span>
+<span class="co">#&gt;  8           1.80       1.8         2.125       1        0.50814</span>
+<span class="co">#&gt;  9           3.20       3.0         2.000       1        0.53080</span>
+<span class="co">#&gt; 10           3.00       3.0         2.000       1        0.63059</span>
+<span class="co">#&gt; # ... with 459 more rows</span></code></pre></div>
 <p>You can see the output is simply the same <code>tibble</code> that is input as the first function to <code>create_profiles_LPA</code>, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).</p>
 <p>A bit more information the models. While <code>MCLUST</code> has a wide variety of models available (see <code>mclust::mclustModelNames()</code> for a full list), the three that are most commonly specified when carrying out LPA.</p>
 <ol style="list-style-type: decimal">
@@ -109,75 +109,73 @@ d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <spa
 </ol>
 <p>We can then plot this output using the <code><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa()</a></code> function and the pipe (<code>%&gt;%</code>) from the <code>dplyr</code> package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>()</code></pre></div>
-<pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
-<pre><code>## AIC is 562.731</code></pre>
-<pre><code>## BIC is 616.8</code></pre>
-<pre><code>## ICL is 632.31</code></pre>
-<pre><code>## Entropy is 0.93296</code></pre>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
-<p>Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object <code>m3</code>, and then call the <code><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa()</a></code> function on the output that it points to.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)</code></pre></div>
-<pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
-<pre><code>## AIC is 562.731</code></pre>
-<pre><code>## BIC is 616.8</code></pre>
-<pre><code>## ICL is 632.31</code></pre>
-<pre><code>## Entropy is 0.93296</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<span class="st">    </span><span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>()
+<span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
+<span class="co">#&gt; AIC is 2842.748</span>
+<span class="co">#&gt; BIC is 2929.911</span>
+<span class="co">#&gt; ICL is 3170.918</span>
+<span class="co">#&gt; Entropy is 0.78671</span></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<p>Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object <code>m3</code>, and then call the <code><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa()</a></code> function on the output that it points to.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)
+<span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
+<span class="co">#&gt; AIC is 2842.748</span>
+<span class="co">#&gt; BIC is 2929.911</span>
+<span class="co">#&gt; ICL is 3170.918</span>
+<span class="co">#&gt; Entropy is 0.78671</span>
+<span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 </div>
 <div id="a-more-conventional-object-oriented-approach" class="section level3">
 <h3 class="hasAnchor">
 <a href="#a-more-conventional-object-oriented-approach" class="anchor"></a>A more conventional, object-oriented approach</h3>
 <p>In addition to being used as part of a “tidy” approach, there is also an option to use it as part of a more conventional, object-oriented approach. In this example, instead of outputting a <code>tibble</code>, we will output an object of class <code>Mclust</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>, <span class="dt">to_return =</span> <span class="st">"mclust"</span>)</code></pre></div>
-<pre><code>## Model with 4 profiles using the 'varying means, equal variances and covariances' model.</code></pre>
-<pre><code>## AIC is 562.731</code></pre>
-<pre><code>## BIC is 616.8</code></pre>
-<pre><code>## ICL is 632.31</code></pre>
-<pre><code>## Entropy is 0.93296</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>, <span class="dt">to_return =</span> <span class="st">"mclust"</span>)
+<span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
+<span class="co">#&gt; AIC is 2842.748</span>
+<span class="co">#&gt; BIC is 2929.911</span>
+<span class="co">#&gt; ICL is 3170.918</span>
+<span class="co">#&gt; Entropy is 0.78671</span></code></pre></div>
 <p>Any of the functions from the <a href="http://www.stat.washington.edu/mclust/">MCLUST package</a> that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the <code><a href="../reference/create_profiles_lpa.html">create_profiles_lpa()</a></code> function) instead of the <code>Mclust()</code> function from the <code>MCLUST package</code>.</p>
 <p>In addition, a number of helper functions are available for extracting various model information.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/extract_mclust_summary.html">extract_mclust_summary</a></span>(m3_mclust)</code></pre></div>
-<pre><code>##         LL   BIC Entropy
-## 1 -260.365 616.8   0.933</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/extract_variance.html">extract_variance</a></span>(m3_mclust)</code></pre></div>
-<pre><code>## [1] 4</code></pre>
-<pre><code>## # A tibble: 3 x 4
-##   param_name       var_name   class   est
-##        &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;
-## 1  Variances broad_interest class_4 0.053
-## 2  Variances      enjoyment class_4 0.421
-## 3  Variances  self_efficacy class_4 0.302</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/extract_covariance.html">extract_covariance</a></span>(m3_mclust)</code></pre></div>
-<pre><code>## # A tibble: 9 x 3
-##      param_name   var_name         est
-##           &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;
-## 1 BROAD_IN_WITH BROAD_INTE  0.05339194
-## 2 ENJOYMEN_WITH BROAD_INTE  0.04469877
-## 3 SELF_EFF_WITH BROAD_INTE -0.02398336
-## 4 BROAD_IN_WITH  ENJOYMENT  0.04469877
-## 5 ENJOYMEN_WITH  ENJOYMENT  0.42057458
-## 6 SELF_EFF_WITH  ENJOYMENT -0.03145560
-## 7 BROAD_IN_WITH SELF_EFFIC -0.02398336
-## 8 ENJOYMEN_WITH SELF_EFFIC -0.03145560
-## 9 SELF_EFF_WITH SELF_EFFIC  0.30172368</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/extract_mclust_summary.html">extract_mclust_summary</a></span>(m3_mclust)
+<span class="co">#&gt;          LL      BIC Entropy</span>
+<span class="co">#&gt; 1 -1400.374 2929.911   0.787</span>
+<span class="kw"><a href="../reference/extract_variance.html">extract_variance</a></span>(m3_mclust)
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; # A tibble: 3 x 4</span>
+<span class="co">#&gt;   param_name       var_name   class   est</span>
+<span class="co">#&gt;        &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  Variances broad_interest class_4 0.239</span>
+<span class="co">#&gt; 2  Variances      enjoyment class_4 0.255</span>
+<span class="co">#&gt; 3  Variances  self_efficacy class_4 0.393</span>
+<span class="kw"><a href="../reference/extract_covariance.html">extract_covariance</a></span>(m3_mclust)
+<span class="co">#&gt; # A tibble: 9 x 3</span>
+<span class="co">#&gt;      param_name   var_name          est</span>
+<span class="co">#&gt;           &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 BROAD_IN_WITH BROAD_INTE  0.239388578</span>
+<span class="co">#&gt; 2 ENJOYMEN_WITH BROAD_INTE  0.026982062</span>
+<span class="co">#&gt; 3 SELF_EFF_WITH BROAD_INTE -0.045198350</span>
+<span class="co">#&gt; 4 BROAD_IN_WITH  ENJOYMENT  0.026982062</span>
+<span class="co">#&gt; 5 ENJOYMEN_WITH  ENJOYMENT  0.255145307</span>
+<span class="co">#&gt; 6 SELF_EFF_WITH  ENJOYMENT -0.008185633</span>
+<span class="co">#&gt; 7 BROAD_IN_WITH SELF_EFFIC -0.045198350</span>
+<span class="co">#&gt; 8 ENJOYMEN_WITH SELF_EFFIC -0.008185633</span>
+<span class="co">#&gt; 9 SELF_EFF_WITH SELF_EFFIC  0.393158716</span></code></pre></div>
 </div>
 <div id="comparing-many-models-using-information-criteria" class="section level3">
 <h3 class="hasAnchor">
 <a href="#comparing-many-models-using-information-criteria" class="anchor"></a>Comparing many models using information criteria</h3>
-<p>We can quickly explore a number of models - both in terms of <strong>the specification of the model</strong> and <strong>the number of profiles</strong> using the Bayesian Information Criteria (BIC) values or the Integrated Completed Likelihood (ICL).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_models_lpa.html">compare_models_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">statistic =</span> <span class="st">"BIC"</span>)</code></pre></div>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_models_lpa.html">compare_models_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">statistic =</span> <span class="st">"ICL"</span>)</code></pre></div>
-<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-8-2.png" width="672"></p>
+<p>We can quickly explore a number of models - both in terms of <strong>the specification of the model</strong> and <strong>the number of profiles</strong> using the Bayesian Information Criteria (BIC) values or the Integrated Completed Likelihood (ICL). For illustration, the built-in (to R) iris dataset is used a number of the models using the PISA data do not reach convergence.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_models_lpa.html">compare_models_lpa</a></span>(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, <span class="dt">statistic =</span> <span class="st">"BIC"</span>)</code></pre></div>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_models_lpa.html">compare_models_lpa</a></span>(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, <span class="dt">statistic =</span> <span class="st">"ICL"</span>)</code></pre></div>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-9-2.png" width="672"></p>
 </div>
 <div id="carrying-out-a-bootstrapped-likelihood-ratio-test-to-choose-the-number-of-profiles-for-a-specific-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#carrying-out-a-bootstrapped-likelihood-ratio-test-to-choose-the-number-of-profiles-for-a-specific-model" class="anchor"></a>Carrying out a bootstrapped likelihood-ratio test to choose the number of profiles for a specific model</h3>
-<p>To determine the number of profies for a specified model (i.e., models <code>1</code>-<code>3</code> described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset (this code with only 200 observations and three variables takes about 15 seconds to run on my computer with 2.2 GHZ Macbook Pro with 16 GB RAM).</p>
+<p>To determine the number of profies for a specified model (i.e., models <code>1</code>-<code>3</code> described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset (this code with only 500 observations and three variables takes about 15 seconds to run on my computer with 2.2 GHZ Macbook Pro with 16 GB RAM).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bootstrap_lrt.html">bootstrap_lrt</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>)</code></pre></div>
 </div>
 </div>

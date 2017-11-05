@@ -7,7 +7,6 @@
 
 extract_variance <- function(x) {
     profile_n <- x$G
-    print(profile_n)
     x$parameters$variance$sigma[, , profile_n] %>%
         diag() %>%
         dplyr::as_tibble() %>%

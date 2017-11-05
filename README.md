@@ -32,25 +32,25 @@ d <- pisaUSA15
 d <- sample_frac(d, .5)
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 #> Model with 3 profiles using the 'varying means, equal variances and covariances' model.
-#> AIC is 16011.594
-#> BIC is 16111.835
-#> ICL is 16527.187
-#> Entropy is 0.93277
+#> AIC is 16088.813
+#> BIC is 16189.041
+#> ICL is 16679.441
+#> Entropy is 0.92123
 m3
-#> # A tibble: 2,688 x 5
+#> # A tibble: 2,686 x 5
 #>    broad_interest enjoyment self_efficacy profile posterior_prob
 #>             <dbl>     <dbl>         <dbl>   <dbl>          <dbl>
-#>  1            2.6      2.80         2.000       1        0.98962
-#>  2            2.6      2.20         2.750       1        0.96593
-#>  3            2.8      2.75         2.000       1        0.99444
-#>  4            2.6      2.40         2.625       1        0.99542
-#>  5            1.4      2.60         2.000       1        0.98905
-#>  6            2.0      3.00         3.000       1        0.92196
-#>  7            3.6      3.80         1.000       3        0.89234
-#>  8            2.4      2.60         2.500       1        0.99712
-#>  9            2.6      2.80         2.000       1        0.98962
-#> 10            2.0      2.40         2.875       1        0.99787
-#> # ... with 2,678 more rows
+#>  1            2.5       3.0         3.000       1        0.95301
+#>  2            3.0       3.4         1.500       1        0.57986
+#>  3            2.4       2.0         2.000       1        0.70895
+#>  4            2.6       2.0         2.875       1        0.79303
+#>  5            3.4       3.0         1.000       1        0.97026
+#>  6            2.2       2.2         2.375       1        0.97519
+#>  7            2.2       2.8         2.750       1        0.98191
+#>  8            2.6       2.2         2.500       1        0.95959
+#>  9            4.0       3.6         2.500       1        0.59770
+#> 10            1.6       1.2         2.500       3        0.99766
+#> # ... with 2,676 more rows
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
 

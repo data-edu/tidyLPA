@@ -77,25 +77,25 @@ d &lt;-<span class="st"> </span>pisaUSA15
 d &lt;-<span class="st"> </span><span class="kw">sample_frac</span>(d, .<span class="dv">5</span>)
 m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Model with 3 profiles using the 'varying means, equal variances and covariances' model.</span>
-<span class="co">#&gt; AIC is 16102.193</span>
-<span class="co">#&gt; BIC is 16202.485</span>
-<span class="co">#&gt; ICL is 18603.364</span>
-<span class="co">#&gt; Entropy is 0.65049</span>
+<span class="co">#&gt; AIC is 15942.164</span>
+<span class="co">#&gt; BIC is 16042.43</span>
+<span class="co">#&gt; ICL is 16403.878</span>
+<span class="co">#&gt; Entropy is 0.94135</span>
 m3
-<span class="co">#&gt; # A tibble: 2,696 x 5</span>
+<span class="co">#&gt; # A tibble: 2,692 x 5</span>
 <span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
 <span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1            3.0       3.0         2.500       2        0.65859</span>
-<span class="co">#&gt;  2            3.0       4.0         1.875       2        0.70967</span>
-<span class="co">#&gt;  3            2.6       4.0         1.875       2        0.69602</span>
-<span class="co">#&gt;  4            3.4       4.0         1.250       2        0.72327</span>
-<span class="co">#&gt;  5            3.0       3.0         2.625       2        0.65873</span>
-<span class="co">#&gt;  6            3.0       2.8         3.625       2        0.64817</span>
-<span class="co">#&gt;  7            3.2       3.0         1.750       2        0.66401</span>
-<span class="co">#&gt;  8            1.8       2.4         2.750       2        0.55773</span>
-<span class="co">#&gt;  9            3.4       3.2         2.125       2        0.68387</span>
-<span class="co">#&gt; 10            2.0       3.0         2.375       2        0.62004</span>
-<span class="co">#&gt; # ... with 2,686 more rows</span>
+<span class="co">#&gt;  1            1.4       1.0         3.000       1        0.99970</span>
+<span class="co">#&gt;  2            4.6       4.0         1.000       2        0.94924</span>
+<span class="co">#&gt;  3            2.6       3.0         2.000       3        0.96331</span>
+<span class="co">#&gt;  4            3.0       1.2         1.250       1        0.99977</span>
+<span class="co">#&gt;  5            3.0       2.8         2.125       3        0.99499</span>
+<span class="co">#&gt;  6            2.8       2.0         2.000       3        0.73546</span>
+<span class="co">#&gt;  7            2.0       2.4         2.625       3        0.99821</span>
+<span class="co">#&gt;  8            2.6       3.0         2.500       3        0.97117</span>
+<span class="co">#&gt;  9            2.6       3.0         1.625       3        0.95610</span>
+<span class="co">#&gt; 10            2.4       2.4         2.125       3        0.99710</span>
+<span class="co">#&gt; # ... with 2,682 more rows</span>
 <span class="kw"><a href="reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="README-unnamed-chunk-3-1.png" width="672"></p>
 </div>
