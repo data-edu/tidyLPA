@@ -8,6 +8,7 @@
 #' d <- dplyr::sample_n(d, 200)
 #' bootstrap_lrt(d,
 #'               broad_interest, enjoyment, self_efficacy)
+#' }
 #' @export
 
 bootstrap_lrt <- function(df,
