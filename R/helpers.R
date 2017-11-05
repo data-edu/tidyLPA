@@ -2,7 +2,7 @@
 
 # functions.R
 
-select_create_profiles <- function(df, ...){
+select_ancillary_functions <- function(df, ...){
     if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
     df <- tibble::as_tibble(df)
     df_ss <- dplyr::select(df, ...)
@@ -17,7 +17,7 @@ select_create_profiles <- function(df, ...){
 }
 
 # addresses concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation
-if (getRversion() >= "2.15.1") utils::globalVariables(c("matrix", "structure", "EEE", "EEI", "VVV", "est", "key", "model_names", "Covariance matrix structure", "n_profiles", "param_name", "posterior_prob", "profile", "val", "value", "var_name"))
+# if (getRversion() >= "2.15.1") utils::globalVariables(c("matrix", "structure", "EEE", "EEI", "VVV", "est", "key", "model_names", "Covariance matrix structure", "n_profiles", "param_name", "posterior_prob", "profile", "val", "value", "var_name"))
 
 #' student questionnaire data with four variables from the 2015 PISA for students in the United States
 #'

@@ -14,7 +14,7 @@
 
 compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3), statistic = "BIC", return_table = FALSE) {
 
-    d <- select_create_profiles(df, ...)
+    d <- select_ancillary_functions(df, ...)
 
     model <- dplyr::case_when(
         model == 1 ~ "EEI",
@@ -26,7 +26,7 @@ compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 
     if (statistic == "BIC") {
         x <- mclust::mclustBIC(d, G = n_profiles_range, modelNames = model)
     } else if (statistic == "ICL") {
-        x <- mclust::mclustICL(d, G = n_profiles_range, modelNames = model_names)
+        x <- mclust::mclustICL(d, G = n_profiles_range, modelNames = model)
     } else {
         stop("This statistic cannot presently be computed")
     }
@@ -34,14 +34,14 @@ compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 
     y <- x %>%
         as.data.frame.matrix() %>%
         tibble::rownames_to_column("n_profiles") %>%
-        dplyr::rename(`Constrained variance, fixed covariance` = EEI,
-                      `Constrained variance, constrained covariance` = EEE,
-                      `Freed variance, freed covariance` = VVV)
+        dplyr::rename(`Constrained variance, fixed covariance` = "EEI",
+                      `Constrained variance, constrained covariance` = "EEE",
+                      `Freed variance, freed covariance` = "VVV")
 
     to_plot <- y %>%
-        tidyr::gather(`Covariance matrix structure`, val, -n_profiles) %>%
-        dplyr::mutate(`Covariance matrix structure` = as.factor(`Covariance matrix structure`),
-                      val = abs(val)) # this is to make the BIC values positive (to align with more common formula / interpretation of BIC)
+        tidyr::gather("Covariance matrix structure", "val", -.data$n_profiles) %>%
+        dplyr::mutate("Covariance matrix structure" = as.factor(.data$`Covariance matrix structure`),
+                      val = abs(.data$val)) # this is to make the BIC values positive (to align with more common formula / interpretation of BIC)
 
     to_plot$`Covariance matrix structure` <- forcats::fct_relevel(to_plot$`Covariance matrix structure`,
                                                                   "Constrained variance, fixed covariance",
@@ -53,7 +53,10 @@ compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 
         return(to_plot)
     }
 
-    ggplot2::ggplot(to_plot, ggplot2::aes(x = n_profiles, y = val, color = `Covariance matrix structure`, group = `Covariance matrix structure`)) +
+    ggplot2::ggplot(to_plot, ggplot2::aes_string(x = "n_profiles",
+                                                 y = "val",
+                                                 color = "`Covariance matrix structure`",
+                                                 group = "`Covariance matrix structure`")) +
         ggplot2::geom_line() +
         ggplot2::geom_point() +
         ggplot2::ylab(paste0(statistic, " (smaller value is better)")) +

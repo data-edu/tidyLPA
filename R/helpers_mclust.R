@@ -4,9 +4,9 @@
 #' @export
 
 calculate_centroids_mclust <- function(x) {
-    o <- tibble::rownames_to_column(as.data.frame(x$parameters$mean))
-    names(o) <- c("Variable", paste0("Profile", 1:x$G))
-    o
+    x <- tibble::rownames_to_column(as.data.frame(x$parameters$mean))
+    names(x) <- c("Variable", paste0("Profile", 1:x$G))
+    x
 }
 
 #' Extract mclust output from an mclust model object
@@ -40,18 +40,19 @@ extract_mclust_classification_certainty <- function(x) {
 #' @details Extract the variances and covariances
 #' @inheritParams calculate_centroids_mclust
 #' @param profile_n the number of profiles
+#' @importFrom dplyr %>%
 #' @export
 
 extract_variance <- function(x, profile_n) {
     x$parameters$variance$sigma[, , profile_n] %>%
         diag() %>%
         dplyr::as_tibble() %>%
-        dplyr::rename(est = value) %>%
+        dplyr::rename("est" = .data$value) %>%
         tibble::rownames_to_column("var_name") %>%
         dplyr::mutate(param_name = "Variances") %>%
-        dplyr::mutate(class = paste0("class_", profile_n),
-                      est = round(est, 3)) %>%
-        dplyr::select(param_name, var_name, class, est)
+        dplyr::mutate(class = paste0("class_", .data$profile_n),
+                      est = round(.data$est, 3)) %>%
+        dplyr::select(.data$param_name, .data$var_name, .data$class, .data$est)
 }
 
 #' Extract mclust covariance
@@ -66,14 +67,14 @@ extract_covariance <- function(x, profile_n) {
         as.data.frame() %>%
         tibble::rownames_to_column("param_name") %>%
         as.tibble() %>%
-        tidyr::gather(key, val, -param_name) %>%
-        rename(var_name = key, est = val) %>%
-        mutate(param_name = toupper(stringr::str_sub(param_name, start = 1L, end = 8L)),
-               param_name = paste0(param_name, ".WITH"),
-               param_name = stringr::str_replace(param_name, "\\.", "_"),
-               var_name = toupper(var_name),
-               var_name = stringr::str_replace(var_name, "\\.", "_"),
-               var_name = stringr::str_sub(var_name, start = 1L, end = 10L))
+        tidyr::gather("key", "val", -.data$param_name) %>%
+        rename(var_name = .data$key, est = .data$val) %>%
+        mutate(param_name = toupper(stringr::str_sub(.data$param_name, start = 1L, end = 8L)),
+               param_name = paste0(.data$param_name, ".WITH"),
+               param_name = stringr::str_replace(.data$param_name, "\\.", "_"),
+               var_name = toupper(.data$var_name),
+               var_name = stringr::str_replace(.data$var_name, "\\.", "_"),
+               var_name = stringr::str_sub(.data$var_name, start = 1L, end = 10L))
 }
 
 #' Extract mclust summary statistics

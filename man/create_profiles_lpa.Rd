@@ -18,7 +18,7 @@ create_profiles_lpa(df, ..., n_profiles, model = 1, to_return = "tibble",
 
 \item{to_return}{character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
 
-\item{return_posterior_probs}{TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to FALSE}
+\item{return_posterior_probs}{TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models
@@ -30,11 +30,9 @@ Create profiles for a specific mclust model
 Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
 }
 \examples{
-\dontrun{
 d <- pisaUSA15
 d <- dplyr::sample_n(d, 200)
 m3 <- create_profiles_lpa(d,
                           broad_interest, enjoyment, self_efficacy,
                           n_profiles = 3, to_return="tibble")
-}
 }

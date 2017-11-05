@@ -21,9 +21,3 @@ Bootstrap the likelihood-ratio test statistic for mixture components
 \details{
 Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.
 }
-\examples{
-d <- pisaUSA15
-d <- dplyr::sample_n(d, 200)
-bootstrap_lrt(d,
-              broad_interest, enjoyment, self_efficacy)
-}

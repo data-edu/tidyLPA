@@ -2,6 +2,7 @@
 #' @details Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.
 #' @inheritParams create_profiles_lpa
 #' @examples
+#' \dontrun{
 #' d <- pisaUSA15
 #' d <- dplyr::sample_n(d, 200)
 #' bootstrap_lrt(d,
@@ -13,7 +14,7 @@ bootstrap_lrt <- function(df,
                           n_profiles,
                           model = 1) {
 
-    d <- select_create_profiles(df, ...)
+    d <- select_ancillary_functions(df, ...)
 
     if (model == 1) {
         model <- "EEI"
