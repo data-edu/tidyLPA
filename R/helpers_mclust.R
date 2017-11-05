@@ -1,50 +1,13 @@
-#' Calculate centroids from an mclust model object
-#' @details Extract the centroid values of an mclust model object
-#' @param x an object of class `Mclust`
-#' @export
-
-calculate_centroids_mclust <- function(x) {
-    x <- tibble::rownames_to_column(as.data.frame(x$parameters$mean))
-    names(x) <- c("Variable", paste0("Profile", 1:x$G))
-    x
-}
-
-#' Extract mclust output from an mclust model object
-#' @details Extract the output of the mclust output from the function create_profiles() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed
-#' @inheritParams calculate_centroids_mclust
-#' @export
-
-extract_mclust_output <- function(x) {
-    attributes(x)$mclust_output
-}
-
-#' Extract mclust classifications from an mclust model object
-#' @details Extract the classifications, in the form of posterior probabilties, for specific observations from the mclust output from the function create_profiles() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed
-#' @inheritParams calculate_centroids_mclust
-#' @export
-
-extract_mclust_classifications <- function(x) {
-    attributes(x)$mclust_output$classification
-}
-
-#' Extract mclust classifications from the function create_profiles()
-#' @details Extract the classifications, in the form of posterior probabilties, for specific observations from the mclust output from the function create_profiles() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed
-#' @inheritParams calculate_centroids_mclust
-#' @export
-
-extract_mclust_classification_certainty <- function(x) {
-    1 - attributes(x)$mclust_output$uncertainty
-}
-
 #' Extract mclust variances
 #' @details Extract the variances and covariances
-#' @inheritParams calculate_centroids_mclust
-#' @param profile_n the number of profiles
+#' @param x object of class Mclust
+#' @param profile_n the number of profiles in the fitted model
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @export
 
 extract_variance <- function(x, profile_n) {
+    profile_n <- x$G
     x$parameters$variance$sigma[, , profile_n] %>%
         diag() %>%
         dplyr::as_tibble() %>%
@@ -56,15 +19,15 @@ extract_variance <- function(x, profile_n) {
         dplyr::select(.data$param_name, .data$var_name, .data$class, .data$est)
 }
 
-#' Extract mclust covariance
+#' Extract mclust covariances
 #' @details Extract the covariances
-#' @inheritParams calculate_centroids_mclust
-#' @param profile_n the number of profiles
+#' @param x object of class Mclust
 #' @import dplyr
 #' @importFrom rlang .data
 #' @export
 
 extract_covariance <- function(x, profile_n) {
+    profile_n <- x$G
     x$parameters$variance$sigma[, , profile_n] %>%
         as.data.frame() %>%
         tibble::rownames_to_column("param_name") %>%
@@ -81,7 +44,7 @@ extract_covariance <- function(x, profile_n) {
 
 #' Extract mclust summary statistics
 #' @details Extract the log likelihood, BIC, and entropy statistics
-#' @inheritParams calculate_centroids_mclust
+#' @param x object of class Mclust
 #' @export
 
 extract_mclust_summary <- function(x) {

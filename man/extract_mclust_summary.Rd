@@ -7,7 +7,7 @@
 extract_mclust_summary(x)
 }
 \arguments{
-\item{x}{an object of class `Mclust`}
+\item{x}{object of class Mclust}
 }
 \description{
 Extract mclust summary statistics

@@ -7,9 +7,9 @@
 extract_variance(x, profile_n)
 }
 \arguments{
-\item{x}{an object of class `Mclust`}
+\item{x}{object of class Mclust}
 
-\item{profile_n}{the number of profiles}
+\item{profile_n}{the number of profiles in the fitted model}
 }
 \description{
 Extract mclust variances

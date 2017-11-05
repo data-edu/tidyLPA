@@ -2,17 +2,15 @@
 % Please edit documentation in R/helpers_mclust.R
 \name{extract_covariance}
 \alias{extract_covariance}
-\title{Extract mclust covariance}
+\title{Extract mclust covariances}
 \usage{
 extract_covariance(x, profile_n)
 }
 \arguments{
-\item{x}{an object of class `Mclust`}
-
-\item{profile_n}{the number of profiles}
+\item{x}{object of class Mclust}
 }
 \description{
-Extract mclust covariance
+Extract mclust covariances
 }
 \details{
 Extract the covariances
