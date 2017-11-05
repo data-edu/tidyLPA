@@ -59,7 +59,7 @@
 <div id="background" class="section level1">
 <h1 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h1>
-<p><code>tidyLPA</code> provides an interface to the powerful MCLUST package to easily carry out Latent Profile Analysis (LPA). Its main contribution is corresponding that are commonly specified when carrying out LPA. Its secondary contribution is to make it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a tibble (closely related to a data.frame) that can subsequently be computed on.</p>
+<p><code>tidyLPA</code> provides an interface to the powerful MCLUST package to easily carry out Latent Profile Analysis (LPA). Its main contribution is corresponding that are commonly specified when carrying out LPA. Its secondary contribution is to make it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a <code>tibble</code> (closely related to a <code>data.frame</code>) that can subsequently be computed on.</p>
 <p>The goal of <code>tidyLPA</code> is to provide tools to make it easier to use the <code>R</code> package <a href="http://www.stat.washington.edu/mclust/">MCLUST</a> for Latent Profile Analysis analyses.</p>
 <p>This is a sister-project to <a href="https://github.com/jrosen48/prcr">prcr</a>, for two-step cluster analysis. <code>tidyLPA</code> has been benchmarked to MPlus, at least for a simple dataset (the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris dataset</a>) and with three of the most common model specifications. You can find the results of that benchmarking, which showed the results to be nearly, identical, <a href="https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/">here</a>.</p>
 </div>
@@ -82,24 +82,24 @@ d &lt;-<span class="st"> </span>pisaUSA15
 d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <span class="dv">500</span>)
 <span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
-<span class="co">#&gt; AIC is 2675.152</span>
-<span class="co">#&gt; BIC is 2762.538</span>
-<span class="co">#&gt; ICL is 2792.197</span>
-<span class="co">#&gt; Entropy is 0.97233</span>
-<span class="co">#&gt; # A tibble: 474 x 5</span>
+<span class="co">#&gt; AIC is 2834.176</span>
+<span class="co">#&gt; BIC is 2921.383</span>
+<span class="co">#&gt; ICL is 3334.484</span>
+<span class="co">#&gt; Entropy is 0.65612</span>
+<span class="co">#&gt; # A tibble: 470 x 5</span>
 <span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
 <span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1            2.2       2.0         2.000       4        0.99994</span>
-<span class="co">#&gt;  2            1.2       2.2         3.000       4        0.99771</span>
-<span class="co">#&gt;  3            2.0       2.8         3.375       3        0.99921</span>
-<span class="co">#&gt;  4            3.6       3.8         1.500       2        0.99971</span>
-<span class="co">#&gt;  5            3.0       2.8         3.125       3        0.99957</span>
-<span class="co">#&gt;  6            1.0       2.2         2.000       4        0.99925</span>
-<span class="co">#&gt;  7            1.0       1.8         2.000       4        0.99758</span>
-<span class="co">#&gt;  8            2.2       1.8         3.000       4        0.99865</span>
-<span class="co">#&gt;  9            3.0       3.0         2.625       3        0.99994</span>
-<span class="co">#&gt; 10            3.2       3.6         1.625       2        0.97267</span>
-<span class="co">#&gt; # ... with 464 more rows</span></code></pre></div>
+<span class="co">#&gt;  1            3.0       2.6         2.000       1        0.61932</span>
+<span class="co">#&gt;  2            3.2       2.4         2.375       1        0.57883</span>
+<span class="co">#&gt;  3            4.0       3.6         2.625       2        0.53251</span>
+<span class="co">#&gt;  4            3.6       3.8         2.000       2        0.73080</span>
+<span class="co">#&gt;  5            2.0       3.0         3.500       1        0.69102</span>
+<span class="co">#&gt;  6            2.0       2.0         2.250       3        0.63852</span>
+<span class="co">#&gt;  7            2.2       3.0         2.000       1        0.69583</span>
+<span class="co">#&gt;  8            3.2       3.2         2.375       2        0.54036</span>
+<span class="co">#&gt;  9            2.8       3.0         1.000       1        0.64184</span>
+<span class="co">#&gt; 10            2.6       2.6         2.625       1        0.69420</span>
+<span class="co">#&gt; # ... with 460 more rows</span></code></pre></div>
 <p>You can see the output is simply the same <code>tibble</code> that is input as the first function to <code>create_profiles_LPA</code>, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).</p>
 <p>A bit more information the models. While <code>MCLUST</code> has a wide variety of models available (see <code>mclust::mclustModelNames()</code> for a full list), the three that are most commonly specified when carrying out LPA.</p>
 <ol style="list-style-type: decimal">
@@ -111,18 +111,18 @@ d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <spa
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>()
 <span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
-<span class="co">#&gt; AIC is 2675.152</span>
-<span class="co">#&gt; BIC is 2762.538</span>
-<span class="co">#&gt; ICL is 2792.197</span>
-<span class="co">#&gt; Entropy is 0.97233</span></code></pre></div>
+<span class="co">#&gt; AIC is 2834.176</span>
+<span class="co">#&gt; BIC is 2921.383</span>
+<span class="co">#&gt; ICL is 3334.484</span>
+<span class="co">#&gt; Entropy is 0.65612</span></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object <code>m3</code>, and then call the <code><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa()</a></code> function on the output that it points to.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
-<span class="co">#&gt; AIC is 2675.152</span>
-<span class="co">#&gt; BIC is 2762.538</span>
-<span class="co">#&gt; ICL is 2792.197</span>
-<span class="co">#&gt; Entropy is 0.97233</span>
+<span class="co">#&gt; AIC is 2834.176</span>
+<span class="co">#&gt; BIC is 2921.383</span>
+<span class="co">#&gt; ICL is 3334.484</span>
+<span class="co">#&gt; Entropy is 0.65612</span>
 <span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 </div>
@@ -132,36 +132,35 @@ d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <spa
 <p>In addition to being used as part of a “tidy” approach, there is also an option to use it as part of a more conventional, object-oriented approach. In this example, instead of outputting a <code>tibble</code>, we will output an object of class <code>Mclust</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>, <span class="dt">to_return =</span> <span class="st">"mclust"</span>)
 <span class="co">#&gt; Model with 4 profiles using the 'varying means, equal variances and covariances' model.</span>
-<span class="co">#&gt; AIC is 2675.152</span>
-<span class="co">#&gt; BIC is 2762.538</span>
-<span class="co">#&gt; ICL is 2792.197</span>
-<span class="co">#&gt; Entropy is 0.97233</span></code></pre></div>
+<span class="co">#&gt; AIC is 2834.176</span>
+<span class="co">#&gt; BIC is 2921.383</span>
+<span class="co">#&gt; ICL is 3334.484</span>
+<span class="co">#&gt; Entropy is 0.65612</span></code></pre></div>
 <p>Any of the functions from the <a href="http://www.stat.washington.edu/mclust/">MCLUST package</a> that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the <code><a href="../reference/create_profiles_lpa.html">create_profiles_lpa()</a></code> function) instead of the <code>Mclust()</code> function from the <code>MCLUST package</code>.</p>
 <p>In addition, a number of helper functions are available for extracting various model information.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/extract_mclust_summary.html">extract_mclust_summary</a></span>(m3_mclust)
 <span class="co">#&gt;          LL      BIC Entropy</span>
-<span class="co">#&gt; 1 -1316.576 2762.538   0.972</span>
+<span class="co">#&gt; 1 -1396.088 2921.383   0.656</span>
 <span class="kw"><a href="../reference/extract_variance.html">extract_variance</a></span>(m3_mclust)
-<span class="co">#&gt; [1] 4</span>
 <span class="co">#&gt; # A tibble: 3 x 4</span>
 <span class="co">#&gt;   param_name       var_name   class   est</span>
 <span class="co">#&gt;        &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  Variances broad_interest class_4 0.393</span>
-<span class="co">#&gt; 2  Variances      enjoyment class_4 0.040</span>
-<span class="co">#&gt; 3  Variances  self_efficacy class_4 0.405</span>
+<span class="co">#&gt; 1  Variances broad_interest class_4 0.264</span>
+<span class="co">#&gt; 2  Variances      enjoyment class_4 0.358</span>
+<span class="co">#&gt; 3  Variances  self_efficacy class_4 0.398</span>
 <span class="kw"><a href="../reference/extract_covariance.html">extract_covariance</a></span>(m3_mclust)
 <span class="co">#&gt; # A tibble: 9 x 3</span>
 <span class="co">#&gt;      param_name   var_name         est</span>
 <span class="co">#&gt;           &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 BROAD_IN_WITH BROAD_INTE  0.39303498</span>
-<span class="co">#&gt; 2 ENJOYMEN_WITH BROAD_INTE  0.01892561</span>
-<span class="co">#&gt; 3 SELF_EFF_WITH BROAD_INTE -0.03504551</span>
-<span class="co">#&gt; 4 BROAD_IN_WITH  ENJOYMENT  0.01892561</span>
-<span class="co">#&gt; 5 ENJOYMEN_WITH  ENJOYMENT  0.04028440</span>
-<span class="co">#&gt; 6 SELF_EFF_WITH  ENJOYMENT -0.02394997</span>
-<span class="co">#&gt; 7 BROAD_IN_WITH SELF_EFFIC -0.03504551</span>
-<span class="co">#&gt; 8 ENJOYMEN_WITH SELF_EFFIC -0.02394997</span>
-<span class="co">#&gt; 9 SELF_EFF_WITH SELF_EFFIC  0.40517703</span></code></pre></div>
+<span class="co">#&gt; 1 BROAD_IN_WITH BROAD_INTE  0.26396277</span>
+<span class="co">#&gt; 2 ENJOYMEN_WITH BROAD_INTE  0.05383697</span>
+<span class="co">#&gt; 3 SELF_EFF_WITH BROAD_INTE -0.06443916</span>
+<span class="co">#&gt; 4 BROAD_IN_WITH  ENJOYMENT  0.05383697</span>
+<span class="co">#&gt; 5 ENJOYMEN_WITH  ENJOYMENT  0.35772582</span>
+<span class="co">#&gt; 6 SELF_EFF_WITH  ENJOYMENT -0.11644558</span>
+<span class="co">#&gt; 7 BROAD_IN_WITH SELF_EFFIC -0.06443916</span>
+<span class="co">#&gt; 8 ENJOYMEN_WITH SELF_EFFIC -0.11644558</span>
+<span class="co">#&gt; 9 SELF_EFF_WITH SELF_EFFIC  0.39775670</span></code></pre></div>
 </div>
 <div id="comparing-many-models-using-information-criteria" class="section level3">
 <h3 class="hasAnchor">
