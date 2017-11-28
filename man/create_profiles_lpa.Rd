@@ -5,7 +5,7 @@
 \title{Create profiles for a specific mclust model}
 \usage{
 create_profiles_lpa(df, ..., n_profiles, model = 1, to_return = "tibble",
-  return_posterior_probs = TRUE)
+  return_posterior_probs = TRUE, return_orig_df = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -14,11 +14,13 @@ create_profiles_lpa(df, ..., n_profiles, model = 1, to_return = "tibble",
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to zero); 2 (varying means, equal variances and covariances; and 3 (varying means, variances, and covariances), in order from most to least constrained; run ?mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)}
+\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
 \item{to_return}{character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
 
 \item{return_posterior_probs}{TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE}
+
+\item{return_orig_df}{TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models

@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [MCLUST](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
 
 This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis. 
-`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the most common model specifications. You can find the results of that benchmarking, which showed the results to be nearly, identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
+`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the most common model specifications. You can find the results of that benchmarking, which showed the results to be nearly identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
 
 # Example
 
@@ -56,13 +56,11 @@ d <- sample_n(pisaUSA15, 500)
 create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 ```
 
+**Note that if you get the warning "Some profiles are associated with no assignments. Interpret this solution with caution and consider other models", then this is a sign that a simpler model (with fewer profiles) likely fits better.
+
 You can see the output is simply the same `tibble` that is input as the first function to `create_profiles_LPA`, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).
 
-A bit more information the models. While `MCLUST` has a wide variety of models available (see `mclust::mclustModelNames()` for a full list), the three that are most commonly specified when carrying out LPA.
-
-1. Varying means, equal variances, and residual covariances fixed to zero (specified with the argument `model = 1` to `create_profiles_lpa()`)
-1. Varying means, equal variances and covariances (`model = 2`; the default)
-1. Varying means, variances, and covariances (`model = 3`)
+A bit more information the models described later in this vignette.
 
 We can then plot this output using the `plot_profiles_lpa()` function and the pipe (`%>%`) from the `dplyr` package:
 
@@ -76,6 +74,13 @@ Below is identical to the two lines of code above, except that instead of using 
 ```{r, warning = F}
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 plot_profiles_lpa(m3, to_center = TRUE)
+```
+
+We can also return the entire data frame. This returns a `tibble` with all of the variables in the original data, in this case `d`, so that subsequent analyses using variables that are not used to create the profile can be easily carried out.
+
+```{r}
+create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2, return_orig_df = T) %>% 
+    plot_profiles_lpa()
 ```
 
 ### A more conventional, object-oriented approach
@@ -96,7 +101,60 @@ extract_variance(m3_mclust)
 extract_covariance(m3_mclust)
 ```
 
-### Comparing many models using information criteria
+# Models
+
+There are a number of different models representing different covariance matrix parameterizations that can be fit using `tidyLPA`. These are passed to the `model` argument to the `create_profiles_lpa()` function, i.e. `create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, to_return="tibble")`.
+
+Here is more information on their specification, drawing from [Pastor's (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) article. 
+
+A few notes: 
+
+* *p* represents different profiles (or mixture components).
+
+* each covariance parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. 
+
+**A. Varying means, equal variances, covariances fixed to 0 (model 1)**
+
+*corresponds to the MCLUST model "EEI", "diagonal, equal volume and shape"*
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2 }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3 }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
+$$
+
+**B. Varying means, equal variances and covariances (model 2)**
+
+*corresponds to the MCLUST model "EEE", "ellipsoidal, equal volume, shape, and orientation"*
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
+$$
+
+**C. Varying means and variances, covariances fixed to 0 (model 3)**
+
+*corresponds to the MCLUST model "VVI", "diagonal, varying volume and shape"*
+
+$$ 
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2p }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3p }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+$$
+
+**D. Varying means and variances, equal covariances (model 4)**
+
+*This model cannot currently be specified in MCLUST*
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+$$
+
+**E. Varying means, variances, and covariances**
+
+*corresponds to the MCLUST model "VVV", "ellipsoidal, varying volume, shape, and orientation"*
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+$$
+In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony. 
+
+# Comparing many models using information criteria
 
 We can quickly explore a number of models - both in terms of **the specification of the model** and **the number of profiles** using the Bayesian Information Criteria (BIC) values or the Integrated Completed Likelihood (ICL). For illustration, the built-in (to R) iris dataset is used a number of the models using the PISA data do not reach convergence.
 
@@ -105,12 +163,12 @@ compare_models_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, s
 compare_models_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, statistic = "ICL")
 ```
 
-### Carrying out a bootstrapped likelihood-ratio test to choose the number of profiles for a specific model
+# Carrying out a bootstrapped likelihood-ratio test to choose the number of profiles for a specific model
 
-To determine the number of profies for a specified model (i.e., models `1`-`3` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset (this code with only 500 observations and three variables takes about 15 seconds to run on my computer with 2.2 GHZ Macbook Pro with 16 GB RAM). 
+To determine the number of profies for a specified model (i.e., models `1`-`3` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset. 
 
 ```{r, eval = F}
-bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 1)
+bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 ```
 
 # How to contribute and get in touch

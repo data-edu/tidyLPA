@@ -16,6 +16,8 @@ bootstrap_lrt <- function(df,
                           n_profiles,
                           model = 1) {
 
+    message("Note. This function is still in-development and may cause unexpected errors.")
+
     d <- select_ancillary_functions(df, ...)
 
     if (model == 1) {

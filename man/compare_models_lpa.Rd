@@ -4,7 +4,7 @@
 \alias{compare_models_lpa}
 \title{Explore BIC of mclust models}
 \usage{
-compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3),
+compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 4),
   statistic = "BIC", return_table = FALSE)
 }
 \arguments{
@@ -14,7 +14,7 @@ compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3),
 
 \item{n_profiles_range}{a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to zero); 2 (varying means, equal variances and covariances; and 3 (varying means, variances, and covariances), in order from most to least constrained; run ?mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)}
+\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
 \item{statistic}{what statistic to plot; BIC or ICL are presently available as options}
 

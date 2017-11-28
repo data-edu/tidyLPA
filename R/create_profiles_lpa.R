@@ -18,9 +18,10 @@ select_create_profiles <- function(df, ...){
 #' @param df data.frame with two or more columns with continuous variables
 #' @param ... unquoted variable names separated by commas
 #' @param n_profiles the number of profiles (or mixture components) to be estimated
-#' @param model the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to zero); 2 (varying means, equal variances and covariances; and 3 (varying means, variances, and covariances), in order from most to least constrained; run ?mclust::mclustModelNames() to see all of the possible models and their names / abbreviations)
+#' @param model the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information
 #' @param to_return character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
 #' @param return_posterior_probs TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE
+#' @param return_orig_df TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)
 #' @import mclust
 #' @importFrom rlang .data
 #' @examples
@@ -37,7 +38,8 @@ create_profiles_lpa <- function(df,
                                 n_profiles,
                                 model = 1,
                                 to_return = "tibble",
-                                return_posterior_probs = TRUE){
+                                return_posterior_probs = TRUE,
+                                return_orig_df = FALSE){
 
     if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
@@ -45,11 +47,17 @@ create_profiles_lpa <- function(df,
 
     d <- select_create_profiles(df, ...)
 
+    # FIX ME! Come back to these five
+
     if (model == 1) {
         model <- "EEI"
     } else if (model == 2) {
         model <- "EEE"
     } else if (model == 3) {
+        model <- "VVI"
+        # } else if (model == 4) {
+        #     model <- "EEE"
+    } else if (model == 4) {
         model <- "VVV"
     } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
         model <- model
@@ -57,17 +65,18 @@ create_profiles_lpa <- function(df,
         stop("Model name is not correctly specified: use 1, 2, or 3 (see ?create_profiles_lpa for descriptions) or one of the model names specified from mclustModelNames() from mclust")
     }
 
-    model_print <- ifelse(model == "EEI", "varying means, equal variances, and residual covariances fixed to zero",
-                          ifelse(model == "EEE", "varying means, equal variances and covariances",
-                                 ifelse(model == "VVV", "varying means, variances, and covariances", model)))
+    model_print <- ifelse(model == "EEI", "varying means, equal variances, covariances fixed to 0 (Model 1)",
+                          ifelse(model == "EEE", "varying means, equal variances and covariances (Model 2)",
+                                 ifelse(model == "VVI", "varying means and variances, covariances fixed to 0 (Model 3)",
+                                        ifelse(model == "VVV", "varying means, variances, and covariances (Model 4)", model))))
 
     d_model <- dplyr::select(d, -row_number)
 
-    m <- mclust::Mclust(d_model, G = n_profiles, modelNames = model)
+    m <- mclust::Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE)
 
     if(is.null(m)) stop("Model could not be fitted")
 
-    message("Model with ", n_profiles, " profiles using the '", model_print, "' model.")
+    message("Fit ", model_print, " model with ", n_profiles, " profiles.")
 
     AIC <- (2*m$df - 2*m$loglik)
     posterior_prob <- 1 - round(m$uncertainty, 5)
@@ -79,14 +88,24 @@ create_profiles_lpa <- function(df,
 
     dff <- as.data.frame(dplyr::bind_cols(d, profile = m$classification)) # replace with tibble as bind_cols acts up
 
+    test <- nrow(dplyr::count(dff, .data$profile))
+    if(test < n_profiles) warning("Some profiles are associated with no assignments. Interpret this solution with caution and consider other models.")
+
     if (return_posterior_probs == TRUE) {
         dff <- dplyr::bind_cols(dff, posterior_prob = posterior_prob)
     }
 
     attributes(dff)$mclust_output <- m
 
-    dff <- dplyr::semi_join(dff, df, by = "row_number")
-    dff <- dplyr::select(dff, -row_number)
+    if (return_orig_df == TRUE) {
+        to_join <- dplyr::select(dff, .data$profile, .data$posterior_prob)
+        dff <- dplyr::semi_join(df, dff, by = "row_number")
+        dff <- dplyr::select(dff, -.data$row_number)
+        dff <- bind_cols(dff, to_join)
+    } else {
+        dff <- dplyr::semi_join(dff, df, by = "row_number")
+        dff <- dplyr::select(dff, -.data$row_number)
+    }
 
     if (to_return == "tibble") {
         return(tibble::as_tibble(dff))

@@ -12,21 +12,24 @@
 #' compare_models_lpa(d, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
 #' @export
 
-compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3), statistic = "BIC", return_table = FALSE) {
+compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 4), statistic = "BIC", return_table = FALSE) {
 
     d <- select_ancillary_functions(df, ...)
+
+    # FIX ME!
 
     model <- dplyr::case_when(
         model == 1 ~ "EEI",
         model == 2 ~ "EEE",
-        model == 3 ~ "VVV",
+        model == 3 ~ "VVI",
+        model == 4 ~ "VVV",
         TRUE ~ as.character(model)
     )
 
     if (statistic == "BIC") {
-        x <- mclust::mclustBIC(d, G = n_profiles_range, modelNames = model)
+        x <- mclust::mclustBIC(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE)
     } else if (statistic == "ICL") {
-        x <- mclust::mclustICL(d, G = n_profiles_range, modelNames = model)
+        x <- mclust::mclustICL(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE)
     } else {
         stop("This statistic cannot presently be computed")
     }
@@ -34,9 +37,10 @@ compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 
     y <- x %>%
         as.data.frame.matrix() %>%
         tibble::rownames_to_column("n_profiles") %>%
-        dplyr::rename(`Constrained variance, fixed covariance` = "EEI",
-                      `Constrained variance, constrained covariance` = "EEE",
-                      `Freed variance, freed covariance` = "VVV")
+        dplyr::rename(`Varying means, equal variances, covariances fixed to 0 (Model 1)` = "EEI",
+                      `Varying means, equal variances and covariances (Model 2)` = "EEE",
+                      `Varying means and variances, covariances fixed to 0 (Model 3)` = "VVI",
+                      `Varying means, variances, and covariances (Model 4)` = "VVV")
 
     to_plot <- y %>%
         tidyr::gather("Covariance matrix structure", "val", -.data$n_profiles) %>%
@@ -44,9 +48,10 @@ compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 
                       val = abs(.data$val)) # this is to make the BIC values positive (to align with more common formula / interpretation of BIC)
 
     to_plot$`Covariance matrix structure` <- forcats::fct_relevel(to_plot$`Covariance matrix structure`,
-                                                                  "Constrained variance, fixed covariance",
-                                                                  "Constrained variance, constrained covariance",
-                                                                  "Freed variance, freed covariance")
+                                                                  "Varying means, equal variances, covariances fixed to 0 (Model 1)",
+                                                                  "Varying means, equal variances and covariances (Model 2)",
+                                                                  "Varying means and variances, covariances fixed to 0 (Model 3)",
+                                                                  "Varying means, variances, and covariances (Model 4)")
 
 
     if(return_table == TRUE) {
