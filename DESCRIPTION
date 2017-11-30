@@ -1,16 +1,19 @@
 Package: tidyLPA
 Type: Package
-Title: Provide an Interface to MCLUST to Perform Latent Profile Analysis
+Title: Interface to MCLUST to Perform Latent Profile Analysis
 Version: 0.1.1
 Authors@R: c(
     person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com"),
-    person(c("Jennifer", "A"), "Schmidt", role = "aut", email = "jaschmid@msu.edu"),
-    person(c("Patrick", "N"), "Beymer", role = "aut", email = "beymerpa@msu.edu"),
+    person(c("Jennifer", "A"), "Schmidt", role = "ctb", email = "jaschmid@msu.edu"),
+    person(c("Patrick", "N"), "Beymer", role = "ctb", email = "beymerpa@msu.edu"),
     person(c("Rebecca", "R"), "Steingut", role = "ctb", email = "rebeccarosesteingut@gmail.com")
     )
-Description: An interface to MCLUST to easily carry out Latent Profile Analysis. Provides functionality in terms of how the residual covariance matrix of the clustered variables is
-    structured familiar to those who use Latent Profile Analysis. Follows a tidy philosophy, in that 
-    output is in the form of a tibble (closely related to a data.frame) that can subsequently be computed on.
+Description: An interface to `mclust` to easily carry out latent profile
+analysis (LPA) Pastor et al. (2007) <doi:10.1016/j.cedpsych.2006.10.003>.
+Provides functionality in terms of how the residual covariance matrix of the
+clustered variables is structured familiar to those who use LPA. Follows a
+tidy approach, in that output is in the form of a tibble (closely related to a
+data.frame) that can subsequently be computed on.
 License: MIT + file LICENSE
 Imports: mclust, 
     dplyr, 

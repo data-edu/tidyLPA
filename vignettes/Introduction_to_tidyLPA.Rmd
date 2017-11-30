@@ -4,7 +4,7 @@ author: "Joshua M. Rosenberg"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Introduction to tidyLPA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,19 +23,29 @@ knitr::opts_chunk$set(
 
 The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [MCLUST](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
 
-This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis. 
-`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the most common model specifications. You can find the results of that benchmarking, which showed the results to be nearly identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
+# Benchmark
+
+`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that benchmarking, which showed the results to be nearly identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
 
 # Example
+
+Here is a very short example using the built-in dataset `pisaUSA15`:
+
+```{r}
+library(tidyLPA)
+library(dplyr, warn.conflicts = FALSE)
+m3 <- create_profiles_lpa(pisaUSA15, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
+plot_profiles_lpa(m3)
+```
 
 ```{r, echo = F, eval = F}
 # this is for testing in-development versions
 devtools::load_all(".")
 ```
 
-```{r, eval = T}
-library(tidyLPA)
-```
+# In-depth examples
+
+Here are more in-depth examples. 
 
 ### A data-first, tidy approach
 
@@ -47,9 +57,10 @@ library(tidyLPA)
 
 This example makes use of the first, data-first, tidy approach, in which a `data.frame` (or a `tibble` to those who use packages such as `dplyr` and other "tidy" packages) is both input and output by the main function in this package.
 
-Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can explore a three profile solution, with, for example, `4` profiles, and varying means across profiles, but equal variances and covariances (specified with model = `2`, which happens to be the default model if none is specified)
+Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can explore a three profile solution, with, for example, `4` profiles, and varying means across profiles, but equal variances and covariances (specified with model = `2`, which happens to be the default model if none is specified). More information the models described later in this vignette. Note that the number of profiles are typically chosen on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony. 
 
 ```{r, fig.width = 7, fig.height = 5}
+library(tidyLPA)
 library(dplyr, warn.conflicts = FALSE)
 d <- pisaUSA15
 d <- sample_n(pisaUSA15, 500)
@@ -59,8 +70,6 @@ create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4,
 **Note that if you get the warning "Some profiles are associated with no assignments. Interpret this solution with caution and consider other models", then this is a sign that a simpler model (with fewer profiles) likely fits better.
 
 You can see the output is simply the same `tibble` that is input as the first function to `create_profiles_LPA`, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).
-
-A bit more information the models described later in this vignette.
 
 We can then plot this output using the `plot_profiles_lpa()` function and the pipe (`%>%`) from the `dplyr` package:
 
@@ -83,7 +92,7 @@ create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4,
     plot_profiles_lpa()
 ```
 
-### A more conventional, object-oriented approach
+### An object-oriented approach
 
 In addition to being used as part of a "tidy" approach, there is also an option to use it as part of a more conventional, object-oriented approach. In this example, instead of outputting a `tibble`, we will output an object of class  `Mclust`.
 
@@ -103,7 +112,9 @@ extract_covariance(m3_mclust)
 
 # Models
 
-There are a number of different models representing different covariance matrix parameterizations that can be fit using `tidyLPA`. These are passed to the `model` argument to the `create_profiles_lpa()` function, i.e. `create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, to_return="tibble")`.
+As mentioned earlier, there are a number of different models representing different covariance matrix parameterizations that can be fit using `tidyLPA`. These are passed to the `model` argument to the `create_profiles_lpa()` function, i.e. `create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, to_return="tibble")`.
+
+In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony. 
 
 Here is more information on their specification, drawing from [Pastor's (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) article. 
 
@@ -152,7 +163,6 @@ $$
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
-In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony. 
 
 # Comparing many models using information criteria
 
@@ -171,6 +181,10 @@ To determine the number of profies for a specified model (i.e., models `1`-`3` d
 bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 ```
 
-# How to contribute and get in touch
+# Notes
 
-To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email or Twitter](https://jrosen48.github.io/about/).
+* This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis. 
+
+* [Pastor (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) provides an accessible introduction to LPA, with an applied example in educational research. 
+
+* To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email or Twitter](https://jrosen48.github.io/about/).
