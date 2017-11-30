@@ -18,6 +18,7 @@ plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibbl
         x %>%
             dplyr::select(-.data$posterior_prob) %>%
             dplyr::mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
+            dplyr::mutate(profile = as.factor(profile)) %>%
             group_by(.data$profile) %>%
             summarize_all(mean) %>%
             tidyr::gather("key", "val", -.data$profile) %>%
@@ -27,7 +28,7 @@ plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibbl
             theme_bw()
 
     } else if (plot_what == "mclust") {
-
+        stop("cannot presently plot mclust objects")
     }
 
 }

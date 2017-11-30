@@ -29,36 +29,15 @@ library(tidyLPA)
 ```
 
 ``` r
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-d <- pisaUSA15
-d <- sample_frac(d, .5)
+library(dplyr, warn.conflicts = FALSE)
+d <- sample_n(pisaUSA15, 200)
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
-#> Model with 3 profiles using the 'varying means, equal variances and covariances' model.
-#> AIC is 16106.59
-#> BIC is 16206.787
-#> ICL is 16698.022
-#> Entropy is 0.92087
-m3
-#> # A tibble: 2,681 x 5
-#>    broad_interest enjoyment self_efficacy profile posterior_prob
-#>             <dbl>     <dbl>         <dbl>   <dbl>          <dbl>
-#>  1            2.2       2.8         1.500       2        0.98343
-#>  2            2.6       2.4         2.375       2        0.99106
-#>  3            2.8       2.8         2.500       2        0.99162
-#>  4            2.2       2.8         1.000       2        0.98168
-#>  5            2.4       3.6         2.875       3        0.75493
-#>  6            1.8       2.5         2.000       2        0.99541
-#>  7            3.2       3.0         2.000       2        0.97364
-#>  8            1.4       2.2         2.750       2        0.98097
-#>  9            3.2       3.0         1.000       2        0.96800
-#> 10            3.4       3.2         2.125       2        0.91580
-#> # ... with 2,671 more rows
+#> Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.
+#> AIC is 1143.054
+#> BIC is 1198.074
+#> ICL is 1213.502
+#> Entropy is 0.96503
+plot_profiles_lpa(m3)
 ```
+
+![](README-unnamed-chunk-3-1.png)
