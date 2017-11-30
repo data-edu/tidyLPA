@@ -1,7 +1,7 @@
 ---
 title: "Introduction to tidyLPA"
 author: "Joshua M. Rosenberg"
-date: "`r Sys.Date()`"
+date: "2017-11-29"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to tidyLPA}
@@ -29,6 +29,11 @@ The goal of `tidyLPA` is to provide tools to make it easier to use the `R` packa
 
 # Example
 
+```{r, echo = F, eval = T}
+# this is for testing in-development versions
+devtools::load_all(".")
+```
+
 Here is a very short example using the built-in dataset `pisaUSA15`:
 
 ```{r}
@@ -36,11 +41,6 @@ library(tidyLPA)
 library(dplyr, warn.conflicts = FALSE)
 m3 <- create_profiles_lpa(pisaUSA15, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 plot_profiles_lpa(m3)
-```
-
-```{r, echo = F, eval = F}
-# this is for testing in-development versions
-devtools::load_all(".")
 ```
 
 # In-depth examples
@@ -97,18 +97,12 @@ create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4,
 In addition to being used as part of a "tidy" approach, there is also an option to use it as part of a more conventional, object-oriented approach. In this example, instead of outputting a `tibble`, we will output an object of class  `Mclust`.
 
 ```{r}
+d <- pisaUSA15
+d <- sample_n(pisaUSA15, 500)
 m3_mclust <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 2, model = 2, to_return = "mclust")
 ```
 
 Any of the functions from the [MCLUST package](http://www.stat.washington.edu/mclust/) that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the `create_profiles_lpa()` function) instead of the `Mclust()` function from the `MCLUST package`. 
-
-In addition, a number of helper functions are available for extracting various model information.
-
-```{r}
-extract_mclust_summary(m3_mclust)
-extract_variance(m3_mclust)
-extract_covariance(m3_mclust)
-```
 
 # Models
 
