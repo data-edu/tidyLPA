@@ -15,3 +15,9 @@ Extract mclust summary statistics
 \details{
 Extract the log likelihood, BIC, and entropy statistics
 }
+\examples{
+d <- pisaUSA15
+d <- sample_n(pisaUSA15, 500)
+m <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, to_return = "mclust")
+extract_mclust_summary(m)
+}

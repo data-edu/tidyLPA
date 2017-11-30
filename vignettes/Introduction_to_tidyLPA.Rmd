@@ -97,7 +97,7 @@ create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4,
 In addition to being used as part of a "tidy" approach, there is also an option to use it as part of a more conventional, object-oriented approach. In this example, instead of outputting a `tibble`, we will output an object of class  `Mclust`.
 
 ```{r}
-m3_mclust <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2, to_return = "mclust")
+m3_mclust <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 2, model = 2, to_return = "mclust")
 ```
 
 Any of the functions from the [MCLUST package](http://www.stat.washington.edu/mclust/) that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the `create_profiles_lpa()` function) instead of the `Mclust()` function from the `MCLUST package`. 

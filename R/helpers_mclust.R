@@ -15,7 +15,7 @@ extract_variance <- function(x) {
     x$parameters$variance$sigma[, , profile_n] %>%
         diag() %>%
         dplyr::as_tibble() %>%
-        dplyr::rename("est" = .data$value) %>%
+        dplyr::rename("est" = "value") %>%
         tibble::rownames_to_column("var_name") %>%
         dplyr::mutate(param_name = "Variances") %>%
         dplyr::mutate(class = paste0("class_", profile_n),
@@ -42,7 +42,7 @@ extract_covariance <- function(x) {
         tibble::rownames_to_column("param_name") %>%
         as.tibble() %>%
         tidyr::gather("key", "val", -.data$param_name) %>%
-        rename(var_name = .data$key, est = .data$val) %>%
+        rename("var_name" = "key", "est" = "val") %>%
         mutate(param_name = toupper(stringr::str_sub(.data$param_name, start = 1L, end = 8L)),
                param_name = paste0(.data$param_name, ".WITH"),
                param_name = stringr::str_replace(.data$param_name, "\\.", "_"),
