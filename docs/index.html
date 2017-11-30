@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Provide an Interface to MCLUST to Perform Latent Profile Analysis • tidyLPA</title>
+<title>Interface to MCLUST to Perform Latent Profile Analysis • tidyLPA</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -56,11 +56,10 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#tidylpa" class="anchor"></a>tidyLPA</h1></div>
 <p>The goal of <code>tidyLPA</code> is to provide tools to make it easier to use the <code>R</code> package <a href="http://www.stat.washington.edu/mclust/">MCLUST</a> for Latent Profile Analysis analyses.</p>
-<p>This is a sister-project to <a href="https://github.com/jrosen48/prcr">prcr</a>, for two-step cluster analysis. tidyLPA (which, again, is an interface to the <code>MCLUST</code> package) has been benchmarked to MPlus, at least for a simple dataset (the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris dataset</a>). You can find the results of that benchmarking, which showed the results to be nearly, identical, <a href="https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/">here</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install tidyLPA from github with:</p>
+<p>You can install tidyLPA from GitHub with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
 devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jrosen48/tidymixmod"</span>)</code></pre></div>
 </div>
@@ -71,38 +70,16 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <p>Here is a brief example using the built-in <code>pisaUSA15</code> dataset and variables for broad interest, enjoyment, and self-efficacy. See <code><a href="reference/create_profiles_lpa.html">?create_profiles_lpa</a></code> for more details.</p>
 <p>Also, please view the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA vignette</a> for more information.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-d &lt;-<span class="st"> </span>pisaUSA15
-d &lt;-<span class="st"> </span><span class="kw">sample_frac</span>(d, .<span class="dv">5</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
+d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]
 m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
-<span class="co">#&gt; Model with 3 profiles using the 'varying means, equal variances and covariances' model.</span>
-<span class="co">#&gt; AIC is 16490.466</span>
-<span class="co">#&gt; BIC is 16590.808</span>
-<span class="co">#&gt; ICL is 19394.395</span>
-<span class="co">#&gt; Entropy is 0.60566</span>
-m3
-<span class="co">#&gt; # A tibble: 2,704 x 5</span>
-<span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
-<span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1            2.6       3.8         2.125       2        0.60914</span>
-<span class="co">#&gt;  2            1.6       3.0         1.625       2        0.58262</span>
-<span class="co">#&gt;  3            1.4       2.2         2.500       2        0.50547</span>
-<span class="co">#&gt;  4            3.8       4.0         1.875       2        0.62142</span>
-<span class="co">#&gt;  5            2.6       2.6         2.000       2        0.56822</span>
-<span class="co">#&gt;  6            3.0       3.0         1.500       2        0.59178</span>
-<span class="co">#&gt;  7            1.6       3.0         2.875       2        0.58483</span>
-<span class="co">#&gt;  8            3.0       2.6         3.000       2        0.58207</span>
-<span class="co">#&gt;  9            2.4       3.0         2.000       2        0.58927</span>
-<span class="co">#&gt; 10            2.8       3.0         1.500       2        0.59040</span>
-<span class="co">#&gt; # ... with 2,694 more rows</span></code></pre></div>
+<span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.</span>
+<span class="co">#&gt; AIC is 593.384</span>
+<span class="co">#&gt; BIC is 636.62</span>
+<span class="co">#&gt; ICL is 681.845</span>
+<span class="co">#&gt; Entropy is 0.79779</span>
+<span class="kw"><a href="reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3)</code></pre></div>
+<p><img src="README-unnamed-chunk-3-1.png" width="672"></p>
 </div>
 </div>
   </div>
@@ -114,8 +91,6 @@ m3
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Joshua M Rosenberg <br><small class="roles"> Author, maintainer </small> </li>
-<li>Jennifer A Schmidt <br><small class="roles"> Author </small> </li>
-<li>Patrick N Beymer <br><small class="roles"> Author </small> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
@@ -124,7 +99,7 @@ m3
 
 
       <footer><div class="copyright">
-  <p>Developed by Joshua M Rosenberg, Jennifer A Schmidt, Patrick N Beymer.</p>
+  <p>Developed by Joshua M Rosenberg.</p>
 </div>
 
 <div class="pkgdown">

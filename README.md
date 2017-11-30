@@ -8,7 +8,7 @@ The goal of `tidyLPA` is to provide tools to make it easier to use the `R` packa
 Installation
 ------------
 
-You can install tidyLPA from github with:
+You can install tidyLPA from GitHub with:
 
 ``` r
 # install.packages("devtools")
