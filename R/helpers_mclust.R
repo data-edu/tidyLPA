@@ -4,6 +4,11 @@
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @export
+#' @examples
+#' d <- pisaUSA15
+#' d <- sample_n(pisaUSA15, 500)
+#' m <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, to_return = "mclust")
+#' extract_variance(m)
 
 extract_variance <- function(x) {
     profile_n <- x$G
@@ -24,6 +29,11 @@ extract_variance <- function(x) {
 #' @import dplyr
 #' @importFrom rlang .data
 #' @export
+#' @examples
+#' d <- pisaUSA15
+#' d <- sample_n(pisaUSA15, 500)
+#' m <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, to_return = "mclust")
+#' extract_covariance(m)
 
 extract_covariance <- function(x) {
     profile_n <- x$G
@@ -45,6 +55,11 @@ extract_covariance <- function(x) {
 #' @details Extract the log likelihood, BIC, and entropy statistics
 #' @param x object of class Mclust
 #' @export
+#' @examples
+#' d <- pisaUSA15
+#' d <- sample_n(pisaUSA15, 500)
+#' m <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, to_return = "mclust")
+#' extract_mclust_summary(m)
 
 extract_mclust_summary <- function(x) {
     data.frame(LL = round(x$loglik, 3),
