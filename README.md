@@ -5,8 +5,6 @@ tidyLPA
 
 The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [MCLUST](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
 
-This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis. tidyLPA (which, again, is an interface to the `MCLUST` package) has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)). You can find the results of that benchmarking, which showed the results to be nearly, identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/).
-
 Installation
 ------------
 
@@ -30,13 +28,13 @@ library(tidyLPA)
 
 ``` r
 library(dplyr, warn.conflicts = FALSE)
-d <- sample_n(pisaUSA15, 200)
+d <- pisaUSA15[1:100, ]
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 #> Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.
-#> AIC is 1143.054
-#> BIC is 1198.074
-#> ICL is 1213.502
-#> Entropy is 0.96503
+#> AIC is 593.384
+#> BIC is 636.62
+#> ICL is 681.845
+#> Entropy is 0.79779
 plot_profiles_lpa(m3)
 ```
 
