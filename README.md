@@ -12,7 +12,7 @@ You can install tidyLPA from GitHub with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("jrosen48/tidymixmod")
+devtools::install_github("jrosen48/tidyLPA")
 ```
 
 Example
