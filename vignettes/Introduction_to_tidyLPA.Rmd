@@ -178,7 +178,7 @@ compare_models_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, s
 
 # Bootstrapped likelihood-ratio test
 
-To determine the number of profies for a specified model (i.e., models `1`-`3` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset. 
+To determine the number of profies for a specified model (i.e., models `1`-`4` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset. 
 
 ```{r, eval = F}
 bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
