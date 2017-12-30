@@ -1,19 +1,40 @@
 # helpers.R
 
-# functions.R
+select_create_profiles <- function(df, ...){
+    if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
+    df <- tibble::as_tibble(df)
+    df_ss <- dplyr::select(df, ..., row_number)
+    cases_to_keep <- stats::complete.cases(df_ss) # to use later for comparing function to index which cases to keep
+    d <- df_ss[cases_to_keep, ] # removes incomplete cases
+    return(d)
+}
 
 select_ancillary_functions <- function(df, ...){
     if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
     df <- tibble::as_tibble(df)
     df_ss <- dplyr::select(df, ...)
     cases_to_keep <- stats::complete.cases(df_ss) # to use later for comparing function to index which cases to keep
-
-    # cases_to_keep <- dplyr::data_frame(row_names = 1:nrow(df_ss),
-    #                                    keep = cases_to_keep)
-
     d <- df_ss[cases_to_keep, ] # removes incomplete cases
 
     return(d)
+}
+
+scale_vector <- function(x) {
+    x / stats::sd(x, na.rm = TRUE)
+}
+
+center_vector <- function(x) {
+    x - mean(x, na.rm = TRUE)
+}
+
+center_scale_function <- function(x, center_raw_data, scale_raw_data) {
+    if(center_raw_data == TRUE & scale_raw_data == TRUE) {
+        center_and_scale_vector(x)
+    } else if (center_raw_data == TRUE) {
+        center_vector(x)
+    } else if (scale_raw_data == TRUE) {
+        scale_vector(x)
+    }
 }
 
 # addresses concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation

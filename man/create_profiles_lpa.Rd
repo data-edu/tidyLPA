@@ -5,6 +5,7 @@
 \title{Create profiles for a specific mclust model}
 \usage{
 create_profiles_lpa(df, ..., n_profiles, model = 1, to_return = "tibble",
+  center_raw_data = FALSE, scale_raw_data = FALSE,
   return_posterior_probs = TRUE, return_orig_df = FALSE)
 }
 \arguments{
@@ -17,6 +18,10 @@ create_profiles_lpa(df, ..., n_profiles, model = 1, to_return = "tibble",
 \item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
 \item{to_return}{character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
+
+\item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
+
+\item{scale_raw_data}{logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE}
 
 \item{return_posterior_probs}{TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE}
 

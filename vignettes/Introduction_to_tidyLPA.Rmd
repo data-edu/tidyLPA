@@ -86,6 +86,8 @@ create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4,
     plot_profiles_lpa()
 ```
 
+You can, if you like, use the arguments `center_raw_data` (to center all of the clustering variables to have a mean of 0) or `scale_raw_data` (to scale all of the clustering variables to have a standard deviation of 1) in `create_profiles_lpa()`.
+
 Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object `m3`, and then call the `plot_profiles_lpa()` function on the output that it points to.
 
 ```{r, warning = F}

@@ -12,11 +12,13 @@
 #' compare_models_lpa(d, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
 #' @export
 
-compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 4), statistic = "BIC", return_table = FALSE) {
+compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 4), center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC", return_table = FALSE) {
 
     d <- select_ancillary_functions(df, ...)
 
-    # FIX ME!
+    if (center_raw_data == T | scale_raw_data == T) {
+        d <- mutate_all(d, center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
+    }
 
     model <- dplyr::case_when(
         model == 1 ~ "EEI",

@@ -5,7 +5,8 @@
 \title{Explore BIC of mclust models}
 \usage{
 compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 4),
-  statistic = "BIC", return_table = FALSE)
+  center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC",
+  return_table = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -15,6 +16,10 @@ compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 4),
 \item{n_profiles_range}{a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)}
 
 \item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+
+\item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
+
+\item{scale_raw_data}{logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE}
 
 \item{statistic}{what statistic to plot; BIC or ICL are presently available as options}
 

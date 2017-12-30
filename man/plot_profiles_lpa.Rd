@@ -4,7 +4,8 @@
 \alias{plot_profiles_lpa}
 \title{Plot profile centroids}
 \usage{
-plot_profiles_lpa(x, to_center = F, to_scale = F, plot_what = "tibble")
+plot_profiles_lpa(x, to_center = F, to_scale = F, plot_what = "tibble",
+  plot_error_bars = TRUE)
 }
 \arguments{
 \item{x}{output from create_profiles_mclust()}
@@ -14,6 +15,8 @@ plot_profiles_lpa(x, to_center = F, to_scale = F, plot_what = "tibble")
 \item{to_scale}{whether to scale the data before plotting}
 
 \item{plot_what}{whether to plot tibble or mclust output from create_profiles_lpa(); defaults to tibble}
+
+\item{plot_error_bars}{whether to plot error bars (representing the 95% confidence interval for the mean of each variable)}
 }
 \description{
 Plot profile centroids
