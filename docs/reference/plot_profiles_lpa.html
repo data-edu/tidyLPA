@@ -79,7 +79,8 @@
     <p>Plot profile centroids</p>
     
 
-    <pre class="usage"><span class='fu'>plot_profiles_lpa</span>(<span class='no'>x</span>, <span class='kw'>to_center</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>to_scale</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_profiles_lpa</span>(<span class='no'>x</span>, <span class='kw'>to_center</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>to_scale</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
+  <span class='kw'>plot_error_bars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -99,6 +100,10 @@
     <tr>
       <th>plot_what</th>
       <td><p>whether to plot tibble or mclust output from create_profiles_lpa(); defaults to tibble</p></td>
+    </tr>
+    <tr>
+      <th>plot_error_bars</th>
+      <td><p>whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)</p></td>
     </tr>
     </table>
     

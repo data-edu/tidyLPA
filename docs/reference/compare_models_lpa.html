@@ -80,7 +80,8 @@
     
 
     <pre class="usage"><span class='fu'>compare_models_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles_range</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>9</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
-  <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"BIC"</span>, <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"BIC"</span>,
+  <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -100,6 +101,14 @@
     <tr>
       <th>model</th>
       <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
+    </tr>
+    <tr>
+      <th>center_raw_data</th>
+      <td><p>logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>scale_raw_data</th>
+      <td><p>logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE</p></td>
     </tr>
     <tr>
       <th>statistic</th>

@@ -80,6 +80,7 @@
     
 
     <pre class="usage"><span class='fu'>create_profiles_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
+  <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>return_posterior_probs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>return_orig_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -106,6 +107,14 @@
       <td><p>character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned</p></td>
     </tr>
     <tr>
+      <th>center_raw_data</th>
+      <td><p>logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>scale_raw_data</th>
+      <td><p>logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
       <th>return_posterior_probs</th>
       <td><p>TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE</p></td>
     </tr>
@@ -129,7 +138,7 @@
 <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
 <span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_lpa</span>(<span class='no'>d</span>,
                           <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>,
-                          <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>AIC is 1080.226</span></div><div class='output co'>#&gt; <span class='message'>BIC is 1125.611</span></div><div class='output co'>#&gt; <span class='message'>ICL is 1183.293</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.87091</span></div></pre>
+                          <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 526.113</span></div><div class='output co'>#&gt; <span class='message'>AIC is 1080.226</span></div><div class='output co'>#&gt; <span class='message'>CAIC is 1139.611</span></div><div class='output co'>#&gt; <span class='message'>BIC is 1125.611</span></div><div class='output co'>#&gt; <span class='message'>SABIC is 1081.265</span></div><div class='output co'>#&gt; <span class='message'>ICL is 1183.293</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.871</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
