@@ -21,7 +21,7 @@ The goal of `tidyLPA` is to provide tools to make it easier to use the `R` packa
 You can install tidyLPA from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
-# install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("jrosen48/tidyLPA")
 ```
 
@@ -31,8 +31,12 @@ Here is a brief example using the built-in `pisaUSA15` dataset and variables for
 
 Also, please view the [Introduction to tidyLPA vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html) for more information.
 
-```{r}
+```{r, eval = F}
 library(tidyLPA)
+```
+
+```{r, echo = T}
+devtools::load_all(".")
 ```
 
 ```{r, warning = F}

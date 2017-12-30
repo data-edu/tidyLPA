@@ -27,7 +27,7 @@ The goal of `tidyLPA` is to provide tools to make it easier to use the `R` packa
 
 # Example
 
-```{r, echo = F, eval = F}
+```{r, echo = F, eval = T}
 # this is for testing in-development versions
 devtools::load_all(".")
 ```
@@ -43,8 +43,11 @@ devtools::install_github("jrosen48/tidyLPA")
 
 Here is the simple example, using just a subset of the built-in `pisaUSA15` data, data from the 2015 PISA assessment (more details can be found [here](https://github.com/jrosen48/pisaUSA15)).
 
-```{r}
+```{r, eval = F}
 library(tidyLPA)
+```
+
+```{r}
 library(dplyr, warn.conflicts = FALSE)
 d <- pisaUSA15[1:100, ]
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)

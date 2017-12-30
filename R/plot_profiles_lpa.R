@@ -9,6 +9,7 @@
 #' @import ggplot2
 #' @import dplyr
 #' @import tidyr
+#' @import stringr
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @export
@@ -30,12 +31,12 @@ plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibbl
                 group_by(.data$profile) %>%
                 summarize_all(funs(mean, sd)) %>%
                 gather("key", "val", -.data$profile) %>%
-                mutate(new_key = ifelse(stringr::str_sub(key, start = -4) == "mean", stringr::str_sub(key, start = -4),
-                                        ifelse(stringr::str_sub(key, start = -2) == "sd", stringr::str_sub(key, start = -2), NA)),
-                       key = ifelse(stringr::str_sub(key, start = -4) == "mean", stringr::str_sub(key, end = -6),
-                                    ifelse(stringr::str_sub(key, start = -2) == "sd", stringr::str_sub(key, end = -4), NA))) %>%
+                mutate(new_key = ifelse(str_sub(key, start = -4) == "mean", str_sub(key, start = -4),
+                                        ifelse(str_sub(key, start = -2) == "sd", str_sub(key, start = -2), NA)),
+                       key = ifelse(str_sub(key, start = -4) == "mean", str_sub(key, end = -6),
+                                    ifelse(str_sub(key, start = -2) == "sd", str_sub(key, end = -4), NA))) %>%
                 spread(new_key, val) %>%
-                mutate(n_string = stringr::str_sub(as.character(profile), start = 11),
+                mutate(n_string = str_sub(as.character(profile), start = 11),
                        n = as.numeric(str_extract(n_string, "\\-*\\d+\\.*\\d*")),
                        se = 1.96 * (sd / sqrt(n - 1)),
                        ymin = mean - se,
