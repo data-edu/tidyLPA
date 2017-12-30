@@ -1,11 +1,10 @@
-
 #' Plot profile centroids
 #' @details Plot the centroids for tibble or mclust output from create_profiles_lpa()
 #' @param x output from create_profiles_mclust()
 #' @param to_center whether to center the data before plotting
 #' @param to_scale whether to scale the data before plotting
 #' @param plot_what whether to plot tibble or mclust output from create_profiles_lpa(); defaults to tibble
-#' @param plot_error_bars whether to plot error bars (representing the 95% confidence interval for the mean of each variable)
+#' @param plot_error_bars whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)
 #' @import ggplot2
 #' @import dplyr
 #' @import tidyr
@@ -13,7 +12,6 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @export
-#'
 
 plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibble", plot_error_bars = TRUE) {
 
@@ -27,20 +25,19 @@ plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibbl
             x %>%
                 select(-.data$posterior_prob) %>%
                 mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
-                mutate(profile = as.factor(profile)) %>%
                 group_by(.data$profile) %>%
                 summarize_all(funs(mean, sd)) %>%
                 gather("key", "val", -.data$profile) %>%
-                mutate(new_key = ifelse(str_sub(key, start = -4) == "mean", str_sub(key, start = -4),
-                                        ifelse(str_sub(key, start = -2) == "sd", str_sub(key, start = -2), NA)),
-                       key = ifelse(str_sub(key, start = -4) == "mean", str_sub(key, end = -6),
-                                    ifelse(str_sub(key, start = -2) == "sd", str_sub(key, end = -4), NA))) %>%
-                spread(new_key, val) %>%
-                mutate(n_string = str_sub(as.character(profile), start = 11),
-                       n = as.numeric(str_extract(n_string, "\\-*\\d+\\.*\\d*")),
-                       se = 1.96 * (sd / sqrt(n - 1)),
-                       ymin = mean - se,
-                       ymax = mean + se) %>%
+                mutate(new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),
+                                        ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, start = -2), NA)),
+                       key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, end = -6),
+                                    ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, end = -4), NA))) %>%
+                spread(.data$new_key, .data$val) %>%
+                mutate(n_string = str_sub(as.character(.data$profile), start = 11),
+                       n = as.numeric(str_extract(.data$n_string, "\\-*\\d+\\.*\\d*")),
+                       se = 1.96 * (.data$sd / sqrt(.data$n - 1)),
+                       ymin = .data$mean - .data$se,
+                       ymax = .data$mean + .data$se) %>%
                 ggplot(aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
                 geom_col(position = "dodge") +
                 geom_errorbar(position = position_dodge()) +
@@ -52,7 +49,7 @@ plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibbl
             x %>%
                 dplyr::select(-.data$posterior_prob) %>%
                 dplyr::mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
-                dplyr::mutate(profile = as.factor(profile)) %>%
+                dplyr::mutate(profile = as.factor(.data$profile)) %>%
                 group_by(.data$profile) %>%
                 summarize_all(mean) %>%
                 tidyr::gather("key", "val", -.data$profile) %>%
@@ -62,6 +59,7 @@ plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibbl
                 scale_x_discrete("") +
                 theme_bw()
         }
+
     } else if (plot_what == "mclust") {
         stop("cannot presently plot mclust objects")
     }

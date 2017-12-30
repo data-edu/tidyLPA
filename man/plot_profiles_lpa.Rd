@@ -16,7 +16,7 @@ plot_profiles_lpa(x, to_center = F, to_scale = F, plot_what = "tibble",
 
 \item{plot_what}{whether to plot tibble or mclust output from create_profiles_lpa(); defaults to tibble}
 
-\item{plot_error_bars}{whether to plot error bars (representing the 95% confidence interval for the mean of each variable)}
+\item{plot_error_bars}{whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)}
 }
 \description{
 Plot profile centroids

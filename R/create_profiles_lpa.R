@@ -76,13 +76,13 @@ create_profiles_lpa <- function(df,
 
     posterior_prob <- 1 - round(m$uncertainty, 5)
 
-    message("logLik is ", round(abs(as.vector(m$loglik)), 3))
+    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
     message("AIC is ", round(abs(as.vector(AIC)), 3))
     message("CAIC is ", round(abs(as.vector(CAIC)), 3))
     message("BIC is ", round(abs(as.vector(m$BIC)), 3))
     message("SABIC is ", round(abs(as.vector(SABIC)), 3))
     message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
-    message("Entropy is ", round(mean(posterior_prob), 5))
+    message("Entropy is ", round(mean(posterior_prob), 3))
 
     dff <- as.data.frame(dplyr::bind_cols(d, profile = m$classification)) # replace with tibble as bind_cols acts up
 

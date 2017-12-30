@@ -27,6 +27,14 @@ center_vector <- function(x) {
     x - mean(x, na.rm = TRUE)
 }
 
+center_and_scale_vector <- function(x) {
+    if (stats::sd(x, na.rm = TRUE) == 0) {
+        x - mean(x, na.rm = TRUE)
+    } else {
+        (x - mean(x, na.rm = TRUE)) / stats::sd(x, na.rm = TRUE)
+    }
+}
+
 center_scale_function <- function(x, center_raw_data, scale_raw_data) {
     if(center_raw_data == TRUE & scale_raw_data == TRUE) {
         center_and_scale_vector(x)
