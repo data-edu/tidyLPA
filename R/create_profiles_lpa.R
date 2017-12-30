@@ -69,11 +69,18 @@ create_profiles_lpa <- function(df,
 
     message("Fit ", model_print, " model with ", n_profiles, " profiles.")
 
-    AIC <- (2*m$df - 2*m$loglik)
+    AIC <- (2 * m$df - 2 * m$loglik)
+    # BIC1 <- (m$df * log(m$n) - 2 * m$loglik) # same as BIC output from mclust
+    CAIC <- (((log(m$n) + 1) * m$df) - 2 * m$loglik)
+    SABIC <- (m$df * log((m$n + 2) / 24) - 2 * m$loglik)
+
     posterior_prob <- 1 - round(m$uncertainty, 5)
 
+    message("logLik is ", round(abs(as.vector(m$loglik)), 3))
     message("AIC is ", round(abs(as.vector(AIC)), 3))
+    message("CAIC is ", round(abs(as.vector(CAIC)), 3))
     message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+    message("SABIC is ", round(abs(as.vector(SABIC)), 3))
     message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
     message("Entropy is ", round(mean(posterior_prob), 5))
 
