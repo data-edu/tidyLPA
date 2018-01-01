@@ -10,16 +10,18 @@ Authors@R: c(
     )
 Description: An interface to `mclust` to easily carry out latent profile analysis (LPA) Pastor et al. (2007). Provides functionality in terms of how the variable covariance matrix is commonly structured in LPA. Follows a tidy approach, in that output is in the form of a tibble (closely related to a data frame) that can subsequently be computed on.
 License: MIT + file LICENSE
-Imports: mclust, 
-    dplyr, 
-    tibble, 
-    tidyr, 
-    ggplot2, 
-    forcats, 
+Imports: 
+    mclust,
+    dplyr,
+    tibble,
+    tidyr,
+    ggplot2,
+    forcats,
     magrittr,
     purrr,
     stringr,
-    rlang
+    rlang,
+    MplusAutomation
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
