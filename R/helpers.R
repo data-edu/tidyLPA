@@ -19,6 +19,17 @@ select_ancillary_functions <- function(df, ...){
     return(d)
 }
 
+
+select_ancillary_functions_mplus <- function(df, ...){
+    if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
+    df <- tibble::as_tibble(df)
+    df_ss <- dplyr::select(df, ...)
+    cases_to_keep <- stats::complete.cases(df_ss) # to use later for comparing function to index which cases to keep
+    d <- df_ss[cases_to_keep, ] # removes incomplete cases
+    names(d) <- stringr::str_replace(names(d), "\\.", "_")
+    return(d)
+}
+
 scale_vector <- function(x) {
     x / stats::sd(x, na.rm = TRUE)
 }
