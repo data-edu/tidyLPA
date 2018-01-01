@@ -4,9 +4,9 @@
 \alias{compare_models_lpa}
 \title{Explore BIC of mclust models}
 \usage{
-compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 4),
+compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 5),
   center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC",
-  return_table = FALSE)
+  return_table = FALSE, prior_control = F)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -24,6 +24,8 @@ compare_models_lpa(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 4),
 \item{statistic}{what statistic to plot; BIC or ICL are presently available as options}
 
 \item{return_table}{logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE}
+
+\item{prior_control}{whether to include a regularizing prior; defaults to false}
 }
 \value{
 a ggplot2 plot of the BIC values for the explored models

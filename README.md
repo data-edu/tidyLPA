@@ -36,13 +36,13 @@ library(dplyr, warn.conflicts = FALSE)
 d <- pisaUSA15[1:100, ]
 m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 #> Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.
-#> LogLik is 279.692
-#> AIC is 593.384
-#> CAIC is 653.62
-#> BIC is 636.62
-#> SABIC is 582.951
-#> ICL is 681.845
-#> Entropy is 0.798
+#> LogLik is 281.206
+#> AIC is 596.412
+#> CAIC is 656.648
+#> BIC is 639.648
+#> SABIC is 585.979
+#> ICL is 669.316
+#> Entropy is 0.865
 plot_profiles_lpa(m3)
 ```
 

@@ -4,6 +4,7 @@
 #' @param script_filename name of script to prepare; defaults to t.inp
 #' @param output_filename name of the output; defaults to t.out
 #' @param the_title title of the model; defaults to test
+#' @param start_iterations the number of start iterations; defaults to c(100, 20)
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
 #' @import tidyr
@@ -24,7 +25,8 @@ create_profiles_mplus <- function(df,
                                   data_filename = "d.dat",
                                   script_filename = "t.inp",
                                   output_filename = "t.out",
-                                  model = 1) {
+                                  model = 1,
+                                  start_iterations = c(100, 20)) {
 
     d <- select_ancillary_functions_mplus(df, ...)
     suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename))
@@ -44,7 +46,9 @@ create_profiles_mplus <- function(df,
     VARIABLE_line1 <- paste0("Names are ", unquoted_variable_name, ";")
     VARIABLE_line2 <- paste0("Classes = c(", n_profiles, ");")
 
-    ANALYSIS_line0 <- "ANALYSIS: Type is mixture;"
+    ANALYSIS_line0 <- "ANALYSIS:"
+    ANALYSIS_line1 <- "Type is mixture;"
+    ANALYSIS_line2 <- paste0("start = ", start_iterations[1], " ", start_iterations[2])
 
     MODEL_overall_line00 <- paste0("MODEL:")
     MODEL_overall_line0 <- paste0("%overall%")
@@ -190,13 +194,12 @@ create_profiles_mplus <- function(df,
                          MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
                          overall_collector,
                          class_collector,
-                         ANALYSIS_line0,
+                         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2,
                          OUTPUT_line0),
                        script_filename)
 
     MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename))
     m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename))
-    print(extract_mplus_summary(m1))
     invisible(m1)
 
 }

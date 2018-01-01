@@ -6,7 +6,8 @@
 \usage{
 create_profiles_lpa(df, ..., n_profiles, model = 1, to_return = "tibble",
   center_raw_data = FALSE, scale_raw_data = FALSE,
-  return_posterior_probs = TRUE, return_orig_df = FALSE)
+  return_posterior_probs = TRUE, return_orig_df = FALSE,
+  prior_control = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -26,6 +27,8 @@ create_profiles_lpa(df, ..., n_profiles, model = 1, to_return = "tibble",
 \item{return_posterior_probs}{TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE}
 
 \item{return_orig_df}{TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)}
+
+\item{prior_control}{whether to include a regularizing prior; defaults to false}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models

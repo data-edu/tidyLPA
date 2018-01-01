@@ -9,6 +9,7 @@
 #' @param to_return character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
 #' @param return_posterior_probs TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE
 #' @param return_orig_df TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)
+#' @param prior_control whether to include a regularizing prior; defaults to false
 #' @import mclust
 #' @importFrom rlang .data
 #' @examples
@@ -28,7 +29,8 @@ create_profiles_lpa <- function(df,
                                 center_raw_data = FALSE,
                                 scale_raw_data = FALSE,
                                 return_posterior_probs = TRUE,
-                                return_orig_df = FALSE){
+                                return_orig_df = FALSE,
+                                prior_control = FALSE){
 
     if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
@@ -63,7 +65,11 @@ create_profiles_lpa <- function(df,
 
     d_model <- dplyr::select(d, -row_number)
 
-    m <- mclust::Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE)
+    if (prior_control == FALSE) {
+        m <- mclust::Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE, prior = mclust::priorControl())
+    } else {
+        m <- mclust::Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE, prior = mclust::priorControl())
+    }
 
     if(is.null(m)) stop("Model could not be fitted")
 
