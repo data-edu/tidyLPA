@@ -26,7 +26,8 @@ create_profiles_mplus <- function(df,
                                   script_filename = "t.inp",
                                   output_filename = "t.out",
                                   model = 1,
-                                  start_iterations = c(100, 20)) {
+                                  start_iterations = c(100, 20),
+                                  m_iterations = 500) {
 
     d <- select_ancillary_functions_mplus(df, ...)
     suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename))
@@ -49,6 +50,7 @@ create_profiles_mplus <- function(df,
     ANALYSIS_line0 <- "ANALYSIS:"
     ANALYSIS_line1 <- "Type is mixture;"
     ANALYSIS_line2 <- paste0("start = ", start_iterations[1], " ", start_iterations[2])
+    ANALYSIS_line3 <- paste0("miterations = ", m_iterations)
 
     MODEL_overall_line00 <- paste0("MODEL:")
     MODEL_overall_line0 <- paste0("%overall%")
