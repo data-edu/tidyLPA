@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Explore BIC of mclust models — compare_models_lpa • tidyLPA</title>
+<title>Create models for a specific mclust model — create_profiles_mplus • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,16 +72,16 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Explore BIC of mclust models</h1>
+    <h1>Create models for a specific mclust model</h1>
     </div>
 
     
-    <p>Explore BIC of mclust models</p>
+    <p>Create models for a specific mclust model</p>
     
 
-    <pre class="usage"><span class='fu'>compare_models_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles_range</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>9</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
-  <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"BIC"</span>,
-  <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>create_profiles_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>the_title</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
+  <span class='kw'>data_filename</span> <span class='kw'>=</span> <span class='st'>"d.dat"</span>, <span class='kw'>script_filename</span> <span class='kw'>=</span> <span class='st'>"t.inp"</span>,
+  <span class='kw'>output_filename</span> <span class='kw'>=</span> <span class='st'>"t.out"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -95,43 +95,56 @@
       <td><p>unquoted variable names separated by commas</p></td>
     </tr>
     <tr>
-      <th>n_profiles_range</th>
-      <td><p>a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)</p></td>
+      <th>n_profiles</th>
+      <td><p>the number of profiles (or mixture components) to be estimated</p></td>
+    </tr>
+    <tr>
+      <th>the_title</th>
+      <td><p>title of the model; defaults to test</p></td>
+    </tr>
+    <tr>
+      <th>data_filename</th>
+      <td><p>name of data file to prepare; defaults to d.dat</p></td>
+    </tr>
+    <tr>
+      <th>script_filename</th>
+      <td><p>name of script to prepare; defaults to t.inp</p></td>
+    </tr>
+    <tr>
+      <th>output_filename</th>
+      <td><p>name of the output; defaults to t.out</p></td>
     </tr>
     <tr>
       <th>model</th>
       <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); and 5 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
     </tr>
-    <tr>
-      <th>center_raw_data</th>
-      <td><p>logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE</p></td>
-    </tr>
-    <tr>
-      <th>scale_raw_data</th>
-      <td><p>logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE</p></td>
-    </tr>
-    <tr>
-      <th>statistic</th>
-      <td><p>what statistic to plot; BIC or ICL are presently available as options</p></td>
-    </tr>
-    <tr>
-      <th>return_table</th>
-      <td><p>logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a ggplot2 plot of the BIC values for the explored models</p>
+    <p>either a tibble or a ggplot2 plot of the BIC values for the explored models</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)</p>
+    <p>Creates an mplus model (.inp) and associated data file (.dat)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span>
-<span class='fu'>compare_models_lpa</span>(<span class='no'>d</span>, <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown levels in `f`: Varying means, variances, and covariances (Model 4)</span></div><img src='compare_models_lpa-3.png' alt='' width='540' height='400' /></pre>
+    <pre class="examples"><div class='input'><span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>tbl_df</span>(<span class='no'>iris</span>[, -<span class='fl'>5</span>])
+<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_mplus</span>(<span class='no'>d</span>,
+                            <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
+                            <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                            <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; TITLE: Your title goes here
+#&gt; DATA: FILE = "d.dat";
+#&gt; VARIABLE: 
+#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; 
+#&gt; MISSING=.;
+#&gt; 
+#&gt; Running model: t.inp 
+#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/reference" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" 
+#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/reference/t.out 
+#&gt;         LL      BIC Entropy
+#&gt; 1 -488.915 1042.968   0.991</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

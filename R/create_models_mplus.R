@@ -10,12 +10,10 @@
 #' @importFrom tibble tibble
 #' @examples
 #' d <- tbl_df(iris[, -5])
-#' create_profiles_mplus(d,
-#'                       Sepal.Length, Sepal.Width, Petal.Length,
-#'                       n_profiles = 5)
-#' runModels(target = paste0(getwd(), "/t.inp"))
-#' m1 <- readModels((target = paste0(getwd(), "/t.out")))
-#' extract_mplus_summary(m1_mplus_out)
+#' m1 <- create_profiles_mplus(d,
+#'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+#'                             n_profiles = 2,
+#'                             model = 1)
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
 
@@ -68,6 +66,9 @@ create_profiles_mplus <- function(df,
         the_index <- 0
         class_collector <- list()
         for (i in 1:n_profiles) {
+            if (the_index != 0) {
+                the_index <- the_index + 1
+            }
             class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
             class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
             class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, "(", 1, "-", length(var_list), ");")
@@ -76,29 +77,33 @@ create_profiles_mplus <- function(df,
                     if (var_list[[j]] != var_list[[k]]) {
                         the_index <- length(class_collector)
                         class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "@0;") }}}}
-    }
-
-    else if (model == 2) {
+    } else if (model == 2) {
         overall_collector <- list()
         for (j in 1:length(var_list)) {
             for (k in j:length(var_list)) {
                 if (var_list[[j]] != var_list[[k]]) {
                     the_index <- length(overall_collector)
-                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "@0;")
+                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
                 }
             }
         }
         the_index <- 0
         class_collector <- list()
         for (i in 1:n_profiles) {
-            class_collector[[the_index + i]] <- paste0("%c#", i, "%")
-            class_collector[[the_index + i + 1]] <- paste0("[", unquoted_variable_name, "];")
-            class_collector[[the_index + i + 2]] <- paste0(unquoted_variable_name, "(", 1, "-", length(var_list), ");")
+            if (the_index != 0) {
+                the_index <- the_index + 1
+            }
+            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
+            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
+            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, "(", 1, "-", length(var_list), ");")
+
+            temp_index <- 0
             for (j in 1:length(var_list)) {
                 for (k in j:length(var_list)) {
                     if (var_list[[j]] != var_list[[k]]) {
                         the_index <- length(class_collector)
-                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "@0;") }}}}
+                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "(", length(var_list) + temp_index + 1, ");")
+                        temp_index <- (temp_index + 1) }}}}
     } else if (model == 3) {
         overall_collector <- list()
         for (j in 1:length(var_list)) {
@@ -112,14 +117,71 @@ create_profiles_mplus <- function(df,
         the_index <- 0
         class_collector <- list()
         for (i in 1:n_profiles) {
-            class_collector[[the_index + i]] <- paste0("%c#", i, "%")
-            class_collector[[the_index + i + 1]] <- paste0("[", unquoted_variable_name, "];")
-            class_collector[[the_index + i + 2]] <- paste0(unquoted_variable_name, "(", 1, "-", length(var_list), ");")
+            if (the_index != 0) {
+                the_index <- the_index + 1
+            }
+            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
+            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
+            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, ";")
             for (j in 1:length(var_list)) {
                 for (k in j:length(var_list)) {
                     if (var_list[[j]] != var_list[[k]]) {
                         the_index <- length(class_collector)
                         class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "@0;") }}}}
+    } else if (model == 4) {
+        overall_collector <- list()
+        for (j in 1:length(var_list)) {
+            for (k in j:length(var_list)) {
+                if (var_list[[j]] != var_list[[k]]) {
+                    the_index <- length(overall_collector)
+                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
+                }
+            }
+        }
+        the_index <- 0
+        class_collector <- list()
+        for (i in 1:n_profiles) {
+            if (the_index != 0) {
+                the_index <- the_index + 1
+            }
+            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
+            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
+            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, ";")
+
+            temp_index <- 0
+            for (j in 1:length(var_list)) {
+                for (k in j:length(var_list)) {
+                    if (var_list[[j]] != var_list[[k]]) {
+                        the_index <- length(class_collector)
+                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "(", temp_index + 1, ");")
+                        temp_index <- (temp_index + 1) }}}}
+    } else if (model == 5) {
+        overall_collector <- list()
+        for (j in 1:length(var_list)) {
+            for (k in j:length(var_list)) {
+                if (var_list[[j]] != var_list[[k]]) {
+                    the_index <- length(overall_collector)
+                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
+                }
+            }
+        }
+        the_index <- 0
+        class_collector <- list()
+        for (i in 1:n_profiles) {
+            if (the_index != 0) {
+                the_index <- the_index + 1
+            }
+            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
+            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
+            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, ";")
+
+            temp_index <- 0
+            for (j in 1:length(var_list)) {
+                for (k in j:length(var_list)) {
+                    if (var_list[[j]] != var_list[[k]]) {
+                        the_index <- length(class_collector)
+                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
+                        temp_index <- (temp_index + 1) }}}}
     }
 
     readr::write_lines(c(TITLE,

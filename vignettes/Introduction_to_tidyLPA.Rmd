@@ -189,6 +189,19 @@ To determine the number of profies for a specified model (i.e., models `1`-`4` d
 bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 ```
 
+# Run the same models through Mplus
+
+There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software:
+
+```{r}
+m1 <- create_profiles_mplus(iris,
+                            Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                            n_profiles = 2,
+                            model = 1)
+```
+
+The object `m1` contains the Mplus output, as is returned in Mplus, but in an R list; for quick comparisons, `create_profiles_mplus()` prints the log-likelihood, BIC, and entropy statistics.
+
 # Notes
 
 * This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis. 

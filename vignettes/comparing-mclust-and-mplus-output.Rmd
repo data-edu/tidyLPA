@@ -1,0 +1,360 @@
+---
+title: "Comparing Mplus and mclust output"
+author: "Joshua Rosenberg"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to tidyLPA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    warning = F
+)
+```
+
+This vignette compares mclust and Mplus output, for the purpose of benchmarking the use of mclust, an open-source tool, to Mplus. Note that for the `create_profiles_mplus()` function to work, you must have Mplus installed (and purchased).
+
+```{r, echo = F}
+devtools::load_all(".")
+```
+
+```{r, eval = F}
+library(tidyLPA)
+```
+
+# Introduction
+
+`create_profiles_lpa()` uses the mclust R package, while `create_profiles_mplus()` generates Mplus model syntax which is then run with Mplus.
+
+When `create_profiles_mplus()` is used, a number of files (`.dat` for the data, `.inp` for the model syntax, and `.out` for the model output) will be generated in your working directory. In future versions, these will be generated into a temporary directory by default). For example, when the following line of code is run:
+
+```{r}
+m1_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 2,
+                                  model = 1)
+```
+
+The `t.inp` file is saved in your working directory with the following contents. Note that this code is likely different because it is generated programmatically and uses no defaults (it is likely less efficient than code that you would write by hand).
+
+```{}
+TITLE: test
+DATA: File is d.dat;
+VARIABLE:
+Names are Sepal_Length Sepal_Width Petal_Length Petal_Width;
+Classes = c(2);
+MODEL:
+%overall%
+[Sepal_Length Sepal_Width Petal_Length Petal_Width];
+Sepal_Length Sepal_Width Petal_Length Petal_Width;
+Sepal_Length WITH Sepal_Width@0;
+Sepal_Length WITH Petal_Length@0;
+Sepal_Length WITH Petal_Width@0;
+Sepal_Width WITH Petal_Length@0;
+Sepal_Width WITH Petal_Width@0;
+Petal_Length WITH Petal_Width@0;
+%c#1%
+[Sepal_Length Sepal_Width Petal_Length Petal_Width];
+Sepal_Length Sepal_Width Petal_Length Petal_Width(1-4);
+Sepal_Length WITH Sepal_Width@0;
+Sepal_Length WITH Petal_Length@0;
+Sepal_Length WITH Petal_Width@0;
+Sepal_Width WITH Petal_Length@0;
+Sepal_Width WITH Petal_Width@0;
+Petal_Length WITH Petal_Width@0;
+%c#2%
+[Sepal_Length Sepal_Width Petal_Length Petal_Width];
+Sepal_Length Sepal_Width Petal_Length Petal_Width(1-4);
+Sepal_Length WITH Sepal_Width@0;
+Sepal_Length WITH Petal_Length@0;
+Sepal_Length WITH Petal_Width@0;
+Sepal_Width WITH Petal_Length@0;
+Sepal_Width WITH Petal_Width@0;
+Petal_Length WITH Petal_Width@0;
+ANALYSIS: Type is mixture;
+OUTPUT: TECH1 TECH11;
+```
+
+We can see how this syntax changes if we change the function's arguments by removing a variable, increasing the number of profiles, and changing the model that is specified:
+
+```{r}
+m1_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, 
+                                  n_profiles = 3,
+                                  model = 2)
+```
+
+```{}
+TITLE: test
+DATA: File is d.dat;
+VARIABLE:
+Names are Sepal_Length Sepal_Width Petal_Length;
+Classes = c(3);
+MODEL:
+%overall%
+[Sepal_Length Sepal_Width Petal_Length];
+Sepal_Length Sepal_Width Petal_Length;
+Sepal_Length WITH Sepal_Width;
+Sepal_Length WITH Petal_Length;
+Sepal_Width WITH Petal_Length;
+%c#1%
+[Sepal_Length Sepal_Width Petal_Length];
+Sepal_Length Sepal_Width Petal_Length(1-3);
+Sepal_Length WITH Sepal_Width(4);
+Sepal_Length WITH Petal_Length(5);
+Sepal_Width WITH Petal_Length(6);
+%c#2%
+[Sepal_Length Sepal_Width Petal_Length];
+Sepal_Length Sepal_Width Petal_Length(1-3);
+Sepal_Length WITH Sepal_Width(4);
+Sepal_Length WITH Petal_Length(5);
+Sepal_Width WITH Petal_Length(6);
+%c#3%
+[Sepal_Length Sepal_Width Petal_Length];
+Sepal_Length Sepal_Width Petal_Length(1-3);
+Sepal_Length WITH Sepal_Width(4);
+Sepal_Length WITH Petal_Length(5);
+Sepal_Width WITH Petal_Length(6);
+ANALYSIS: Type is mixture;
+OUTPUT: TECH1 TECH11;
+```
+
+In the rest of this document, Mplus and mclust are benchmarked. For ease of comparison, the estimated log-likelihood; if these are  identical it probably means all of the estimated paramteters are identical ([other benchmarks we have done](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/) with Mplus and mclust have demonstrated this).
+
+# Using the built-in iris dataset
+
+### 2 profiles
+
+**Mplus**
+
+```{r}
+m1_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 2,
+                                  model = 1)
+
+m2_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 2,
+                                  model = 2)
+
+m3_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 2,
+                                  model = 3)
+
+m4_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 2,
+                                  model = 4)
+
+m5_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 2,
+                                  model = 5)
+```
+
+**mclust**
+
+Note that model 4 can only be specified in Mplus, so is not included here.
+
+```{r}
+m1_mclust <- create_profiles_lpa(iris,
+                                 Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                 n_profiles = 2,
+                                 model = 1)
+
+m2_mclust <- create_profiles_lpa(iris,
+                                 Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                 n_profiles = 2,
+                                 model = 2)
+
+m3_mclust <- create_profiles_lpa(iris,
+                                 Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                 n_profiles = 2,
+                                 model = 3)
+
+m5_mclust <- create_profiles_lpa(iris,
+                                 Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                 n_profiles = 2,
+                                 model = 5)
+```
+
+Here is a summary of the log-likelihood statistics:
+
+```{r}
+library(tibble)
+
+iris_log_lik <- tribble(
+    ~model, ~mplus, ~mclust,
+    1, 488.915, 488.915,
+    2, 296.448, 296.448,
+    3, 386.185, 386.185,
+    4, 278.544, NA,
+    5, 214.355, 214.355
+)
+
+iris_log_lik
+```
+
+### 3 profiles 
+
+What if we specify 3 profiles?
+
+**Mplus**
+
+```{r}
+m1_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 3,
+                                  model = 1)
+
+m2_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 3,
+                                  model = 2)
+
+m3_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 3,
+                                  model = 3)
+
+m4_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 3,
+                                  model = 4)
+
+m5_mplus <- create_profiles_mplus(iris,
+                                  Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                  n_profiles = 3,
+                                  model = 5)
+```
+
+**mclust**
+
+Note that model 4 can only be specified in Mplus, so is not included here.
+
+```{r}
+m1_mclust <- create_profiles_lpa(iris,
+                                 Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                 n_profiles = 3,
+                                 model = 1)
+
+m2_mclust <- create_profiles_lpa(iris,
+                                 Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                 n_profiles = 3,
+                                 model = 2)
+
+m3_mclust <- create_profiles_lpa(iris,
+                                 Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                 n_profiles = 3,
+                                 model = 3)
+
+m5_mclust <- create_profiles_lpa(iris,
+                                 Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                                 n_profiles = 3,
+                                 model = 5)
+```
+
+```{r}
+library(tibble)
+
+iris_log_lik_3 <- tribble(
+    ~model, ~mplus, ~mclust,
+    1, 361.426, 361.429,
+    2, 256.354, 256.355,
+    3, 307.178, 307.181,
+    4, 229.004, NA,
+    5, 180.185, 180.186
+)
+
+iris_log_lik_3
+```
+
+# Using the built-in old faithful geyser dataset
+
+**Mplus**
+
+```{r}
+
+m1_mplus <- create_profiles_mplus(faithful,
+                                  eruptions, waiting,
+                                  n_profiles = 2,
+                                  model = 1)
+
+m2_mplus <- create_profiles_mplus(faithful,
+                                  eruptions, waiting,
+                                  n_profiles = 2,
+                                  model = 2)
+
+m3_mplus <- create_profiles_mplus(faithful,
+                                  eruptions, waiting,
+                                  n_profiles = 2,
+                                  model = 3)
+
+m4_mplus <- create_profiles_mplus(faithful,
+                                  eruptions, waiting,
+                                  n_profiles = 2,
+                                  model = 4)
+
+m5_mplus <- create_profiles_mplus(faithful,
+                                  eruptions, waiting,
+                                  n_profiles = 2,
+                                  model = 5)
+```
+
+**mclust**
+
+Note that model 4 can only be specified in Mplus, so is not included here.
+
+```{r}
+m1_mclust <- create_profiles_lpa(faithful,
+                                 eruptions, waiting,
+                                 n_profiles = 2,
+                                 model = 1)
+
+m2_mclust <- create_profiles_lpa(faithful,
+                                 eruptions, waiting,
+                                 n_profiles = 2,
+                                 model = 2)
+
+m3_mclust <- create_profiles_lpa(faithful,
+                                 eruptions, waiting,
+                                 n_profiles = 2,
+                                 model = 3)
+
+m5_mclust <- create_profiles_lpa(faithful,
+                                 eruptions, waiting,
+                                 n_profiles = 2,
+                                 model = 5)
+```
+
+Here is a summary of the log-likelihood statistics:
+
+```{r}
+library(tibble)
+
+geyser_log_lik <- tribble(
+    ~model, ~mplus, ~mclust,
+    1, 1157.68, 1157.68,
+    2, 1140.187, 1140.187,
+    3, 1147.806, 1147.806,
+    4, 1131.970, NA,
+    5, 1130.264, 1130.264
+)
+
+geyser_log_lik
+```
+
+# Next steps
+
+Finding conditions when the models do differ is an important consideration; these differences, when encountered, are probably due to two reasons:
+
+1. Different initialization routines: Mplus uses random starts, and while mclust can use random starts, it defaults to using hierarchical clustering to initialize.
+2. Different estimation methods: Both use Expectation-Maximization (EM) maximum likelihood estimation methods, though Mplus may use an estimator which is more robust to non-normal distributions.
+

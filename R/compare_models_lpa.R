@@ -42,7 +42,7 @@ compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 
         dplyr::rename(`Varying means, equal variances, covariances fixed to 0 (Model 1)` = "EEI",
                       `Varying means, equal variances and covariances (Model 2)` = "EEE",
                       `Varying means and variances, covariances fixed to 0 (Model 3)` = "VVI",
-                      `Varying means, variances, and covariances (Model 4)` = "VVV")
+                      `Varying means, variances, and covariances (Model 5)` = "VVV")
 
     to_plot <- y %>%
         tidyr::gather("Covariance matrix structure", "val", -.data$n_profiles) %>%

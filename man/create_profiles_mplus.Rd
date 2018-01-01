@@ -5,7 +5,8 @@
 \title{Create models for a specific mclust model}
 \usage{
 create_profiles_mplus(df, ..., n_profiles, the_title = "test",
-  data_filename = "d.dat", script_filename = "t.inp", model = 1)
+  data_filename = "d.dat", script_filename = "t.inp",
+  output_filename = "t.out", model = 1)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -18,9 +19,11 @@ create_profiles_mplus(df, ..., n_profiles, the_title = "test",
 
 \item{data_filename}{name of data file to prepare; defaults to d.dat}
 
-\item{script_filename}{name of script to prepare; defaults to t.imp}
+\item{script_filename}{name of script to prepare; defaults to t.inp}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+\item{output_filename}{name of the output; defaults to t.out}
+
+\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); and 5 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models
@@ -33,10 +36,8 @@ Creates an mplus model (.inp) and associated data file (.dat)
 }
 \examples{
 d <- tbl_df(iris[, -5])
-create_profiles_mplus(d,
-                      Sepal.Length, Sepal.Width, Petal.Length,
-                      n_profiles = 5)
-runModels(target = paste0(getwd(), "/t.inp"))
-m1 <- readModels((target = paste0(getwd(), "/t.out")))
-extract_mplus_summary(m1_mplus_out)
+m1 <- create_profiles_mplus(d,
+                            Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+                            n_profiles = 2,
+                            model = 1)
 }
