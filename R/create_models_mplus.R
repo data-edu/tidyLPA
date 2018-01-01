@@ -1,7 +1,8 @@
 #' Create models for a specific mclust model
-#' @details Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
+#' @details Creates an mplus model (.inp) and associated data file (.dat)
 #' @param data_filename name of data file to prepare; defaults to d.dat
-#' @param script_filename name of script to prepare; defaults to t.imp
+#' @param script_filename name of script to prepare; defaults to t.inp
+#' @param output_filename name of the output; defaults to t.out
 #' @param the_title title of the model; defaults to test
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
@@ -24,6 +25,7 @@ create_profiles_mplus <- function(df,
                                   the_title = "test",
                                   data_filename = "d.dat",
                                   script_filename = "t.inp",
+                                  output_filename = "t.out",
                                   model = 1) {
 
     d <- select_ancillary_functions_mplus(df, ...)
@@ -129,6 +131,11 @@ create_profiles_mplus <- function(df,
                          ANALYSIS_line0,
                          OUTPUT_line0),
                        script_filename)
+
+    MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename))
+    m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename))
+    print(extract_mplus_summary(m1))
+    invisible(m1)
 
 }
 
