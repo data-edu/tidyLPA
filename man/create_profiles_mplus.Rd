@@ -6,7 +6,8 @@
 \usage{
 create_profiles_mplus(df, ..., n_profiles, the_title = "test",
   data_filename = "d.dat", script_filename = "t.inp",
-  output_filename = "t.out", model = 1, start_iterations = c(100, 20))
+  output_filename = "t.out", model = 1, start_iterations = c(100, 20),
+  m_iterations = 500)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -26,6 +27,8 @@ create_profiles_mplus(df, ..., n_profiles, the_title = "test",
 \item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); and 5 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
 \item{start_iterations}{the number of start iterations; defaults to c(100, 20)}
+
+\item{m_iterations}{number of m-step iterations; defaults to 500}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models

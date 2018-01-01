@@ -5,6 +5,7 @@
 #' @param output_filename name of the output; defaults to t.out
 #' @param the_title title of the model; defaults to test
 #' @param start_iterations the number of start iterations; defaults to c(100, 20)
+#' @param m_iterations number of m-step iterations; defaults to 500
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
 #' @import tidyr
