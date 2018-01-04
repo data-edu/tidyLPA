@@ -6,7 +6,7 @@
 \usage{
 create_profiles_mplus(df, ..., n_profiles, the_title = "test",
   data_filename = "d.dat", script_filename = "t.inp",
-  output_filename = "t.out", model = 1, start_iterations = c(100, 20),
+  output_filename = "t.out", model = 1, start_iterations = c(20, 4),
   m_iterations = 500)
 }
 \arguments{
@@ -26,7 +26,7 @@ create_profiles_mplus(df, ..., n_profiles, the_title = "test",
 
 \item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); and 5 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
-\item{start_iterations}{the number of start iterations; defaults to c(100, 20)}
+\item{start_iterations}{the number of start iterations; defaults to c(20, 4); can change to c(120, 20) or c(600, 120)}
 
 \item{m_iterations}{number of m-step iterations; defaults to 500}
 }
@@ -40,8 +40,7 @@ Create models for a specific mclust model
 Creates an mplus model (.inp) and associated data file (.dat)
 }
 \examples{
-d <- tbl_df(iris[, -5])
-m1 <- create_profiles_mplus(d,
+m1 <- create_profiles_mplus(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                             n_profiles = 2,
                             model = 1)

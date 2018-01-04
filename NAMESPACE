@@ -2,6 +2,7 @@
 
 export(bootstrap_lrt)
 export(compare_models_lpa)
+export(compare_models_mplus)
 export(create_profiles_lpa)
 export(create_profiles_mplus)
 export(extract_mplus_summary)

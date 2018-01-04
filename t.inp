@@ -2,7 +2,7 @@ TITLE: test
 DATA: File is d.dat;
 VARIABLE:
 Names are Sepal_Length Sepal_Width Petal_Length Petal_Width;
-Classes = c(7);
+Classes = c(10);
 MODEL:
 %overall%
 [Sepal_Length Sepal_Width Petal_Length Petal_Width];
@@ -76,7 +76,34 @@ Sepal_Length WITH Petal_Width;
 Sepal_Width WITH Petal_Length;
 Sepal_Width WITH Petal_Width;
 Petal_Length WITH Petal_Width;
+%c#8%
+[Sepal_Length Sepal_Width Petal_Length Petal_Width];
+Sepal_Length Sepal_Width Petal_Length Petal_Width;
+Sepal_Length WITH Sepal_Width;
+Sepal_Length WITH Petal_Length;
+Sepal_Length WITH Petal_Width;
+Sepal_Width WITH Petal_Length;
+Sepal_Width WITH Petal_Width;
+Petal_Length WITH Petal_Width;
+%c#9%
+[Sepal_Length Sepal_Width Petal_Length Petal_Width];
+Sepal_Length Sepal_Width Petal_Length Petal_Width;
+Sepal_Length WITH Sepal_Width;
+Sepal_Length WITH Petal_Length;
+Sepal_Length WITH Petal_Width;
+Sepal_Width WITH Petal_Length;
+Sepal_Width WITH Petal_Width;
+Petal_Length WITH Petal_Width;
+%c#10%
+[Sepal_Length Sepal_Width Petal_Length Petal_Width];
+Sepal_Length Sepal_Width Petal_Length Petal_Width;
+Sepal_Length WITH Sepal_Width;
+Sepal_Length WITH Petal_Length;
+Sepal_Length WITH Petal_Width;
+Sepal_Width WITH Petal_Length;
+Sepal_Width WITH Petal_Width;
+Petal_Length WITH Petal_Width;
 ANALYSIS:
 Type is mixture;
-start = 600 100
+start = 100 20
 OUTPUT: TECH1 TECH11;

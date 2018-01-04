@@ -13,7 +13,7 @@
 #' @import mclust
 #' @importFrom rlang .data
 #' @examples
-#' d <- pisaUSA15
+#' d <- pisaUSA15::pisaUSA15
 #' d <- dplyr::sample_n(d, 200)
 #' m3 <- create_profiles_lpa(d,
 #'                           broad_interest, enjoyment, self_efficacy,

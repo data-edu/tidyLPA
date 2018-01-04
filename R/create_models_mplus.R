@@ -4,15 +4,14 @@
 #' @param script_filename name of script to prepare; defaults to t.inp
 #' @param output_filename name of the output; defaults to t.out
 #' @param the_title title of the model; defaults to test
-#' @param start_iterations the number of start iterations; defaults to c(100, 20)
+#' @param start_iterations the number of start iterations; defaults to c(20, 4); can change to c(120, 20) or c(600, 120)
 #' @param m_iterations number of m-step iterations; defaults to 500
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
 #' @import tidyr
 #' @importFrom tibble tibble
 #' @examples
-#' d <- tbl_df(iris[, -5])
-#' m1 <- create_profiles_mplus(d,
+#' m1 <- create_profiles_mplus(iris,
 #'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #'                             n_profiles = 2,
 #'                             model = 1)
@@ -27,7 +26,7 @@ create_profiles_mplus <- function(df,
                                   script_filename = "t.inp",
                                   output_filename = "t.out",
                                   model = 1,
-                                  start_iterations = c(100, 20),
+                                  start_iterations = c(20, 4),
                                   m_iterations = 500) {
 
     d <- select_ancillary_functions_mplus(df, ...)

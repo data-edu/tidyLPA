@@ -1,6 +1,6 @@
 Mplus VERSION 8 (Mac)
 MUTHEN & MUTHEN
-01/01/2018   3:33 PM
+01/04/2018   9:50 AM
 
 INPUT INSTRUCTIONS
 
@@ -8,7 +8,7 @@ INPUT INSTRUCTIONS
   DATA: File is d.dat;
   VARIABLE:
   Names are Sepal_Length Sepal_Width Petal_Length Petal_Width;
-  Classes = c(7);
+  Classes = c(10);
   MODEL:
   %overall%
   [Sepal_Length Sepal_Width Petal_Length Petal_Width];
@@ -82,9 +82,36 @@ INPUT INSTRUCTIONS
   Sepal_Width WITH Petal_Length;
   Sepal_Width WITH Petal_Width;
   Petal_Length WITH Petal_Width;
+  %c#8%
+  [Sepal_Length Sepal_Width Petal_Length Petal_Width];
+  Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Sepal_Length WITH Sepal_Width;
+  Sepal_Length WITH Petal_Length;
+  Sepal_Length WITH Petal_Width;
+  Sepal_Width WITH Petal_Length;
+  Sepal_Width WITH Petal_Width;
+  Petal_Length WITH Petal_Width;
+  %c#9%
+  [Sepal_Length Sepal_Width Petal_Length Petal_Width];
+  Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Sepal_Length WITH Sepal_Width;
+  Sepal_Length WITH Petal_Length;
+  Sepal_Length WITH Petal_Width;
+  Sepal_Width WITH Petal_Length;
+  Sepal_Width WITH Petal_Width;
+  Petal_Length WITH Petal_Width;
+  %c#10%
+  [Sepal_Length Sepal_Width Petal_Length Petal_Width];
+  Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Sepal_Length WITH Sepal_Width;
+  Sepal_Length WITH Petal_Length;
+  Sepal_Length WITH Petal_Width;
+  Sepal_Width WITH Petal_Length;
+  Sepal_Width WITH Petal_Width;
+  Petal_Length WITH Petal_Width;
   ANALYSIS:
   Type is mixture;
-  start = 600 100
+  start = 100 20
   OUTPUT: TECH1 TECH11;
 
 
@@ -145,8 +172,8 @@ Categorical (Nominal) and Count Outcomes
   Minimum expected cell size for chi-square              0.100D-01
 Optimization algorithm                                         EMA
 Random Starts Specifications
-  Number of initial stage random starts                        600
-  Number of final stage optimizations                          100
+  Number of initial stage random starts                        100
+  Number of final stage optimizations                           20
   Number of initial stage iterations                            10
   Initial stage convergence criterion                    0.100D+01
   Random starts scale                                    0.500D+01
@@ -177,49 +204,21 @@ UNIVARIATE SAMPLE STATISTICS
 
 RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
 
-165 perturbed starting value run(s) did not converge in the initial stage
+24 perturbed starting value run(s) did not converge in the initial stage
 optimizations.
 
 Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
 
-            -105.884  315029           471
 
-99 perturbed starting value run(s) did not converge.
-
+20 perturbed starting value run(s) did not converge.
 
 
-     WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE
-     SOLUTION MAY NOT BE TRUSTWORTHY DUE TO LOCAL MAXIMA.  INCREASE THE
-     NUMBER OF RANDOM STARTS.
-
-     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
-     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
-     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
-     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
-     CONDITION NUMBER IS       0.625D-13.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
-     Parameter 41, %C#3%: PETAL_WIDTH WITH PETAL_LENGTH
-
-
-THE MODEL ESTIMATION TERMINATED NORMALLY
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT
+     NUMBER OF E STEPS.  INCREASE THE NUMBER OF MITERATIONS.  ESTIMATES
+     CANNOT BE TRUSTED.
 
 
 
-MODEL FIT INFORMATION
-
-Number of Free Parameters                      104
-
-Loglikelihood
-
-          H0 Value                        -105.884
-          H0 Scaling Correction Factor      0.9647
-            for MLR
-
-Information Criteria
-
-          Akaike (AIC)                     419.769
-          Bayesian (BIC)                   732.875
-          Sample-Size Adjusted BIC         403.735
-            (n* = (n + 2) / 24)
 
 
 
@@ -229,13 +228,16 @@ BASED ON THE ESTIMATED MODEL
     Latent
    Classes
 
-       1         21.39793          0.14265
-       2         23.92976          0.15953
-       3          9.21222          0.06141
-       4         28.60207          0.19068
-       5         11.20432          0.07470
-       6         18.49565          0.12330
-       7         37.15804          0.24772
+       1         20.76874          0.13846
+       2          5.98812          0.03992
+       3          7.53482          0.05023
+       4         59.90854          0.39939
+       5          2.00000          0.01333
+       6         27.23131          0.18154
+       7         19.56864          0.13046
+       8          3.00000          0.02000
+       9          1.99994          0.01333
+      10          1.99987          0.01333
 
 
 FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
@@ -244,13 +246,16 @@ BASED ON ESTIMATED POSTERIOR PROBABILITIES
     Latent
    Classes
 
-       1         21.39793          0.14265
-       2         23.92976          0.15953
-       3          9.21222          0.06141
-       4         28.60207          0.19068
-       5         11.20432          0.07470
-       6         18.49565          0.12330
-       7         37.15804          0.24772
+       1         20.76874          0.13846
+       2          5.98812          0.03992
+       3          7.53482          0.05023
+       4         59.90854          0.39939
+       5          2.00000          0.01333
+       6         27.23131          0.18154
+       7         19.56864          0.13046
+       8          3.00000          0.02000
+       9          1.99994          0.01333
+      10          1.99987          0.01333
 
 
 FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
@@ -261,264 +266,595 @@ Class Counts and Proportions
     Latent
    Classes
 
-       1               23          0.15333
-       2               24          0.16000
-       3               10          0.06667
-       4               27          0.18000
-       5               12          0.08000
-       6               18          0.12000
-       7               36          0.24000
+       1               22          0.14667
+       2                6          0.04000
+       3                6          0.04000
+       4               59          0.39333
+       5                2          0.01333
+       6               26          0.17333
+       7               22          0.14667
+       8                3          0.02000
+       9                2          0.01333
+      10                2          0.01333
 
 
 CLASSIFICATION QUALITY
 
-     Entropy                         0.935
+     Entropy                         0.918
 
 
 Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
 by Latent Class (Column)
 
-           1        2        3        4        5        6        7
+           1        2        3        4        5        6        7        8        9
 
-    1   0.874    0.000    0.000    0.126    0.000    0.000    0.000
-    2   0.000    0.978    0.000    0.000    0.000    0.021    0.001
-    3   0.000    0.000    0.917    0.000    0.000    0.000    0.083
-    4   0.048    0.000    0.000    0.952    0.000    0.000    0.000
-    5   0.000    0.000    0.000    0.000    0.931    0.016    0.053
-    6   0.000    0.003    0.000    0.000    0.002    0.989    0.007
-    7   0.000    0.011    0.001    0.000    0.000    0.000    0.987
+    1   0.855    0.000    0.000    0.000    0.000    0.145    0.000    0.000    0.000
+    2   0.000    0.955    0.000    0.043    0.000    0.000    0.002    0.000    0.000
+    3   0.000    0.000    0.871    0.125    0.000    0.000    0.004    0.000    0.000
+    4   0.000    0.000    0.007    0.973    0.000    0.000    0.020    0.000    0.000
+    5   0.000    0.000    0.000    0.000    1.000    0.000    0.000    0.000    0.000
+    6   0.075    0.000    0.000    0.000    0.000    0.925    0.000    0.000    0.000
+    7   0.000    0.012    0.086    0.068    0.000    0.000    0.834    0.000    0.000
+    8   0.000    0.000    0.000    0.000    0.000    0.000    0.000    1.000    0.000
+    9   0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000    1.000
+   10   0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000
+
+          10
+
+    1   0.000
+    2   0.000
+    3   0.000
+    4   0.000
+    5   0.000
+    6   0.000
+    7   0.000
+    8   0.000
+    9   0.000
+   10   1.000
 
 
 Classification Probabilities for the Most Likely Latent Class Membership (Column)
 by Latent Class (Row)
 
-           1        2        3        4        5        6        7
+           1        2        3        4        5        6        7        8        9
 
-    1   0.939    0.000    0.000    0.061    0.000    0.000    0.000
-    2   0.000    0.980    0.000    0.000    0.000    0.002    0.017
-    3   0.000    0.000    0.996    0.000    0.000    0.000    0.004
-    4   0.101    0.000    0.000    0.899    0.000    0.000    0.000
-    5   0.000    0.000    0.000    0.000    0.997    0.002    0.001
-    6   0.000    0.027    0.000    0.000    0.010    0.962    0.000
-    7   0.000    0.001    0.022    0.000    0.017    0.003    0.957
+    1   0.906    0.000    0.000    0.000    0.000    0.094    0.000    0.000    0.000
+    2   0.000    0.957    0.000    0.000    0.000    0.000    0.043    0.000    0.000
+    3   0.000    0.000    0.694    0.054    0.000    0.000    0.252    0.000    0.000
+    4   0.000    0.004    0.013    0.958    0.000    0.000    0.025    0.000    0.000
+    5   0.000    0.000    0.000    0.000    1.000    0.000    0.000    0.000    0.000
+    6   0.117    0.000    0.000    0.000    0.000    0.883    0.000    0.000    0.000
+    7   0.000    0.001    0.001    0.060    0.000    0.000    0.938    0.000    0.000
+    8   0.000    0.000    0.000    0.000    0.000    0.000    0.000    1.000    0.000
+    9   0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000    1.000
+   10   0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000
+
+          10
+
+    1   0.000
+    2   0.000
+    3   0.000
+    4   0.000
+    5   0.000
+    6   0.000
+    7   0.000
+    8   0.000
+    9   0.000
+   10   1.000
 
 
 Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
 by Latent Class (Row)
 
-              1        2        3        4        5        6        7
+              1        2        3        4        5        6        7        8        9
 
-    1     13.753    0.000    0.000   11.011    0.000    0.000    0.000
-    2     -9.745    4.051   -9.745   -9.745   -6.251   -1.934    0.000
-    3     -8.344   -8.344    5.467   -8.344   -8.344   -8.344    0.000
-    4     11.526    0.000    0.000   13.709    0.000    0.000    0.000
-    5     -6.399   -3.771   -6.399   -6.399    7.414    1.411    0.000
-    6     -5.423    4.799   -5.423   -5.423    3.802    8.354    0.000
-    7    -13.771   -7.089   -3.761  -13.771   -4.014   -5.707    0.000
+    1     13.716    0.000    0.000    0.000    0.000   11.456    0.000    0.000    0.000
+    2      0.000   13.771    0.000    0.000    0.000    0.000   10.676    0.000    0.000
+    3      0.000    0.836   13.450   10.905    0.000    0.000   12.436    0.000    0.000
+    4     -0.795    7.574    8.639   12.978   -0.795   -0.795    9.328   -0.795   -0.795
+    5      0.000    0.000    0.000    0.000   13.816    0.000    0.000    0.000    0.000
+    6     11.672    0.000    0.000    0.000    0.000   13.691    0.000    0.000    0.727
+    7      0.000    6.488    7.088   11.008    0.000    0.000   13.751    0.000    0.000
+    8      0.000    0.000    0.000    0.000    0.000    0.000    0.000   13.816    0.000
+    9      0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000   13.816
+   10    -13.816  -13.816  -13.816  -13.816  -13.816  -13.816  -13.816  -13.816  -13.816
+
+             10
+
+    1      0.000
+    2      0.000
+    3      0.000
+    4      0.000
+    5      0.000
+    6      0.000
+    7      0.000
+    8      0.000
+    9      0.000
+   10      0.000
 
 
 MODEL RESULTS
 
-                                                    Two-Tailed
-                    Estimate       S.E.  Est./S.E.    P-Value
+                    Estimate
 
 Latent Class 1
 
  SEPAL_LE WITH
-    SEPAL_WIDT         0.067      0.024      2.783      0.005
-    PETAL_LENG         0.043      0.016      2.738      0.006
-    PETAL_WIDT         0.006      0.005      1.155      0.248
+    SEPAL_WIDT         0.041
+    PETAL_LENG         0.025
+    PETAL_WIDT         0.000
 
  SEPAL_WI WITH
-    PETAL_LENG         0.008      0.011      0.705      0.481
-    PETAL_WIDT         0.006      0.004      1.508      0.131
+    PETAL_LENG         0.013
+    PETAL_WIDT        -0.005
 
  PETAL_LE WITH
-    PETAL_WIDT         0.003      0.002      1.328      0.184
+    PETAL_WIDT         0.001
 
  Means
-    SEPAL_LENG         4.873      0.085     57.131      0.000
-    SEPAL_WIDT         3.302      0.061     53.821      0.000
-    PETAL_LENG         1.428      0.037     38.718      0.000
-    PETAL_WIDT         0.200      0.012     17.025      0.000
+    SEPAL_LENG         4.765
+    SEPAL_WIDT         3.123
+    PETAL_LENG         1.431
+    PETAL_WIDT         0.193
 
  Variances
-    SEPAL_LENG         0.135      0.037      3.696      0.000
-    SEPAL_WIDT         0.066      0.015      4.395      0.000
-    PETAL_LENG         0.027      0.010      2.589      0.010
-    PETAL_WIDT         0.002      0.001      1.459      0.145
+    SEPAL_LENG         0.075
+    SEPAL_WIDT         0.074
+    PETAL_LENG         0.018
+    PETAL_WIDT         0.002
 
 Latent Class 2
 
  SEPAL_LE WITH
-    SEPAL_WIDT         0.178      0.037      4.761      0.000
-    PETAL_LENG         0.322      0.057      5.615      0.000
-    PETAL_WIDT         0.097      0.020      4.848      0.000
+    SEPAL_WIDT        -0.005
+    PETAL_LENG        -0.002
+    PETAL_WIDT        -0.007
 
  SEPAL_WI WITH
-    PETAL_LENG         0.120      0.026      4.520      0.000
-    PETAL_WIDT         0.042      0.009      4.579      0.000
+    PETAL_LENG         0.001
+    PETAL_WIDT         0.009
 
  PETAL_LE WITH
-    PETAL_WIDT         0.081      0.030      2.745      0.006
+    PETAL_WIDT         0.010
 
  Means
-    SEPAL_LENG         5.968      0.144     41.464      0.000
-    SEPAL_WIDT         2.696      0.063     42.530      0.000
-    PETAL_LENG         4.064      0.146     27.758      0.000
-    PETAL_WIDT         1.252      0.055     22.643      0.000
+    SEPAL_LENG         5.689
+    SEPAL_WIDT         2.882
+    PETAL_LENG         4.222
+    PETAL_WIDT         1.237
 
  Variances
-    SEPAL_LENG         0.425      0.072      5.865      0.000
-    SEPAL_WIDT         0.094      0.022      4.328      0.000
-    PETAL_LENG         0.279      0.073      3.836      0.000
-    PETAL_WIDT         0.031      0.013      2.330      0.020
+    SEPAL_LENG         0.005
+    SEPAL_WIDT         0.013
+    PETAL_LENG         0.018
+    PETAL_WIDT         0.017
 
 Latent Class 3
 
  SEPAL_LE WITH
-    SEPAL_WIDT         0.037      0.024      1.541      0.123
-    PETAL_LENG         0.155      0.076      2.042      0.041
-    PETAL_WIDT         0.023      0.036      0.659      0.510
+    SEPAL_WIDT         0.006
+    PETAL_LENG         0.199
+    PETAL_WIDT         0.050
 
  SEPAL_WI WITH
-    PETAL_LENG         0.026      0.020      1.314      0.189
-    PETAL_WIDT         0.017      0.010      1.700      0.089
+    PETAL_LENG         0.000
+    PETAL_WIDT         0.006
 
  PETAL_LE WITH
-    PETAL_WIDT         0.000      0.035      0.008      0.994
+    PETAL_WIDT         0.078
 
  Means
-    SEPAL_LENG         5.861      0.149     39.323      0.000
-    SEPAL_WIDT         2.705      0.047     58.005      0.000
-    PETAL_LENG         5.196      0.124     41.790      0.000
-    PETAL_WIDT         1.937      0.098     19.759      0.000
+    SEPAL_LENG         5.577
+    SEPAL_WIDT         2.308
+    PETAL_LENG         3.940
+    PETAL_WIDT         1.171
 
  Variances
-    SEPAL_LENG         0.192      0.106      1.812      0.070
-    SEPAL_WIDT         0.017      0.007      2.568      0.010
-    PETAL_LENG         0.132      0.054      2.440      0.015
-    PETAL_WIDT         0.071      0.036      1.979      0.048
+    SEPAL_LENG         0.223
+    SEPAL_WIDT         0.025
+    PETAL_LENG         0.250
+    PETAL_WIDT         0.033
 
 Latent Class 4
 
  SEPAL_LE WITH
-    SEPAL_WIDT         0.098      0.033      2.991      0.003
-    PETAL_LENG        -0.010      0.010     -0.951      0.342
-    PETAL_WIDT         0.005      0.005      1.018      0.309
+    SEPAL_WIDT         0.081
+    PETAL_LENG         0.281
+    PETAL_WIDT         0.103
 
  SEPAL_WI WITH
-    PETAL_LENG         0.009      0.012      0.717      0.474
-    PETAL_WIDT         0.004      0.008      0.479      0.632
+    PETAL_LENG         0.077
+    PETAL_WIDT         0.050
 
  PETAL_LE WITH
-    PETAL_WIDT         0.006      0.003      1.839      0.066
+    PETAL_WIDT         0.176
 
  Means
-    SEPAL_LENG         5.106      0.059     86.409      0.000
-    SEPAL_WIDT         3.523      0.083     42.400      0.000
-    PETAL_LENG         1.487      0.033     45.344      0.000
-    PETAL_WIDT         0.280      0.024     11.552      0.000
+    SEPAL_LENG         6.382
+    SEPAL_WIDT         2.976
+    PETAL_LENG         5.148
+    PETAL_WIDT         1.811
 
  Variances
-    SEPAL_LENG         0.088      0.023      3.888      0.000
-    SEPAL_WIDT         0.176      0.058      3.052      0.002
-    PETAL_LENG         0.030      0.008      3.520      0.000
-    PETAL_WIDT         0.015      0.004      3.870      0.000
+    SEPAL_LENG         0.325
+    SEPAL_WIDT         0.081
+    PETAL_LENG         0.402
+    PETAL_WIDT         0.143
 
 Latent Class 5
 
  SEPAL_LE WITH
-    SEPAL_WIDT        -0.009      0.018     -0.527      0.598
-    PETAL_LENG         0.024      0.016      1.505      0.132
-    PETAL_WIDT         0.017      0.015      1.188      0.235
+    SEPAL_WIDT        -0.076
+    PETAL_LENG         0.000
+    PETAL_WIDT        -0.051
 
  SEPAL_WI WITH
-    PETAL_LENG         0.142      0.063      2.250      0.024
-    PETAL_WIDT         0.133      0.056      2.379      0.017
+    PETAL_LENG         0.000
+    PETAL_WIDT         0.012
 
  PETAL_LE WITH
-    PETAL_WIDT         0.158      0.067      2.364      0.018
+    PETAL_WIDT         0.000
 
  Means
-    SEPAL_LENG         6.149      0.046    133.394      0.000
-    SEPAL_WIDT         2.795      0.131     21.361      0.000
-    PETAL_LENG         4.796      0.131     36.562      0.000
-    PETAL_WIDT         1.736      0.118     14.766      0.000
+    SEPAL_LENG         5.500
+    SEPAL_WIDT         2.362
+    PETAL_LENG         4.500
+    PETAL_WIDT         1.608
 
  Variances
-    SEPAL_LENG         0.020      0.006      3.270      0.001
-    SEPAL_WIDT         0.178      0.050      3.543      0.000
-    PETAL_LENG         0.177      0.076      2.342      0.019
-    PETAL_WIDT         0.143      0.060      2.408      0.016
+    SEPAL_LENG         0.330
+    SEPAL_WIDT         0.018
+    PETAL_LENG         0.000
+    PETAL_WIDT         0.008
 
 Latent Class 6
 
  SEPAL_LE WITH
-    SEPAL_WIDT         0.036      0.016      2.326      0.020
-    PETAL_LENG         0.047      0.019      2.504      0.012
-    PETAL_WIDT         0.013      0.010      1.366      0.172
+    SEPAL_WIDT         0.048
+    PETAL_LENG         0.003
+    PETAL_WIDT         0.002
 
  SEPAL_WI WITH
-    PETAL_LENG         0.022      0.011      1.946      0.052
-    PETAL_WIDT         0.024      0.008      2.835      0.005
+    PETAL_LENG         0.001
+    PETAL_WIDT        -0.001
 
  PETAL_LE WITH
-    PETAL_WIDT         0.015      0.008      1.925      0.054
+    PETAL_WIDT         0.008
 
  Means
-    SEPAL_LENG         5.806      0.076     75.936      0.000
-    SEPAL_WIDT         2.928      0.050     58.871      0.000
-    PETAL_LENG         4.361      0.062     70.174      0.000
-    PETAL_WIDT         1.360      0.035     38.491      0.000
+    SEPAL_LENG         5.133
+    SEPAL_WIDT         3.585
+    PETAL_LENG         1.480
+    PETAL_WIDT         0.275
 
  Variances
-    SEPAL_LENG         0.095      0.027      3.499      0.000
-    SEPAL_WIDT         0.043      0.014      3.083      0.002
-    PETAL_LENG         0.059      0.015      3.975      0.000
-    PETAL_WIDT         0.023      0.007      3.189      0.001
+    SEPAL_LENG         0.087
+    SEPAL_WIDT         0.074
+    PETAL_LENG         0.037
+    PETAL_WIDT         0.013
 
 Latent Class 7
 
  SEPAL_LE WITH
-    SEPAL_WIDT         0.065      0.040      1.611      0.107
-    PETAL_LENG         0.247      0.053      4.672      0.000
-    PETAL_WIDT         0.050      0.028      1.804      0.071
+    SEPAL_WIDT         0.111
+    PETAL_LENG         0.225
+    PETAL_WIDT         0.063
 
  SEPAL_WI WITH
-    PETAL_LENG         0.057      0.039      1.450      0.147
-    PETAL_WIDT         0.051      0.018      2.871      0.004
+    PETAL_LENG         0.088
+    PETAL_WIDT         0.034
 
  PETAL_LE WITH
-    PETAL_WIDT         0.060      0.032      1.860      0.063
+    PETAL_WIDT         0.057
 
  Means
-    SEPAL_LENG         6.812      0.099     68.900      0.000
-    SEPAL_WIDT         3.022      0.057     53.180      0.000
-    PETAL_LENG         5.681      0.112     50.725      0.000
-    PETAL_WIDT         2.024      0.059     34.085      0.000
+    SEPAL_LENG         5.960
+    SEPAL_WIDT         2.777
+    PETAL_LENG         4.039
+    PETAL_WIDT         1.258
 
  Variances
-    SEPAL_LENG         0.291      0.056      5.213      0.000
-    SEPAL_WIDT         0.103      0.030      3.462      0.001
-    PETAL_LENG         0.292      0.063      4.643      0.000
-    PETAL_WIDT         0.084      0.017      4.979      0.000
+    SEPAL_LENG         0.287
+    SEPAL_WIDT         0.060
+    PETAL_LENG         0.218
+    PETAL_WIDT         0.023
+
+Latent Class 8
+
+ SEPAL_LE WITH
+    SEPAL_WIDT        -0.007
+    PETAL_LENG         0.004
+    PETAL_WIDT         0.001
+
+ SEPAL_WI WITH
+    PETAL_LENG        -0.020
+    PETAL_WIDT        -0.013
+
+ PETAL_LE WITH
+    PETAL_WIDT         0.012
+
+ Means
+    SEPAL_LENG         7.667
+    SEPAL_WIDT         2.800
+    PETAL_LENG         6.733
+    PETAL_WIDT         2.133
+
+ Variances
+    SEPAL_LENG         0.002
+    SEPAL_WIDT         0.026
+    PETAL_LENG         0.015
+    PETAL_WIDT         0.015
+
+Latent Class 9
+
+ SEPAL_LE WITH
+    SEPAL_WIDT         0.006
+    PETAL_LENG         0.003
+    PETAL_WIDT         0.006
+
+ SEPAL_WI WITH
+    PETAL_LENG         0.003
+    PETAL_WIDT         0.006
+
+ PETAL_LE WITH
+    PETAL_WIDT         0.003
+
+ Means
+    SEPAL_LENG         5.666
+    SEPAL_WIDT         4.364
+    PETAL_LENG         1.486
+    PETAL_WIDT         0.367
+
+ Variances
+    SEPAL_LENG         0.006
+    SEPAL_WIDT         0.006
+    PETAL_LENG         0.001
+    PETAL_WIDT         0.006
+
+Latent Class 10
+
+ SEPAL_LE WITH
+    SEPAL_WIDT         0.014
+    PETAL_LENG         0.007
+    PETAL_WIDT         0.019
+
+ SEPAL_WI WITH
+    PETAL_LENG         0.014
+    PETAL_WIDT         0.040
+
+ PETAL_LE WITH
+    PETAL_WIDT         0.019
+
+ Means
+    SEPAL_LENG         5.749
+    SEPAL_WIDT         2.687
+    PETAL_LENG         5.050
+    PETAL_WIDT         2.249
+
+ Variances
+    SEPAL_LENG         0.007
+    SEPAL_WIDT         0.030
+    PETAL_LENG         0.007
+    PETAL_WIDT         0.053
 
 Categorical Latent Variables
 
  Means
-    C#1               -0.552      0.313     -1.765      0.078
-    C#2               -0.440      0.321     -1.372      0.170
-    C#3               -1.395      0.406     -3.437      0.001
-    C#4               -0.262      0.281     -0.932      0.351
-    C#5               -1.199      0.380     -3.158      0.002
-    C#6               -0.698      0.308     -2.266      0.023
+    C#1                2.340
+    C#2                1.097
+    C#3                1.326
+    C#4                3.400
+    C#5                0.000
+    C#6                2.611
+    C#7                2.281
+    C#8                0.406
+    C#9                0.000
 
 
-QUALITY OF NUMERICAL RESULTS
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
 
-     Condition Number for the Information Matrix              0.625E-13
-       (ratio of smallest to largest eigenvalue)
+     %OVERALL%
+
+     [ c#1*2.34037 ];
+     [ c#2*1.09670 ];
+     [ c#3*1.32645 ];
+     [ c#4*3.39974 ];
+     [ c#5*0.00007 ];
+     [ c#6*2.61129 ];
+     [ c#7*2.28085 ];
+     [ c#8*0.40553 ];
+     [ c#9*0.00004 ];
+
+     %C#1%
+
+     sepal_length WITH sepal_width*0.04075;
+     sepal_length WITH petal_length*0.02514;
+     sepal_length WITH petal_width*-0.00016;
+     sepal_width WITH petal_length*0.01309;
+     sepal_width WITH petal_width*-0.00492;
+     petal_length WITH petal_width*0.00071;
+
+     [ sepal_length*4.76512 ];
+     [ sepal_width*3.12279 ];
+     [ petal_length*1.43148 ];
+     [ petal_width*0.19337 ];
+
+     sepal_length*0.07536;
+     sepal_width*0.07361;
+     petal_length*0.01780;
+     petal_width*0.00246;
+
+     %C#2%
+
+     sepal_length WITH sepal_width*-0.00467;
+     sepal_length WITH petal_length*-0.00187;
+     sepal_length WITH petal_width*-0.00737;
+     sepal_width WITH petal_length*0.00127;
+     sepal_width WITH petal_width*0.00873;
+     petal_length WITH petal_width*0.00977;
+
+     [ sepal_length*5.68896 ];
+     [ sepal_width*2.88209 ];
+     [ petal_length*4.22245 ];
+     [ petal_width*1.23720 ];
+
+     sepal_length*0.00462;
+     sepal_width*0.01328;
+     petal_length*0.01846;
+     petal_width*0.01659;
+
+     %C#3%
+
+     sepal_length WITH sepal_width*0.00579;
+     sepal_length WITH petal_length*0.19891;
+     sepal_length WITH petal_width*0.05008;
+     sepal_width WITH petal_length*-0.00024;
+     sepal_width WITH petal_width*0.00600;
+     petal_length WITH petal_width*0.07771;
+
+     [ sepal_length*5.57740 ];
+     [ sepal_width*2.30778 ];
+     [ petal_length*3.94023 ];
+     [ petal_width*1.17117 ];
+
+     sepal_length*0.22275;
+     sepal_width*0.02538;
+     petal_length*0.25004;
+     petal_width*0.03336;
+
+     %C#4%
+
+     sepal_length WITH sepal_width*0.08100;
+     sepal_length WITH petal_length*0.28077;
+     sepal_length WITH petal_width*0.10256;
+     sepal_width WITH petal_length*0.07716;
+     sepal_width WITH petal_width*0.04977;
+     petal_length WITH petal_width*0.17569;
+
+     [ sepal_length*6.38212 ];
+     [ sepal_width*2.97607 ];
+     [ petal_length*5.14771 ];
+     [ petal_width*1.81062 ];
+
+     sepal_length*0.32510;
+     sepal_width*0.08095;
+     petal_length*0.40201;
+     petal_width*0.14349;
+
+     %C#5%
+
+     sepal_length WITH sepal_width*-0.07628;
+     sepal_length WITH petal_length*0.00002;
+     sepal_length WITH petal_width*-0.05082;
+     sepal_width WITH petal_length*0.00000;
+     sepal_width WITH petal_width*0.01173;
+     petal_length WITH petal_width*0.00000;
+
+     [ sepal_length*5.50007 ];
+     [ sepal_width*2.36158 ];
+     [ petal_length*4.49995 ];
+     [ petal_width*1.60759 ];
+
+     sepal_length*0.33047;
+     sepal_width*0.01761;
+     petal_length*0.00000;
+     petal_width*0.00781;
+
+     %C#6%
+
+     sepal_length WITH sepal_width*0.04812;
+     sepal_length WITH petal_length*0.00344;
+     sepal_length WITH petal_width*0.00237;
+     sepal_width WITH petal_length*0.00138;
+     sepal_width WITH petal_width*-0.00050;
+     petal_length WITH petal_width*0.00771;
+
+     [ sepal_length*5.13265 ];
+     [ sepal_width*3.58499 ];
+     [ petal_length*1.48024 ];
+     [ petal_width*0.27451 ];
+
+     sepal_length*0.08717;
+     sepal_width*0.07379;
+     petal_length*0.03693;
+     petal_width*0.01327;
+
+     %C#7%
+
+     sepal_length WITH sepal_width*0.11078;
+     sepal_length WITH petal_length*0.22500;
+     sepal_length WITH petal_width*0.06324;
+     sepal_width WITH petal_length*0.08842;
+     sepal_width WITH petal_width*0.03421;
+     petal_length WITH petal_width*0.05744;
+
+     [ sepal_length*5.95962 ];
+     [ sepal_width*2.77654 ];
+     [ petal_length*4.03871 ];
+     [ petal_width*1.25790 ];
+
+     sepal_length*0.28707;
+     sepal_width*0.06013;
+     petal_length*0.21788;
+     petal_width*0.02304;
+
+     %C#8%
+
+     sepal_length WITH sepal_width*-0.00657;
+     sepal_length WITH petal_length*0.00439;
+     sepal_length WITH petal_width*0.00108;
+     sepal_width WITH petal_length*-0.01970;
+     sepal_width WITH petal_width*-0.01311;
+     petal_length WITH petal_width*0.01203;
+
+     [ sepal_length*7.66651 ];
+     [ sepal_width*2.79985 ];
+     [ petal_length*6.73284 ];
+     [ petal_width*2.13297 ];
+
+     sepal_length*0.00220;
+     sepal_width*0.02630;
+     petal_length*0.01533;
+     petal_width*0.01535;
+
+     %C#9%
+
+     sepal_length WITH sepal_width*0.00561;
+     sepal_length WITH petal_length*0.00273;
+     sepal_length WITH petal_width*0.00554;
+     sepal_width WITH petal_length*0.00268;
+     sepal_width WITH petal_width*0.00555;
+     petal_length WITH petal_width*0.00275;
+
+     [ sepal_length*5.66610 ];
+     [ sepal_width*4.36371 ];
+     [ petal_length*1.48603 ];
+     [ petal_width*0.36740 ];
+
+     sepal_length*0.00557;
+     sepal_width*0.00577;
+     petal_length*0.00140;
+     petal_width*0.00554;
+
+     %C#10%
+
+     sepal_length WITH sepal_width*0.01432;
+     sepal_length WITH petal_length*0.00714;
+     sepal_length WITH petal_width*0.01929;
+     sepal_width WITH petal_length*0.01392;
+     sepal_width WITH petal_width*0.03979;
+     petal_length WITH petal_width*0.01876;
+
+     [ sepal_length*5.74933 ];
+     [ sepal_width*2.68686 ];
+     [ petal_length*5.05045 ];
+     [ petal_width*2.24893 ];
+
+     sepal_length*0.00737;
+     sepal_width*0.03016;
+     petal_length*0.00693;
+     petal_width*0.05316;
+
 
 
 TECHNICAL 1 OUTPUT
@@ -650,19 +986,73 @@ TECHNICAL 1 OUTPUT
  PETAL_WI          95            96            97            98
 
 
+     PARAMETER SPECIFICATION FOR LATENT CLASS 8
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                   99           100           101           102
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE         103
+ SEPAL_WI         104           105
+ PETAL_LE         106           107           108
+ PETAL_WI         109           110           111           112
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 9
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                  113           114           115           116
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE         117
+ SEPAL_WI         118           119
+ PETAL_LE         120           121           122
+ PETAL_WI         123           124           125           126
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 10
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                  127           128           129           130
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE         131
+ SEPAL_WI         132           133
+ PETAL_LE         134           135           136
+ PETAL_WI         137           138           139           140
+
+
      PARAMETER SPECIFICATION FOR LATENT CLASS REGRESSION MODEL PART
 
 
            ALPHA(C)
               C#1           C#2           C#3           C#4           C#5
               ________      ________      ________      ________      ________
-                   99           100           101           102           103
+                  141           142           143           144           145
 
 
            ALPHA(C)
-              C#6           C#7
-              ________      ________
-                  104             0
+              C#6           C#7           C#8           C#9           C#10
+              ________      ________      ________      ________      ________
+                  146           147           148           149             0
 
 
      STARTING VALUES FOR LATENT CLASS 1
@@ -707,7 +1097,7 @@ TECHNICAL 1 OUTPUT
            NU
               SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
               ________      ________      ________      ________
-                5.843         3.057         3.758         1.199
+                5.018         2.623         1.999         0.440
 
 
            THETA
@@ -761,7 +1151,7 @@ TECHNICAL 1 OUTPUT
            NU
               SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
               ________      ________      ________      ________
-                6.669         3.492         5.517         1.959
+                5.843         3.057         3.758         1.199
 
 
            THETA
@@ -774,6 +1164,60 @@ TECHNICAL 1 OUTPUT
 
 
      STARTING VALUES FOR LATENT CLASS 7
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                5.843         3.057         3.758         1.199
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE       0.341
+ SEPAL_WI       0.000         0.094
+ PETAL_LE       0.000         0.000         1.548
+ PETAL_WI       0.000         0.000         0.000         0.289
+
+
+     STARTING VALUES FOR LATENT CLASS 8
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                6.669         3.492         5.517         1.959
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE       0.341
+ SEPAL_WI       0.000         0.094
+ PETAL_LE       0.000         0.000         1.548
+ PETAL_WI       0.000         0.000         0.000         0.289
+
+
+     STARTING VALUES FOR LATENT CLASS 9
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                6.669         3.492         5.517         1.959
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE       0.341
+ SEPAL_WI       0.000         0.094
+ PETAL_LE       0.000         0.000         1.548
+ PETAL_WI       0.000         0.000         0.000         0.289
+
+
+     STARTING VALUES FOR LATENT CLASS 10
 
 
            NU
@@ -801,37 +1245,22 @@ TECHNICAL 1 OUTPUT
 
 
            ALPHA(C)
-              C#6           C#7
-              ________      ________
-                0.000         0.000
+              C#6           C#7           C#8           C#9           C#10
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
 
 
 TECHNICAL 11 OUTPUT
 
      Random Starts Specifications for the k-1 Class Analysis Model
-        Number of initial stage random starts                 600
-        Number of final stage optimizations                   100
+        Number of initial stage random starts                 100
+        Number of final stage optimizations                    20
 
 
 
-     VUONG-LO-MENDELL-RUBIN LIKELIHOOD RATIO TEST FOR 6 (H0) VERSUS 7 CLASSES
-
-          H0 Loglikelihood Value                         -126.534
-          2 Times the Loglikelihood Difference             41.299
-          Difference in the Number of Parameters               15
-          Mean                                             28.160
-          Standard Deviation                               55.156
-          P-Value                                          0.4059
-
-     LO-MENDELL-RUBIN ADJUSTED LRT TEST
-
-          Value                                            40.757
-          P-Value                                          0.4097
-
-
-     Beginning Time:  15:33:42
-        Ending Time:  15:34:53
-       Elapsed Time:  00:01:11
+     Beginning Time:  09:50:08
+        Ending Time:  09:50:22
+       Elapsed Time:  00:00:14
 
 
 

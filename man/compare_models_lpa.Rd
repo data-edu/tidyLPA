@@ -37,6 +37,5 @@ Explore BIC of mclust models
 Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 }
 \examples{
-d <- iris
-compare_models_lpa(d, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+compare_models_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
 }
