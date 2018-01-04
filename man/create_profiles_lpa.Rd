@@ -40,7 +40,7 @@ Create profiles for a specific mclust model
 Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
 }
 \examples{
-d <- pisaUSA15::pisaUSA15
+d <- pisaUSA15
 d <- dplyr::sample_n(d, 200)
 m3 <- create_profiles_lpa(d,
                           broad_interest, enjoyment, self_efficacy,

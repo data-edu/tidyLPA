@@ -15,6 +15,7 @@ Imports:
     dplyr,
     tibble,
     tidyr,
+    readr,
     ggplot2,
     forcats,
     magrittr,

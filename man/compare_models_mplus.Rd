@@ -12,7 +12,15 @@ compare_models_mplus(df, ..., n_profiles = 2:10, models = 1:5,
 
 \item{...}{unquoted variable names separated by commas}
 
-\item{n_profiles_range}{a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)}
+\item{n_profiles}{a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)}
+
+\item{models}{which models to include; defaults to 1:5 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
+
+\item{start_iterations}{start iterations; defaults to c(20, 4)}
+
+\item{m_iterations}{m iterations; defaults to 500}
+
+\item{save_models}{whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)}
 }
 \value{
 a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
@@ -24,5 +32,7 @@ Explore BIC of MPlus models
 Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 }
 \examples{
+\dontrun{
 compare_models_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+}
 }

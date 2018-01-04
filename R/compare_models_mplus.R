@@ -1,6 +1,10 @@
 #' Explore BIC of MPlus models
 #' @details Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
-#' @param n_profiles_range a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)
+#' @param n_profiles a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)
+#' @param models which models to include; defaults to 1:5 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
+#' @param start_iterations start iterations; defaults to c(20, 4)
+#' @param m_iterations m iterations; defaults to 500
+#' @param save_models whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)
 #' @inheritParams compare_models_lpa
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @import mclust
@@ -28,7 +32,7 @@ compare_models_mplus <- function(df, ..., n_profiles = 2:10, models = 1:5, start
             out_list[[the_index + 1]] <- m
             r <- try_extract_fit(m)
             out_df[i - 1, j + 1] <- r
-            message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
+            message(paste0("Processed model with n_profiles = ", i + 1, " and model = ", j))
             if (is.numeric(r)) {
                 message(paste0("Result: BIC = ", r))
             } else {
