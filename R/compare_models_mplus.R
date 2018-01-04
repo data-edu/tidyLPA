@@ -5,7 +5,9 @@
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @import mclust
 #' @examples
+#' \dontrun{
 #' compare_models_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+#' }
 #' @export
 
 compare_models_mplus <- function(df, ..., n_profiles = 2:10, models = 1:5, start_iterations = c(100, 20), m_iterations = 500,

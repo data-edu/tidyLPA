@@ -31,5 +31,7 @@ Sepal_Length WITH Petal_Width@0;
 Sepal_Width WITH Petal_Length@0;
 Sepal_Width WITH Petal_Width@0;
 Petal_Length WITH Petal_Width@0;
-ANALYSIS: Type is mixture;
+ANALYSIS:
+Type is mixture;
+start = 20 4
 OUTPUT: TECH1 TECH11;

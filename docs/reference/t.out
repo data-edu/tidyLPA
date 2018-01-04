@@ -1,6 +1,6 @@
 Mplus VERSION 8 (Mac)
 MUTHEN & MUTHEN
-01/01/2018  12:22 PM
+01/04/2018  10:00 AM
 
 INPUT INSTRUCTIONS
 
@@ -37,7 +37,9 @@ INPUT INSTRUCTIONS
   Sepal_Width WITH Petal_Length@0;
   Sepal_Width WITH Petal_Width@0;
   Petal_Length WITH Petal_Width@0;
-  ANALYSIS: Type is mixture;
+  ANALYSIS:
+  Type is mixture;
+  start = 20 4
   OUTPUT: TECH1 TECH11;
 
 
@@ -415,9 +417,9 @@ TECHNICAL 11 OUTPUT
           P-Value                                          0.0000
 
 
-     Beginning Time:  12:22:35
-        Ending Time:  12:22:35
-       Elapsed Time:  00:00:00
+     Beginning Time:  10:00:05
+        Ending Time:  10:00:06
+       Elapsed Time:  00:00:01
 
 
 
