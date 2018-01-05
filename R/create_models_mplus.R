@@ -32,7 +32,7 @@ create_profiles_mplus <- function(df,
                                   m_iterations = 500) {
 
     d <- select_ancillary_functions_mplus(df, ...)
-    suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = TRUE))
+    x <- capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
 
     unquoted_variable_name <- paste0(names(d), collapse = " ")
 
