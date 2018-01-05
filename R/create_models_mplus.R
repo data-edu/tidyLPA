@@ -32,7 +32,7 @@ create_profiles_mplus <- function(df,
                                   m_iterations = 500) {
 
     d <- select_ancillary_functions_mplus(df, ...)
-    suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename))
+    suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = TRUE))
 
     unquoted_variable_name <- paste0(names(d), collapse = " ")
 
@@ -202,7 +202,7 @@ create_profiles_mplus <- function(df,
                          OUTPUT_line0),
                        script_filename)
 
-    MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename))
+    x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
     m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename))
     invisible(m1)
 
