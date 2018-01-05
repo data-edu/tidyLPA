@@ -15,7 +15,8 @@
 #'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #'                             n_profiles = 2,
 #'                             model = 1)
-#' # models are described here: https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html
+#' # models described here:
+#' # https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
 

@@ -14,7 +14,7 @@
 #' }
 #' @export
 
-compare_models_mplus <- function(df, ..., n_profiles = 2:10, models = 1:5, start_iterations = c(100, 20), m_iterations = 500,
+compare_models_mplus <- function(df, ..., n_profiles = 2:10, models = 1:5, start_iterations = c(20, 4), m_iterations = 500,
                                  save_models = NULL) {
     out_df <- data.frame(matrix(ncol = length(models), nrow = length(n_profiles)))
     names(out_df) <- paste0("model_", models)

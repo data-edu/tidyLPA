@@ -5,7 +5,7 @@
 \title{Explore BIC of MPlus models}
 \usage{
 compare_models_mplus(df, ..., n_profiles = 2:10, models = 1:5,
-  start_iterations = c(100, 20), m_iterations = 500, save_models = NULL)
+  start_iterations = c(20, 4), m_iterations = 500, save_models = NULL)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
