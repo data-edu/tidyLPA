@@ -79,7 +79,7 @@
     <p>Explore BIC of MPlus models</p>
     
 
-    <pre class="usage"><span class='fu'>compare_models_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>10</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>,
+    <pre class="usage"><span class='fu'>compare_models_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>,
   <span class='kw'>start_iterations</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>4</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>save_models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -94,11 +94,7 @@
       <td><p>unquoted variable names separated by commas</p></td>
     </tr>
     <tr>
-      <th>n_profiles</th>
-      <td><p>a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)</p></td>
-    </tr>
-    <tr>
-      <th>models</th>
+      <th>model</th>
       <td><p>which models to include; defaults to 1:5 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)</p></td>
     </tr>
     <tr>
@@ -112,6 +108,10 @@
     <tr>
       <th>save_models</th>
       <td><p>whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)</p></td>
+    </tr>
+    <tr>
+      <th>n_profiles</th>
+      <td><p>a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)</p></td>
     </tr>
     </table>
     
