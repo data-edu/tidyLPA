@@ -29,13 +29,13 @@ plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibbl
                 summarize_all(funs(mean, stats::sd)) %>%
                 gather("key", "val", -.data$profile) %>%
                 mutate(new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),
-                                        ifelse(str_sub(.data$key, start = -2) == "stddev", str_sub(.data$key, start = -2), NA)),
+                                        ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, start = -2), NA)),
                        key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, end = -6),
-                                    ifelse(str_sub(.data$key, start = -2) == "stddev", str_sub(.data$key, end = -4), NA))) %>%
+                                    ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, end = -4), NA))) %>%
                 spread(.data$new_key, .data$val) %>%
                 mutate(n_string = str_sub(as.character(.data$profile), start = 11),
                        n = as.numeric(str_extract(.data$n_string, "\\-*\\d+\\.*\\d*")),
-                       se = 1.96 * (.data$stddev / sqrt(.data$n - 1)),
+                       se = 1.96 * (.data$sd / sqrt(.data$n - 1)),
                        ymin = .data$mean - .data$se,
                        ymax = .data$mean + .data$se) %>%
                 ggplot(aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +

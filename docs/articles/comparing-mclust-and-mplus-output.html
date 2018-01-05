@@ -50,15 +50,15 @@
       <h1>Comparing Mplus and mclust output</h1>
                         <h4 class="author">Joshua Rosenberg</h4>
             
-            <h4 class="date">2018-01-04</h4>
+            <h4 class="date">2018-01-05</h4>
           </div>
 
     
     
 <div class="contents">
 <p>This vignette compares mclust and Mplus output, for the purpose of benchmarking the use of mclust, an open-source tool, to Mplus. Note that for the <code><a href="../reference/create_profiles_mplus.html">create_profiles_mplus()</a></code> function to work, you must have Mplus installed (and purchased).</p>
-<pre><code>#&gt; Loading tidyLPA</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)</code></pre></div>
+<pre><code>#&gt; Loading tidyLPA</code></pre>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
@@ -67,16 +67,7 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
-                                  <span class="dt">model =</span> <span class="dv">1</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span></code></pre></div>
+                                  <span class="dt">model =</span> <span class="dv">1</span>)</code></pre></div>
 <p>The <code>t.inp</code> file is saved in your working directory with the following contents. Note that this code is likely different because it is generated programmatically and uses no defaults (it is likely less efficient than code that you would write by hand).</p>
 <pre><code>TITLE: test
 DATA: File is d.dat;
@@ -117,16 +108,7 @@ OUTPUT: TECH1 TECH11;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, 
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
-                                  <span class="dt">model =</span> <span class="dv">2</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span></code></pre></div>
+                                  <span class="dt">model =</span> <span class="dv">2</span>)</code></pre></div>
 <pre><code>TITLE: test
 DATA: File is d.dat;
 VARIABLE:
@@ -172,71 +154,26 @@ OUTPUT: TECH1 TECH11;</code></pre>
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">1</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m2_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">2</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m3_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">3</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m4_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">4</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m5_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
-                                  <span class="dt">model =</span> <span class="dv">5</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span></code></pre></div>
+                                  <span class="dt">model =</span> <span class="dv">5</span>)</code></pre></div>
 <p><strong>mclust</strong></p>
 <p>Note that model 4 can only be specified in Mplus, so is not included here.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(iris,
@@ -321,71 +258,26 @@ iris_log_lik
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">1</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m2_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">2</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m3_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">3</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m4_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">4</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m5_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
-                                  <span class="dt">model =</span> <span class="dv">5</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = Sepal_Length Sepal_Width Petal_Length Petal_Width; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span></code></pre></div>
+                                  <span class="dt">model =</span> <span class="dv">5</span>)</code></pre></div>
 <p><strong>mclust</strong></p>
 <p>Note that model 4 can only be specified in Mplus, so is not included here.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(iris,
@@ -470,71 +362,26 @@ m1_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cr
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">1</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = eruptions waiting; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m2_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(faithful,
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">2</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = eruptions waiting; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m3_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(faithful,
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">3</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = eruptions waiting; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m4_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(faithful,
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">4</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = eruptions waiting; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span>
 
 m5_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(faithful,
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
-                                  <span class="dt">model =</span> <span class="dv">5</span>)
-<span class="co">#&gt; TITLE: Your title goes here</span>
-<span class="co">#&gt; DATA: FILE = "d.dat";</span>
-<span class="co">#&gt; VARIABLE: </span>
-<span class="co">#&gt; NAMES = eruptions waiting; </span>
-<span class="co">#&gt; MISSING=.;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Running model: t.inp </span>
-<span class="co">#&gt; System command: cd "/Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles" &amp;&amp; "/Applications/Mplus/mplus" "t.inp" </span>
-<span class="co">#&gt; Reading model:  /Users/joshuarosenberg/Dropbox/1_Research/tidymixmod/docs/articles/t.out</span></code></pre></div>
+                                  <span class="dt">model =</span> <span class="dv">5</span>)</code></pre></div>
 <p><strong>mclust</strong></p>
 <p>Note that model 4 can only be specified in Mplus, so is not included here.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(faithful,
