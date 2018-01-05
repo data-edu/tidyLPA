@@ -1,7 +1,7 @@
 #' Explore BIC of MPlus models
 #' @details Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 #' @param n_profiles a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)
-#' @param models which models to include; defaults to 1:5 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
+#' @param model which models to include; defaults to 1:5 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
 #' @param start_iterations start iterations; defaults to c(20, 4)
 #' @param m_iterations m iterations; defaults to 500
 #' @param save_models whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)
@@ -14,25 +14,26 @@
 #' }
 #' @export
 
-compare_models_mplus <- function(df, ..., n_profiles = 2:10, models = 1:5, start_iterations = c(20, 4), m_iterations = 500,
+compare_models_mplus <- function(df, ..., n_profiles_max = 10, model = 1:5, start_iterations = c(20, 4), m_iterations = 500,
                                  save_models = NULL) {
-    out_df <- data.frame(matrix(ncol = length(models), nrow = length(n_profiles)))
-    names(out_df) <- paste0("model_", models)
+    out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))
+    names(out_df) <- paste0("model_", model)
     out_df <- out_df %>%
-        mutate(n_profiles = n_profiles) %>%
+        mutate(n_profiles = 2:n_profiles_max) %>%
         select(n_profiles, everything())
 
     out_list <- as.list(rep(NA, times = (nrow(out_df) * ncol(out_df))))
 
-    for (i in n_profiles) {
-        for (j in models) {
+    for (i in 2:n_profiles_max) {
+        for (j in model) {
             m <- create_profiles_mplus(df, ..., n_profiles = i, model = j, start_iterations = start_iterations, m_iterations = m_iterations)
             the_index <- sum(!is.na(out_list))
-            message(paste0("Model ", the_index, "/", length(out_list)))
+            message(paste0("Model ", the_index + 1, "/", length(out_list)))
             out_list[[the_index + 1]] <- m
             r <- try_extract_fit(m)
+            message(paste0("Processing model with n_profiles = ", i, " and model = ", j))
             out_df[i - 1, j + 1] <- r
-            message(paste0("Processed model with n_profiles = ", i + 1, " and model = ", j))
+            message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
             if (is.numeric(r)) {
                 message(paste0("Result: BIC = ", r))
             } else {
@@ -64,15 +65,16 @@ try_extract_fit <- function(m) {
         {
             warnings_list <- extract_warnings(m)
             errors_list <- extract_errors(m)
-            if (errors_list[[1]][1] == "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT" | errors_list[[1]][1] == "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") {
-                return("Convergence problem")
-            } else if (warnings_list[[2]][1] == "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") {
-                return("LL not replicated")
-            }
+            if (stringr::str_detect(errors_list[[1]][1], "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY") |
+                stringr::str_detect(errors_list[[1]][1], "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.")) {
+                    return("Convergence problem")
+                } else if (warnings_list[[2]][1] == "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") {
+                    return("LL not replicated")
+                }
         },
         error=function(cond) {
             return(m$summaries$BIC)
         }
-    )
-    return(out)
+            )
+            return(out)
 }
