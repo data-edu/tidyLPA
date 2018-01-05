@@ -26,7 +26,7 @@ plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibbl
                 select(-.data$posterior_prob) %>%
                 mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
                 group_by(.data$profile) %>%
-                summarize_all(funs(mean, stddev)) %>%
+                summarize_all(funs(mean, stats::sd)) %>%
                 gather("key", "val", -.data$profile) %>%
                 mutate(new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),
                                         ifelse(str_sub(.data$key, start = -2) == "stddev", str_sub(.data$key, start = -2), NA)),
