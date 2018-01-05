@@ -203,7 +203,7 @@ create_profiles_mplus <- function(df,
                        script_filename)
 
     x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
-    m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename))
+    capture <- capture.output(m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
     invisible(m1)
 
 }

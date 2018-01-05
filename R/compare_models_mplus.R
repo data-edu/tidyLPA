@@ -31,7 +31,6 @@ compare_models_mplus <- function(df, ..., n_profiles_max = 10, model = 1:5, star
             message(paste0("Model ", the_index + 1, "/", length(out_list)))
             out_list[[the_index + 1]] <- m
             r <- try_extract_fit(m)
-            message(paste0("Processing model with n_profiles = ", i, " and model = ", j))
             out_df[i - 1, j + 1] <- r
             message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
             if (is.numeric(r)) {
