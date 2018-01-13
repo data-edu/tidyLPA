@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Explore BIC of MPlus models — compare_models_mplus • tidyLPA</title>
+<title>Plot profile centroids for mplus output — plot_profiles_mplus • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -72,74 +72,45 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Explore BIC of MPlus models</h1>
+    <h1>Plot profile centroids for mplus output</h1>
     </div>
 
     
-    <p>Explore BIC of MPlus models</p>
+    <p>Plot profile centroids for mplus output</p>
     
 
-    <pre class="usage"><span class='fu'>compare_models_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>6</span>,
-  <span class='kw'>start_iterations</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>4</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>save_models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_profiles_mplus</span>(<span class='no'>mplus_data</span>, <span class='kw'>to_center</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>to_scale</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
-      <td><p>data.frame with two or more columns with continuous variables</p></td>
+      <th>mplus_data</th>
+      <td><p>output from create_profiles_mclust() with return_savedata = T specified</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>unquoted variable names separated by commas</p></td>
+      <th>to_center</th>
+      <td><p>whether to center the data before plotting</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p>which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)</p></td>
-    </tr>
-    <tr>
-      <th>start_iterations</th>
-      <td><p>start iterations; defaults to c(20, 4)</p></td>
-    </tr>
-    <tr>
-      <th>m_iterations</th>
-      <td><p>m iterations; defaults to 500</p></td>
-    </tr>
-    <tr>
-      <th>save_models</th>
-      <td><p>whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)</p></td>
-    </tr>
-    <tr>
-      <th>n_profiles</th>
-      <td><p>a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)</p></td>
+      <th>to_scale</th>
+      <td><p>whether to scale the data before plotting</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)</p>
+    <p>Plot the centroids for tibble or mclust output from create_profiles_mplus()</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='fu'>compare_models_mplus</span>(<span class='no'>iris</span>, <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>)
-})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

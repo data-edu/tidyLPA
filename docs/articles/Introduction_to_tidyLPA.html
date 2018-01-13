@@ -50,7 +50,7 @@
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2017-11-29</h4>
+            <h4 class="date">2018-01-13</h4>
           </div>
 
     
@@ -77,13 +77,13 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]
 m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.</span>
-<span class="co">#&gt; LogLik is 281.206</span>
-<span class="co">#&gt; AIC is 596.412</span>
-<span class="co">#&gt; CAIC is 656.648</span>
-<span class="co">#&gt; BIC is 639.648</span>
-<span class="co">#&gt; SABIC is 585.979</span>
-<span class="co">#&gt; ICL is 669.316</span>
-<span class="co">#&gt; Entropy is 0.865</span>
+<span class="co">#&gt; LogLik is 279.692</span>
+<span class="co">#&gt; AIC is 593.384</span>
+<span class="co">#&gt; CAIC is 653.62</span>
+<span class="co">#&gt; BIC is 636.62</span>
+<span class="co">#&gt; SABIC is 582.951</span>
+<span class="co">#&gt; ICL is 681.845</span>
+<span class="co">#&gt; Entropy is 0.798</span>
 <span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3)</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 </div>
@@ -107,78 +107,87 @@ d &lt;-<span class="st"> </span>pisaUSA15
 d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <span class="dv">500</span>)
 <span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 4 profiles.</span>
-<span class="co">#&gt; LogLik is 1347.672</span>
-<span class="co">#&gt; AIC is 2737.345</span>
-<span class="co">#&gt; CAIC is 2845.907</span>
-<span class="co">#&gt; BIC is 2824.907</span>
-<span class="co">#&gt; SABIC is 2758.255</span>
-<span class="co">#&gt; ICL is 2859.478</span>
-<span class="co">#&gt; Entropy is 0.968</span>
-<span class="co">#&gt; # A tibble: 478 x 5</span>
+<span class="co">#&gt; LogLik is 1393.537</span>
+<span class="co">#&gt; AIC is 2829.074</span>
+<span class="co">#&gt; CAIC is 2937.371</span>
+<span class="co">#&gt; BIC is 2916.371</span>
+<span class="co">#&gt; SABIC is 2849.721</span>
+<span class="co">#&gt; ICL is 3140.326</span>
+<span class="co">#&gt; Entropy is 0.802</span>
+<span class="co">#&gt; Warning in create_profiles_lpa(d, broad_interest, enjoyment,</span>
+<span class="co">#&gt; self_efficacy, : Some profiles are associated with no assignments.</span>
+<span class="co">#&gt; Interpret this solution with caution and consider other models.</span>
+<span class="co">#&gt; # A tibble: 472 x 5</span>
 <span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
 <span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1            2.2       3.2         2.375       2        0.99738</span>
-<span class="co">#&gt;  2            2.8       2.8         2.625       2        0.99815</span>
-<span class="co">#&gt;  3            3.4       3.8         1.250       1        0.99959</span>
-<span class="co">#&gt;  4            4.2       3.0         1.375       2        0.99993</span>
-<span class="co">#&gt;  5            2.2       2.0         1.750       4        0.99995</span>
-<span class="co">#&gt;  6            2.8       4.0         2.125       1        1.00000</span>
-<span class="co">#&gt;  7            3.2       2.6         1.500       2        0.87463</span>
-<span class="co">#&gt;  8            3.2       3.0         2.375       2        0.99993</span>
-<span class="co">#&gt;  9            1.0       1.0         3.375       3        1.00000</span>
-<span class="co">#&gt; 10            3.0       2.6         2.500       2        0.91885</span>
-<span class="co">#&gt; # ... with 468 more rows</span></code></pre></div>
+<span class="co">#&gt;  1           2.80      2.20          2.57    2.00          0.852</span>
+<span class="co">#&gt;  2           3.20      3.40          2.60    2.00          0.428</span>
+<span class="co">#&gt;  3           3.00      2.80          2.12    2.00          0.791</span>
+<span class="co">#&gt;  4           2.60      3.00          2.50    2.00          0.736</span>
+<span class="co">#&gt;  5           2.80      2.60          2.62    2.00          0.828</span>
+<span class="co">#&gt;  6           3.40      3.00          1.62    2.00          0.736</span>
+<span class="co">#&gt;  7           2.40      2.80          1.38    2.00          0.797</span>
+<span class="co">#&gt;  8           2.60      2.00          2.25    2.00          0.707</span>
+<span class="co">#&gt;  9           3.20      3.20          1.88    2.00          0.631</span>
+<span class="co">#&gt; 10           3.00      2.80          2.75    2.00          0.792</span>
+<span class="co">#&gt; # ... with 462 more rows</span></code></pre></div>
 <p>**Note that if you get the warning “Some profiles are associated with no assignments. Interpret this solution with caution and consider other models”, then this is a sign that a simpler model (with fewer profiles) likely fits better.</p>
 <p>You can see the output is simply the same <code>tibble</code> that is input as the first function to <code>create_profiles_LPA</code>, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).</p>
 <p>We can then plot this output using the <code><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa()</a></code> function and the pipe (<code>%&gt;%</code>) from the <code>dplyr</code> package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>()
 <span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 4 profiles.</span>
-<span class="co">#&gt; LogLik is 1347.672</span>
-<span class="co">#&gt; AIC is 2737.345</span>
-<span class="co">#&gt; CAIC is 2845.907</span>
-<span class="co">#&gt; BIC is 2824.907</span>
-<span class="co">#&gt; SABIC is 2758.255</span>
-<span class="co">#&gt; ICL is 2859.478</span>
-<span class="co">#&gt; Entropy is 0.968</span></code></pre></div>
+<span class="co">#&gt; LogLik is 1393.537</span>
+<span class="co">#&gt; AIC is 2829.074</span>
+<span class="co">#&gt; CAIC is 2937.371</span>
+<span class="co">#&gt; BIC is 2916.371</span>
+<span class="co">#&gt; SABIC is 2849.721</span>
+<span class="co">#&gt; ICL is 3140.326</span>
+<span class="co">#&gt; Entropy is 0.802</span>
+<span class="co">#&gt; Warning in create_profiles_lpa(d, broad_interest, enjoyment,</span>
+<span class="co">#&gt; self_efficacy, : Some profiles are associated with no assignments.</span>
+<span class="co">#&gt; Interpret this solution with caution and consider other models.</span></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p>You can, if you like, use the arguments <code>center_raw_data</code> (to center all of the clustering variables to have a mean of 0) or <code>scale_raw_data</code> (to scale all of the clustering variables to have a standard deviation of 1) in <code><a href="../reference/create_profiles_lpa.html">create_profiles_lpa()</a></code>.</p>
 <p>Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object <code>m3</code>, and then call the <code><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa()</a></code> function on the output that it points to.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 4 profiles.</span>
-<span class="co">#&gt; LogLik is 1347.672</span>
-<span class="co">#&gt; AIC is 2737.345</span>
-<span class="co">#&gt; CAIC is 2845.907</span>
-<span class="co">#&gt; BIC is 2824.907</span>
-<span class="co">#&gt; SABIC is 2758.255</span>
-<span class="co">#&gt; ICL is 2859.478</span>
-<span class="co">#&gt; Entropy is 0.968</span>
+<span class="co">#&gt; LogLik is 1393.537</span>
+<span class="co">#&gt; AIC is 2829.074</span>
+<span class="co">#&gt; CAIC is 2937.371</span>
+<span class="co">#&gt; BIC is 2916.371</span>
+<span class="co">#&gt; SABIC is 2849.721</span>
+<span class="co">#&gt; ICL is 3140.326</span>
+<span class="co">#&gt; Entropy is 0.802</span>
 <span class="kw"><a href="../reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <p>We can also return all of the data. This returns a <code>tibble</code> with all of the variables in the original data, in this case <code>d</code>, so that subsequent analyses using variables that are not used to create the profile can be easily carried out.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">model =</span> <span class="dv">2</span>, <span class="dt">return_orig_df =</span> T)
 <span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 4 profiles.</span>
-<span class="co">#&gt; LogLik is 1347.672</span>
-<span class="co">#&gt; AIC is 2737.345</span>
-<span class="co">#&gt; CAIC is 2845.907</span>
-<span class="co">#&gt; BIC is 2824.907</span>
-<span class="co">#&gt; SABIC is 2758.255</span>
-<span class="co">#&gt; ICL is 2859.478</span>
-<span class="co">#&gt; Entropy is 0.968</span>
-<span class="co">#&gt; # A tibble: 478 x 6</span>
-<span class="co">#&gt;    broad_interest enjoyment instrumental_mot self_efficacy profile</span>
-<span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1            2.2       3.2             2.25         2.375       2</span>
-<span class="co">#&gt;  2            2.8       2.8             2.25         2.625       2</span>
-<span class="co">#&gt;  3            3.4       3.8             2.00         1.250       1</span>
-<span class="co">#&gt;  4            4.2       3.0             3.00         1.375       2</span>
-<span class="co">#&gt;  5            2.2       2.0             1.00         1.750       4</span>
-<span class="co">#&gt;  6            2.8       4.0             1.00         2.125       1</span>
-<span class="co">#&gt;  7            3.2       2.6             2.00         1.500       2</span>
-<span class="co">#&gt;  8            3.2       3.0             1.00         2.375       2</span>
-<span class="co">#&gt;  9            1.0       1.0             4.00         3.375       3</span>
-<span class="co">#&gt; 10            3.0       2.6             3.75         2.500       2</span>
-<span class="co">#&gt; # ... with 468 more rows, and 1 more variables: posterior_prob &lt;dbl&gt;</span></code></pre></div>
+<span class="co">#&gt; LogLik is 1393.537</span>
+<span class="co">#&gt; AIC is 2829.074</span>
+<span class="co">#&gt; CAIC is 2937.371</span>
+<span class="co">#&gt; BIC is 2916.371</span>
+<span class="co">#&gt; SABIC is 2849.721</span>
+<span class="co">#&gt; ICL is 3140.326</span>
+<span class="co">#&gt; Entropy is 0.802</span>
+<span class="co">#&gt; Warning in create_profiles_lpa(d, broad_interest, enjoyment,</span>
+<span class="co">#&gt; self_efficacy, : Some profiles are associated with no assignments.</span>
+<span class="co">#&gt; Interpret this solution with caution and consider other models.</span>
+<span class="co">#&gt; # A tibble: 472 x 6</span>
+<span class="co">#&gt;    broad_interest enjoyment instrumental_mot self_efficacy profile poster…</span>
+<span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1           2.80      2.20             1.00          2.57    2.00   0.852</span>
+<span class="co">#&gt;  2           3.20      3.40             2.00          2.60    2.00   0.428</span>
+<span class="co">#&gt;  3           3.00      2.80             1.00          2.12    2.00   0.791</span>
+<span class="co">#&gt;  4           2.60      3.00             1.75          2.50    2.00   0.736</span>
+<span class="co">#&gt;  5           2.80      2.60             1.00          2.62    2.00   0.828</span>
+<span class="co">#&gt;  6           3.40      3.00             3.00          1.62    2.00   0.736</span>
+<span class="co">#&gt;  7           2.40      2.80             1.25          1.38    2.00   0.797</span>
+<span class="co">#&gt;  8           2.60      2.00             1.75          2.25    2.00   0.707</span>
+<span class="co">#&gt;  9           3.20      3.20             2.00          1.88    2.00   0.631</span>
+<span class="co">#&gt; 10           3.00      2.80             2.00          2.75    2.00   0.792</span>
+<span class="co">#&gt; # ... with 462 more rows</span></code></pre></div>
 </div>
 <div id="an-object-oriented-approach" class="section level3">
 <h3 class="hasAnchor">
@@ -188,13 +197,13 @@ d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <spa
 d &lt;-<span class="st"> </span><span class="kw">sample_n</span>(pisaUSA15, <span class="dv">500</span>)
 m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">2</span>, <span class="dt">model =</span> <span class="dv">2</span>, <span class="dt">to_return =</span> <span class="st">"mclust"</span>)
 <span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 2 profiles.</span>
-<span class="co">#&gt; LogLik is 1419.069</span>
-<span class="co">#&gt; AIC is 2864.138</span>
-<span class="co">#&gt; CAIC is 2931.179</span>
-<span class="co">#&gt; BIC is 2918.179</span>
-<span class="co">#&gt; SABIC is 2876.919</span>
-<span class="co">#&gt; ICL is 2954.583</span>
-<span class="co">#&gt; Entropy is 0.967</span></code></pre></div>
+<span class="co">#&gt; LogLik is 1360.071</span>
+<span class="co">#&gt; AIC is 2746.142</span>
+<span class="co">#&gt; CAIC is 2813.044</span>
+<span class="co">#&gt; BIC is 2800.044</span>
+<span class="co">#&gt; SABIC is 2758.785</span>
+<span class="co">#&gt; ICL is 2841.816</span>
+<span class="co">#&gt; Entropy is 0.962</span></code></pre></div>
 <p>Any of the functions from the <a href="http://www.stat.washington.edu/mclust/">mclust package</a> that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the <code><a href="../reference/create_profiles_lpa.html">create_profiles_lpa()</a></code> function) instead of the <code>Mclust()</code> function from the <code>mclust package</code>.</p>
 </div>
 </div>
@@ -209,27 +218,31 @@ m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/c
 <li><p><em>p</em> represents different profiles (or mixture components).</p></li>
 <li><p>each covariance parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution.</p></li>
 </ul>
-<p><strong>A. Varying means, equal variances, covariances fixed to 0 (model 1)</strong></p>
+<p><strong>1. Varying means, equal variances, and covariances fixed to 0 (model 1)</strong></p>
 <p><em>corresponds to the mclust model “EEI”, “diagonal, equal volume and shape”</em></p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; { \sigma  }_{ 2 }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; { \sigma  }_{ 3 }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 \]</span></p>
-<p><strong>B. Varying means, equal variances and covariances (model 2)</strong></p>
+<p><strong>2. Varying means, equal variances, and equal covariances (model 2)</strong></p>
 <p><em>corresponds to the mclust model “EEE”, “ellipsoidal, equal volume, shape, and orientation”</em></p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21 } &amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 \]</span></p>
-<p><strong>C. Varying means and variances, covariances fixed to 0 (model 3)</strong></p>
+<p><strong>3. Varying means, varying variances, and covariances fixed to 0 (model 3)</strong></p>
 <p><em>corresponds to the mclust model “VVI”, “diagonal, varying volume and shape”</em></p>
 <p><span class="math display">\[ 
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; { \sigma  }_{ 2p }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; { \sigma  }_{ 3p }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 \]</span></p>
-<p><strong>D. Varying means and variances, equal covariances (model 4)</strong></p>
-<p><em>While used in some applications of Latent Profile Analysis, this model cannot presently be specified in mclust</em></p>
+<p><strong>4. Varying means, varying variances, and equal covariances (model 4)</strong></p>
+<p><em>This model is available in MPlus but not Mclust</em></p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21 } &amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+\]</span> <strong>5. Varying means, equal variances, and varying covariances</strong></p>
+<p><em>This model is available in MPlus but not Mclust</em></p>
+<p><span class="math display">\[
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
 \]</span></p>
-<p><strong>E. Varying means, variances, and covariances</strong></p>
+<p><strong>6. Varying means, varying variances, and varying covariances</strong></p>
 <p><em>corresponds to the mclust model “VVV”, “ellipsoidal, varying volume, shape, and orientation”</em></p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
@@ -258,9 +271,7 @@ m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/c
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                             <span class="dt">n_profiles =</span> <span class="dv">2</span>,
-                            <span class="dt">model =</span> <span class="dv">1</span>)
-<span class="co">#&gt; Warning in as.POSIXlt.POSIXct(x, tz): unknown timezone 'zone/tz/2017c.1.0/</span>
-<span class="co">#&gt; zoneinfo/America/Detroit'</span></code></pre></div>
+                            <span class="dt">model =</span> <span class="dv">1</span>)</code></pre></div>
 <p>The object <code>m1</code> contains the Mplus output, as is returned in Mplus, but in an R list; for quick comparisons, <code><a href="../reference/create_profiles_mplus.html">create_profiles_mplus()</a></code> prints the log-likelihood, BIC, and entropy statistics.</p>
 </div>
 <div id="notes" class="section level1">

@@ -101,7 +101,7 @@
     </tr>
     <tr>
       <th>model</th>
-      <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); and 5 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
+      <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
     </tr>
     <tr>
       <th>to_return</th>
@@ -143,7 +143,7 @@
 <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
 <span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_lpa</span>(<span class='no'>d</span>,
                           <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>,
-                          <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 526.291</span></div><div class='output co'>#&gt; <span class='message'>AIC is 1080.582</span></div><div class='output co'>#&gt; <span class='message'>CAIC is 1139.966</span></div><div class='output co'>#&gt; <span class='message'>BIC is 1125.966</span></div><div class='output co'>#&gt; <span class='message'>SABIC is 1081.621</span></div><div class='output co'>#&gt; <span class='message'>ICL is 1180.339</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.878</span></div></pre>
+                          <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 526.113</span></div><div class='output co'>#&gt; <span class='message'>AIC is 1080.226</span></div><div class='output co'>#&gt; <span class='message'>CAIC is 1139.611</span></div><div class='output co'>#&gt; <span class='message'>BIC is 1125.611</span></div><div class='output co'>#&gt; <span class='message'>SABIC is 1081.265</span></div><div class='output co'>#&gt; <span class='message'>ICL is 1183.293</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.871</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -79,7 +79,7 @@
     <p>Explore BIC of mclust models</p>
     
 
-    <pre class="usage"><span class='fu'>compare_models_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles_range</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>9</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>5</span>),
+    <pre class="usage"><span class='fu'>compare_models_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles_range</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>9</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>6</span>),
   <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"BIC"</span>,
   <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
     
@@ -100,7 +100,7 @@
     </tr>
     <tr>
       <th>model</th>
-      <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); and 5 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
+      <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
     </tr>
     <tr>
       <th>center_raw_data</th>
