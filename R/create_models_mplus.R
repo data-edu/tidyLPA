@@ -1,11 +1,13 @@
 #' Create models for a specific mclust model
 #' @details Creates an mplus model (.inp) and associated data file (.dat)
 #' @param data_filename name of data file to prepare; defaults to d.dat
-#' @param script_filename name of script to prepare; defaults to t.inp
-#' @param output_filename name of the output; defaults to t.out
+#' @param script_filename name of script to prepare; defaults to i.inp
+#' @param output_filename name of the output; defaults to o.out
 #' @param the_title title of the model; defaults to test
 #' @param start_iterations the number of start iterations; defaults to c(20, 4); can change to c(120, 20) or c(600, 120)
 #' @param m_iterations number of m-step iterations; defaults to 500
+#' @param remove_tmp_files whether to remove data, script, and output files; defaults to TRUE
+#' @param return_save_data whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
 #' @import tidyr
@@ -25,11 +27,15 @@ create_profiles_mplus <- function(df,
                                   n_profiles,
                                   the_title = "test",
                                   data_filename = "d.dat",
-                                  script_filename = "t.inp",
-                                  output_filename = "t.out",
+                                  script_filename = "i.inp",
+                                  output_filename = "i.out",
+                                  savedata_filename = "d-mod.dat",
                                   model = 1,
                                   start_iterations = c(20, 4),
-                                  m_iterations = 500) {
+                                  m_iterations = 500,
+                                  remove_tmp_files = TRUE,
+                                  view_input_file = FALSE,
+                                  return_save_data = FALSE) {
 
     d <- select_ancillary_functions_mplus(df, ...)
     x <- capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
@@ -60,6 +66,8 @@ create_profiles_mplus <- function(df,
     MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
 
     OUTPUT_line0 <- "OUTPUT: TECH1 TECH11;"
+    SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
+    SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
     if (model == 1) {
         overall_collector <- list()
@@ -199,12 +207,41 @@ create_profiles_mplus <- function(df,
                          overall_collector,
                          class_collector,
                          ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2,
-                         OUTPUT_line0),
+                         OUTPUT_line0,
+                         SAVEDATA_line0,
+                         SAVEDATA_line1),
                        script_filename)
 
     x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
     capture <- capture.output(m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
-    invisible(m1)
+
+    if (view_input_file == TRUE) {
+        View(readr::read_lines(script_filename))
+        message("Note. You can also use the argument remove_tmp_files = FALSE to create the inp file, which you can then view in R Studio by clicking on the file name in the Files pane.")
+    }
+
+    if (return_save_data == TRUE) {
+        x <- dplyr::tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
+
+        if (remove_tmp_files == TRUE) {
+            file.remove(data_filename)
+            file.remove(script_filename)
+            file.remove(output_filename)
+            file.remove(savedata_filename)
+        }
+
+        invisible(list(m1, x))
+    } else {
+
+        if (remove_tmp_files == TRUE) {
+            file.remove(data_filename)
+            file.remove(script_filename)
+            file.remove(output_filename)
+            file.remove(savedata_filename)
+        }
+
+        invisible(m1)
+    }
 
 }
 
