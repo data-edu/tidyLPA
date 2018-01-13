@@ -4,7 +4,7 @@
 \alias{compare_models_mplus}
 \title{Explore BIC of MPlus models}
 \usage{
-compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:5,
+compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
   start_iterations = c(20, 4), m_iterations = 500, save_models = NULL)
 }
 \arguments{
@@ -12,7 +12,7 @@ compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:5,
 
 \item{...}{unquoted variable names separated by commas}
 
-\item{model}{which models to include; defaults to 1:5 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
+\item{model}{which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
 
 \item{start_iterations}{start iterations; defaults to c(20, 4)}
 

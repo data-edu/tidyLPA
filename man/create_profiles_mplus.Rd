@@ -7,9 +7,9 @@
 create_profiles_mplus(df, ..., n_profiles, the_title = "test",
   data_filename = "d.dat", script_filename = "i.inp",
   output_filename = "i.out", savedata_filename = "d-mod.dat", model = 1,
-  start_iterations = c(20, 4), m_iterations = 500,
-  remove_tmp_files = TRUE, view_input_file = FALSE,
-  return_save_data = FALSE)
+  start_iterations = c(500, 50), m_iterations = 500, st_iterations = 50,
+  convergence_criterion = 1e-07, remove_tmp_files = TRUE,
+  print_input_file = FALSE, return_save_data = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -26,15 +26,21 @@ create_profiles_mplus(df, ..., n_profiles, the_title = "test",
 
 \item{output_filename}{name of the output; defaults to o.out}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); and 5 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
-\item{start_iterations}{the number of start iterations; defaults to c(20, 4); can change to c(120, 20) or c(600, 120)}
+\item{start_iterations}{the number of start iterations; defaults to c(500, 50)}
 
 \item{m_iterations}{number of m-step iterations; defaults to 500}
 
+\item{convergence_criterion}{the convergence criterion; defaults to .0000001}
+
 \item{remove_tmp_files}{whether to remove data, script, and output files; defaults to TRUE}
 
+\item{print_input_file}{whether to print the input file to the console}
+
 \item{return_save_data}{whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output}
+
+\item{s_iterations}{the number of initial stage iterations; defaults to 50}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models
