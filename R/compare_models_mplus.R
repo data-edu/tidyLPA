@@ -1,7 +1,7 @@
 #' Explore BIC of MPlus models
 #' @details Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 #' @param n_profiles a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)
-#' @param model which models to include; defaults to 1:5 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
+#' @param model which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
 #' @param start_iterations start iterations; defaults to c(20, 4)
 #' @param m_iterations m iterations; defaults to 500
 #' @param save_models whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)
@@ -14,7 +14,7 @@
 #' }
 #' @export
 
-compare_models_mplus <- function(df, ..., n_profiles_max = 10, model = 1:5, start_iterations = c(20, 4), m_iterations = 500,
+compare_models_mplus <- function(df, ..., n_profiles_max = 10, model = 1:6, start_iterations = c(20, 4), m_iterations = 500,
                                  save_models = NULL) {
     out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))
     names(out_df) <- paste0("model_", model)
@@ -47,7 +47,8 @@ compare_models_mplus <- function(df, ..., n_profiles_max = 10, model = 1:5, star
         readr::write_rds(m, save_models)
         return(out_df)
     } else {
-        invisible(list(out_df, m))
+        message("the data frame can be accessed as the first list item of the output of compare_models_mplus()")
+        return(list(out_df, m))
     }
 }
 

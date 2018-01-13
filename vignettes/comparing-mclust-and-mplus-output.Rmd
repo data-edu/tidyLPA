@@ -87,6 +87,7 @@ m1_mplus <- create_profiles_mplus(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, 
                                   n_profiles = 3,
                                   model = 2)
+m1_mplus$summaries$LL
 ```
 
 ```{}
@@ -133,30 +134,39 @@ In the rest of this document, Mplus and mclust are benchmarked. For ease of comp
 **Mplus**
 
 ```{r}
+
 m1_mplus <- create_profiles_mplus(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   n_profiles = 2,
                                   model = 1)
+m1_mplus$summaries$LL
 
 m2_mplus <- create_profiles_mplus(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   n_profiles = 2,
                                   model = 2)
+m2_mplus$summaries$LL
 
 m3_mplus <- create_profiles_mplus(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   n_profiles = 2,
                                   model = 3)
 
+m3_mplus$summaries$LL
+
 m4_mplus <- create_profiles_mplus(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   n_profiles = 2,
                                   model = 4)
 
+m4_mplus$summaries$LL
+
 m5_mplus <- create_profiles_mplus(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   n_profiles = 2,
                                   model = 5)
+
+m5_mplus$summaries$LL
 ```
 
 **mclust**

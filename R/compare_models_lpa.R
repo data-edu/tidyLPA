@@ -11,7 +11,7 @@
 #' compare_models_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
 #' @export
 
-compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 5), center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC", return_table = FALSE, prior_control = F) {
+compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6), center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC", return_table = FALSE, prior_control = F) {
 
     d <- select_ancillary_functions(df, ...)
 
@@ -23,7 +23,7 @@ compare_models_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 
         model == 1 ~ "EEI",
         model == 2 ~ "EEE",
         model == 3 ~ "VVI",
-        model == 5 ~ "VVV",
+        model == 6 ~ "VVV",
         TRUE ~ as.character(model)
     )
 

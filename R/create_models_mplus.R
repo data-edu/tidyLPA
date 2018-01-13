@@ -4,9 +4,12 @@
 #' @param script_filename name of script to prepare; defaults to i.inp
 #' @param output_filename name of the output; defaults to o.out
 #' @param the_title title of the model; defaults to test
-#' @param start_iterations the number of start iterations; defaults to c(20, 4); can change to c(120, 20) or c(600, 120)
+#' @param start_iterations the number of start iterations; defaults to c(500, 50)
 #' @param m_iterations number of m-step iterations; defaults to 500
+#' @param s_iterations the number of initial stage iterations; defaults to 50
+#' @param convergence_criterion the convergence criterion; defaults to .0000001
 #' @param remove_tmp_files whether to remove data, script, and output files; defaults to TRUE
+#' @param print_input_file whether to print the input file to the console
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
@@ -31,10 +34,12 @@ create_profiles_mplus <- function(df,
                                   output_filename = "i.out",
                                   savedata_filename = "d-mod.dat",
                                   model = 1,
-                                  start_iterations = c(20, 4),
+                                  start_iterations = c(500, 50),
                                   m_iterations = 500,
+                                  st_iterations = 50,
+                                  convergence_criterion = 0.0000001,
                                   remove_tmp_files = TRUE,
-                                  view_input_file = FALSE,
+                                  print_input_file = FALSE,
                                   return_save_data = FALSE) {
 
     d <- select_ancillary_functions_mplus(df, ...)
@@ -57,9 +62,12 @@ create_profiles_mplus <- function(df,
 
     ANALYSIS_line0 <- "ANALYSIS:"
     ANALYSIS_line1 <- "Type is mixture;"
-    ANALYSIS_line2 <- paste0("start = ", start_iterations[1], " ", start_iterations[2])
-    ANALYSIS_line3 <- paste0("miterations = ", m_iterations)
+    ANALYSIS_line2 <- paste0("start = ", start_iterations[1], " ", start_iterations[2], ";")
+    ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
+    ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
+    ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")
 
+    MODEL_overall_line000 <- paste0("! model specified is: ", model)
     MODEL_overall_line00 <- paste0("MODEL:")
     MODEL_overall_line0 <- paste0("%overall%")
     MODEL_overall_line1 <- paste0("[", unquoted_variable_name, "];")
@@ -189,6 +197,33 @@ create_profiles_mplus <- function(df,
             }
             class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
             class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
+            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, "(", 1, "-", length(var_list), ");")
+
+            temp_index <- 0
+            for (j in 1:length(var_list)) {
+                for (k in j:length(var_list)) {
+                    if (var_list[[j]] != var_list[[k]]) {
+                        the_index <- length(class_collector)
+                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
+                        temp_index <- (temp_index + 1) }}}}
+    } else if (model == 6) {
+        overall_collector <- list()
+        for (j in 1:length(var_list)) {
+            for (k in j:length(var_list)) {
+                if (var_list[[j]] != var_list[[k]]) {
+                    the_index <- length(overall_collector)
+                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
+                }
+            }
+        }
+        the_index <- 0
+        class_collector <- list()
+        for (i in 1:n_profiles) {
+            if (the_index != 0) {
+                the_index <- the_index + 1
+            }
+            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
+            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
             class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, ";")
 
             temp_index <- 0
@@ -206,7 +241,7 @@ create_profiles_mplus <- function(df,
                          MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
                          overall_collector,
                          class_collector,
-                         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2,
+                         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5,
                          OUTPUT_line0,
                          SAVEDATA_line0,
                          SAVEDATA_line1),
@@ -215,9 +250,10 @@ create_profiles_mplus <- function(df,
     x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
     capture <- capture.output(m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
 
-    if (view_input_file == TRUE) {
-        View(readr::read_lines(script_filename))
-        message("Note. You can also use the argument remove_tmp_files = FALSE to create the inp file, which you can then view in R Studio by clicking on the file name in the Files pane.")
+    if (print_input_file == TRUE) {
+        # f <- paste0(script_filename)
+        print(readr::read_lines(script_filename))
+        message("Note: This function currently prints the script output. You can also use the argument remove_tmp_files = FALSE to create the inp file, which you can then view in R Studio by clicking on the file name in the Files pane.")
     }
 
     if (return_save_data == TRUE) {
@@ -228,6 +264,7 @@ create_profiles_mplus <- function(df,
             file.remove(script_filename)
             file.remove(output_filename)
             file.remove(savedata_filename)
+            file.remove("Mplus Run Models.log")
         }
 
         invisible(list(m1, x))
@@ -238,6 +275,7 @@ create_profiles_mplus <- function(df,
             file.remove(script_filename)
             file.remove(output_filename)
             file.remove(savedata_filename)
+            file.remove("Mplus Run Models.log")
         }
 
         invisible(m1)

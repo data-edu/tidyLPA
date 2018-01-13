@@ -1,7 +1,7 @@
 ---
 title: "Introduction to tidyLPA"
 author: "Joshua M. Rosenberg"
-date: "2017-11-29"
+date: "2018-01-13"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to tidyLPA}
@@ -130,7 +130,7 @@ A few notes:
 
 * each covariance parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. 
 
-**A. Varying means, equal variances, covariances fixed to 0 (model 1)**
+**1. Varying means, equal variances, and covariances fixed to 0 (model 1)**
 
 *corresponds to the mclust model "EEI", "diagonal, equal volume and shape"*
 
@@ -138,7 +138,7 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2 }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3 }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 $$
 
-**B. Varying means, equal variances and covariances (model 2)**
+**2. Varying means, equal variances, and equal covariances (model 2)**
 
 *corresponds to the mclust model "EEE", "ellipsoidal, equal volume, shape, and orientation"*
 
@@ -146,7 +146,7 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 $$
 
-**C. Varying means and variances, covariances fixed to 0 (model 3)**
+**3. Varying means, varying variances, and covariances fixed to 0 (model 3)**
 
 *corresponds to the mclust model "VVI", "diagonal, varying volume and shape"*
 
@@ -154,15 +154,22 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2p }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3p }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 
-**D. Varying means and variances, equal covariances (model 4)**
+**4. Varying means, varying variances, and equal covariances (model 4)**
 
-*While used in some applications of Latent Profile Analysis, this model cannot presently be specified in mclust*
+*This model is available in MPlus but not Mclust*
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
+**5. Varying means, equal variances, and varying covariances**
 
-**E. Varying means, variances, and covariances**
+*This model is available in MPlus but not Mclust*
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
+$$
+
+**6. Varying means, varying variances, and varying covariances**
 
 *corresponds to the mclust model "VVV", "ellipsoidal, varying volume, shape, and orientation"*
 
