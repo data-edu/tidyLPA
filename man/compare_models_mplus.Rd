@@ -5,7 +5,8 @@
 \title{Explore BIC of MPlus models}
 \usage{
 compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
-  start_iterations = c(20, 4), m_iterations = 500, save_models = NULL)
+  start_iterations = c(500, 50), m_iterations = 500, st_iterations = 500,
+  convergence_criterion = 1e-07, save_models = NULL)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -19,6 +20,8 @@ compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
 \item{start_iterations}{the number of start iterations; defaults to c(500, 50)}
 
 \item{m_iterations}{number of m-step iterations; defaults to 500}
+
+\item{convergence_criterion}{the convergence criterion; defaults to .0000001}
 
 \item{save_models}{whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)}
 }
