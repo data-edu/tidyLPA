@@ -30,7 +30,7 @@ compare_models_mplus <- function(df, ...,
 
     for (i in 2:n_profiles_max) {
         for (j in model) {
-            m <- create_profiles_mplus(df, ..., n_profiles = i, model = j, start_iterations = start_iterations, m_iterations = m_iterations)
+            m <- create_profiles_mplus(df, ..., n_profiles = i, model = j, start_iterations = starts, m_iterations = m_iterations)
             the_index <- sum(!is.na(out_list))
             message(paste0("Model ", the_index + 1, "/", length(out_list)))
             out_list[[the_index + 1]] <- m
