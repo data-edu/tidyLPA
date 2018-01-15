@@ -15,10 +15,10 @@
 compare_models_mplus <- function(df, ...,
                                  n_profiles_max = 10,
                                  model = 1:6,
-                                 start_iterations = c(500, 50),
+                                 start_iterations = c(20, 54),
                                  m_iterations = 500,
-                                 st_iterations = 500,
-                                 convergence_criterion = 1E-7,
+                                 st_iterations = 10,
+                                 convergence_criterion = 1E-6,
                                  save_models = NULL) {
     out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))
     names(out_df) <- paste0("model_", model)
