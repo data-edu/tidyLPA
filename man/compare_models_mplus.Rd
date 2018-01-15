@@ -21,6 +21,8 @@ compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
 
 \item{m_iterations}{number of m-step iterations; defaults to 500}
 
+\item{st_iterations}{the number of initial stage iterations; defaults to 50}
+
 \item{convergence_criterion}{the convergence criterion; defaults to .0000001}
 
 \item{save_models}{whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)}

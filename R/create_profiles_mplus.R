@@ -6,7 +6,7 @@
 #' @param the_title title of the model; defaults to test
 #' @param start_iterations the number of start iterations; defaults to c(500, 50)
 #' @param m_iterations number of m-step iterations; defaults to 500
-#' @param s_iterations the number of initial stage iterations; defaults to 50
+#' @param st_iterations the number of initial stage iterations; defaults to 50
 #' @param convergence_criterion the convergence criterion; defaults to .0000001
 #' @param remove_tmp_files whether to remove data, script, and output files; defaults to TRUE
 #' @param print_input_file whether to print the input file to the console
