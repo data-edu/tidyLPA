@@ -5,8 +5,8 @@
 \title{Explore BIC of MPlus models}
 \usage{
 compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
-  start_iterations = c(500, 50), m_iterations = 500, st_iterations = 500,
-  convergence_criterion = 1e-07, save_models = NULL)
+  starts = c(20, 54), m_iterations = 500, st_iterations = 10,
+  convergence_criterion = 1e-06, save_models = NULL)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -16,6 +16,8 @@ compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
 \item{n_profiles_max}{a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)}
 
 \item{model}{which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
+
+\item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
 
 \item{m_iterations}{number of iterations for the EM algorithm; defaults to 500}
 

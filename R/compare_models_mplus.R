@@ -15,7 +15,7 @@
 compare_models_mplus <- function(df, ...,
                                  n_profiles_max = 10,
                                  model = 1:6,
-                                 start_iterations = c(20, 54),
+                                 starts = c(20, 54),
                                  m_iterations = 500,
                                  st_iterations = 10,
                                  convergence_criterion = 1E-6,
