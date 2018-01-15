@@ -4,10 +4,10 @@
 #' @param script_filename name of script to prepare; defaults to i.inp
 #' @param output_filename name of the output; defaults to o.out
 #' @param the_title title of the model; defaults to test
-#' @param start_iterations the number of start iterations; defaults to c(500, 50)
-#' @param m_iterations number of m-step iterations; defaults to 500
-#' @param st_iterations the number of initial stage iterations; defaults to 50
-#' @param convergence_criterion the convergence criterion; defaults to .0000001
+#' @param starts number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)
+#' @param m_iterations number of iterations for the EM algorithm; defaults to 500
+#' @param st_iterations the number of initial stage iterations; defaults to 10; can be set more to be more conservative to 50
+#' @param convergence_criterion convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)
 #' @param remove_tmp_files whether to remove data, script, and output files; defaults to TRUE
 #' @param print_input_file whether to print the input file to the console
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output
@@ -34,10 +34,10 @@ create_profiles_mplus <- function(df,
                                   output_filename = "i.out",
                                   savedata_filename = "d-mod.dat",
                                   model = 1,
-                                  start_iterations = c(500, 50),
+                                  starts = c(500, 50),
                                   m_iterations = 500,
-                                  st_iterations = 50,
-                                  convergence_criterion = 0.0000001,
+                                  st_iterations = 10,
+                                  convergence_criterion = 1E-6,
                                   remove_tmp_files = TRUE,
                                   print_input_file = FALSE,
                                   return_save_data = FALSE) {
@@ -62,7 +62,7 @@ create_profiles_mplus <- function(df,
 
     ANALYSIS_line0 <- "ANALYSIS:"
     ANALYSIS_line1 <- "Type is mixture;"
-    ANALYSIS_line2 <- paste0("start = ", start_iterations[1], " ", start_iterations[2], ";")
+    ANALYSIS_line2 <- paste0("start = ", starts[1], " ", starts[2], ";")
     ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
     ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
     ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")

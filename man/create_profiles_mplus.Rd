@@ -7,8 +7,8 @@
 create_profiles_mplus(df, ..., n_profiles, the_title = "test",
   data_filename = "d.dat", script_filename = "i.inp",
   output_filename = "i.out", savedata_filename = "d-mod.dat", model = 1,
-  start_iterations = c(500, 50), m_iterations = 500, st_iterations = 50,
-  convergence_criterion = 1e-07, remove_tmp_files = TRUE,
+  starts = c(500, 50), m_iterations = 500, st_iterations = 10,
+  convergence_criterion = 1e-06, remove_tmp_files = TRUE,
   print_input_file = FALSE, return_save_data = FALSE)
 }
 \arguments{
@@ -28,13 +28,13 @@ create_profiles_mplus(df, ..., n_profiles, the_title = "test",
 
 \item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
-\item{start_iterations}{the number of start iterations; defaults to c(500, 50)}
+\item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
 
-\item{m_iterations}{number of m-step iterations; defaults to 500}
+\item{m_iterations}{number of iterations for the EM algorithm; defaults to 500}
 
-\item{st_iterations}{the number of initial stage iterations; defaults to 50}
+\item{st_iterations}{the number of initial stage iterations; defaults to 10; can be set more to be more conservative to 50}
 
-\item{convergence_criterion}{the convergence criterion; defaults to .0000001}
+\item{convergence_criterion}{convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)}
 
 \item{remove_tmp_files}{whether to remove data, script, and output files; defaults to TRUE}
 
