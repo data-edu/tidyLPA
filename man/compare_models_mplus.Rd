@@ -5,7 +5,7 @@
 \title{Explore BIC of MPlus models}
 \usage{
 compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
-  starts = c(20, 54), m_iterations = 500, st_iterations = 10,
+  starts = c(20, 4), m_iterations = 500, st_iterations = 10,
   convergence_criterion = 1e-06, save_models = NULL)
 }
 \arguments{
