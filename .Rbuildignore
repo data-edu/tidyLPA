@@ -5,3 +5,4 @@
 ^docs$
 ^cran-comments\.md$
 ^README-unnamed-chunk-3-1\.png$
+^\.travis\.yml$

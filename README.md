@@ -3,6 +3,8 @@
 tidyLPA
 =======
 
+[![Travis build status](https://travis-ci.org/jrosen48/tidymixmod.svg?branch=master)](https://travis-ci.org/jrosen48/tidymixmod)
+
 The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [MCLUST](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
 
 Installation
