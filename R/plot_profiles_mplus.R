@@ -21,10 +21,10 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
 
     d <- mplus_data[[2]] %>%
         left_join(z, by = "C") %>%
-        mutate(profile = paste0("Profile ", .C, " (n = ", data$n, ")")) %>%
-        select(-contains("CPROB"), -C, -n) %>%
+        mutate(profile = paste0("Profile ", .data$C, " (n = ", .data$n, ")")) %>%
+        select(-contains("CPROB"), -.data$C, -.data$n) %>%
         mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
-        group_by(profile) %>%
+        group_by(.data$profile) %>%
         summarize_all(funs(mean, sd)) %>%
         gather("key", "val", -.data$profile) %>%
         mutate(new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),
