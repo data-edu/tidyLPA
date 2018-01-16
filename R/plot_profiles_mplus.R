@@ -13,14 +13,14 @@
 
 plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
 
-    if (is.data.frame(mplus_data)[[2]]) {
+    if (!(is.data.frame(mplus_data[[2]]))) {
         stop("Did you specify return_savedata = T in create_profiles_mplus()? If not, add that argument to create_profiles_mplus() and run plot_profiles_mplus() again.")
     }
 
     z <- mplus_data[[2]] %>% count(C)
 
-    p <- mplus_data[[2]] %>%
-        left_join(z) %>%
+    d <- mplus_data[[2]] %>%
+        left_join(z, by = "C") %>%
         mutate(profile = paste0("Profile ", C, " (n = ", n, ")")) %>%
         select(-contains("CPROB"), -C, -n) %>%
         mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
@@ -36,8 +36,9 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
                n = as.numeric(str_extract(.data$n_string, "\\-*\\d+\\.*\\d*")),
                se = 1.96 * (.data$sd / sqrt(.data$n - 1)),
                ymin = .data$mean - .data$se,
-               ymax = .data$mean + .data$se) %>%
-        ggplot(aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
+               ymax = .data$mean + .data$se)
+
+    p <- ggplot(d, aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
         geom_col(position = "dodge") +
         geom_errorbar(position = position_dodge()) +
         theme_bw() +
