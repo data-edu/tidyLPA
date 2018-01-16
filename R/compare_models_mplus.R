@@ -24,13 +24,13 @@ compare_models_mplus <- function(df, ...,
     names(out_df) <- paste0("model_", model)
     out_df <- out_df %>%
         mutate(n_profiles = 2:n_profiles_max) %>%
-        select(n_profiles, everything())
+        select(.data$n_profiles, everything())
 
     out_list <- as.list(rep(NA, times = (nrow(out_df) * ncol(out_df))))
 
     for (i in 2:n_profiles_max) {
         for (j in model) {
-            m <- create_profiles_mplus(df, ..., n_profiles = i, model = j, start_iterations = starts, m_iterations = m_iterations)
+            m <- create_profiles_mplus(df, ..., n_profiles = i, model = j, starts= starts, m_iterations = m_iterations)
             the_index <- sum(!is.na(out_list))
             message(paste0("Model ", the_index + 1, "/", length(out_list)))
             out_list[[the_index + 1]] <- m

@@ -17,16 +17,16 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
         stop("Did you specify return_savedata = T in create_profiles_mplus()? If not, add that argument to create_profiles_mplus() and run plot_profiles_mplus() again.")
     }
 
-    z <- mplus_data[[2]] %>% count(C)
+    z <- count(mplus_data[[2]], .data$C)
 
     d <- mplus_data[[2]] %>%
         left_join(z, by = "C") %>%
-        mutate(profile = paste0("Profile ", C, " (n = ", n, ")")) %>%
+        mutate(profile = paste0("Profile ", .C, " (n = ", data$n, ")")) %>%
         select(-contains("CPROB"), -C, -n) %>%
         mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
         group_by(profile) %>%
         summarize_all(funs(mean, sd)) %>%
-        gather(key, val, -profile) %>%
+        gather("key", "val", -.data$profile) %>%
         mutate(new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),
                                 ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, start = -2), NA)),
                key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, end = -6),

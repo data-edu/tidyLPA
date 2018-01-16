@@ -3,6 +3,7 @@
 #' @param data_filename name of data file to prepare; defaults to d.dat
 #' @param script_filename name of script to prepare; defaults to i.inp
 #' @param output_filename name of the output; defaults to o.out
+#' @param savedata_filename name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out
 #' @param the_title title of the model; defaults to test
 #' @param starts number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)
 #' @param m_iterations number of iterations for the EM algorithm; defaults to 500
@@ -43,7 +44,7 @@ create_profiles_mplus <- function(df,
                                   return_save_data = FALSE) {
 
     d <- select_ancillary_functions_mplus(df, ...)
-    x <- capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
+    x <- utils::capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
 
     unquoted_variable_name <- paste0(names(d), collapse = " ")
 
@@ -247,8 +248,8 @@ create_profiles_mplus <- function(df,
                          SAVEDATA_line1),
                        script_filename)
 
-    x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
-    capture <- capture.output(m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
+    x <- utils::capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
+    capture <- utils::capture.output(m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
 
     if (print_input_file == TRUE) {
         # f <- paste0(script_filename)

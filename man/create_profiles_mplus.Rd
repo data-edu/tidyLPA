@@ -26,6 +26,8 @@ create_profiles_mplus(df, ..., n_profiles, the_title = "test",
 
 \item{output_filename}{name of the output; defaults to o.out}
 
+\item{savedata_filename}{name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out}
+
 \item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
 \item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
