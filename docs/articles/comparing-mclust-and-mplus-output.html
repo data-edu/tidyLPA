@@ -50,7 +50,7 @@
       <h1>Comparing Mplus and mclust output</h1>
                         <h4 class="author">Joshua Rosenberg</h4>
             
-            <h4 class="date">2018-01-13</h4>
+            <h4 class="date">2018-01-16</h4>
           </div>
 
     
@@ -67,7 +67,8 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
-                                  <span class="dt">model =</span> <span class="dv">1</span>)</code></pre></div>
+                                  <span class="dt">model =</span> <span class="dv">1</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span></code></pre></div>
 <p>The <code>t.inp</code> file is saved in your working directory with the following contents. Note that this code is likely different because it is generated programmatically and uses no defaults (it is likely less efficient than code that you would write by hand).</p>
 <pre><code>TITLE: test
 DATA: File is d.dat;
@@ -109,8 +110,9 @@ OUTPUT: TECH1 TECH11;</code></pre>
                                   Sepal.Length, Sepal.Width, Petal.Length, 
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">2</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 m1_mplus<span class="op">$</span>summaries<span class="op">$</span>LL
-<span class="co">#&gt; [1] -308.07</span></code></pre></div>
+<span class="co">#&gt; NULL</span></code></pre></div>
 <pre><code>TITLE: test
 DATA: File is d.dat;
 VARIABLE:
@@ -157,39 +159,44 @@ m1_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cr
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">1</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 m1_mplus<span class="op">$</span>summaries<span class="op">$</span>LL
-<span class="co">#&gt; [1] -488.915</span>
+<span class="co">#&gt; NULL</span>
 
 m2_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">2</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 m2_mplus<span class="op">$</span>summaries<span class="op">$</span>LL
-<span class="co">#&gt; [1] -296.448</span>
+<span class="co">#&gt; NULL</span>
 
 m3_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">3</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m3_mplus<span class="op">$</span>summaries<span class="op">$</span>LL
-<span class="co">#&gt; [1] -386.185</span>
+<span class="co">#&gt; NULL</span>
 
 m4_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">4</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m4_mplus<span class="op">$</span>summaries<span class="op">$</span>LL
-<span class="co">#&gt; [1] -278.544</span>
+<span class="co">#&gt; NULL</span>
 
 m5_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">5</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m5_mplus<span class="op">$</span>summaries<span class="op">$</span>LL
-<span class="co">#&gt; [1] -273.461</span></code></pre></div>
+<span class="co">#&gt; NULL</span></code></pre></div>
 <p><strong>mclust</strong></p>
 <p>Note that model 4 can only be specified in Mplus, so is not included here.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(iris,
@@ -274,26 +281,31 @@ iris_log_lik
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">1</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m2_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">2</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m3_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">3</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m4_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
                                   <span class="dt">model =</span> <span class="dv">4</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m5_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(iris,
                                   Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                                   <span class="dt">n_profiles =</span> <span class="dv">3</span>,
-                                  <span class="dt">model =</span> <span class="dv">5</span>)</code></pre></div>
+                                  <span class="dt">model =</span> <span class="dv">5</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span></code></pre></div>
 <p><strong>mclust</strong></p>
 <p>Note that model 4 can only be specified in Mplus, so is not included here.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(iris,
@@ -378,26 +390,31 @@ m1_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cr
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">1</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m2_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(faithful,
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">2</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m3_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(faithful,
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">3</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m4_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(faithful,
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
                                   <span class="dt">model =</span> <span class="dv">4</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span>
 
 m5_mplus &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_mplus.html">create_profiles_mplus</a></span>(faithful,
                                   eruptions, waiting,
                                   <span class="dt">n_profiles =</span> <span class="dv">2</span>,
-                                  <span class="dt">model =</span> <span class="dv">5</span>)</code></pre></div>
+                                  <span class="dt">model =</span> <span class="dv">5</span>)
+<span class="co">#&gt; This first list item is the model output and the second is the save data with class probabilities.</span></code></pre></div>
 <p><strong>mclust</strong></p>
 <p>Note that model 4 can only be specified in Mplus, so is not included here.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(faithful,

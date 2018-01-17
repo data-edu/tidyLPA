@@ -3,12 +3,14 @@
 #' @param n_profiles_max a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)
 #' @param model which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
 #' @param save_models whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)
+#' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE
 #' @inheritParams create_profiles_mplus
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @import mclust
+#' @importFrom dplyr %>%
 #' @examples
 #' \dontrun{
-#' compare_models_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+#' compare_models_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, n_profiles_max = 4)
 #' }
 #' @export
 
@@ -19,7 +21,8 @@ compare_models_mplus <- function(df, ...,
                                  m_iterations = 500,
                                  st_iterations = 10,
                                  convergence_criterion = 1E-6,
-                                 save_models = NULL) {
+                                 save_models = NULL,
+                                 return_table = FALSE) {
     out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))
     names(out_df) <- paste0("model_", model)
     out_df <- out_df %>%
@@ -30,7 +33,14 @@ compare_models_mplus <- function(df, ...,
 
     for (i in 2:n_profiles_max) {
         for (j in model) {
-            m <- create_profiles_mplus(df, ..., n_profiles = i, model = j, starts= starts, m_iterations = m_iterations)
+            m <- create_profiles_mplus(df, ...,
+                                       n_profiles = i,
+                                       model = j,
+                                       starts = starts,
+                                       m_iterations = m_iterations,
+                                       convergence_criterion = convergence_criterion,
+                                       st_iterations = st_iterations,
+                                       return_save_data = F)
             the_index <- sum(!is.na(out_list))
             message(paste0("Model ", the_index + 1, "/", length(out_list)))
             out_list[[the_index + 1]] <- m
@@ -49,10 +59,20 @@ compare_models_mplus <- function(df, ...,
 
     if (!is.null(save_models)) {
         readr::write_rds(m, save_models)
+    }
+
+    if(return_table == TRUE) {
         return(out_df)
     } else {
-        message("the data frame can be accessed as the first list item of the output of compare_models_mplus()")
-        return(list(out_df, m))
+        p <- out_df %>%
+            tidyr::gather("key", "val", -.data$n_profiles) %>%
+            dplyr::filter(.data$val != "Convergence problem",
+                          .data$val != "LL not replicated") %>%
+            ggplot2::ggplot(ggplot2::aes_string(x = "n_profiles", y = "val", shape = "key", color = "key", group = "key")) +
+            ggplot2::geom_line() +
+            ggplot2::geom_point()
+        print(p)
+        return(p)
     }
 }
 
@@ -71,14 +91,14 @@ try_extract_fit <- function(m) {
             errors_list <- extract_errors(m)
             if (stringr::str_detect(errors_list[[1]][1], "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY") |
                 stringr::str_detect(errors_list[[1]][1], "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.")) {
-                    return("Convergence problem")
-                } else if (warnings_list[[2]][1] == "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") {
-                    return("LL not replicated")
-                }
+                return("Convergence problem")
+            } else if (warnings_list[[2]][1] == "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") {
+                return("LL not replicated")
+            }
         },
         error=function(cond) {
             return(m$summaries$BIC)
         }
-            )
-            return(out)
+    )
+    return(out)
 }

@@ -1,7 +1,7 @@
 context("test-create_profiles_mplus-r.R")
 
 test_that("create_profiles_mplus() works", {
-    x <- create_profiles_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
+    x <- create_profiles_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)[[1]]
     y <- as.data.frame(suppressWarnings(x$parameters$unstandardized[x$parameters$unstandardized$paramHeader == "Means", ]))
 
     expect_equal(y[1, 3], 5.01, tolerance = .01)

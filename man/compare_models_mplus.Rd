@@ -6,7 +6,7 @@
 \usage{
 compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
   starts = c(20, 4), m_iterations = 500, st_iterations = 10,
-  convergence_criterion = 1e-06, save_models = NULL)
+  convergence_criterion = 1e-06, save_models = NULL, return_table = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -26,6 +26,8 @@ compare_models_mplus(df, ..., n_profiles_max = 10, model = 1:6,
 \item{convergence_criterion}{convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)}
 
 \item{save_models}{whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)}
+
+\item{return_table}{logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE}
 }
 \value{
 a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
@@ -38,6 +40,6 @@ Explore the BIC values of a range of Mplus models in terms of a) the structure o
 }
 \examples{
 \dontrun{
-compare_models_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+compare_models_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, n_profiles_max = 4)
 }
 }

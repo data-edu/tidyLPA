@@ -82,9 +82,9 @@
     <pre class="usage"><span class='fu'>create_profiles_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>the_title</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
   <span class='kw'>data_filename</span> <span class='kw'>=</span> <span class='st'>"d.dat"</span>, <span class='kw'>script_filename</span> <span class='kw'>=</span> <span class='st'>"i.inp"</span>,
   <span class='kw'>output_filename</span> <span class='kw'>=</span> <span class='st'>"i.out"</span>, <span class='kw'>savedata_filename</span> <span class='kw'>=</span> <span class='st'>"d-mod.dat"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>start_iterations</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>500</span>, <span class='fl'>50</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>st_iterations</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-07</span>, <span class='kw'>remove_tmp_files</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>print_input_file</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_save_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>starts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>4</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>st_iterations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>remove_tmp_files</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>print_input_file</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_save_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -118,20 +118,28 @@
       <td><p>name of the output; defaults to o.out</p></td>
     </tr>
     <tr>
+      <th>savedata_filename</th>
+      <td><p>name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out</p></td>
+    </tr>
+    <tr>
       <th>model</th>
       <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
     </tr>
     <tr>
-      <th>start_iterations</th>
-      <td><p>the number of start iterations; defaults to c(500, 50)</p></td>
+      <th>starts</th>
+      <td><p>number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)</p></td>
     </tr>
     <tr>
       <th>m_iterations</th>
-      <td><p>number of m-step iterations; defaults to 500</p></td>
+      <td><p>number of iterations for the EM algorithm; defaults to 500</p></td>
+    </tr>
+    <tr>
+      <th>st_iterations</th>
+      <td><p>the number of initial stage iterations; defaults to 10; can be set more to be more conservative to 50</p></td>
     </tr>
     <tr>
       <th>convergence_criterion</th>
-      <td><p>the convergence criterion; defaults to .0000001</p></td>
+      <td><p>convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)</p></td>
     </tr>
     <tr>
       <th>remove_tmp_files</th>
@@ -143,11 +151,7 @@
     </tr>
     <tr>
       <th>return_save_data</th>
-      <td><p>whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output</p></td>
-    </tr>
-    <tr>
-      <th>s_iterations</th>
-      <td><p>the number of initial stage iterations; defaults to 50</p></td>
+      <td><p>whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE</p></td>
     </tr>
     </table>
     
@@ -164,9 +168,9 @@
     <pre class="examples"><div class='input'><span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_mplus</span>(<span class='no'>iris</span>,
                             <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
                             <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                            <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='co'># models described here:</span>
-<span class='co'># https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html</span></div></pre>
+                            <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>This first list item is the model output and the second is the save data with class probabilities.</span></div><div class='input'># models described here:
+# https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

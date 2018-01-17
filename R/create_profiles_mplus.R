@@ -11,7 +11,7 @@
 #' @param convergence_criterion convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)
 #' @param remove_tmp_files whether to remove data, script, and output files; defaults to TRUE
 #' @param print_input_file whether to print the input file to the console
-#' @param return_save_data whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output
+#' @param return_save_data whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
 #' @import tidyr
@@ -41,7 +41,7 @@ create_profiles_mplus <- function(df,
                                   convergence_criterion = 1E-6,
                                   remove_tmp_files = TRUE,
                                   print_input_file = FALSE,
-                                  return_save_data = FALSE) {
+                                  return_save_data = TRUE) {
 
     d <- select_ancillary_functions_mplus(df, ...)
     x <- utils::capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
@@ -258,6 +258,7 @@ create_profiles_mplus <- function(df,
     }
 
     if (return_save_data == TRUE) {
+        message("This first list item is the model output and the second is the save data with class probabilities.")
         x <- dplyr::tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
         if (remove_tmp_files == TRUE) {
@@ -270,12 +271,10 @@ create_profiles_mplus <- function(df,
 
         invisible(list(m1, x))
     } else {
-
         if (remove_tmp_files == TRUE) {
             file.remove(data_filename)
             file.remove(script_filename)
             file.remove(output_filename)
-            file.remove(savedata_filename)
             file.remove("Mplus Run Models.log")
         }
 
