@@ -13,6 +13,7 @@
 #' @param print_input_file whether to print the input file to the console
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
 #' @param optseed random seed for analysis
+#' @param n_processors = 1
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
 #' @import tidyr
@@ -43,7 +44,8 @@ create_profiles_mplus <- function(df,
                                   remove_tmp_files = TRUE,
                                   print_input_file = FALSE,
                                   return_save_data = TRUE,
-                                  optseed = NULL) {
+                                  optseed = NULL,
+                                  n_processors = 1) {
 
     d <- select_ancillary_functions_mplus(df, ...)
     x <- utils::capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
@@ -75,6 +77,8 @@ create_profiles_mplus <- function(df,
     } else {
         ANALYSIS_line6 <- paste0("optseed = ", optseed, ";")
     }
+
+    ANALYSIS_line7 <- paste0("processors = ", n_processors, ";")
 
     MODEL_overall_line000 <- paste0("! model specified is: ", model)
     MODEL_overall_line00 <- paste0("MODEL:")
@@ -250,7 +254,7 @@ create_profiles_mplus <- function(df,
                          MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
                          overall_collector,
                          class_collector,
-                         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6,
+                         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7,
                          OUTPUT_line0,
                          SAVEDATA_line0,
                          SAVEDATA_line1),

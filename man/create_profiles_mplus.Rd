@@ -9,7 +9,8 @@ create_profiles_mplus(df, ..., n_profiles, the_title = "test",
   output_filename = "i.out", savedata_filename = "d-mod.dat", model = 1,
   starts = c(20, 4), m_iterations = 500, st_iterations = 10,
   convergence_criterion = 1e-06, remove_tmp_files = TRUE,
-  print_input_file = FALSE, return_save_data = TRUE, optseed = NULL)
+  print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
+  n_processors = 1)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -45,6 +46,8 @@ create_profiles_mplus(df, ..., n_profiles, the_title = "test",
 \item{return_save_data}{whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE}
 
 \item{optseed}{random seed for analysis}
+
+\item{n_processors}{= 1}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models
