@@ -12,6 +12,7 @@
 #' @param remove_tmp_files whether to remove data, script, and output files; defaults to TRUE
 #' @param print_input_file whether to print the input file to the console
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
+#' @param optseed random seed for analysis
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
 #' @import tidyr
@@ -41,7 +42,8 @@ create_profiles_mplus <- function(df,
                                   convergence_criterion = 1E-6,
                                   remove_tmp_files = TRUE,
                                   print_input_file = FALSE,
-                                  return_save_data = TRUE) {
+                                  return_save_data = TRUE,
+                                  optseed = NULL) {
 
     d <- select_ancillary_functions_mplus(df, ...)
     x <- utils::capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
@@ -67,6 +69,12 @@ create_profiles_mplus <- function(df,
     ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
     ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
     ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")
+
+    if (is.null(optseed)) {
+        ANALYSIS_line6 <- ""
+    } else {
+        ANALYSIS_line6 <- paste0("optseed = ", optseed, ";")
+    }
 
     MODEL_overall_line000 <- paste0("! model specified is: ", model)
     MODEL_overall_line00 <- paste0("MODEL:")
@@ -242,7 +250,7 @@ create_profiles_mplus <- function(df,
                          MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
                          overall_collector,
                          class_collector,
-                         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5,
+                         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6,
                          OUTPUT_line0,
                          SAVEDATA_line0,
                          SAVEDATA_line1),
