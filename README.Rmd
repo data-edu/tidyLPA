@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # tidyLPA
 
-[![Travis build status](https://travis-ci.org/jrosen48/tidymixmod.svg?branch=master)](https://travis-ci.org/jrosen48/tidymixmod)
+[![Travis build status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA)
 
 tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! Please report any bugs at https://github.com/jrosen48/tidyLPA or send an email to [jrosen@msu.edu](mailto:jrosen@msu.edu).
 
