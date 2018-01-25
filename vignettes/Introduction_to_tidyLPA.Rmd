@@ -200,7 +200,7 @@ bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 
 There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software:
 
-```{r}
+```{r, eval = F}
 m1 <- create_profiles_mplus(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                             n_profiles = 2,
@@ -215,4 +215,4 @@ The object `m1` contains the Mplus output, as is returned in Mplus, but in an R 
 
 * [Pastor (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) provides an accessible introduction to LPA, with an applied example in educational research. 
 
-* To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email or Twitter](https://jrosen48.github.io/about/).
+* To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [Twitter](https://twitter.com/jrosenberg6432).
