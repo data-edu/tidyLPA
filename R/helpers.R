@@ -71,3 +71,7 @@ center_scale_function <- function(x, center_raw_data, scale_raw_data) {
 #' @import tibble
 
 "pisaUSA15"
+
+.onAttach <- function(libname, pkgname) {
+    packageStartupMessage("tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! \nPlease report any bugs at https://github.com/jrosen48/tidyLPA or send an email to jrosen@msu.edu.")
+}
