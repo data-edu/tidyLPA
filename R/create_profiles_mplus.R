@@ -18,7 +18,6 @@
 #' @import dplyr
 #' @import tidyr
 #' @importFrom tibble
-#' "
 #' @examples
 #' m1 <- create_profiles_mplus(iris,
 #'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
