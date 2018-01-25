@@ -17,7 +17,7 @@
 #' @inheritParams create_profiles_lpa
 #' @import dplyr
 #' @import tidyr
-#' @importFrom tibble
+#' @importFrom tibble tibble
 #' @examples
 #' m1 <- create_profiles_mplus(iris,
 #'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,

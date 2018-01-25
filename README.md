@@ -5,7 +5,7 @@ tidyLPA
 
 [![Travis build status](https://travis-ci.org/jrosen48/tidymixmod.svg?branch=master)](https://travis-ci.org/jrosen48/tidymixmod)
 
-The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [MCLUST](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
+tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! Please report any bugs at <https://github.com/jrosen48/tidyLPA> or send an email to <jrosen@msu.edu>.
 
 Installation
 ------------
@@ -28,10 +28,9 @@ Also, please view the [Introduction to tidyLPA vignette](https://jrosen48.github
 library(tidyLPA)
 ```
 
-``` r
-devtools::load_all(".")
-#> Loading tidyLPA
-```
+    #> Loading tidyLPA
+    #> tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! 
+    #> Please report any bugs at https://github.com/jrosen48/tidyLPA or send an email to jrosen@msu.edu.
 
 ``` r
 library(dplyr, warn.conflicts = FALSE)
