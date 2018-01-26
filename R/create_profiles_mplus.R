@@ -19,7 +19,7 @@
 #' @import tidyr
 #' @importFrom tibble tibble
 #' @examples
-#' #' \dontrun{
+#' \dontrun{
 #' m1 <- create_profiles_mplus(iris,
 #'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #'                             n_profiles = 2,

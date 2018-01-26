@@ -59,7 +59,7 @@ Create models for a specific mclust model
 Creates an mplus model (.inp) and associated data file (.dat)
 }
 \examples{
-#' \dontrun{
+\dontrun{
 m1 <- create_profiles_mplus(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                             n_profiles = 2,
