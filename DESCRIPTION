@@ -32,5 +32,6 @@ Suggests:
     knitr,
     rmarkdown,
     devtools,
-    testthat
+    testthat,
+    roxygen2
 VignetteBuilder: knitr
