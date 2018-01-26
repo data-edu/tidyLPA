@@ -56,7 +56,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#tidylpa" class="anchor"></a>tidyLPA</h1></div>
 
-<p>The goal of <code>tidyLPA</code> is to provide tools to make it easier to use the <code>R</code> package <a href="http://www.stat.washington.edu/mclust/">MCLUST</a> for Latent Profile Analysis analyses.</p>
+<p>tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! Please report any bugs at <a href="https://github.com/jrosen48/tidyLPA" class="uri">https://github.com/jrosen48/tidyLPA</a> or send an email to <a href="mailto:jrosen@msu.edu">jrosen@msu.edu</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -71,8 +71,9 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <p>Here is a brief example using the built-in <code>pisaUSA15</code> dataset and variables for broad interest, enjoyment, and self-efficacy. See <code><a href="reference/create_profiles_lpa.html">?create_profiles_lpa</a></code> for more details.</p>
 <p>Also, please view the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA vignette</a> for more information.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">load_all</span>(<span class="st">"."</span>)
-<span class="co">#&gt; Loading tidyLPA</span></code></pre></div>
+<pre><code>#&gt; Loading tidyLPA
+#&gt; tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! 
+#&gt; Please report any bugs at https://github.com/jrosen48/tidyLPA or send an email to jrosen@msu.edu.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
 d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]
 m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
@@ -101,7 +102,7 @@ m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_prof
 </ul>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/jrosen48/tidymixmod"><img src="https://travis-ci.org/jrosen48/tidymixmod.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://travis-ci.org/jrosen48/tidyLPA"><img src="https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master" alt="Travis build status"></a></li>
 </ul>
 </div>
 
