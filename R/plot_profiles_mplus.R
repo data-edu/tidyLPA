@@ -12,40 +12,45 @@
 #' @export
 
 plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
-    message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+  message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
-    if (!(is.data.frame(mplus_data[[2]]))) {
-        stop("Did you specify return_savedata = T in create_profiles_mplus()? If not, add that argument to create_profiles_mplus() and run plot_profiles_mplus() again.")
-    }
+  if (!(is.data.frame(mplus_data[[2]]))) {
+    stop("Did you specify return_savedata = T in create_profiles_mplus()? If not, add that argument to create_profiles_mplus() and run plot_profiles_mplus() again.")
+  }
 
-    z <- count(mplus_data[[2]], .data$C)
+  z <- count(mplus_data[[2]], .data$C)
 
-    d <- mplus_data[[2]] %>%
-        left_join(z, by = "C") %>%
-        mutate(profile = paste0("Profile ", .data$C, " (n = ", .data$n, ")")) %>%
-        select(-contains("CPROB"), -.data$C, -.data$n) %>%
-        mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
-        group_by(.data$profile) %>%
-        summarize_all(funs(mean, sd)) %>%
-        gather("key", "val", -.data$profile) %>%
-        mutate(new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),
-                                ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, start = -2), NA)),
-               key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, end = -6),
-                            ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, end = -4), NA))) %>%
-        spread(.data$new_key, .data$val) %>%
-        mutate(n_string = str_sub(as.character(.data$profile), start = 11),
-               n = as.numeric(str_extract(.data$n_string, "\\-*\\d+\\.*\\d*")),
-               se = 1.96 * (.data$sd / sqrt(.data$n - 1)),
-               ymin = .data$mean - .data$se,
-               ymax = .data$mean + .data$se)
+  d <- mplus_data[[2]] %>%
+    left_join(z, by = "C") %>%
+    mutate(profile = paste0("Profile ", .data$C, " (n = ", .data$n, ")")) %>%
+    select(-contains("CPROB"), -.data$C, -.data$n) %>%
+    mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
+    group_by(.data$profile) %>%
+    summarize_all(funs(mean, sd)) %>%
+    gather("key", "val", -.data$profile) %>%
+    mutate(
+      new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),
+        ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, start = -2), NA)
+      ),
+      key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, end = -6),
+        ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, end = -4), NA)
+      )
+    ) %>%
+    spread(.data$new_key, .data$val) %>%
+    mutate(
+      n_string = str_sub(as.character(.data$profile), start = 11),
+      n = as.numeric(str_extract(.data$n_string, "\\-*\\d+\\.*\\d*")),
+      se = 1.96 * (.data$sd / sqrt(.data$n - 1)),
+      ymin = .data$mean - .data$se,
+      ymax = .data$mean + .data$se
+    )
 
-    p <- ggplot(d, aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
-        geom_col(position = "dodge") +
-        geom_errorbar(position = position_dodge()) +
-        theme_bw() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-        scale_x_discrete("")
+  p <- ggplot(d, aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
+    geom_col(position = "dodge") +
+    geom_errorbar(position = position_dodge()) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    scale_x_discrete("")
 
-    p
-
+  p
 }
