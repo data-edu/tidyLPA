@@ -8,7 +8,7 @@
 #' @return a ggplot2 plot of the BIC values for the explored models
 #' @import mclust
 #' @examples
-#' compare_models_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+#' compare_solutions_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
 #' @export
 
 compare_solutions_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6), center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC", return_table = FALSE, prior_control = F) {

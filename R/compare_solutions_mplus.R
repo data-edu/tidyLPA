@@ -10,7 +10,7 @@
 #' @importFrom dplyr %>%
 #' @examples
 #' \dontrun{
-#' compare_models_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, n_profiles_max = 4)
+#' compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, n_profiles_max = 4)
 #' }
 #' @export
 
