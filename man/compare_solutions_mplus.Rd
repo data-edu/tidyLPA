@@ -40,6 +40,6 @@ Explore the BIC values of a range of Mplus models in terms of a) the structure o
 }
 \examples{
 \dontrun{
-compare_models_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, n_profiles_max = 4)
+compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, n_profiles_max = 4)
 }
 }
