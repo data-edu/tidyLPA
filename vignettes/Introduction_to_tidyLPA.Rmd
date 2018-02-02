@@ -178,8 +178,8 @@ We can quickly explore a number of models - both in terms of **the specification
 **Note that although BIC and ICL statistics may appear for the combination of a particular model and number of profiles, the output for these models may have profiles with no observations assigned to them, and so these statistics and figures should be considered starting points, not the sole criterion on which to decide on which model to select.**
 
 ```{r, fig.width = 7.5, fig.height = 4.5}
-compare_models_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, statistic = "BIC")
-compare_models_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, statistic = "ICL")
+compare_solutions_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, statistic = "BIC")
+compare_solutions_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, statistic = "ICL")
 ```
 
 # Bootstrapped likelihood-ratio test
