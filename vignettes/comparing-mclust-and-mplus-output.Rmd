@@ -1,10 +1,10 @@
 ---
-title: "Comparing Mplus and mclust output"
+title: "Using MPlus via tidyLPA"
 author: "Joshua Rosenberg"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to tidyLPA}
+  %\VignetteIndexEntry{Using MPlus via tidyLPA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,12 +20,8 @@ knitr::opts_chunk$set(
 
 This vignette compares mclust and Mplus output, for the purpose of benchmarking the use of mclust, an open-source tool, to Mplus. Note that for the `create_profiles_mplus()` function to work, you must have Mplus installed (and purchased).
 
-```{r, eval = F}
+```{r}
 library(tidyLPA)
-```
-
-```{r, echo = F}
-devtools::load_all(".")
 ```
 
 # Introduction

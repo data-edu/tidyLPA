@@ -12,6 +12,7 @@
 #' @export
 
 plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
+    message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
     if (!(is.data.frame(mplus_data[[2]]))) {
         stop("Did you specify return_savedata = T in create_profiles_mplus()? If not, add that argument to create_profiles_mplus() and run plot_profiles_mplus() again.")

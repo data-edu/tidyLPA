@@ -27,23 +27,17 @@ The goal of `tidyLPA` is to provide tools to make it easier to use the `R` packa
 
 # Example
 
-```{r, echo = F, eval = T}
-# this is for testing in-development versions
-devtools::load_all(".")
-```
-
 Here is a very short example using the built-in dataset `pisaUSA15`. 
 
-First, install the package from GitHub:
+First, install the package from CRAN:
 
 ```{r, eval = F}
-install.packages("devtools")
-devtools::install_github("jrosen48/tidyLPA")
+install.packages("tidyLPA")
 ```
 
 Here is the simple example, using just a subset of the built-in `pisaUSA15` data, data from the 2015 PISA assessment (more details can be found [here](https://github.com/jrosen48/pisaUSA15)).
 
-```{r, eval = F}
+```{r}
 library(tidyLPA)
 ```
 
