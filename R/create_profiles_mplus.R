@@ -301,7 +301,7 @@ estimate_profiles_mplus <- function(df,
   }
 
   if (return_save_data == TRUE) {
-    message("This first list item is the model output and the second is the save data with class probabilities.")
+    #message("This first list item is the model output and the second is the save data with class probabilities.")
     x <- dplyr::tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
     if (remove_tmp_files == TRUE) {
@@ -311,8 +311,9 @@ estimate_profiles_mplus <- function(df,
       file.remove(savedata_filename)
       file.remove("Mplus Run Models.log")
     }
+    invisible(x)
 
-    invisible(list(m1, x))
+    # invisible(list(m1, x))
   } else {
     if (remove_tmp_files == TRUE) {
       file.remove(data_filename)

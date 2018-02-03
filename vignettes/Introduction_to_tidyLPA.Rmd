@@ -52,7 +52,6 @@ Here is the simple example, using just a subset of the built-in `pisaUSA15` data
 
 ```{r}
 library(tidyLPA)
-
 d <- pisaUSA15[1:100, ]
 ```
 
@@ -88,87 +87,43 @@ We can also center or standardize the variables (to have grand mean equal to 0 a
 plot_profiles_lpa(m3, to_center = TRUE, to_scale = TRUE)
 ```
 
-#
+**Other options for estimating profiles**
 
-# More in-depth examples
-
-Here are more in-depth examples. 
-
-### A data-first, tidy approach
-
-`tidyLPA` is presently designed to be used in two ways:
-
-1. In a "data-first" (or tidy) way, akin to the interface popularized in the `dplyr` and `tidyr` (and other) packages - this approach is termed a "[tidy](https://www.tidyverse.org/)" approach in large parts of the R users community
-
-1. In a more conventional, object-oriented way - this approach will be familiar to those who have used functions such as the built-in `lm()` function for general linear models (i.e., regression and ANOVA)
-
-This example makes use of the first, data-first, tidy approach, in which a `data.frame` (or a `tibble` to those who use packages such as `dplyr` and other "tidy" packages) is both input and output by the main function in this package.
-
-Using the built-in `pisaUSA15` dataset (using just 200 observations for illustrative purposes) and variables for broad interest, enjoyment, and self-efficacy, we can explore a three profile solution, with, for example, `4` profiles, and varying means across profiles, but equal variances and covariances (specified with model = `2`, which happens to be the default model if none is specified). More information the models described later in this vignette. Note that the number of profiles are typically chosen on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony. 
+There is a lot of output from the `estimate_profiles_lpa()` function. The easiest way to access it is by changing what is returned; by default, the function returns a `data.frame` with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):
 
 ```{r}
-library(tidyLPA)
-library(dplyr, warn.conflicts = FALSE)
-d <- pisaUSA15
-d <- sample_n(pisaUSA15, 500)
-estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
+estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
 ```
 
-**Note that if you get the warning "Some profiles are associated with no assignments. Interpret this solution with caution and consider other models", then this is a sign that a simpler model (with fewer profiles) likely fits better.
+We can change the `to_return` argument to "mclust" to instead return the full output from the estimation:
+    
+```{r}
+m3_mclust <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, to_return = "mclust")
+```
 
-You can see the output is simply the same `tibble` that is input as the first function to `estimate_profiles_LPA`, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).
+This object can be inspected manually (see `str(m3_clust)`) or through helper functions available in mclust.
 
-We can then plot this output using the `plot_profiles_lpa()` function and the pipe (`%>%`) from the `dplyr` package:
+Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the `center_raw_data` and `scale_raw_data` functions:
 
 ```{r}
-estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2) %>% 
-    plot_profiles_lpa()
+m3_processed_raw <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, center_raw_data = TRUE, scale_raw_data = TRUE)
 ```
 
-You can, if you like, use the arguments `center_raw_data` (to center all of the clustering variables to have a mean of 0) or `scale_raw_data` (to scale all of the clustering variables to have a standard deviation of 1) in `estimate_profiles_lpa()`.
-
-Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object `m3`, and then call the `plot_profiles_lpa()` function on the output that it points to.
-
-```{r, warning = F}
-m3 <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
-plot_profiles_lpa(m3, to_center = TRUE)
-```
-
-We can also return all of the data. This returns a `tibble` with all of the variables in the original data, in this case `d`, so that subsequent analyses using variables that are not used to create the profile can be easily carried out.
+Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the argument `return_orig_df`:
 
 ```{r}
-estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2, return_orig_df = T)
+m3_mclust <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, return_orig_df = TRUE)
 ```
 
-### An object-oriented approach
+## More information on models
 
-In addition to being used as part of a "tidy" approach, there is also an option to use it as part of a more conventional, object-oriented approach. In this example, instead of outputting a `tibble`, we will output an object of class  `Mclust`.
+As mentioned earlier, there are a number of different models representing how (or whether) different parameters are estimated. Again, these are passed to the `model` argument to the `estimate_profiles_lpa()` function (i.e. `estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)`).
 
-```{r}
-d <- pisaUSA15
-d <- sample_n(pisaUSA15, 500)
-m3_mclust <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 2, model = 2, to_return = "mclust")
-```
-
-Any of the functions from the [mclust package](http://www.stat.washington.edu/mclust/) that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the `estimate_profiles_lpa()` function) instead of the `Mclust()` function from the `mclust package`. 
-
-# Models
-
-As mentioned earlier, there are a number of different models representing different covariance matrix parameterizations that can be fit using `tidyLPA`. These are passed to the `model` argument to the `estimate_profiles_lpa()` function, i.e. `estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, to_return="tibble")`.
-
-In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony. 
-
-Here is more information on their specification, drawing from [Pastor's (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) article. 
-
-A few notes: 
-
-* *p* represents different profiles (or mixture components).
-
-* each covariance parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. 
+In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony.  The article by [Pastor and colleagues (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. Note that *p* represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.
 
 **1. Varying means, equal variances, and covariances fixed to 0 (model 1)**
 
-*corresponds to the mclust model "EEI", "diagonal, equal volume and shape"*
+In this model, which corresponds to the mclust model wit the name "EEI", the variances are estimated to be equal across profiles, indicated by the absence of a p subscript for any of the diagonal elements of the matrix. The covariances are constrained to be zero, as indicated by the 0's between every combination of the variables. Thus, this model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables' variances are identical for each of the profiles, and the variables are not estimated with any relationships among them.
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2 }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3 }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
@@ -176,7 +131,7 @@ $$
 
 **2. Varying means, equal variances, and equal covariances (model 2)**
 
-*corresponds to the mclust model "EEE", "ellipsoidal, equal volume, shape, and orientation"*
+This model corresponds to the mclust model "EEE". In this model, the variances are still constrained to be the same across the profiles, although now the covariances are estimated (but like the variances, are constrained to be the same across profiles). Thus, this model is the first to estimate the covariance (or correlations) of the variables used to create the profiles, thus adding more information that can be used to better understand the characteristics of the profiles (and, potentially, better explain the data).
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
@@ -184,7 +139,7 @@ $$
 
 **3. Varying means, varying variances, and covariances fixed to 0 (model 3)**
 
-*corresponds to the mclust model "VVI", "diagonal, varying volume and shape"*
+This model corresponds to the mclust model "VVI" and allows for the variances to be freely estimated across profiles. The covariances are constrained to zero. Thus, it is more flexible (and less parsimonious) than model 1, but in terms of the covariances, is more constrained than model 2.
 
 $$ 
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2p }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3p }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
@@ -192,14 +147,14 @@ $$
 
 **4. Varying means, varying variances, and equal covariances (model 4)**
 
-*This model is available in MPlus but not Mclust*
+This model, which specifies for the variances to be freely estimated across the profiles and for the covariances to be estimated to be equal across profiles, extends model 3. Unfortunately, this model cannot be specified with mclust, though it can be with MPlus.
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 **5. Varying means, equal variances, and varying covariances**
 
-*This model is available in MPlus but not Mclust*
+This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. Like model 4, this model cannot be specified with mclust, though it can be with MPlus.
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
@@ -207,22 +162,46 @@ $$
 
 **6. Varying means, varying variances, and varying covariances**
 
-*corresponds to the mclust model "VVV", "ellipsoidal, varying volume, shape, and orientation"*
+This model corrresponds to the mclust model "VVV". It allows the variances and the covariances to be freely estimated across profiles. Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications. 
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 
-# Comparing many models using information criteria
+# MPlus
 
-We can quickly explore a number of models - both in terms of **the specification of the model** and **the number of profiles** using the Bayesian Information Criteria (BIC) values or the Integrated Completed Likelihood (ICL). For illustration, the built-in (to R) iris dataset is used a number of the models using the PISA data do not reach convergence.
+`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that benchmarking, which showed the results to be nearly identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
 
-**Note that although BIC and ICL statistics may appear for the combination of a particular model and number of profiles, the output for these models may have profiles with no observations assigned to them, and so these statistics and figures should be considered starting points, not the sole criterion on which to decide on which model to select.**
+## Run the same models through Mplus
 
-```{r, fig.width = 7.5, fig.height = 4.5}
-compare_solutions_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, statistic = "BIC")
-compare_solutions_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, statistic = "ICL")
+There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software. **Note that you must have purchased and installed MPlus for these functions to work**. Note that these functions are still in-development; the MPlus model syntax is dynamically generated for each model specified and then run through MPlus using the [MplusAutomation package](https://cran.r-project.org/web/packages/MplusAutomation/index.html). These can be helpful for comparing the results between mclust and MPlus and for using output of the MPlus analyses in subsequent analyses, which can be difficult when using MPlus in a stand-alone matter.
+
+Here is how to compare a number of models using MPlus (it works very similarly to `compare_solutions_lpa()`). Note that this and subsequent code using MPlus is not run in the vignette.
+
+```{r, eval = F}
+compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy)
 ```
+
+Here is how to estimate profiles for a single solution. This function is very similar to `create_profiles_lpa()`. Note that in addition to returning the profile assignment (`C`), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:
+
+```{r, eval = F}
+m1 <- estimate_profiles_mplus(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 3)
+m1
+```
+
+There are many options to control the estimation (i.e., changing the number of starts); see the help for this function (`?estimate_profiles_mplus()`) for information about the arguments that can be used.
+
+We can plot the profile solution using `plot_profiles_mplus()`; the same arguments to center and scale the data can be used:
+
+```{r}
+plot_profiles_mplus(m1, to_center = TRUE, to_scale = TRUE)
+```
+
+These functions will be further developed in subsequent versions.
+
+# Other features
+
+There are a few other features of tidyLPA that will be described further in subsequent versions. Two that are available now that are briefly described are the use of a bootstrapped likelihood-ratio test and a prior. Both are presently only available for the mclust functions (i.e., it is not yet available through tidyLPA for the functions that use MPlus)
 
 # Bootstrapped likelihood-ratio test
 
@@ -232,29 +211,21 @@ To determine the number of profies for a specified model (i.e., models `1`-`4` d
 bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 ```
 
-# MPlus
+# Use of a prior
 
-`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that benchmarking, which showed the results to be nearly identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
-
-# Run the same models through Mplus
-
-There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software:
+Models fit with mclust can be estimated with a prior. This can be helpful for estimating models that might otherwise not be able to be estimated. Learn more [here](https://www.rdocumentation.org/packages/mclust/versions/5.4/topics/Mclust).
 
 ```{r, eval = F}
-m1 <- estimate_profiles_mplus(iris,
-                            Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-                            n_profiles = 2,
-                            model = 1)
+estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, prior_control = TRUE)
 ```
-
-The object `m1` contains the Mplus output, as is returned in Mplus, but in an R list; for quick comparisons, `estimate_profiles_mplus()` prints the log-likelihood, BIC, and entropy statistics.
-
 
 # Notes
 
-* This is a sister-project to [prcr](https://github.com/jrosen48/prcr), for two-step cluster analysis. 
+This is related to [prcr](https://github.com/jrosen48/prcr), for use of two-step cluster analysis to carry out person-oriented analyses.
 
-* [Pastor (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) provides an accessible introduction to LPA, with an applied example in educational research. 
+To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [Twitter](https://twitter.com/jrosenberg6432).
 
-* To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [Twitter](https://twitter.com/jrosenberg6432).
+To cite tidyLPA, please use:
 
+> Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., & Steingut, R. R. (2018). Interface to MCLUST to Perform Latent Profile Analysis [Statistical software for R]. https://github.com/jrosen48/tidyLPA
+ 

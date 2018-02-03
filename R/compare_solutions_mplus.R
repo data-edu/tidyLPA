@@ -4,7 +4,7 @@
 #' @param model which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
 #' @param save_models whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE
-#' @inheritParams create_profiles_mplus
+#' @inheritParams estimate_profiles_mplus
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @import mclust
 #' @importFrom dplyr %>%
@@ -34,7 +34,7 @@ compare_solutions_mplus <- function(df, ...,
 
   for (i in 2:n_profiles_max) {
     for (j in model) {
-      m <- create_profiles_mplus(
+      m <- estimate_profiles_mplus(
         df, ...,
         n_profiles = i,
         model = j,

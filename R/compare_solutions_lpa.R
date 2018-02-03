@@ -66,7 +66,7 @@ compare_solutions_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 
         "Varying means, equal variances, covariances fixed to 0 (Model 1)",
         "Varying means, equal variances and covariances (Model 2)",
         "Varying means and variances, covariances fixed to 0 (Model 3)",
-        "Varying means, variances, and covariances (Model 5)"
+        "Varying means, variances, and covariances (Model 6)"
     )
 
 
