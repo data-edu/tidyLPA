@@ -11,7 +11,7 @@
 #' @param convergence_criterion convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)
 #' @param remove_tmp_files whether to remove data, script, and output files; defaults to TRUE
 #' @param print_input_file whether to print the input file to the console
-#' @param return_save_data whether to return the save data (with the original data and the posterior probabilties for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
+#' @param return_save_data whether to return the save data (with the original data and the posterior probabilities for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
 #' @param optseed random seed for analysis
 #' @param n_processors = 1
 #' @inheritParams estimate_profiles_lpa
