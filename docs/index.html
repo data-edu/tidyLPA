@@ -34,6 +34,9 @@
 <li>
   <a href="articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="news/index.html">News</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -64,19 +67,17 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
 devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jrosen48/tidyLPA"</span>)</code></pre></div>
 </div>
-</div>
-<div id="example" class="section level1">
-<h1 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h1>
-<p>Here is a brief example using the built-in <code>pisaUSA15</code> dataset and variables for broad interest, enjoyment, and self-efficacy. See <code><a href="reference/create_profiles_lpa.html">?create_profiles_lpa</a></code> for more details.</p>
+<div id="example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h2>
+<p>Here is a brief example using the built-in <code>pisaUSA15</code> dataset and variables for broad interest, enjoyment, and self-efficacy. See <code>?create_profiles_lpa</code> for more details.</p>
 <p>Also, please view the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA vignette</a> for more information.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)</code></pre></div>
-<pre><code>#&gt; Loading tidyLPA
-#&gt; tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! 
-#&gt; Please report any bugs at https://github.com/jrosen48/tidyLPA or send an email to jrosen@msu.edu.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
-d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]
-m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_profiles_lpa.html">create_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)
+<span class="co">#&gt; tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! </span>
+<span class="co">#&gt; Please report any bugs at https://github.com/jrosen48/tidyLPA or send an email to jrosen@msu.edu.</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]
+
+m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/estimate_profiles_lpa.html">estimate_profiles_lpa</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.</span>
 <span class="co">#&gt; LogLik is 279.692</span>
 <span class="co">#&gt; AIC is 593.384</span>
@@ -85,8 +86,12 @@ m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/create_prof
 <span class="co">#&gt; SABIC is 582.951</span>
 <span class="co">#&gt; ICL is 681.845</span>
 <span class="co">#&gt; Entropy is 0.798</span>
-<span class="kw"><a href="reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3)</code></pre></div>
-<p><img src="README-unnamed-chunk-4-1.png" width="672"></p>
+
+<span class="kw"><a href="reference/plot_profiles_lpa.html">plot_profiles_lpa</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="README-unnamed-chunk-3-1.png" width="672"></p>
+<p>Please note that this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>.</p>
+<p>By participating in this project you agree to abide by its terms.</p>
+</div>
 </div>
 </div>
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bootstrap the likelihood-ratio test statistic for mixture components — bootstrap_lrt • tidyLPA</title>
+<title>Estimate profiles for a specific mclust model — estimate_profiles_lpa • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -75,14 +75,17 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bootstrap the likelihood-ratio test statistic for mixture components</h1>
+    <h1>Estimate profiles for a specific mclust model</h1>
     </div>
 
     
-    <p>Bootstrap the likelihood-ratio test statistic for mixture components</p>
+    <p>Estimate profiles for a specific mclust model</p>
     
 
-    <pre class="usage"><span class='fu'>bootstrap_lrt</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_profiles_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
+  <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>return_posterior_probs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>return_orig_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -103,26 +106,55 @@
       <th>model</th>
       <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
     </tr>
+    <tr>
+      <th>to_return</th>
+      <td><p>character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned</p></td>
+    </tr>
+    <tr>
+      <th>center_raw_data</th>
+      <td><p>logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>scale_raw_data</th>
+      <td><p>logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>return_posterior_probs</th>
+      <td><p>TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE</p></td>
+    </tr>
+    <tr>
+      <th>return_orig_df</th>
+      <td><p>TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)</p></td>
+    </tr>
+    <tr>
+      <th>prior_control</th>
+      <td><p>whether to include a regularizing prior; defaults to false</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>either a tibble or a ggplot2 plot of the BIC values for the explored models</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.</p>
+    <p>Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
-  <span class='fu'>bootstrap_lrt</span>(<span class='no'>d</span>,
-                <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>)
-})</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
+<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>estimate_profiles_lpa</span>(<span class='no'>d</span>,
+                          <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>,
+                          <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 526.113</span></div><div class='output co'>#&gt; <span class='message'>AIC is 1080.226</span></div><div class='output co'>#&gt; <span class='message'>CAIC is 1139.611</span></div><div class='output co'>#&gt; <span class='message'>BIC is 1125.611</span></div><div class='output co'>#&gt; <span class='message'>SABIC is 1081.265</span></div><div class='output co'>#&gt; <span class='message'>ICL is 1183.293</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.871</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>

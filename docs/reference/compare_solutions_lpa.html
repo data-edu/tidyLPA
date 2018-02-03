@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bootstrap the likelihood-ratio test statistic for mixture components — bootstrap_lrt • tidyLPA</title>
+<title>Explore BIC of mclust models — compare_solutions_lpa • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -75,14 +75,16 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bootstrap the likelihood-ratio test statistic for mixture components</h1>
+    <h1>Explore BIC of mclust models</h1>
     </div>
 
     
-    <p>Bootstrap the likelihood-ratio test statistic for mixture components</p>
+    <p>Explore BIC of mclust models</p>
     
 
-    <pre class="usage"><span class='fu'>bootstrap_lrt</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>compare_solutions_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles_range</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>9</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>,
+  <span class='fl'>6</span>), <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>statistic</span> <span class='kw'>=</span> <span class='st'>"BIC"</span>,
+  <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -96,33 +98,54 @@
       <td><p>unquoted variable names separated by commas</p></td>
     </tr>
     <tr>
-      <th>n_profiles</th>
-      <td><p>the number of profiles (or mixture components) to be estimated</p></td>
+      <th>n_profiles_range</th>
+      <td><p>a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)</p></td>
     </tr>
     <tr>
       <th>model</th>
       <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
     </tr>
+    <tr>
+      <th>center_raw_data</th>
+      <td><p>logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>scale_raw_data</th>
+      <td><p>logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>statistic</th>
+      <td><p>what statistic to plot; BIC or ICL are presently available as options</p></td>
+    </tr>
+    <tr>
+      <th>return_table</th>
+      <td><p>logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>prior_control</th>
+      <td><p>whether to include a regularizing prior; defaults to false</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a ggplot2 plot of the BIC values for the explored models</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.</p>
+    <p>Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
-  <span class='fu'>bootstrap_lrt</span>(<span class='no'>d</span>,
-                <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>)
-})</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>compare_solutions_lpa</span>(<span class='no'>iris</span>, <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>)</div><img src='compare_solutions_lpa-2.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
