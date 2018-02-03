@@ -9,10 +9,10 @@ Authors@R: c(
     person(c("Rebecca", "R"), "Steingut", role = "ctb", email = "rebeccarosesteingut@gmail.com")
     )
 Description: An interface to mclust to easily carry out latent profile
-analysis (LPA). Provides functionality to estimate commonly-specified models.
-Follows a tidy approach, in that output is in the form of a data frame that can
-subsequently be computed on. Also has functions to interface to the commericial 
-MPlus software via the MplusAutomation package.
+    analysis (LPA). Provides functionality to estimate commonly-specified models.
+    Follows a tidy approach, in that output is in the form of a data frame that can
+    subsequently be computed on. Also has functions to interface to the commercial 
+    MPlus software via the MplusAutomation package.
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
