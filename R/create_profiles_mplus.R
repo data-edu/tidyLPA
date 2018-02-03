@@ -14,13 +14,13 @@
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
 #' @param optseed random seed for analysis
 #' @param n_processors = 1
-#' @inheritParams create_profiles_lpa
+#' @inheritParams estimate_profiles_lpa
 #' @import dplyr
 #' @import tidyr
 #' @importFrom tibble tibble
 #' @examples
 #' \dontrun{
-#' m1 <- create_profiles_mplus(iris,
+#' m1 <- estimate_profiles_mplus(iris,
 #'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #'                             n_profiles = 2,
 #'                             model = 1)
@@ -30,7 +30,7 @@
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
 
-create_profiles_mplus <- function(df,
+estimate_profiles_mplus <- function(df,
                                   ...,
                                   n_profiles,
                                   the_title = "test",

@@ -9,21 +9,9 @@ compare_solutions_mplus(df, ..., n_profiles_max = 10, model = 1:6,
   convergence_criterion = 1e-06, save_models = NULL, return_table = FALSE)
 }
 \arguments{
-\item{df}{data.frame with two or more columns with continuous variables}
-
-\item{...}{unquoted variable names separated by commas}
-
 \item{n_profiles_max}{a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)}
 
 \item{model}{which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
-
-\item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
-
-\item{m_iterations}{number of iterations for the EM algorithm; defaults to 500}
-
-\item{st_iterations}{the number of initial stage iterations; defaults to 10; can be set more to be more conservative to 50}
-
-\item{convergence_criterion}{convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)}
 
 \item{save_models}{whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)}
 

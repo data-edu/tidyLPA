@@ -17,13 +17,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Background
+# Background on Latent Profile Analysis (LPA)
 
-`tidyLPA` provides an interface to the powerful `mclust` package to easily carry out Latent Profile Analysis (LPA). Its main contribution is corresponding that are commonly specified when carrying out LPA. Its secondary contribution is to make it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a `tibble` (closely related to a `data.frame`) that can subsequently be computed on.
+Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.
 
-The goal of `tidyLPA` is to provide tools to make it easier to use the `R` package [mclust](http://www.stat.washington.edu/mclust/) for Latent Profile Analysis analyses.
+Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate (see [here](https://www.statmodel.com/examples/mixture.shtml)) using the expectation-maximization (EM) algorithm to (aim to) obtain the maximum likelihood estimates for the parameters. Different models, such as models that allow only the means and variances to be freely estimated across profiles, and other common combinations in terms of estimating the means, variances, and covariances, can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow. 
 
-`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that benchmarking, which showed the results to be nearly identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
+In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the [R version of OpenMx](https://openmx.ssri.psu.edu/) can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use. 
+
+Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term "mixture component" has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified. 
+
+In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see [RMixMod](https://cran.r-project.org/web/packages/Rmixmod/index.html), which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., "spherical, equal volume"), rather than in terms of how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.
+
+# The goal of tidyLPA
+
+The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used [mclust](https://www.stat.washington.edu/mclust/) package for Gaussian mixture modeling. This means that tidyLPA does not contain code to carry-out LPA directly, but rather provides "wrappers" to mclust functions that make them easier to use. The primary contributions of tidyLPA are:
+
+1. Providing functionality to specify models that are common to LPA
+2. Making it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a `tibble` (closely related to a `data.frame`) that can be used to create plots or for subsequent analyses
+
+Thus, tidyLPA contributes an interface to an open-source package for Gaussian mixture modeling, but focuses on models that are commonly specified as part of LPA. As will be described later, tidyLPA has been benchmarked to MPlus, though there may still be reasons to use MPlus. tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
 
 # Example
 
@@ -35,18 +48,47 @@ First, install the package from CRAN:
 install.packages("tidyLPA")
 ```
 
-Here is the simple example, using just a subset of the built-in `pisaUSA15` data, data from the 2015 PISA assessment (more details can be found [here](https://github.com/jrosen48/pisaUSA15)).
+Here is the simple example, using just a subset of the built-in `pisaUSA15` data, data from the 2015 PISA assessment (more details on the dataset can be found [here](https://github.com/jrosen48/pisaUSA15)). Here, we load tidyLPA and create a subset of the `pisaUSA15` data for this example. We use variables from the PISA assessment for United States students' broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).
 
 ```{r}
 library(tidyLPA)
+
+d <- pisaUSA15[1:100, ]
 ```
 
+**Comparing profile solutions**
+
+Next, we use the `compare_solutions_lpa()` function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.
+
+To use the function, we provide the name of the `data.frame`, `d`, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as `select()` from the [dplyr](http://dplyr.tidyverse.org/) package (and other ["tidyverse"](http://tidyverse.org/) packages).
+
+```{r, warning = F, message = F}
+compare_solutions_lpa(d, broad_interest, enjoyment, self_efficacy)
+```
+
+**Estimating profiles for a specific solution**
+
+While these BIC values are ambigious for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the `estimate_profiles_lpa()` function. 
+
+Like the `compare_solutions_lpa()`, the first argument is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, a number of information criteria (`AIC`, `CAIC`, `BIC`, `SABIC`, and `ICL`), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values.
+
 ```{r}
-library(dplyr, warn.conflicts = FALSE)
-d <- pisaUSA15[1:100, ]
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
+m3 <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
+```
+
+We fit the model and saved the output to the object `m3`. Next, we may want to examine the output in terms of the estimated means and variances of the variables for each of the profiles. We can do this with the `plot_profiles_lpa()` function:
+
+```{r}
 plot_profiles_lpa(m3)
 ```
+
+We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation eqoual t 1, respectively), with the `to_center` and `to_scale` arguments to `plot_profiles_lpa()`, i.e.:
+
+```{r}
+plot_profiles_lpa(m3, to_center = TRUE, to_scale = TRUE)
+```
+
+#
 
 # More in-depth examples
 
@@ -69,33 +111,33 @@ library(tidyLPA)
 library(dplyr, warn.conflicts = FALSE)
 d <- pisaUSA15
 d <- sample_n(pisaUSA15, 500)
-create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
+estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 ```
 
 **Note that if you get the warning "Some profiles are associated with no assignments. Interpret this solution with caution and consider other models", then this is a sign that a simpler model (with fewer profiles) likely fits better.
 
-You can see the output is simply the same `tibble` that is input as the first function to `create_profiles_LPA`, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).
+You can see the output is simply the same `tibble` that is input as the first function to `estimate_profiles_LPA`, but modified so that the classification and posterior probability of the classification are added (and incomplete cases with respect to the variables used to estimate the profiles removed).
 
 We can then plot this output using the `plot_profiles_lpa()` function and the pipe (`%>%`) from the `dplyr` package:
 
 ```{r}
-create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2) %>% 
+estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2) %>% 
     plot_profiles_lpa()
 ```
 
-You can, if you like, use the arguments `center_raw_data` (to center all of the clustering variables to have a mean of 0) or `scale_raw_data` (to scale all of the clustering variables to have a standard deviation of 1) in `create_profiles_lpa()`.
+You can, if you like, use the arguments `center_raw_data` (to center all of the clustering variables to have a mean of 0) or `scale_raw_data` (to scale all of the clustering variables to have a standard deviation of 1) in `estimate_profiles_lpa()`.
 
 Below is identical to the two lines of code above, except that instead of using the pipe, we save the output the object `m3`, and then call the `plot_profiles_lpa()` function on the output that it points to.
 
 ```{r, warning = F}
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
+m3 <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2)
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
 
 We can also return all of the data. This returns a `tibble` with all of the variables in the original data, in this case `d`, so that subsequent analyses using variables that are not used to create the profile can be easily carried out.
 
 ```{r}
-create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2, return_orig_df = T)
+estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 4, model = 2, return_orig_df = T)
 ```
 
 ### An object-oriented approach
@@ -105,14 +147,14 @@ In addition to being used as part of a "tidy" approach, there is also an option 
 ```{r}
 d <- pisaUSA15
 d <- sample_n(pisaUSA15, 500)
-m3_mclust <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 2, model = 2, to_return = "mclust")
+m3_mclust <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 2, model = 2, to_return = "mclust")
 ```
 
-Any of the functions from the [mclust package](http://www.stat.washington.edu/mclust/) that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the `create_profiles_lpa()` function) instead of the `Mclust()` function from the `mclust package`. 
+Any of the functions from the [mclust package](http://www.stat.washington.edu/mclust/) that work with this type of output will work on this output; the only difference is that the model is specified in this package (with the `estimate_profiles_lpa()` function) instead of the `Mclust()` function from the `mclust package`. 
 
 # Models
 
-As mentioned earlier, there are a number of different models representing different covariance matrix parameterizations that can be fit using `tidyLPA`. These are passed to the `model` argument to the `create_profiles_lpa()` function, i.e. `create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, to_return="tibble")`.
+As mentioned earlier, there are a number of different models representing different covariance matrix parameterizations that can be fit using `tidyLPA`. These are passed to the `model` argument to the `estimate_profiles_lpa()` function, i.e. `estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2, to_return="tibble")`.
 
 In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony. 
 
@@ -190,18 +232,23 @@ To determine the number of profies for a specified model (i.e., models `1`-`4` d
 bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 ```
 
+# MPlus
+
+`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that benchmarking, which showed the results to be nearly identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
+
 # Run the same models through Mplus
 
 There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software:
 
 ```{r, eval = F}
-m1 <- create_profiles_mplus(iris,
+m1 <- estimate_profiles_mplus(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                             n_profiles = 2,
                             model = 1)
 ```
 
-The object `m1` contains the Mplus output, as is returned in Mplus, but in an R list; for quick comparisons, `create_profiles_mplus()` prints the log-likelihood, BIC, and entropy statistics.
+The object `m1` contains the Mplus output, as is returned in Mplus, but in an R list; for quick comparisons, `estimate_profiles_mplus()` prints the log-likelihood, BIC, and entropy statistics.
+
 
 # Notes
 
@@ -210,3 +257,4 @@ The object `m1` contains the Mplus output, as is returned in Mplus, but in an R 
 * [Pastor (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) provides an accessible introduction to LPA, with an applied example in educational research. 
 
 * To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [Twitter](https://twitter.com/jrosenberg6432).
+

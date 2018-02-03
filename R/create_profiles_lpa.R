@@ -1,4 +1,4 @@
-#' Create profiles for a specific mclust model
+#' Estimate profiles for a specific mclust model
 #' @details Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
 #' @param df data.frame with two or more columns with continuous variables
 #' @param ... unquoted variable names separated by commas
@@ -15,13 +15,13 @@
 #' @examples
 #' d <- pisaUSA15
 #' d <- dplyr::sample_n(d, 200)
-#' m3 <- create_profiles_lpa(d,
+#' m3 <- estimate_profiles_lpa(d,
 #'                           broad_interest, enjoyment, self_efficacy,
 #'                           n_profiles = 3, to_return="tibble")
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
 
-create_profiles_lpa <- function(df,
+estimate_profiles_lpa <- function(df,
                                 ...,
                                 n_profiles,
                                 model = 1,
@@ -54,7 +54,7 @@ create_profiles_lpa <- function(df,
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
     model <- model
   } else {
-    stop("Model name is not correctly specified: use 1, 2, or 3 (see ?create_profiles_lpa for descriptions) or one of the model names specified from mclustModelNames() from mclust")
+    stop("Model name is not correctly specified: use 1, 2, or 3 (see ?estimate_profiles_lpa for descriptions) or one of the model names specified from mclustModelNames() from mclust")
   }
 
   model_print <- ifelse(model == "EEI", "varying means, equal variances, covariances fixed to 0 (Model 1)",

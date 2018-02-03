@@ -44,7 +44,11 @@ m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profile
 #> SABIC is 582.951
 #> ICL is 681.845
 #> Entropy is 0.798
-plot_profiles_lpa(m3)
+plot_profiles_lpa(m3, to_center = TRUE)
 ```
 
 ![](README-unnamed-chunk-4-1.png)
+
+Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md).
+
+By participating in this project you agree to abide by its terms.
