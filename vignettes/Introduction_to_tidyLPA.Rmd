@@ -1,7 +1,7 @@
 ---
 title: "Introduction to tidyLPA"
 author: "Joshua M. Rosenberg"
-date: "2018-01-13"
+date: "2018-02-3"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to tidyLPA}
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Background on Latent Profile Analysis (LPA)
+## Background on Latent Profile Analysis (LPA)
 
 Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.
 
@@ -29,7 +29,7 @@ Other tools in R allow for estimating Gaussian mixture models, or models of mult
 
 In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see [RMixMod](https://cran.r-project.org/web/packages/Rmixmod/index.html), which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., "spherical, equal volume"), rather than in terms of how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.
 
-# The goal of tidyLPA
+## The goal of tidyLPA
 
 The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used [mclust](https://www.stat.washington.edu/mclust/) package for Gaussian mixture modeling. This means that tidyLPA does not contain code to carry-out LPA directly, but rather provides "wrappers" to mclust functions that make them easier to use. The primary contributions of tidyLPA are:
 
@@ -38,7 +38,7 @@ The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, 
 
 Thus, tidyLPA contributes an interface to an open-source package for Gaussian mixture modeling, but focuses on models that are commonly specified as part of LPA. As will be described later, tidyLPA has been benchmarked to MPlus, though there may still be reasons to use MPlus. tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
 
-# Example
+## Example
 
 Here is a very short example using the built-in dataset `pisaUSA15`. 
 
@@ -115,7 +115,7 @@ Since we often wish to use the estimated profiles in subsequent analyses, we may
 m3_mclust <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, return_orig_df = TRUE)
 ```
 
-## More information on models
+### More information on models
 
 As mentioned earlier, there are a number of different models representing how (or whether) different parameters are estimated. Again, these are passed to the `model` argument to the `estimate_profiles_lpa()` function (i.e. `estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)`).
 
@@ -168,11 +168,11 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 
-# MPlus
+## Interface to MPlus (in-development)
 
 `tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that benchmarking, which showed the results to be nearly identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
 
-## Run the same models through Mplus
+### Run the same models through Mplus
 
 There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software. **Note that you must have purchased and installed MPlus for these functions to work**. Note that these functions are still in-development; the MPlus model syntax is dynamically generated for each model specified and then run through MPlus using the [MplusAutomation package](https://cran.r-project.org/web/packages/MplusAutomation/index.html). These can be helpful for comparing the results between mclust and MPlus and for using output of the MPlus analyses in subsequent analyses, which can be difficult when using MPlus in a stand-alone matter.
 
@@ -193,17 +193,17 @@ There are many options to control the estimation (i.e., changing the number of s
 
 We can plot the profile solution using `plot_profiles_mplus()`; the same arguments to center and scale the data can be used:
 
-```{r}
+```{r, eval = F}
 plot_profiles_mplus(m1, to_center = TRUE, to_scale = TRUE)
 ```
 
 These functions will be further developed in subsequent versions.
 
-# Other features
+## Other features
 
 There are a few other features of tidyLPA that will be described further in subsequent versions. Two that are available now that are briefly described are the use of a bootstrapped likelihood-ratio test and a prior. Both are presently only available for the mclust functions (i.e., it is not yet available through tidyLPA for the functions that use MPlus)
 
-# Bootstrapped likelihood-ratio test
+**Bootstrapped likelihood-ratio test (LRT)**
 
 To determine the number of profies for a specified model (i.e., models `1`-`4` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset. 
 
@@ -211,7 +211,7 @@ To determine the number of profies for a specified model (i.e., models `1`-`4` d
 bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 ```
 
-# Use of a prior
+**Use of a prior**
 
 Models fit with mclust can be estimated with a prior. This can be helpful for estimating models that might otherwise not be able to be estimated. Learn more [here](https://www.rdocumentation.org/packages/mclust/versions/5.4/topics/Mclust).
 
@@ -219,7 +219,7 @@ Models fit with mclust can be estimated with a prior. This can be helpful for es
 estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, prior_control = TRUE)
 ```
 
-# Notes
+## Notes
 
 This is related to [prcr](https://github.com/jrosen48/prcr), for use of two-step cluster analysis to carry out person-oriented analyses.
 
@@ -228,4 +228,3 @@ To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA
 To cite tidyLPA, please use:
 
 > Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., & Steingut, R. R. (2018). Interface to MCLUST to Perform Latent Profile Analysis [Statistical software for R]. https://github.com/jrosen48/tidyLPA
- 
