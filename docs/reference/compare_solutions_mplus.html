@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create models for a specific mclust model — create_profiles_mplus • tidyLPA</title>
+<title>Explore BIC for various MPlus model solutions — compare_solutions_mplus • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -57,6 +57,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -72,20 +75,16 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create models for a specific mclust model</h1>
+    <h1>Explore BIC for various MPlus model solutions</h1>
     </div>
 
     
-    <p>Create models for a specific mclust model</p>
+    <p>Explore BIC for various MPlus model solutions</p>
     
 
-    <pre class="usage"><span class='fu'>create_profiles_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>the_title</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
-  <span class='kw'>data_filename</span> <span class='kw'>=</span> <span class='st'>"d.dat"</span>, <span class='kw'>script_filename</span> <span class='kw'>=</span> <span class='st'>"i.inp"</span>,
-  <span class='kw'>output_filename</span> <span class='kw'>=</span> <span class='st'>"i.out"</span>, <span class='kw'>savedata_filename</span> <span class='kw'>=</span> <span class='st'>"d-mod.dat"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <pre class="usage"><span class='fu'>compare_solutions_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>n_profiles_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>6</span>,
   <span class='kw'>starts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>4</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>st_iterations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>remove_tmp_files</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>print_input_file</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_save_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>optseed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_processors</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+  <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>save_models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -99,32 +98,12 @@
       <td><p>unquoted variable names separated by commas</p></td>
     </tr>
     <tr>
-      <th>n_profiles</th>
-      <td><p>the number of profiles (or mixture components) to be estimated</p></td>
-    </tr>
-    <tr>
-      <th>the_title</th>
-      <td><p>title of the model; defaults to test</p></td>
-    </tr>
-    <tr>
-      <th>data_filename</th>
-      <td><p>name of data file to prepare; defaults to d.dat</p></td>
-    </tr>
-    <tr>
-      <th>script_filename</th>
-      <td><p>name of script to prepare; defaults to i.inp</p></td>
-    </tr>
-    <tr>
-      <th>output_filename</th>
-      <td><p>name of the output; defaults to o.out</p></td>
-    </tr>
-    <tr>
-      <th>savedata_filename</th>
-      <td><p>name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out</p></td>
+      <th>n_profiles_max</th>
+      <td><p>a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)</p></td>
     </tr>
     <tr>
       <th>model</th>
-      <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
+      <td><p>which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)</p></td>
     </tr>
     <tr>
       <th>starts</th>
@@ -143,45 +122,29 @@
       <td><p>convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)</p></td>
     </tr>
     <tr>
-      <th>remove_tmp_files</th>
-      <td><p>whether to remove data, script, and output files; defaults to TRUE</p></td>
+      <th>save_models</th>
+      <td><p>whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)</p></td>
     </tr>
     <tr>
-      <th>print_input_file</th>
-      <td><p>whether to print the input file to the console</p></td>
-    </tr>
-    <tr>
-      <th>return_save_data</th>
-      <td><p>whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE</p></td>
-    </tr>
-    <tr>
-      <th>optseed</th>
-      <td><p>random seed for analysis</p></td>
-    </tr>
-    <tr>
-      <th>n_processors</th>
-      <td><p>= 1</p></td>
+      <th>return_table</th>
+      <td><p>logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>either a tibble or a ggplot2 plot of the BIC values for the explored models</p>
+    <p>a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Creates an mplus model (.inp) and associated data file (.dat)</p>
+    <p>Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_mplus</span>(<span class='no'>iris</span>,
-                              <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
-                              <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                              <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-})
-<span class='co'># models described here:</span>
-<span class='co'># https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html</span></div></pre>
+  <span class='fu'>compare_solutions_mplus</span>(<span class='no'>iris</span>, <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
+  <span class='kw'>n_profiles_max</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

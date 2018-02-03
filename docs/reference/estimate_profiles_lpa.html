@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create models for a specific mclust model — create_profiles_mplus • tidyLPA</title>
+<title>Estimate profiles for a specific mclust model — estimate_profiles_lpa • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -57,6 +57,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -72,20 +75,17 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create models for a specific mclust model</h1>
+    <h1>Estimate profiles for a specific mclust model</h1>
     </div>
 
     
-    <p>Create models for a specific mclust model</p>
+    <p>Estimate profiles for a specific mclust model</p>
     
 
-    <pre class="usage"><span class='fu'>create_profiles_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>the_title</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
-  <span class='kw'>data_filename</span> <span class='kw'>=</span> <span class='st'>"d.dat"</span>, <span class='kw'>script_filename</span> <span class='kw'>=</span> <span class='st'>"i.inp"</span>,
-  <span class='kw'>output_filename</span> <span class='kw'>=</span> <span class='st'>"i.out"</span>, <span class='kw'>savedata_filename</span> <span class='kw'>=</span> <span class='st'>"d-mod.dat"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>starts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>4</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>st_iterations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>remove_tmp_files</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>print_input_file</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_save_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>optseed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_processors</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_profiles_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
+  <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>return_posterior_probs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>return_orig_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -103,64 +103,32 @@
       <td><p>the number of profiles (or mixture components) to be estimated</p></td>
     </tr>
     <tr>
-      <th>the_title</th>
-      <td><p>title of the model; defaults to test</p></td>
-    </tr>
-    <tr>
-      <th>data_filename</th>
-      <td><p>name of data file to prepare; defaults to d.dat</p></td>
-    </tr>
-    <tr>
-      <th>script_filename</th>
-      <td><p>name of script to prepare; defaults to i.inp</p></td>
-    </tr>
-    <tr>
-      <th>output_filename</th>
-      <td><p>name of the output; defaults to o.out</p></td>
-    </tr>
-    <tr>
-      <th>savedata_filename</th>
-      <td><p>name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out</p></td>
-    </tr>
-    <tr>
       <th>model</th>
       <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
     </tr>
     <tr>
-      <th>starts</th>
-      <td><p>number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)</p></td>
+      <th>to_return</th>
+      <td><p>character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned</p></td>
     </tr>
     <tr>
-      <th>m_iterations</th>
-      <td><p>number of iterations for the EM algorithm; defaults to 500</p></td>
+      <th>center_raw_data</th>
+      <td><p>logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE</p></td>
     </tr>
     <tr>
-      <th>st_iterations</th>
-      <td><p>the number of initial stage iterations; defaults to 10; can be set more to be more conservative to 50</p></td>
+      <th>scale_raw_data</th>
+      <td><p>logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE</p></td>
     </tr>
     <tr>
-      <th>convergence_criterion</th>
-      <td><p>convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)</p></td>
+      <th>return_posterior_probs</th>
+      <td><p>TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE</p></td>
     </tr>
     <tr>
-      <th>remove_tmp_files</th>
-      <td><p>whether to remove data, script, and output files; defaults to TRUE</p></td>
+      <th>return_orig_df</th>
+      <td><p>TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)</p></td>
     </tr>
     <tr>
-      <th>print_input_file</th>
-      <td><p>whether to print the input file to the console</p></td>
-    </tr>
-    <tr>
-      <th>return_save_data</th>
-      <td><p>whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE</p></td>
-    </tr>
-    <tr>
-      <th>optseed</th>
-      <td><p>random seed for analysis</p></td>
-    </tr>
-    <tr>
-      <th>n_processors</th>
-      <td><p>= 1</p></td>
+      <th>prior_control</th>
+      <td><p>whether to include a regularizing prior; defaults to false</p></td>
     </tr>
     </table>
     
@@ -170,18 +138,15 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Creates an mplus model (.inp) and associated data file (.dat)</p>
+    <p>Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_mplus</span>(<span class='no'>iris</span>,
-                              <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
-                              <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                              <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-})
-<span class='co'># models described here:</span>
-<span class='co'># https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
+<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>estimate_profiles_lpa</span>(<span class='no'>d</span>,
+                          <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>,
+                          <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 526.113</span></div><div class='output co'>#&gt; <span class='message'>AIC is 1080.226</span></div><div class='output co'>#&gt; <span class='message'>CAIC is 1139.611</span></div><div class='output co'>#&gt; <span class='message'>BIC is 1125.611</span></div><div class='output co'>#&gt; <span class='message'>SABIC is 1081.265</span></div><div class='output co'>#&gt; <span class='message'>ICL is 1183.293</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.871</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

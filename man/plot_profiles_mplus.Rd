@@ -7,7 +7,7 @@
 plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
 }
 \arguments{
-\item{mplus_data}{output from create_profiles_mclust() with return_savedata = T specified}
+\item{mplus_data}{output from estimate_profiles_mclust() with return_savedata = T specified}
 
 \item{to_center}{whether to center the data before plotting}
 
@@ -17,5 +17,5 @@ plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
 Plot profile centroids for mplus output
 }
 \details{
-Plot the centroids for tibble or mclust output from create_profiles_mplus()
+Plot the centroids for tibble or mclust output from estimate_profiles_mplus()
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create models for a specific mclust model — create_profiles_mplus • tidyLPA</title>
+<title>Create models for a specific mclust model — estimate_profiles_mplus • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -57,6 +57,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -79,7 +82,7 @@
     <p>Create models for a specific mclust model</p>
     
 
-    <pre class="usage"><span class='fu'>create_profiles_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>the_title</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
+    <pre class="usage"><span class='fu'>estimate_profiles_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>the_title</span> <span class='kw'>=</span> <span class='st'>"test"</span>,
   <span class='kw'>data_filename</span> <span class='kw'>=</span> <span class='st'>"d.dat"</span>, <span class='kw'>script_filename</span> <span class='kw'>=</span> <span class='st'>"i.inp"</span>,
   <span class='kw'>output_filename</span> <span class='kw'>=</span> <span class='st'>"i.out"</span>, <span class='kw'>savedata_filename</span> <span class='kw'>=</span> <span class='st'>"d-mod.dat"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>starts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>4</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>st_iterations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
@@ -152,7 +155,7 @@
     </tr>
     <tr>
       <th>return_save_data</th>
-      <td><p>whether to return the save data (with the original data and the posterior probabiltiies for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE</p></td>
+      <td><p>whether to return the save data (with the original data and the posterior probabilities for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE</p></td>
     </tr>
     <tr>
       <th>optseed</th>
@@ -175,7 +178,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_mplus</span>(<span class='no'>iris</span>,
+  <span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>estimate_profiles_mplus</span>(<span class='no'>iris</span>,
                               <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
                               <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>2</span>,
                               <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>)
