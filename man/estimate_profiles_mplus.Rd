@@ -43,7 +43,7 @@ estimate_profiles_mplus(df, ..., n_profiles, the_title = "test",
 
 \item{print_input_file}{whether to print the input file to the console}
 
-\item{return_save_data}{whether to return the save data (with the original data and the posterior probabilties for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE}
+\item{return_save_data}{whether to return the save data (with the original data and the posterior probabilities for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE}
 
 \item{optseed}{random seed for analysis}
 
