@@ -38,11 +38,9 @@ library(tidyLPA)
 ```
 
 ```{r, warning = F}
-library(dplyr, warn.conflicts = FALSE)
-
 d <- pisaUSA15[1:100, ]
 
-m3 <- create_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
+m3 <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 
 plot_profiles_lpa(m3, to_center = TRUE)
 ```

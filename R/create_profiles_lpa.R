@@ -92,7 +92,7 @@ estimate_profiles_lpa <- function(df,
   message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
   message("Entropy is ", round(mean(posterior_prob), 3))
 
-  dff <- as.data.frame(dplyr::bind_cols(d, profile = m$classification)) # replace with tibble as bind_cols acts up
+  dff <- as.data.frame(dplyr::bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up
 
   test <- nrow(dplyr::count(dff, .data$profile))
 

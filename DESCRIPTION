@@ -8,7 +8,11 @@ Authors@R: c(
     person(c("Patrick", "N"), "Beymer", role = "ctb", email = "beymerpa@msu.edu"),
     person(c("Rebecca", "R"), "Steingut", role = "ctb", email = "rebeccarosesteingut@gmail.com")
     )
-Description: An interface to `mclust` to easily carry out latent profile analysis (LPA) Pastor et al. (2007). Provides functionality in terms of how the variable covariance matrix is commonly structured in LPA. Follows a tidy approach, in that output is in the form of a tibble (closely related to a data frame) that can subsequently be computed on.
+Description: An interface to mclust to easily carry out latent profile
+analysis (LPA). Provides functionality to estimate commonly-specified models.
+Follows a tidy approach, in that output is in the form of a data frame that can
+subsequently be computed on. Also has functions to interface to the commericial 
+MPlus software via the MplusAutomation package.
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
@@ -18,7 +22,6 @@ Imports:
     ggplot2,
     magrittr,
     mclust,
-    MplusAutomation,
     purrr,
     readr,
     rlang,
@@ -30,6 +33,7 @@ Suggests:
     knitr,
     rmarkdown,
     roxygen2,
+    MplusAutomation,
     testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
