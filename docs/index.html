@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface to MCLUST to Perform Latent Profile Analysis • tidyLPA</title>
+<title>Easily Carry Out Latent Profile Analysis • tidyLPA</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -63,7 +63,9 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install tidyLPA from GitHub with:</p>
+<p>You can install tidyLPA from CRAN with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"tidyLPA"</span>)</code></pre></div>
+<p>You can also install the in-development version of tidyLPA from GitHub with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
 devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jrosen48/tidyLPA"</span>)</code></pre></div>
 </div>
@@ -87,18 +89,18 @@ m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/estimate_pr
 <span class="co">#&gt; Entropy is 0.798</span>
 
 <span class="kw"><a href="reference/plot_profiles.html">plot_profiles</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="672"></p>
+<p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="672"></p>
 <p>To compare a range of profile solutions, use <code><a href="reference/compare_solutions.html">compare_solutions()</a></code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/compare_solutions.html">compare_solutions</a></span>(d, broad_interest, enjoyment, self_efficacy)</code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="672"></p>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="672"></p>
 </div>
 <div id="learn-more" class="section level2">
 <h2 class="hasAnchor">
 <a href="#learn-more" class="anchor"></a>Learn more</h2>
 <p>To learn more:</p>
 <ul>
-<li><p>Please check out the tidyLPA <a href="https://jrosen48.github.io/tidyLPA/">website</a></p></li>
-<li><p>In particular, the Introduction to tidyLPA <a href="(https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)">vignette</a> has in-depth information and a brief walked-through example</p></li>
+<li><p>Browse the tidyLPA <a href="https://jrosen48.github.io/tidyLPA/">website</a></p></li>
+<li><p><em>Read the Introduction to tidyLPA</em> <a href="(https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)">vignette</a>, which has much more information on the models that can be specified with tidyLPA and on additional functionality</p></li>
 </ul>
 </div>
 <div id="contact" class="section level2">
