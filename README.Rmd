@@ -29,7 +29,7 @@ devtools::install_github("jrosen48/tidyLPA")
 
 ## Example
 
-Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details.
+Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?estimate_profiles_lpa` for more details.
 
 ```{r}
 library(tidyLPA)

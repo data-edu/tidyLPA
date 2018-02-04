@@ -183,7 +183,7 @@ Here is how to compare a number of models using MPlus (it works very similarly t
 compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy)
 ```
 
-Here is how to estimate profiles for a single solution. This function is very similar to `create_profiles_lpa()`. Note that in addition to returning the profile assignment (`C`), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:
+Here is how to estimate profiles for a single solution. This function is very similar to `estimate_profiles_lpa()`. Note that in addition to returning the profile assignment (`C`), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:
 
 ```{r, eval = F}
 m1 <- estimate_profiles_mplus(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 3)

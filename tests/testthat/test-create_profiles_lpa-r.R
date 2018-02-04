@@ -1,6 +1,6 @@
-context("test-create_profiles_lpa-r.R")
+context("test-estimate_profiles_lpa-r.R")
 
-test_that("create_profiles_lpa() works", {
+test_that("estimate_profiles_lpa() works", {
   x <- estimate_profiles_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
   y <- dplyr::group_by(x, profile)
   z <- dplyr::summarize_all(y, mean)
