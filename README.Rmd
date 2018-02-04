@@ -35,7 +35,7 @@ Here is a brief example using the built-in `pisaUSA15` dataset and variables for
 library(tidyLPA)
 ```
 
-```{r, warning = F}
+```{r}
 d <- pisaUSA15[1:100, ]
 
 m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)

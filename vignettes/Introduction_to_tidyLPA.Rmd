@@ -12,8 +12,7 @@ vignette: >
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  warning = T
+  comment = "#>"
 )
 ```
 
@@ -70,8 +69,8 @@ compare_solutions(d, broad_interest, enjoyment, self_efficacy)
 
 While these BIC values are ambigious for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the `estimate_profiles()` function. 
 
-Like the `compare_solutions()`, the first argument is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, a number of information criteria (`AIC`, `CAIC`, `BIC`, `SABIC`, and `ICL`), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values.
-
+Like the `compare_solutions()`, the first argument is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, a number of information criteria (`AIC`, `CAIC`, `BIC`, `SABIC`, and `ICL`), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values. Note that these statistics are printed as messages by default but can be supressed by adding the argument `print_fit_stats = FALSE` to `estimate_profiles()`.
+ 
 ```{r}
 m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
 ```

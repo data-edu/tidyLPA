@@ -97,7 +97,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p><strong>Estimating profiles for a specific solution</strong></p>
 <p>While these BIC values are ambigious for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function.</p>
-<p>Like the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code>, the first argument is the <code>data.frame</code>, <code>d</code>, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with <code>model = 1</code>, as well as the number of profiles (4, <code>n_profiles = 4</code>). When we run the following line, we see a number of statistics - <code>LogLik</code> for the log-likelihood, a number of information criteria (<code>AIC</code>, <code>CAIC</code>, <code>BIC</code>, <code>SABIC</code>, and <code>ICL</code>), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. <a href="https://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor, Barron, Miller, and Davis (2007)</a> provide an accessible introduction to interpreting these values.</p>
+<p>Like the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code>, the first argument is the <code>data.frame</code>, <code>d</code>, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with <code>model = 1</code>, as well as the number of profiles (4, <code>n_profiles = 4</code>). When we run the following line, we see a number of statistics - <code>LogLik</code> for the log-likelihood, a number of information criteria (<code>AIC</code>, <code>CAIC</code>, <code>BIC</code>, <code>SABIC</code>, and <code>ICL</code>), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. <a href="https://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor, Barron, Miller, and Davis (2007)</a> provide an accessible introduction to interpreting these values. Note that these statistics are printed as messages by default but can be supressed by adding the argument <code>print_fit_stats = FALSE</code> to <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">4</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
@@ -115,8 +115,8 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <span class="co">#&gt; Warning: attributes are not identical across measure variables;</span>
 <span class="co">#&gt; they will be dropped</span></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
-<p><strong>Other options for estimating profiles</strong></p>
-<p>There is a lot of output from the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function. The easiest way to access it is by changing what is returned; by default, the function returns a <code>data.frame</code> with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):</p>
+<p><strong>Other options</strong></p>
+<p>There is a lot of output that is possible to obtain from the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function - much more than a tidy data frame, which is the default. The easiest way to access it is by changing what is returned; by default, the function returns a <code>data.frame</code> (more precisely, a <code>tibble</code>) with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">4</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
@@ -171,40 +171,56 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <span class="co">#&gt; SABIC is 567.976</span>
 <span class="co">#&gt; ICL is 635.495</span>
 <span class="co">#&gt; Entropy is 0.952</span></code></pre></div>
-<div id="more-information-on-models" class="section level3">
+<p>Future versions will include the option to use random starts; by default, mclust uses the results from hierarchical clustering as the starting points for the EM algorithm.</p>
+<div id="more-information-on-model-specifications" class="section level3">
 <h3 class="hasAnchor">
-<a href="#more-information-on-models" class="anchor"></a>More information on models</h3>
+<a href="#more-information-on-model-specifications" class="anchor"></a>More information on model specifications</h3>
 <p>As mentioned earlier, there are a number of different models representing how (or whether) different parameters are estimated. Again, these are passed to the <code>model</code> argument to the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function (i.e. <code><a href="../reference/estimate_profiles.html">estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)</a></code>).</p>
 <p>In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by <a href="http://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor and colleagues (2007)</a> has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. Note that <em>p</em> represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.</p>
-<p><em>1. Varying means, equal variances, and covariances fixed to 0 (model 1)</em></p>
+<div id="varying-means-equal-variances-and-covariances-fixed-to-0-model-1" class="section level4">
+<h4 class="hasAnchor">
+<a href="#varying-means-equal-variances-and-covariances-fixed-to-0-model-1" class="anchor"></a>1. Varying means, equal variances, and covariances fixed to 0 (model 1)</h4>
 <p>In this model, which corresponds to the mclust model wit the name “EEI”, the variances are estimated to be equal across profiles, indicated by the absence of a p subscript for any of the diagonal elements of the matrix. The covariances are constrained to be zero, as indicated by the 0’s between every combination of the variables. Thus, this model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables’ variances are identical for each of the profiles, and the variables are not estimated with any relationships among them.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; { \sigma  }_{ 2 }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; { \sigma  }_{ 3 }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 \]</span></p>
-<p><em>2. Varying means, equal variances, and equal covariances (model 2)</em></p>
+</div>
+<div id="varying-means-equal-variances-and-equal-covariances-model-2" class="section level4">
+<h4 class="hasAnchor">
+<a href="#varying-means-equal-variances-and-equal-covariances-model-2" class="anchor"></a>2. Varying means, equal variances, and equal covariances (model 2)</h4>
 <p>This model corresponds to the mclust model “EEE”. In this model, the variances are still constrained to be the same across the profiles, although now the covariances are estimated (but like the variances, are constrained to be the same across profiles). Thus, this model is the first to estimate the covariance (or correlations) of the variables used to create the profiles, thus adding more information that can be used to better understand the characteristics of the profiles (and, potentially, better explain the data).</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21 } &amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 \]</span></p>
-<p><em>3. Varying means, varying variances, and covariances fixed to 0 (model 3)</em></p>
+</div>
+<div id="varying-means-varying-variances-and-covariances-fixed-to-0-model-3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#varying-means-varying-variances-and-covariances-fixed-to-0-model-3" class="anchor"></a>3. Varying means, varying variances, and covariances fixed to 0 (model 3)</h4>
 <p>This model corresponds to the mclust model “VVI” and allows for the variances to be freely estimated across profiles. The covariances are constrained to zero. Thus, it is more flexible (and less parsimonious) than model 1, but in terms of the covariances, is more constrained than model 2.</p>
 <p><span class="math display">\[ 
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; { \sigma  }_{ 2p }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; { \sigma  }_{ 3p }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 \]</span></p>
-<p><em>4. Varying means, varying variances, and equal covariances (model 4)</em></p>
-<p>This model, which specifies for the variances to be freely estimated across the profiles and for the covariances to be estimated to be equal across profiles, extends model 3. Unfortunately, this model cannot be specified with mclust, though it can be with MPlus.</p>
+</div>
+<div id="varying-means-varying-variances-and-equal-covariances-model-4" class="section level4">
+<h4 class="hasAnchor">
+<a href="#varying-means-varying-variances-and-equal-covariances-model-4" class="anchor"></a>4. Varying means, varying variances, and equal covariances (model 4)</h4>
+<p>This model, which specifies for the variances to be freely estimated across the profiles and for the covariances to be estimated to be equal across profiles, extends model 3. Unfortunately, this model cannot be specified with mclust, though it can be with MPlus; this model <em>can</em> be used with the functions to interface to MPlus described below.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21 } &amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
-\]</span> <em>5. Varying means, equal variances, and varying covariances</em></p>
-<p>This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. Like model 4, this model cannot be specified with mclust, though it can be with MPlus.</p>
+\]</span> #### 5. Varying means, equal variances, and varying covariances</p>
+<p>This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. Like model 4, this model cannot be specified with mclust, though it can be with MPlus. Again, this model <em>can</em> be used with the functions to interface to MPlus described below.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
 \]</span></p>
-<p><em>6. Varying means, varying variances, and varying covariances</em></p>
+</div>
+<div id="varying-means-varying-variances-and-varying-covariances" class="section level4">
+<h4 class="hasAnchor">
+<a href="#varying-means-varying-variances-and-varying-covariances" class="anchor"></a>6. Varying means, varying variances, and varying covariances</h4>
 <p>This model corrresponds to the mclust model “VVV”. It allows the variances and the covariances to be freely estimated across profiles. Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 \]</span></p>
+</div>
 </div>
 </div>
 <div id="interface-to-mplus-in-development" class="section level2">

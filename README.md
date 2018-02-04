@@ -42,6 +42,8 @@ m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles 
 #> Entropy is 0.798
 
 plot_profiles(m3, to_center = TRUE)
+#> Warning: attributes are not identical across measure variables;
+#> they will be dropped
 ```
 
 ![](man/figures/README-unnamed-chunk-3-1.png)

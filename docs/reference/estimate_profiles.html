@@ -85,7 +85,7 @@
     <pre class="usage"><span class='fu'>estimate_profiles</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
   <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>return_posterior_probs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>return_orig_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>print_fit_stats</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -108,7 +108,7 @@
     </tr>
     <tr>
       <th>to_return</th>
-      <td><p>character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned</p></td>
+      <td><p>character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned</p></td>
     </tr>
     <tr>
       <th>center_raw_data</th>
@@ -129,6 +129,10 @@
     <tr>
       <th>prior_control</th>
       <td><p>whether to include a regularizing prior; defaults to false</p></td>
+    </tr>
+    <tr>
+      <th>print_fit_stats</th>
+      <td><p>whether to print (as a message) information criteria and other statistics about the model; defaults to TRUE</p></td>
     </tr>
     </table>
     

@@ -26,9 +26,9 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
     ))
 
     if (plot_error_bars == TRUE) {
-      x %>%
+      p <- x %>%
         select(-.data$posterior_prob) %>%
-        mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
+        mutate_at(vars(-.data$profile), center_scale_function, center_raw_data = to_center, scale_raw_data = to_scale) %>%
         group_by(.data$profile) %>%
         summarize_all(funs(mean, sd)) %>%
         gather("key", "val", -.data$profile) %>%
@@ -47,13 +47,15 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           se = 1.96 * (.data$sd / sqrt(.data$n - 1)),
           ymin = .data$mean - .data$se,
           ymax = .data$mean + .data$se
-        ) %>%
-        ggplot(aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
+        )
+
+    ggplot(p, aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
         geom_col(position = "dodge") +
         geom_errorbar(position = position_dodge()) +
         scale_fill_brewer("", type = "qual", palette = 6) +
         scale_x_discrete("") +
         theme_bw()
+
     } else {
       x %>%
         dplyr::select(-.data$posterior_prob) %>%
