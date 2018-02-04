@@ -1,3 +1,10 @@
+## Notes in response to requests from maintainers
+
+In response to requests from Uwe Ligges, I:
+
+* single quoted software names in the description field (and double-quoted "LPA")
+* made the title field in title case
+
 ## Test environments
 * local OS X install, R 3.4.2
 * ubuntu 12.04 (on travis-ci), R 3.4.2
