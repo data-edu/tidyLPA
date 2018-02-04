@@ -1,9 +1,9 @@
 #' Plot profile centroids
-#' @details Plot the centroids for tibble or mclust output from estimate_profiles_lpa()
+#' @details Plot the centroids for tibble or mclust output from estimate_profiles()
 #' @param x output from create_profiles_mclust()
 #' @param to_center whether to center the data before plotting
 #' @param to_scale whether to scale the data before plotting
-#' @param plot_what whether to plot tibble or mclust output from estimate_profiles_lpa(); defaults to tibble
+#' @param plot_what whether to plot tibble or mclust output from estimate_profiles(); defaults to tibble
 #' @param plot_error_bars whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)
 #' @import ggplot2
 #' @import dplyr
@@ -12,9 +12,12 @@
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom stats sd
+#' @examples
+#' m3 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
+#' plot_profiles(m3)
 #' @export
 
-plot_profiles_lpa <- function(x, to_center = F, to_scale = F, plot_what = "tibble", plot_error_bars = TRUE) {
+plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", plot_error_bars = TRUE) {
   if (plot_what == "tibble") {
     n <- count(x, .data$profile)
     x <- mutate(x, profile = factor(

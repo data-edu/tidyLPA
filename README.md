@@ -20,7 +20,7 @@ devtools::install_github("jrosen48/tidyLPA")
 Example
 -------
 
-Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?estimate_profiles_lpa` for more details.
+Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?estimate_profiles` for more details.
 
 ``` r
 library(tidyLPA)
@@ -31,7 +31,7 @@ library(tidyLPA)
 ``` r
 d <- pisaUSA15[1:100, ]
 
-m3 <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
+m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 #> Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.
 #> LogLik is 279.692
 #> AIC is 593.384
@@ -41,7 +41,7 @@ m3 <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profi
 #> ICL is 681.845
 #> Entropy is 0.798
 
-plot_profiles_lpa(m3, to_center = TRUE)
+plot_profiles(m3, to_center = TRUE)
 ```
 
 ![](man/figures/README-unnamed-chunk-3-1.png)

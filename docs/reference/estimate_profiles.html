@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create profiles for a specific mclust model — create_profiles_lpa • tidyLPA</title>
+<title>Estimate profiles for a specific mclust model — estimate_profiles • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -57,6 +57,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -72,14 +75,14 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create profiles for a specific mclust model</h1>
+    <h1>Estimate profiles for a specific mclust model</h1>
     </div>
 
     
-    <p>Create profiles for a specific mclust model</p>
+    <p>Estimate profiles for a specific mclust model</p>
     
 
-    <pre class="usage"><span class='fu'>create_profiles_lpa</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
+    <pre class="usage"><span class='fu'>estimate_profiles</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
   <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>return_posterior_probs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>return_orig_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -139,11 +142,23 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw'>dplyr</span><span class='kw'>::</span><span class='fu'>sample_n</span>(<span class='no'>d</span>, <span class='fl'>200</span>)
-<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>create_profiles_lpa</span>(<span class='no'>d</span>,
-                          <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>,
-                          <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span><span class='kw'>=</span><span class='st'>"tibble"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 526.113</span></div><div class='output co'>#&gt; <span class='message'>AIC is 1080.226</span></div><div class='output co'>#&gt; <span class='message'>CAIC is 1139.611</span></div><div class='output co'>#&gt; <span class='message'>BIC is 1125.611</span></div><div class='output co'>#&gt; <span class='message'>SABIC is 1081.265</span></div><div class='output co'>#&gt; <span class='message'>ICL is 1183.293</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.871</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>estimate_profiles</span>(<span class='no'>iris</span>,
+    <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
+    <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>AIC is 758.859</span></div><div class='output co'>#&gt; <span class='message'>CAIC is 831.05</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>SABIC is 756.084</span></div><div class='output co'>#&gt; <span class='message'>ICL is 820.771</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='output co'>#&gt; # A tibble: 150 x 6
+#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width profile posterior_prob
+#&gt;           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;
+#&gt;  1         5.10        3.50         1.40       0.200 1                 1.00
+#&gt;  2         4.90        3.00         1.40       0.200 1                 1.00
+#&gt;  3         4.70        3.20         1.30       0.200 1                 1.00
+#&gt;  4         4.60        3.10         1.50       0.200 1                 1.00
+#&gt;  5         5.00        3.60         1.40       0.200 1                 1.00
+#&gt;  6         5.40        3.90         1.70       0.400 1                 1.00
+#&gt;  7         4.60        3.40         1.40       0.300 1                 1.00
+#&gt;  8         5.00        3.40         1.50       0.200 1                 1.00
+#&gt;  9         4.40        2.90         1.40       0.200 1                 1.00
+#&gt; 10         4.90        3.10         1.50       0.100 1                 1.00
+#&gt; # ... with 140 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

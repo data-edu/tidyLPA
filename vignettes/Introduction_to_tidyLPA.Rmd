@@ -58,48 +58,48 @@ d <- pisaUSA15[1:100, ]
 
 **Comparing profile solutions**
 
-Next, we use the `compare_solutions_lpa()` function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.
+Next, we use the `compare_solutions()` function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.
 
 To use the function, we provide the name of the `data.frame`, `d`, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as `select()` from the [dplyr](http://dplyr.tidyverse.org/) package (and other ["tidyverse"](http://tidyverse.org/) packages).
 
 ```{r, warning = F, message = F}
-compare_solutions_lpa(d, broad_interest, enjoyment, self_efficacy)
+compare_solutions(d, broad_interest, enjoyment, self_efficacy)
 ```
 
 **Estimating profiles for a specific solution**
 
-While these BIC values are ambigious for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the `estimate_profiles_lpa()` function. 
+While these BIC values are ambigious for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the `estimate_profiles()` function. 
 
-Like the `compare_solutions_lpa()`, the first argument is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, a number of information criteria (`AIC`, `CAIC`, `BIC`, `SABIC`, and `ICL`), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values.
+Like the `compare_solutions()`, the first argument is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, a number of information criteria (`AIC`, `CAIC`, `BIC`, `SABIC`, and `ICL`), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values.
 
 ```{r}
-m3 <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
+m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
 ```
 
-We fit the model and saved the output to the object `m3`. Next, we may want to examine the output in terms of the estimated means and variances of the variables for each of the profiles. We can do this with the `plot_profiles_lpa()` function:
+We fit the model and saved the output to the object `m3`. Next, we may want to examine the output in terms of the estimated means and variances of the variables for each of the profiles. We can do this with the `plot_profiles()` function:
 
 ```{r}
-plot_profiles_lpa(m3)
+plot_profiles(m3)
 ```
 
-We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation eqoual t 1, respectively), with the `to_center` and `to_scale` arguments to `plot_profiles_lpa()`, i.e.:
+We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation eqoual t 1, respectively), with the `to_center` and `to_scale` arguments to `plot_profiles()`, i.e.:
 
 ```{r}
-plot_profiles_lpa(m3, to_center = TRUE, to_scale = TRUE)
+plot_profiles(m3, to_center = TRUE, to_scale = TRUE)
 ```
 
 **Other options for estimating profiles**
 
-There is a lot of output from the `estimate_profiles_lpa()` function. The easiest way to access it is by changing what is returned; by default, the function returns a `data.frame` with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):
+There is a lot of output from the `estimate_profiles()` function. The easiest way to access it is by changing what is returned; by default, the function returns a `data.frame` with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):
 
 ```{r}
-estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
+estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
 ```
 
 We can change the `to_return` argument to "mclust" to instead return the full output from the estimation:
     
 ```{r}
-m3_mclust <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, to_return = "mclust")
+m3_mclust <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, to_return = "mclust")
 ```
 
 This object can be inspected manually (see `str(m3_clust)`) or through helper functions available in mclust.
@@ -107,18 +107,18 @@ This object can be inspected manually (see `str(m3_clust)`) or through helper fu
 Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the `center_raw_data` and `scale_raw_data` functions:
 
 ```{r}
-m3_processed_raw <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, center_raw_data = TRUE, scale_raw_data = TRUE)
+m3_processed_raw <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, center_raw_data = TRUE, scale_raw_data = TRUE)
 ```
 
 Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the argument `return_orig_df`:
 
 ```{r}
-m3_mclust <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, return_orig_df = TRUE)
+m3_mclust <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, return_orig_df = TRUE)
 ```
 
 ### More information on models
 
-As mentioned earlier, there are a number of different models representing how (or whether) different parameters are estimated. Again, these are passed to the `model` argument to the `estimate_profiles_lpa()` function (i.e. `estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)`).
+As mentioned earlier, there are a number of different models representing how (or whether) different parameters are estimated. Again, these are passed to the `model` argument to the `estimate_profiles()` function (i.e. `estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)`).
 
 In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony.  The article by [Pastor and colleagues (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. Note that *p* represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.
 
@@ -177,13 +177,13 @@ $$
 
 There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software. **Note that you must have purchased and installed MPlus for these functions to work**. Note that these functions are still in-development; the MPlus model syntax is dynamically generated for each model specified and then run through MPlus using the [MplusAutomation package](https://cran.r-project.org/web/packages/MplusAutomation/index.html). These can be helpful for comparing the results between mclust and MPlus and for using output of the MPlus analyses in subsequent analyses, which can be difficult when using MPlus in a stand-alone matter.
 
-Here is how to compare a number of models using MPlus (it works very similarly to `compare_solutions_lpa()`). Note that this and subsequent code using MPlus is not run in the vignette.
+Here is how to compare a number of models using MPlus (it works very similarly to `compare_solutions()`). Note that this and subsequent code using MPlus is not run in the vignette.
 
 ```{r, eval = F}
 compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy)
 ```
 
-Here is how to estimate profiles for a single solution. This function is very similar to `estimate_profiles_lpa()`. Note that in addition to returning the profile assignment (`C`), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:
+Here is how to estimate profiles for a single solution. This function is very similar to `estimate_profiles()`. Note that in addition to returning the profile assignment (`C`), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:
 
 ```{r, eval = F}
 m1 <- estimate_profiles_mplus(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 3)
@@ -216,7 +216,7 @@ bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 Models fit with mclust can be estimated with a prior. This can be helpful for estimating models that might otherwise not be able to be estimated. Learn more [here](https://www.rdocumentation.org/packages/mclust/versions/5.4/topics/Mclust).
 
 ```{r, eval = F}
-estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, prior_control = TRUE)
+estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, prior_control = TRUE)
 ```
 
 ## Notes

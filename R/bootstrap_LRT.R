@@ -1,6 +1,6 @@
 #' Bootstrap the likelihood-ratio test statistic for mixture components
 #' @details Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.
-#' @inheritParams estimate_profiles_lpa
+#' @inheritParams estimate_profiles
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
@@ -28,7 +28,7 @@ bootstrap_lrt <- function(df,
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
     model <- model
   } else {
-    stop("Model name is not correctly specified: use 1, 2, or 3 (see ?estimate_profiles_lpa for descriptions) or one of the model names specified from mclustModelNames() from mclust")
+    stop("Model name is not correctly specified: use 1, 2, or 3 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
   }
 
   mclust::mclustBootstrapLRT(data = d, modelName = model)

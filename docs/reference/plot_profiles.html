@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract mclust classifications from an mclust model object — extract_mclust_classifications • tidyLPA</title>
+<title>Plot profile centroids — plot_profiles • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -57,6 +57,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -72,29 +75,48 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract mclust classifications from an mclust model object</h1>
+    <h1>Plot profile centroids</h1>
     </div>
 
     
-    <p>Extract mclust classifications from an mclust model object</p>
+    <p>Plot profile centroids</p>
     
 
-    <pre class="usage"><span class='fu'>extract_mclust_classifications</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_profiles</span>(<span class='no'>x</span>, <span class='kw'>to_center</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>to_scale</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
+  <span class='kw'>plot_error_bars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>an object of class `Mclust`</p></td>
+      <td><p>output from create_profiles_mclust()</p></td>
+    </tr>
+    <tr>
+      <th>to_center</th>
+      <td><p>whether to center the data before plotting</p></td>
+    </tr>
+    <tr>
+      <th>to_scale</th>
+      <td><p>whether to scale the data before plotting</p></td>
+    </tr>
+    <tr>
+      <th>plot_what</th>
+      <td><p>whether to plot tibble or mclust output from estimate_profiles(); defaults to tibble</p></td>
+    </tr>
+    <tr>
+      <th>plot_error_bars</th>
+      <td><p>whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Extract the classifications, in the form of posterior probabilties, for specific observations from the mclust output from the function create_profiles() so that posterior probabilities for specific observations, statistics related to the estimation, and other output can be viewed</p>
+    <p>Plot the centroids for tibble or mclust output from estimate_profiles()</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='no'>iris</span>, <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>AIC is 758.859</span></div><div class='output co'>#&gt; <span class='message'>CAIC is 831.05</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>SABIC is 756.084</span></div><div class='output co'>#&gt; <span class='message'>ICL is 820.771</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>)</div><img src='plot_profiles-11.png' alt='' width='540' height='400' /></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -102,7 +124,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

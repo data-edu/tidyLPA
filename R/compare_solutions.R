@@ -3,14 +3,14 @@
 #' @param n_profiles_range a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)
 #' @param statistic what statistic to plot; BIC or ICL are presently available as options
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE
-#' @inheritParams estimate_profiles_lpa
+#' @inheritParams estimate_profiles
 #' @return a ggplot2 plot of the BIC values for the explored models
 #' @import mclust
 #' @examples
-#' compare_solutions_lpa(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+#' compare_solutions(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
 #' @export
 
-compare_solutions_lpa <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6), center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC", return_table = FALSE, prior_control = F) {
+compare_solutions <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6), center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC", return_table = FALSE, prior_control = F) {
     d <- select_ancillary_functions(df, ...)
 
     if (center_raw_data == T | scale_raw_data == T) {

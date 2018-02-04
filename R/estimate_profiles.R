@@ -13,15 +13,14 @@
 #' @import mclust
 #' @importFrom rlang .data
 #' @examples
-#' d <- pisaUSA15
-#' d <- dplyr::sample_n(d, 200)
-#' m3 <- estimate_profiles_lpa(d,
-#'                           broad_interest, enjoyment, self_efficacy,
-#'                           n_profiles = 3, to_return = "tibble")
+#' estimate_profiles(iris,
+#'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+#'     model = 1,
+#'     n_profiles = 3)
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
 
-estimate_profiles_lpa <- function(df,
+estimate_profiles <- function(df,
                                 ...,
                                 n_profiles,
                                 model = 1,
@@ -54,7 +53,7 @@ estimate_profiles_lpa <- function(df,
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
     model <- model
   } else {
-    stop("Model name is not correctly specified: use 1, 2, or 3 (see ?estimate_profiles_lpa for descriptions) or one of the model names specified from mclustModelNames() from mclust")
+    stop("Model name is not correctly specified: use 1, 2, or 3 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
   }
 
   model_print <- ifelse(model == "EEI", "varying means, equal variances, covariances fixed to 0 (Model 1)",

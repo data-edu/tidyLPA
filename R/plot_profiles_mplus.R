@@ -1,7 +1,7 @@
 #' Plot profile centroids for mplus output
 #' @details Plot the centroids for tibble or mclust output from estimate_profiles_mplus()
 #' @param mplus_data output from estimate_profiles_mclust() with return_savedata = T specified
-#' @inheritParams plot_profiles_lpa
+#' @inheritParams plot_profiles
 #' @import ggplot2
 #' @import dplyr
 #' @import tidyr
