@@ -56,7 +56,7 @@ Here is a very short example using the built-in dataset `pisaUSA15`.
 
 First, install the package from CRAN as follows:
 
-```{r}
+```{r, eval = F}
 install.packages("tidyLPA")
 ```
 
