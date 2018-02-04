@@ -54,7 +54,7 @@ center_scale_function <- function(x, center_raw_data, scale_raw_data) {
   } else if (scale_raw_data == TRUE) {
     scale_vector(x)
   } else {
-      x
+    x
   }
 }
 

@@ -22,16 +22,16 @@
 #' @export
 
 estimate_profiles <- function(df,
-                                ...,
-                                n_profiles,
-                                model = 1,
-                                to_return = "tibble",
-                                center_raw_data = FALSE,
-                                scale_raw_data = FALSE,
-                                return_posterior_probs = TRUE,
-                                return_orig_df = FALSE,
-                                prior_control = FALSE,
-                                print_fit_stats = TRUE) {
+                              ...,
+                              n_profiles,
+                              model = 1,
+                              to_return = "tibble",
+                              center_raw_data = FALSE,
+                              scale_raw_data = FALSE,
+                              return_posterior_probs = TRUE,
+                              return_orig_df = FALSE,
+                              prior_control = FALSE,
+                              print_fit_stats = TRUE) {
   if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
   df <- dplyr::mutate(df, row_number = 1:nrow(df))
@@ -86,15 +86,13 @@ estimate_profiles <- function(df,
   posterior_prob <- 1 - round(m$uncertainty, 5)
 
   if (print_fit_stats == TRUE) {
-
-      message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-      message("AIC is ", round(abs(as.vector(AIC)), 3))
-      message("CAIC is ", round(abs(as.vector(CAIC)), 3))
-      message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-      message("SABIC is ", round(abs(as.vector(SABIC)), 3))
-      message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
-      message("Entropy is ", round(mean(posterior_prob), 3))
-
+    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+    message("AIC is ", round(abs(as.vector(AIC)), 3))
+    message("CAIC is ", round(abs(as.vector(CAIC)), 3))
+    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+    message("SABIC is ", round(abs(as.vector(SABIC)), 3))
+    message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
+    message("Entropy is ", round(mean(posterior_prob), 3))
   }
 
   dff <- as.data.frame(dplyr::bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up

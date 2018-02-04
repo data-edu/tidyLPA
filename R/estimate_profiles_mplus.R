@@ -29,23 +29,23 @@
 #' @export
 
 estimate_profiles_mplus <- function(df,
-                                  ...,
-                                  n_profiles,
-                                  the_title = "test",
-                                  data_filename = "d.dat",
-                                  script_filename = "i.inp",
-                                  output_filename = "i.out",
-                                  savedata_filename = "d-mod.dat",
-                                  model = 1,
-                                  starts = c(20, 4),
-                                  m_iterations = 500,
-                                  st_iterations = 10,
-                                  convergence_criterion = 1E-6,
-                                  remove_tmp_files = TRUE,
-                                  print_input_file = FALSE,
-                                  return_save_data = TRUE,
-                                  optseed = NULL,
-                                  n_processors = 1) {
+                                    ...,
+                                    n_profiles,
+                                    the_title = "test",
+                                    data_filename = "d.dat",
+                                    script_filename = "i.inp",
+                                    output_filename = "i.out",
+                                    savedata_filename = "d-mod.dat",
+                                    model = 1,
+                                    starts = c(20, 4),
+                                    m_iterations = 500,
+                                    st_iterations = 10,
+                                    convergence_criterion = 1E-6,
+                                    remove_tmp_files = TRUE,
+                                    print_input_file = FALSE,
+                                    return_save_data = TRUE,
+                                    optseed = NULL,
+                                    n_processors = 1) {
   message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
   d <- select_ancillary_functions_mplus(df, ...)
@@ -299,7 +299,7 @@ estimate_profiles_mplus <- function(df,
   }
 
   if (return_save_data == TRUE) {
-    #message("This first list item is the model output and the second is the save data with class probabilities.")
+    # message("This first list item is the model output and the second is the save data with class probabilities.")
     x <- dplyr::tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
     if (remove_tmp_files == TRUE) {
