@@ -59,9 +59,9 @@ Learn more
 
 To learn more:
 
--   Please check out the tidyLPA [website](https://jrosen48.github.io/tidyLPA/)
+-   Browse the tidyLPA [website](https://jrosen48.github.io/tidyLPA/)
 
--   In particular, the Introduction to tidyLPA [vignette]((https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)) has in-depth information and a brief walked-through example
+-   *Read the Introduction to tidyLPA* [vignette]((https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)), which has much more information on the models that can be specified with tidyLPA and on additional functionality
 
 Contact
 -------
