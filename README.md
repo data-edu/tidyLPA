@@ -22,8 +22,6 @@ Example
 
 Here is a brief example using the built-in `pisaUSA15` dataset and variables for broad interest, enjoyment, and self-efficacy. See `?create_profiles_lpa` for more details.
 
-Also, please view the [Introduction to tidyLPA vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html) for more information.
-
 ``` r
 library(tidyLPA)
 #> tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! 
@@ -48,6 +46,20 @@ plot_profiles_lpa(m3, to_center = TRUE)
 
 ![](README-unnamed-chunk-3-1.png)
 
-Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md).
+Learn more
+==========
 
-By participating in this project you agree to abide by its terms.
+Please check out the [tidyLPA website](https://jrosen48.github.io/tidyLPA/) to learn more.
+
+In particular, the [Intro to tidyLPA vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html) has more in-depth information.
+
+Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+Contact
+=======
+
+If you have any questions or feedback, please do not hesitate to get in touch:
+
+-   By [email](mailto:jrosen@msu.edu)
+-   By [Twitter](http://twitter.com/jrosenberg6432)
+-   Through filing an issue on GitHub [here](https://github.com/jrosen48/tidyLPA).
