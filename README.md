@@ -3,9 +3,9 @@
 tidyLPA
 =======
 
-[![Travis build status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA) [![Coverage status](https://codecov.io/gh/jrosen48/tidymixmod/branch/master/graph/badge.svg)](https://codecov.io/github/jrosen48/tidymixmod?branch=master)
+[![Travis build status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA) [![CRAN status](http://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA).
 
-tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! Please report any bugs at <https://github.com/jrosen48/tidyLPA> or send an email to <jrosen@msu.edu>.
+tidyLPA provides the functionality to carry out Latent Profile Analysis (LPA). LPA is a statistical modeling approach for estimating parameters (i.e., the means, variances, and covariances) distinct profiles of groups of variables. Note that tidyLPA is still at the beta stage! Please report any bugs at <https://github.com/jrosen48/tidyLPA> or send an email to <jrosen@msu.edu>.
 
 Installation
 ------------

@@ -29,13 +29,13 @@ Imports:
     tibble,
     tidyr
 Suggests: 
+    covr,
     devtools,
     knitr,
+    MplusAutomation,
     rmarkdown,
     roxygen2,
-    MplusAutomation,
-    testthat,
-    covr
+    testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true

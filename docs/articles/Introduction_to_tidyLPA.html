@@ -53,7 +53,7 @@
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2018-02-3</h4>
+            <h4 class="date">2018-02-04</h4>
           </div>
 
     
@@ -64,6 +64,10 @@
 <a href="#background-on-latent-profile-analysis-lpa" class="anchor"></a>Background on Latent Profile Analysis (LPA)</h2>
 <p>Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.</p>
 <p>Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see <a href="https://www.statmodel.com/examples/mixture.shtml">here</a>) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters. Different models, such as models that allow only the means and variances to be freely estimated across profiles, and other common combinations in terms of estimating the means, variances, and covariances, can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow.</p>
+</div>
+<div id="software-to-carry-out-lpa" class="section level2">
+<h2 class="hasAnchor">
+<a href="#software-to-carry-out-lpa" class="anchor"></a>Software to carry out LPA</h2>
 <p>In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the <a href="https://openmx.ssri.psu.edu/">R version of OpenMx</a> can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use.</p>
 <p>Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term “mixture component” has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified.</p>
 <p>In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see <a href="https://cran.r-project.org/package=Rmixmod">RMixMod</a>, which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., “spherical, equal volume”), rather than in terms of how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.</p>
@@ -91,7 +95,7 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <span class="co">#&gt; Please report any bugs at https://github.com/jrosen48/tidyLPA or send an email to jrosen@msu.edu.</span>
 d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]</code></pre></div>
 <p><strong>Comparing profile solutions</strong></p>
-<p>Next, we use the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.</p>
+<p>Next, we use the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC) (the ICL is also available, as others will be in future versions; add the argument <code>statistic = "ICL"</code> to plot the ICL values instead of the BIC values). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.</p>
 <p>To use the function, we provide the name of the <code>data.frame</code>, <code>d</code>, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as <code>select()</code> from the <a href="http://dplyr.tidyverse.org/">dplyr</a> package (and other <a href="http://tidyverse.org/">“tidyverse”</a> packages).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(d, broad_interest, enjoyment, self_efficacy)</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
@@ -111,9 +115,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(m3)</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation eqoual t 1, respectively), with the <code>to_center</code> and <code>to_scale</code> arguments to <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code>, i.e.:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>, <span class="dt">to_scale =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; Warning: attributes are not identical across measure variables;</span>
-<span class="co">#&gt; they will be dropped</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>, <span class="dt">to_scale =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p><strong>Other options</strong></p>
 <p>There is a lot of output that is possible to obtain from the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function - much more than a tidy data frame, which is the default. The easiest way to access it is by changing what is returned; by default, the function returns a <code>data.frame</code> (more precisely, a <code>tibble</code>) with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):</p>
@@ -257,10 +259,23 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <a href="#notes" class="anchor"></a>Notes</h2>
 <p>This is related to <a href="https://github.com/jrosen48/prcr">prcr</a>, for use of two-step cluster analysis to carry out person-oriented analyses.</p>
 <p>To contribute, file issues via GitHub <a href="https://github.com/jrosen48/tidyLPA/issues">here</a> or get in touch <a href="mailto:jrosen@msu.edu">via email</a> or <a href="https://twitter.com/jrosenberg6432">Twitter</a>.</p>
+<div id="references" class="section level4">
+<h4 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h4>
+<p>Pastor, D. A., Barron, K. E., Miller, B. J., &amp; Davis, S. L. (2007). A latent profile analysis of college students’ achievement goal orientation. <em>Contemporary Educational Psychology, 32</em>(1), 8-47. (<a href="https://www.sciencedirect.com/science/article/pii/S0361476X06000543" class="uri">https://www.sciencedirect.com/science/article/pii/S0361476X06000543</a></p>
+</div>
+<div id="helpful-resources" class="section level4">
+<h4 class="hasAnchor">
+<a href="#helpful-resources" class="anchor"></a>Helpful resources</h4>
+<ul>
+<li><p><a href="https://www.amazon.com/Handbook-Cluster-Analysis-Handbooks-Statistical/dp/1466551887/ref=sr_1_1?ie=UTF8&amp;qid=1517773186&amp;sr=8-1&amp;keywords=cluster+analysis+handbook">Hennig et al’s (2015)</a> handbook for an overview of mixture models, of which LPA is often considered an instance of.</p></li>
+<li><p><a href="https://books.google.com/books?hl=en&amp;lr=&amp;id=gPJQWKsgh3YC&amp;oi=fnd&amp;pg=PT12&amp;dq=collins+lanza&amp;ots=_0L9qnxxun&amp;sig=Vx9RhJgIv0zbttIgvYLxaUQwtFI#v=onepage&amp;q=collins%20lanza&amp;f=false">Collins and Lanza (2013)</a> for a book on the related approach (for use with dichotomous, rather than continuous variables used to create the profiles) Latent Class Analysis (LCA)</p></li>
+</ul>
 <p>To cite tidyLPA, please use:</p>
 <blockquote>
 <p>Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., &amp; Steingut, R. R. (2018). Interface to MCLUST to Perform Latent Profile Analysis [Statistical software for R]. <a href="https://github.com/jrosen48/tidyLPA" class="uri">https://github.com/jrosen48/tidyLPA</a></p>
 </blockquote>
+</div>
 </div>
 </div>
   </div>
@@ -271,6 +286,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#background-on-latent-profile-analysis-lpa">Background on Latent Profile Analysis (LPA)</a></li>
+      <li><a href="#software-to-carry-out-lpa">Software to carry out LPA</a></li>
       <li><a href="#the-goal-of-tidylpa">The goal of tidyLPA</a></li>
       <li><a href="#example">Example</a></li>
       <li><a href="#interface-to-mplus-in-development">Interface to MPlus (in-development)</a></li>
