@@ -7,7 +7,7 @@
 estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
   center_raw_data = FALSE, scale_raw_data = FALSE,
   return_posterior_probs = TRUE, return_orig_df = FALSE,
-  prior_control = FALSE)
+  prior_control = FALSE, print_fit_stats = TRUE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -18,7 +18,7 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 
 \item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
-\item{to_return}{character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
+\item{to_return}{character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
 
 \item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
 
@@ -29,6 +29,8 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 \item{return_orig_df}{TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)}
 
 \item{prior_control}{whether to include a regularizing prior; defaults to false}
+
+\item{print_fit_stats}{whether to print (as a message) information criteria and other statistics about the model; defaults to TRUE}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models

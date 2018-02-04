@@ -6,10 +6,11 @@
 #' @param model the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information
 #' @param center_raw_data logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE
 #' @param scale_raw_data logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE
-#' @param to_return character string for either "tibble" or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
+#' @param to_return character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
 #' @param return_posterior_probs TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE
 #' @param return_orig_df TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)
 #' @param prior_control whether to include a regularizing prior; defaults to false
+#' @param print_fit_stats whether to print (as a message) information criteria and other statistics about the model; defaults to TRUE
 #' @import mclust
 #' @importFrom rlang .data
 #' @examples
@@ -29,7 +30,8 @@ estimate_profiles <- function(df,
                                 scale_raw_data = FALSE,
                                 return_posterior_probs = TRUE,
                                 return_orig_df = FALSE,
-                                prior_control = FALSE) {
+                                prior_control = FALSE,
+                                print_fit_stats = TRUE) {
   if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
   df <- dplyr::mutate(df, row_number = 1:nrow(df))
@@ -83,13 +85,17 @@ estimate_profiles <- function(df,
 
   posterior_prob <- 1 - round(m$uncertainty, 5)
 
-  message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-  message("AIC is ", round(abs(as.vector(AIC)), 3))
-  message("CAIC is ", round(abs(as.vector(CAIC)), 3))
-  message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-  message("SABIC is ", round(abs(as.vector(SABIC)), 3))
-  message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
-  message("Entropy is ", round(mean(posterior_prob), 3))
+  if (print_fit_stats == TRUE) {
+
+      message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+      message("AIC is ", round(abs(as.vector(AIC)), 3))
+      message("CAIC is ", round(abs(as.vector(CAIC)), 3))
+      message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+      message("SABIC is ", round(abs(as.vector(SABIC)), 3))
+      message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
+      message("Entropy is ", round(mean(posterior_prob), 3))
+
+  }
 
   dff <- as.data.frame(dplyr::bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up
 
@@ -113,7 +119,7 @@ estimate_profiles <- function(df,
     dff <- dplyr::select(dff, -.data$row_number)
   }
 
-  if (to_return == "tibble") {
+  if (to_return == "tibble" | to_return == "data.frame") {
     return(tibble::as_tibble(dff))
   } else if (to_return == "mclust") {
     return(attributes(dff)$mclust_output)
