@@ -1,6 +1,6 @@
 Type: Package
 Package: tidyLPA
-Title: Interface to MCLUST to Perform Latent Profile Analysis
+Title: Easily carry out Latent Profile Analysis
 Version: 0.1.1
 Authors@R: c(
     person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com"),
@@ -30,7 +30,6 @@ Imports:
     tidyr
 Suggests: 
     covr,
-    devtools,
     knitr,
     MplusAutomation,
     rmarkdown,
