@@ -27,22 +27,21 @@ compare_solutions <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3
 
     if (prior_control == FALSE) {
         if (statistic == "BIC") {
-            x <- mclust::mclustBIC(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE)
+            x <- suppressWarnings(mclust::mclustBIC(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE))
         } else if (statistic == "ICL") {
-            x <- mclust::mclustICL(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE)
+            x <- suppressWarnings(mclust::mclustICL(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE))
         } else {
             stop("This statistic cannot presently be computed")
         }
     } else {
         if (statistic == "BIC") {
-            x <- mclust::mclustBIC(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE, prior = mclust::priorControl())
+            x <- suppressWarnings(mclust::mclustBIC(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE, prior = mclust::priorControl()))
         } else if (statistic == "ICL") {
-            x <- mclust::mclustICL(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE, prior = mclust::priorControl())
+            x <- suppressWarnings(mclust::mclustICL(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE, prior = mclust::priorControl()))
         } else {
             stop("This statistic cannot presently be computed")
         }
     }
-
 
     y <- x %>%
         as.data.frame.matrix() %>%
@@ -76,15 +75,17 @@ compare_solutions <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3
 
     to_plot$n_profiles <- as.factor(to_plot$n_profiles)
 
-    ggplot2::ggplot(to_plot, ggplot2::aes_string(
+    p <- ggplot2::ggplot(to_plot, ggplot2::aes_string(
         x = "n_profiles",
         y = "val",
         color = "`Model`",
         group = "`Model`"
     )) +
-        ggplot2::geom_line() +
-        ggplot2::geom_point() +
+        ggplot2::geom_line(na.rm = TRUE) +
+        ggplot2::geom_point(na.rm = TRUE) +
         ggplot2::ylab(paste0(statistic, " (smaller value is better)")) +
         ggplot2::theme_bw() +
         xlab("Profiles")
+
+    p
 }

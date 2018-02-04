@@ -25,6 +25,9 @@ Plot profile centroids
 Plot the centroids for tibble or mclust output from estimate_profiles()
 }
 \examples{
-m3 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
+m3 <- estimate_profiles(iris,
+    Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+    model = 1,
+    n_profiles = 3)
 plot_profiles(m3)
 }

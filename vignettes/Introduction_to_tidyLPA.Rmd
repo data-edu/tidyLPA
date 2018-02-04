@@ -1,7 +1,7 @@
 ---
 title: "Introduction to tidyLPA"
 author: "Joshua M. Rosenberg"
-date: "2018-02-3"
+date: "2018-02-04"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to tidyLPA}
@@ -21,6 +21,8 @@ knitr::opts_chunk$set(
 Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.
 
 Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see [here](https://www.statmodel.com/examples/mixture.shtml)) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters. Different models, such as models that allow only the means and variances to be freely estimated across profiles, and other common combinations in terms of estimating the means, variances, and covariances, can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow. 
+
+## Software to carry out LPA
 
 In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the [R version of OpenMx](https://openmx.ssri.psu.edu/) can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use. 
 
@@ -57,7 +59,7 @@ d <- pisaUSA15[1:100, ]
 
 **Comparing profile solutions**
 
-Next, we use the `compare_solutions()` function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.
+Next, we use the `compare_solutions()` function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC) (the ICL is also available, as others will be in future versions; add the argument `statistic = "ICL"` to plot the ICL values instead of the BIC values). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.
 
 To use the function, we provide the name of the `data.frame`, `d`, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as `select()` from the [dplyr](http://dplyr.tidyverse.org/) package (and other ["tidyverse"](http://tidyverse.org/) packages).
 
@@ -225,6 +227,16 @@ estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_prof
 This is related to [prcr](https://github.com/jrosen48/prcr), for use of two-step cluster analysis to carry out person-oriented analyses.
 
 To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [Twitter](https://twitter.com/jrosenberg6432).
+
+#### References
+
+Pastor, D. A., Barron, K. E., Miller, B. J., & Davis, S. L. (2007). A latent profile analysis of college students’ achievement goal orientation. *Contemporary Educational Psychology, 32*(1), 8-47. (https://www.sciencedirect.com/science/article/pii/S0361476X06000543
+
+#### Helpful resources
+
+* [Hennig et al's (2015)](https://www.amazon.com/Handbook-Cluster-Analysis-Handbooks-Statistical/dp/1466551887/ref=sr_1_1?ie=UTF8&qid=1517773186&sr=8-1&keywords=cluster+analysis+handbook) handbook for an overview of mixture models, of which LPA is often considered an instance of.
+
+* [Collins and Lanza (2013)](https://books.google.com/books?hl=en&lr=&id=gPJQWKsgh3YC&oi=fnd&pg=PT12&dq=collins+lanza&ots=_0L9qnxxun&sig=Vx9RhJgIv0zbttIgvYLxaUQwtFI#v=onepage&q=collins%20lanza&f=false) for a book on the related approach (for use with dichotomous, rather than continuous variables used to create the profiles) Latent Class Analysis (LCA)
 
 To cite tidyLPA, please use:
 
