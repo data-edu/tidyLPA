@@ -54,11 +54,10 @@ Thus, tidyLPA contributes an interface to an open-source package for Gaussian mi
 
 Here is a very short example using the built-in dataset `pisaUSA15`. 
 
-First, install the package from GitHub as follows:
+First, install the package from CRAN as follows:
 
-```{r, eval = F}
-install.packages("devtools")
-devtools::install_github("jrosen48/tidyLPA")
+```{r}
+install.packages("tidyLPA")
 ```
 
 Here is the simple example, using just a subset of the built-in `pisaUSA15` data, data from the 2015 PISA assessment (more details on the dataset can be found [here](https://github.com/jrosen48/pisaUSA15)). Here, we load tidyLPA and create a subset of the `pisaUSA15` data for this example. We use variables from the PISA assessment for United States students' broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).

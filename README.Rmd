@@ -20,7 +20,13 @@ tidyLPA provides the functionality to carry out Latent Profile Analysis (LPA). L
 
 ## Installation
 
-You can install tidyLPA from GitHub with:
+You can install tidyLPA from CRAN with:
+
+```{r, eval = F}
+install.packages("tidyLPA")
+```
+
+You can also install the in-development version of tidyLPA from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")

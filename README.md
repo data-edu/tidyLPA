@@ -10,7 +10,13 @@ tidyLPA provides the functionality to carry out Latent Profile Analysis (LPA). L
 Installation
 ------------
 
-You can install tidyLPA from GitHub with:
+You can install tidyLPA from CRAN with:
+
+``` r
+install.packages("tidyLPA")
+```
+
+You can also install the in-development version of tidyLPA from GitHub with:
 
 ``` r
 install.packages("devtools")
@@ -44,7 +50,7 @@ m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles 
 plot_profiles(m3, to_center = TRUE)
 ```
 
-![](man/figures/README-unnamed-chunk-3-1.png)
+![](man/figures/README-unnamed-chunk-4-1.png)
 
 To compare a range of profile solutions, use `compare_solutions()`
 
@@ -52,7 +58,7 @@ To compare a range of profile solutions, use `compare_solutions()`
 compare_solutions(d, broad_interest, enjoyment, self_efficacy)
 ```
 
-![](man/figures/README-unnamed-chunk-4-1.png)
+![](man/figures/README-unnamed-chunk-5-1.png)
 
 Learn more
 ----------
