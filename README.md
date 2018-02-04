@@ -44,7 +44,7 @@ m3 <- estimate_profiles_lpa(d, broad_interest, enjoyment, self_efficacy, n_profi
 plot_profiles_lpa(m3, to_center = TRUE)
 ```
 
-![](README-unnamed-chunk-3-1.png)
+![](man/figures/README-unnamed-chunk-3-1.png)
 
 Learn more
 ==========
@@ -62,4 +62,4 @@ If you have any questions or feedback, please do not hesitate to get in touch:
 
 -   By [email](mailto:jrosen@msu.edu)
 -   By [Twitter](http://twitter.com/jrosenberg6432)
--   Through filing an issue on GitHub [here](https://github.com/jrosen48/tidyLPA).
+-   Through filing an issue on GitHub [here](https://github.com/jrosen48/tidyLPA)
