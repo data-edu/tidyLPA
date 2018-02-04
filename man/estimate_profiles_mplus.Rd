@@ -65,6 +65,4 @@ m1 <- estimate_profiles_mplus(iris,
                             n_profiles = 2,
                             model = 1)
 }
-# models described here:
-# https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html
 }

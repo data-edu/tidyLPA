@@ -44,5 +44,5 @@ d <- pisaUSA15
 d <- dplyr::sample_n(d, 200)
 m3 <- estimate_profiles_lpa(d,
                           broad_interest, enjoyment, self_efficacy,
-                          n_profiles = 3, to_return="tibble")
+                          n_profiles = 3, to_return = "tibble")
 }
