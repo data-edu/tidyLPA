@@ -48,11 +48,11 @@ The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, 
 1. Provide functionality to specify models that are common to LPA
 2. Make it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a `tibble` (closely related to a `data.frame`) that can be used to create plots or for subsequent analyses
 
-Thus, tidyLPA contributes an interface to an open-source package for Gaussian mixture modeling, but focuses on models that are commonly specified as part of LPA. As will be described later, tidyLPA has been benchmarked to MPlus, at least for simple models (see [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/); additional benchmarks will be included in future versions, although because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
+Thus, tidyLPA contributes an interface to an open-source package for Gaussian mixture modeling, but focuses on models that are commonly specified as part of LPA. As will be described later, tidyLPA has been bench marked to MPlus, at least for simple models (see [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/); additional benchmarks will be included in future versions, although because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
 
 ## 4. An example
 
-Here is a very short example using the built-in dataset `pisaUSA15`. 
+Here is a very short example using the built-in data set `pisaUSA15`. 
 
 First, install the package from CRAN as follows:
 
@@ -60,7 +60,7 @@ First, install the package from CRAN as follows:
 install.packages("tidyLPA")
 ```
 
-Here is the simple example, using just a subset of the built-in `pisaUSA15` data, data from the 2015 PISA assessment (more details on the dataset can be found [here](https://github.com/jrosen48/pisaUSA15)). Here, we load tidyLPA and create a subset of the `pisaUSA15` data for this example. We use variables from the PISA assessment for United States students' broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).
+Here is the simple example, using just a subset of the built-in `pisaUSA15` data, data from the 2015 PISA assessment (more details on the data set can be found [here](https://github.com/jrosen48/pisaUSA15)). Here, we load tidyLPA and create a subset of the `pisaUSA15` data for this example. We use variables from the PISA assessment for United States students' broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).
 
 ```{r}
 library(tidyLPA)
@@ -77,11 +77,11 @@ To use the function, we provide the name of the `data.frame`, `d`, first, follow
 compare_solutions(d, broad_interest, enjoyment, self_efficacy)
 ```
 
-**Estimating profiles for a specific solution**
+While these BIC values are ambiguous for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstrate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the `estimate_profiles()` function. 
 
-While these BIC values are ambigious for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the `estimate_profiles()` function. 
+**Estimating parameters of profiles for a specific solution**
 
-Like the `compare_solutions()`, the first argument is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, a number of information criteria (`AIC`, `CAIC`, `BIC`, `SABIC`, and `ICL`), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values. Note that these statistics are printed as messages by default but can be supressed by adding the argument `print_fit_stats = FALSE` to `estimate_profiles()`.
+Here, we are estimating the parameters (depending on the model specified, means, variances, and covariances) that characterize the profiles. Like the `compare_solutions()`, the first argument to `estimate_profiles()` is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, a number of information criteria (`AIC`, `CAIC`, `BIC`, `SABIC`, and `ICL`), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values. Note that these statistics are printed as messages by default but can be suppressed by adding the argument `print_fit_stats = FALSE` to `estimate_profiles()`.
  
 ```{r}
 m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
@@ -93,7 +93,7 @@ We fit the model and saved the output to the object `m3`. Next, we may want to e
 plot_profiles(m3)
 ```
 
-We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation eqoual t 1, respectively), with the `to_center` and `to_scale` arguments to `plot_profiles()`, i.e.:
+We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation equal t 1, respectively), with the `to_center` and `to_scale` arguments to `plot_profiles()`, i.e.:
 
 ```{r}
 plot_profiles(m3, to_center = TRUE, to_scale = TRUE)
@@ -131,13 +131,13 @@ Future versions will include the option to use random starts; by default, mclust
 
 ### 5. More information on model specifications
 
-As mentioned earlier, there are a number of different models representing how (or whether) different parameters are estimated. Again, these are passed to the `model` argument to the `estimate_profiles()` function (i.e. `estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)`).
+As mentioned earlier, there are a number of different models representing how--or whether--different parameters are estimated. Again, these are passed to the `model` argument to the `estimate_profiles()` function (i.e. `estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)`).
 
 In general, the approach to choosing the model is similar to choosing the number of profiles, requiring deciding on the basis of evidence from multiple sources, including information criteria, statistical tests, and concerns of interpretability and parsimony.  The article by [Pastor and colleagues (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. Note that *p* represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.
 
 #### 1. Varying means, equal variances, and covariances fixed to 0 (model 1)
 
-In this model, which corresponds to the mclust model wit the name "EEI", the variances are estimated to be equal across profiles, indicated by the absence of a p subscript for any of the diagonal elements of the matrix. The covariances are constrained to be zero, as indicated by the 0's between every combination of the variables. Thus, this model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables' variances are identical for each of the profiles, and the variables are not estimated with any relationships among them.
+In this model, which corresponds to the mclust model wit the name "EEI", the variances are estimated to be equal across profiles, indicated by the absence of a p subscript for any of the diagonal elements of the matrix. The covariances are constrained to be zero, as indicated by the 0's between every combination of the variables. Thus, this model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables' variances are identical for each of the profiles, and the relationships between the variables are not estimated. In this way, less degrees of freedom are taken used to explain the observations that make up the data. However, estimating more parameters--as in the other models--may better explain the data, justifying the addition in complexity that their addition involves (and their reduction in degrees of freedom).
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2 }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3 }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
@@ -176,14 +176,14 @@ $$
 
 #### 6. Varying means, varying variances, and varying covariances
 
-This model corrresponds to the mclust model "VVV". It allows the variances and the covariances to be freely estimated across profiles. Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications. 
+This model corresponds to the mclust model "VVV". It allows the variances and the covariances to be freely estimated across profiles. Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications. 
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 ## 6. An interface to MPlus (in-development)
 
-`tidyLPA` has been benchmarked to MPlus, at least for a simple dataset (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that benchmarking, which showed the results to be (nearly) identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
+`tidyLPA` has been bench marked to MPlus, at least for a simple data set (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that bench marking, which showed the results to be (nearly) identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
 
 ### Run the same models through Mplus
 
@@ -217,7 +217,7 @@ There are a few other features of tidyLPA that will be described further in subs
 
 **Bootstrapped likelihood-ratio test (LRT)**
 
-To determine the number of profies for a specified model (i.e., models `1`-`4` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small dataset. 
+To determine the number of profiles for a specified model (i.e., models `1`-`4` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small data set. 
 
 ```{r, eval = F}
 bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
@@ -225,7 +225,7 @@ bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 
 **Use of a prior**
 
-Models fit with mclust can be estimated with a prior. This can be helpful for estimating models that might otherwise not be able to be estimated. Learn more [here](https://www.rdocumentation.org/packages/mclust/versions/5.4/topics/Mclust).
+Models fit with mclust can be estimated with a prior. This can be helpful for estimating models that might otherwise not be able to be estimated. Learn more in Fraley and Raftery (2007) [here](https://link.springer.com/article/10.1007%2Fs00357-007-0004-5?LI=true).
 
 ```{r, eval = F}
 estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, prior_control = TRUE)
@@ -249,7 +249,7 @@ Pastor, D. A., Barron, K. E., Miller, B. J., & Davis, S. L. (2007). A latent pro
 
 * [Hennig et al's (2015)](https://www.amazon.com/Handbook-Cluster-Analysis-Handbooks-Statistical/dp/1466551887/ref=sr_1_1?ie=UTF8&qid=1517773186&sr=8-1&keywords=cluster+analysis+handbook) handbook for an overview of mixture models, of which LPA is often considered an instance of.
 
-* [Collins and Lanza (2013)](https://books.google.com/books?hl=en&lr=&id=gPJQWKsgh3YC&oi=fnd&pg=PT12&dq=collins+lanza&ots=_0L9qnxxun&sig=Vx9RhJgIv0zbttIgvYLxaUQwtFI#v=onepage&q=collins%20lanza&f=false) for a book on the related approach (for use with dichotomous, rather than continuous variables used to create the profiles) Latent Class Analysis (LCA)
+* [Collins and Lanza (2013)](https://books.Google.com/books?hl=en&lr=&id=gPJQWKsgh3YC&oi=fnd&pg=PT12&dq=collins+lanza&ots=_0L9qnxxun&sig=Vx9RhJgIv0zbttIgvYLxaUQwtFI#v=onepage&q=collins%20lanza&f=false) for a book on the related approach (for use with dichotomous, rather than continuous variables used to create the profiles) Latent Class Analysis (LCA)
 
 **How to cite tidyLPA**
 
