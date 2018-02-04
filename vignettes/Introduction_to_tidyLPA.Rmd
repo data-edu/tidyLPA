@@ -1,10 +1,10 @@
 ---
 title: "Introduction to tidyLPA"
 author: "Joshua M. Rosenberg"
-date: "2018-02-04"
+date: '2018-02-04'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to tidyLPA}
+  %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -84,7 +84,10 @@ While these BIC values are ambiguous for this data, Model 1 with 4 profiles is a
 Here, we are estimating the parameters (depending on the model specified, means, variances, and covariances) that characterize the profiles. Like the `compare_solutions()`, the first argument to `estimate_profiles()` is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, a number of information criteria (`AIC`, `CAIC`, `BIC`, `SABIC`, and `ICL`), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values. Note that these statistics are printed as messages by default but can be suppressed by adding the argument `print_fit_stats = FALSE` to `estimate_profiles()`.
  
 ```{r}
-m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
+m3 <- estimate_profiles(d, 
+                        broad_interest, enjoyment, self_efficacy,
+                        model = 1,
+                        n_profiles = 4)
 ```
 
 We fit the model and saved the output to the object `m3`. Next, we may want to examine the output in terms of the estimated means and variances of the variables for each of the profiles. We can do this with the `plot_profiles()` function:
@@ -104,13 +107,20 @@ plot_profiles(m3, to_center = TRUE, to_scale = TRUE)
 There is a lot of output that is possible to obtain from the `estimate_profiles()` function - much more than a tidy data frame, which is the default. The easiest way to access it is by changing what is returned; by default, the function returns a `data.frame` (more precisely, a `tibble`) with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):
 
 ```{r}
-estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4)
+estimate_profiles(d,
+                  broad_interest, enjoyment, self_efficacy,
+                  model = 1,
+                  n_profiles = 4)
 ```
 
 We can change the `to_return` argument to "mclust" to instead return the full output from the estimation:
     
 ```{r}
-m3_mclust <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, to_return = "mclust")
+m3_mclust <- estimate_profiles(d, 
+                               broad_interest, enjoyment, self_efficacy, 
+                               model = 1, 
+                               n_profiles = 4, 
+                               to_return = "mclust")
 ```
 
 This object can be inspected manually (see `str(m3_clust)`) or through helper functions available in mclust.
@@ -118,13 +128,22 @@ This object can be inspected manually (see `str(m3_clust)`) or through helper fu
 Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the `center_raw_data` and `scale_raw_data` functions:
 
 ```{r}
-m3_processed_raw <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, center_raw_data = TRUE, scale_raw_data = TRUE)
+m3_processed_raw <- estimate_profiles(d, 
+                                      broad_interest, enjoyment, self_efficacy, 
+                                      model = 1, 
+                                      n_profiles = 4, 
+                                      center_raw_data = TRUE, 
+                                      scale_raw_data = TRUE)
 ```
 
 Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the argument `return_orig_df`:
 
 ```{r}
-m3_mclust <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, return_orig_df = TRUE)
+estimate_profiles(d, 
+                  broad_interest, enjoyment, self_efficacy, 
+                  model = 1, 
+                  n_profiles = 4, 
+                  return_orig_df = TRUE)
 ```
 
 Future versions will include the option to use random starts; by default, mclust uses the results from hierarchical clustering as the starting points for the EM algorithm.
@@ -166,6 +185,7 @@ This model, which specifies for the variances to be freely estimated across the 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
+
 #### 5. Varying means, equal variances, and varying covariances
 
 This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. Like model 4, this model cannot be specified with mclust, though it can be with MPlus. Again, this model *can* be used with the functions to interface to MPlus described below.
@@ -181,11 +201,10 @@ This model corresponds to the mclust model "VVV". It allows the variances and th
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
+
 ## 6. An interface to MPlus (in-development)
 
 `tidyLPA` has been bench marked to MPlus, at least for a simple data set (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that bench marking, which showed the results to be (nearly) identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
-
-### Run the same models through Mplus
 
 There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software. **Note that you must have purchased and installed MPlus for these functions to work**. Note that these functions are still in-development; the MPlus model syntax is dynamically generated for each model specified and then run through MPlus using the [MplusAutomation package](https://cran.r-project.org/package=MplusAutomation). These can be helpful for comparing the results between mclust and MPlus and for using output of the MPlus analyses in subsequent analyses, which can be difficult when using MPlus in a stand-alone matter.
 
@@ -198,7 +217,10 @@ compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy)
 Here is how to estimate profiles for a single solution. This function is very similar to `estimate_profiles()`. Note that in addition to returning the profile assignment (`C`), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:
 
 ```{r, eval = F}
-m1 <- estimate_profiles_mplus(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 3)
+m1 <- estimate_profiles_mplus(d, 
+                              broad_interest, enjoyment, self_efficacy, 
+                              model = 1, 
+                              n_profiles = 3)
 ```
 
 There are many options to control the estimation (i.e., changing the number of starts); see the help for this function (`?estimate_profiles_mplus()`) for information about the arguments that can be used.
@@ -228,7 +250,11 @@ bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
 Models fit with mclust can be estimated with a prior. This can be helpful for estimating models that might otherwise not be able to be estimated. Learn more in Fraley and Raftery (2007) [here](https://link.springer.com/article/10.1007%2Fs00357-007-0004-5?LI=true).
 
 ```{r, eval = F}
-estimate_profiles(d, broad_interest, enjoyment, self_efficacy, model = 1, n_profiles = 4, prior_control = TRUE)
+estimate_profiles(d,
+                  broad_interest, enjoyment, self_efficacy, 
+                  model = 1,
+                  n_profiles = 4,
+                  prior_control = TRUE)
 ```
 
 ## 8. Conclusion

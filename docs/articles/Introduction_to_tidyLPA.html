@@ -112,7 +112,10 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p>While these BIC values are ambiguous for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstrate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function.</p>
 <p><strong>Estimating parameters of profiles for a specific solution</strong></p>
 <p>Here, we are estimating the parameters (depending on the model specified, means, variances, and covariances) that characterize the profiles. Like the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code>, the first argument to <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> is the <code>data.frame</code>, <code>d</code>, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with <code>model = 1</code>, as well as the number of profiles (4, <code>n_profiles = 4</code>). When we run the following line, we see a number of statistics - <code>LogLik</code> for the log-likelihood, a number of information criteria (<code>AIC</code>, <code>CAIC</code>, <code>BIC</code>, <code>SABIC</code>, and <code>ICL</code>), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. <a href="https://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor, Barron, Miller, and Davis (2007)</a> provide an accessible introduction to interpreting these values. Note that these statistics are printed as messages by default but can be suppressed by adding the argument <code>print_fit_stats = FALSE</code> to <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">4</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
+                        broad_interest, enjoyment, self_efficacy,
+                        <span class="dt">model =</span> <span class="dv">1</span>,
+                        <span class="dt">n_profiles =</span> <span class="dv">4</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
 <span class="co">#&gt; AIC is 579.023</span>
@@ -129,7 +132,10 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p><strong>Other options</strong></p>
 <p>There is a lot of output that is possible to obtain from the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function - much more than a tidy data frame, which is the default. The easiest way to access it is by changing what is returned; by default, the function returns a <code>data.frame</code> (more precisely, a <code>tibble</code>) with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">4</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d,
+                  broad_interest, enjoyment, self_efficacy,
+                  <span class="dt">model =</span> <span class="dv">1</span>,
+                  <span class="dt">n_profiles =</span> <span class="dv">4</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
 <span class="co">#&gt; AIC is 579.023</span>
@@ -153,7 +159,11 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <span class="co">#&gt; 10           2.20      2.00          1.75 3                1.000</span>
 <span class="co">#&gt; # ... with 84 more rows</span></code></pre></div>
 <p>We can change the <code>to_return</code> argument to “mclust” to instead return the full output from the estimation:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">to_return =</span> <span class="st">"mclust"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
+                               broad_interest, enjoyment, self_efficacy, 
+                               <span class="dt">model =</span> <span class="dv">1</span>, 
+                               <span class="dt">n_profiles =</span> <span class="dv">4</span>, 
+                               <span class="dt">to_return =</span> <span class="st">"mclust"</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
 <span class="co">#&gt; AIC is 579.023</span>
@@ -164,7 +174,12 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <span class="co">#&gt; Entropy is 0.952</span></code></pre></div>
 <p>This object can be inspected manually (see <code>str(m3_clust)</code>) or through helper functions available in mclust.</p>
 <p>Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the <code>center_raw_data</code> and <code>scale_raw_data</code> functions:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_processed_raw &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">center_raw_data =</span> <span class="ot">TRUE</span>, <span class="dt">scale_raw_data =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_processed_raw &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
+                                      broad_interest, enjoyment, self_efficacy, 
+                                      <span class="dt">model =</span> <span class="dv">1</span>, 
+                                      <span class="dt">n_profiles =</span> <span class="dv">4</span>, 
+                                      <span class="dt">center_raw_data =</span> <span class="ot">TRUE</span>, 
+                                      <span class="dt">scale_raw_data =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 356.415</span>
 <span class="co">#&gt; AIC is 748.829</span>
@@ -174,7 +189,11 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <span class="co">#&gt; ICL is 805.386</span>
 <span class="co">#&gt; Entropy is 0.951</span></code></pre></div>
 <p>Since we often wish to use the estimated profiles in subsequent analyses, we may want the original <code>data.frame</code>, with variables that are predictors or outcomes of the profiles, included. We can return this <code>data.frame</code>, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the argument <code>return_orig_df</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_mclust &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">return_orig_df =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
+                  broad_interest, enjoyment, self_efficacy, 
+                  <span class="dt">model =</span> <span class="dv">1</span>, 
+                  <span class="dt">n_profiles =</span> <span class="dv">4</span>, 
+                  <span class="dt">return_orig_df =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
 <span class="co">#&gt; AIC is 579.023</span>
@@ -182,7 +201,21 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <span class="co">#&gt; BIC is 624.802</span>
 <span class="co">#&gt; SABIC is 567.976</span>
 <span class="co">#&gt; ICL is 635.495</span>
-<span class="co">#&gt; Entropy is 0.952</span></code></pre></div>
+<span class="co">#&gt; Entropy is 0.952</span>
+<span class="co">#&gt; # A tibble: 94 x 6</span>
+<span class="co">#&gt;    broad_interest enjoyment instrumental_mot self_efficacy profile</span>
+<span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt;  </span>
+<span class="co">#&gt;  1           3.80      4.00             2.00          1.00 1      </span>
+<span class="co">#&gt;  2           3.00      3.00             2.50          2.75 4      </span>
+<span class="co">#&gt;  3           1.80      2.80             3.50          3.38 4      </span>
+<span class="co">#&gt;  4           1.40      1.00             2.75          2.75 2      </span>
+<span class="co">#&gt;  5           1.80      2.20             2.00          2.00 3      </span>
+<span class="co">#&gt;  6           1.60      1.60             2.75          1.88 3      </span>
+<span class="co">#&gt;  7           3.00      3.80             1.25          2.25 1      </span>
+<span class="co">#&gt;  8           2.60      2.20             2.00          2.00 3      </span>
+<span class="co">#&gt;  9           1.00      2.80             1.00          2.62 4      </span>
+<span class="co">#&gt; 10           2.20      2.00             1.00          1.75 3      </span>
+<span class="co">#&gt; # ... with 84 more rows, and 1 more variable: posterior_prob &lt;dbl&gt;</span></code></pre></div>
 <p>Future versions will include the option to use random starts; by default, mclust uses the results from hierarchical clustering as the starting points for the EM algorithm.</p>
 <div id="more-information-on-model-specifications" class="section level3">
 <h3 class="hasAnchor">
@@ -219,7 +252,11 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p>This model, which specifies for the variances to be freely estimated across the profiles and for the covariances to be estimated to be equal across profiles, extends model 3. Unfortunately, this model cannot be specified with mclust, though it can be with MPlus; this model <em>can</em> be used with the functions to interface to MPlus described below.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21 } &amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
-\]</span> #### 5. Varying means, equal variances, and varying covariances</p>
+\]</span></p>
+</div>
+<div id="varying-means-equal-variances-and-varying-covariances" class="section level4">
+<h4 class="hasAnchor">
+<a href="#varying-means-equal-variances-and-varying-covariances" class="anchor"></a>5. Varying means, equal variances, and varying covariances</h4>
 <p>This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. Like model 4, this model cannot be specified with mclust, though it can be with MPlus. Again, this model <em>can</em> be used with the functions to interface to MPlus described below.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
@@ -231,23 +268,26 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p>This model corresponds to the mclust model “VVV”. It allows the variances and the covariances to be freely estimated across profiles. Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
-\]</span> ## 6. An interface to MPlus (in-development)</p>
+\]</span></p>
+</div>
+</div>
+</div>
+<div id="an-interface-to-mplus-in-development" class="section level2">
+<h2 class="hasAnchor">
+<a href="#an-interface-to-mplus-in-development" class="anchor"></a>6. An interface to MPlus (in-development)</h2>
 <p><code>tidyLPA</code> has been bench marked to MPlus, at least for a simple data set (the <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris dataset</a>) and with three of the more common model specifications. You can find the results of that bench marking, which showed the results to be (nearly) identical, <a href="https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/">here</a>.</p>
-</div>
-</div>
-<div id="run-the-same-models-through-mplus" class="section level3">
-<h3 class="hasAnchor">
-<a href="#run-the-same-models-through-mplus" class="anchor"></a>Run the same models through Mplus</h3>
 <p>There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software. <strong>Note that you must have purchased and installed MPlus for these functions to work</strong>. Note that these functions are still in-development; the MPlus model syntax is dynamically generated for each model specified and then run through MPlus using the <a href="https://cran.r-project.org/package=MplusAutomation">MplusAutomation package</a>. These can be helpful for comparing the results between mclust and MPlus and for using output of the MPlus analyses in subsequent analyses, which can be difficult when using MPlus in a stand-alone matter.</p>
 <p>Here is how to compare a number of models using MPlus (it works very similarly to <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code>). Note that this and subsequent code using MPlus is not run in the vignette.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_solutions_mplus.html">compare_solutions_mplus</a></span>(d, broad_interest, enjoyment, self_efficacy)</code></pre></div>
 <p>Here is how to estimate profiles for a single solution. This function is very similar to <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code>. Note that in addition to returning the profile assignment (<code>C</code>), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles_mplus.html">estimate_profiles_mplus</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles_mplus.html">estimate_profiles_mplus</a></span>(d, 
+                              broad_interest, enjoyment, self_efficacy, 
+                              <span class="dt">model =</span> <span class="dv">1</span>, 
+                              <span class="dt">n_profiles =</span> <span class="dv">3</span>)</code></pre></div>
 <p>There are many options to control the estimation (i.e., changing the number of starts); see the help for this function (<code><a href="../reference/estimate_profiles_mplus.html">?estimate_profiles_mplus()</a></code>) for information about the arguments that can be used.</p>
 <p>We can plot the profile solution using <code><a href="../reference/plot_profiles_mplus.html">plot_profiles_mplus()</a></code>; the same arguments to center and scale the data can be used:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles_mplus.html">plot_profiles_mplus</a></span>(m1, <span class="dt">to_center =</span> <span class="ot">TRUE</span>, <span class="dt">to_scale =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>These functions will be further developed in subsequent versions.</p>
-</div>
 </div>
 <div id="other-features" class="section level2">
 <h2 class="hasAnchor">
@@ -258,7 +298,11 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/bootstrap_lrt.html">bootstrap_lrt</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">3</span>)</code></pre></div>
 <p><strong>Use of a prior</strong></p>
 <p>Models fit with mclust can be estimated with a prior. This can be helpful for estimating models that might otherwise not be able to be estimated. Learn more in Fraley and Raftery (2007) <a href="https://link.springer.com/article/10.1007%2Fs00357-007-0004-5?LI=true">here</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">model =</span> <span class="dv">1</span>, <span class="dt">n_profiles =</span> <span class="dv">4</span>, <span class="dt">prior_control =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d,
+                  broad_interest, enjoyment, self_efficacy, 
+                  <span class="dt">model =</span> <span class="dv">1</span>,
+                  <span class="dt">n_profiles =</span> <span class="dv">4</span>,
+                  <span class="dt">prior_control =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
@@ -292,6 +336,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
       <li><a href="#software-to-carry-out-lpa">2. Software to carry out LPA</a></li>
       <li><a href="#description-of-the-goals-of-tidylpa">3. Description of the goals of tidyLPA</a></li>
       <li><a href="#an-example">4. An example</a></li>
+      <li><a href="#an-interface-to-mplus-in-development">6. An interface to MPlus (in-development)</a></li>
       <li><a href="#other-features">7. Other features</a></li>
       <li><a href="#conclusion">8. Conclusion</a></li>
       </ul>
