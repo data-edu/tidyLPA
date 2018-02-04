@@ -53,6 +53,8 @@ center_scale_function <- function(x, center_raw_data, scale_raw_data) {
     center_vector(x)
   } else if (scale_raw_data == TRUE) {
     scale_vector(x)
+  } else {
+      x
   }
 }
 
