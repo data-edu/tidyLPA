@@ -84,7 +84,7 @@ Here are the log-likelihoods for a series of models (models 1, 2, 3, and 6, spec
 iris_log_lik_2_profiles
 iris_log_lik_3_profiles
 geyser_log_lik_2_profiles
-``
+```
 
 additional benchmarks will be included in future versions, although because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
 
