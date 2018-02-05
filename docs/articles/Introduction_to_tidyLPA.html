@@ -62,8 +62,8 @@
 <p>This introduction to tidyLPA vignette is an overview of the tidyLPA package. This vignette covers the following topics:</p>
 <ol style="list-style-type: decimal">
 <li>Background on Latent Profile Analysis</li>
-<li>Software to carry out LPA</li>
 <li>Description of the goals of tidyLPA</li>
+<li>Software approach to carrying out LPA: Interface to mclust (and to MPlus)</li>
 <li>An example</li>
 <li>More information on model specification</li>
 <li>An interface to MPlus (in-development)</li>
@@ -74,31 +74,68 @@
 <h2 class="hasAnchor">
 <a href="#background-on-latent-profile-analysis-lpa" class="anchor"></a>1. Background on Latent Profile Analysis (LPA)</h2>
 <p>Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.</p>
-<p>Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see <a href="https://www.statmodel.com/examples/mixture.shtml">here</a>) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters. Different models, such as models that allow only the means and variances to be freely estimated across profiles, and other common combinations in terms of estimating the means, variances, and covariances, can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow.</p>
-</div>
-<div id="software-to-carry-out-lpa" class="section level2">
-<h2 class="hasAnchor">
-<a href="#software-to-carry-out-lpa" class="anchor"></a>2. Software to carry out LPA</h2>
-<p>In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the <a href="https://openmx.ssri.psu.edu/">R version of OpenMx</a> can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use.</p>
-<p>Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term “mixture component” has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified.</p>
-<p>In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see <a href="https://cran.r-project.org/package=Rmixmod">RMixMod</a>, which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., “spherical, equal volume”), rather than in terms of how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.</p>
+<p>Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see <a href="https://www.statmodel.com/examples/mixture.shtml">here</a>) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters.</p>
+<p>Different <em>models</em> (or how or whether parameters are estimated), such as models that allow only the means and variances to be freely estimated across profiles, and other common combinations in terms of estimating the means, variances, and covariances, can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow.</p>
 </div>
 <div id="description-of-the-goals-of-tidylpa" class="section level2">
 <h2 class="hasAnchor">
-<a href="#description-of-the-goals-of-tidylpa" class="anchor"></a>3. Description of the goals of tidyLPA</h2>
+<a href="#description-of-the-goals-of-tidylpa" class="anchor"></a>2. Description of the goals of tidyLPA</h2>
 <p>The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used <a href="https://www.stat.washington.edu/mclust/">mclust</a> package for Gaussian Mixture Modeling. This means that tidyLPA does not contain code to carry out LPA directly, but rather provides “wrappers” to mclust functions that make them easier to use. The primary contributions of tidyLPA are to:</p>
 <ol style="list-style-type: decimal">
 <li>Provide functionality to specify models that are common to LPA</li>
-<li>Make it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a <code>tibble</code> (closely related to a <code>data.frame</code>) that can be used to create plots or for subsequent analyses</li>
+<li>Make it easier to use the output in subsequent analysis through a <a href="https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html">“tidy” interface</a>, in that:
+<ul>
+<li>input and output are both a <code>data.frame</code> (specifically its modified version, a <code>tibble</code>) that can be used to create plots or can be used in subsequent analyses</li>
+<li>uses the “pipe” operator, <code>%&gt;%</code> to compose functions</li>
+<li>being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)</li>
+</ul>
+</li>
 </ol>
-<p>Thus, tidyLPA contributes an interface to an open-source package for Gaussian mixture modeling, but focuses on models that are commonly specified as part of LPA. As will be described later, tidyLPA has been bench marked to MPlus, at least for simple models (see <a href="https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/">here</a>; additional benchmarks will be included in future versions, although because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used.</p>
 </div>
-<div id="an-example" class="section level2">
+<div id="software-approach-to-carrying-out-lpa-interface-to-mclust-and-to-mplus" class="section level2">
 <h2 class="hasAnchor">
-<a href="#an-example" class="anchor"></a>4. An example</h2>
+<a href="#software-approach-to-carrying-out-lpa-interface-to-mclust-and-to-mplus" class="anchor"></a>3. Software approach to carrying out LPA: Interface to mclust (and to MPlus)</h2>
+<p>In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the <a href="https://openmx.ssri.psu.edu/">R version of OpenMx</a> can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use.</p>
+<p>Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term “mixture component” has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified.</p>
+<p>In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see <a href="https://cran.r-project.org/package=Rmixmod">RMixMod</a>, which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod, mclust, and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., “spherical, equal volume”), rather than in terms of how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.</p>
+<p>The approach taken is this package it to provide an interface or “wrapper” to to an open-source and widely-used package for Gaussian mixture modeling, mclust. It focuses on models that are commonly specified as part of LPA. The use of mclust to carry out LPA has been benchmarked to MPlus, at least for simple models.</p>
+<p>This <a href="https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html">R Markdown output</a> contains comprehensive information on how mclust and Mplus compare. The R Markdown to generate the output is also available <a href="https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd">here</a>, and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Here are the log-likelihoods for the comparison. Note that most are the same, there are some differences in the hundreths decimal places for some.</p>
+<p>Here are the log-likelihoods for a series of models (models 1, 2, 3, and 6, specified by <code>models =</code> in `estimate_profiles()) for 2 and 3 profile solutions for the built-in (to R) <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris</a> and <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/faithful.html">geyser</a> data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris_log_lik_2_profiles
+<span class="co">#&gt; # A tibble: 4 x 3</span>
+<span class="co">#&gt;   model mplus mclust</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  1.00   489    489</span>
+<span class="co">#&gt; 2  2.00   296    296</span>
+<span class="co">#&gt; 3  3.00   386    386</span>
+<span class="co">#&gt; 4  5.00   214    214</span>
+iris_log_lik_3_profiles
+<span class="co">#&gt; # A tibble: 4 x 3</span>
+<span class="co">#&gt;   model mplus mclust</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  1.00   361    361</span>
+<span class="co">#&gt; 2  2.00   256    256</span>
+<span class="co">#&gt; 3  3.00   307    307</span>
+<span class="co">#&gt; 4  6.00   180    180</span>
+geyser_log_lik_2_profiles
+<span class="co">#&gt; # A tibble: 4 x 3</span>
+<span class="co">#&gt;   model mplus mclust</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  1.00  1158   1158</span>
+<span class="co">#&gt; 2  2.00  1140   1140</span>
+<span class="co">#&gt; 3  3.00  1148   1148</span>
+<span class="co">#&gt; 4  6.00  1130   1130</span></code></pre></div>
+<p>Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used.</p>
+</div>
+<div id="an-example-using-mclust" class="section level2">
+<h2 class="hasAnchor">
+<a href="#an-example-using-mclust" class="anchor"></a>4. An example using mclust</h2>
 <p>Here is a very short example using the built-in data set <code>pisaUSA15</code>.</p>
-<p>First, install the package from CRAN as follows:</p>
+<p>First, you can install the package from CRAN as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"tidyLPA"</span>)</code></pre></div>
+<p>Note that this package is in the process of being submitted to CRAN and if it is not available yet, you can install it from GitHub:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jrosen48/tidyLPA"</span>)</code></pre></div>
 <p>Here is the simple example, using just a subset of the built-in <code>pisaUSA15</code> data, data from the 2015 PISA assessment (more details on the data set can be found <a href="https://github.com/jrosen48/pisaUSA15">here</a>). Here, we load tidyLPA and create a subset of the <code>pisaUSA15</code> data for this example. We use variables from the PISA assessment for United States students’ broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)
 <span class="co">#&gt; tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! </span>
@@ -108,7 +145,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p>Next, we use the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC) (the ICL is also available, as others will be in future versions; add the argument <code>statistic = "ICL"</code> to plot the ICL values instead of the BIC values). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.</p>
 <p>To use the function, we provide the name of the <code>data.frame</code>, <code>d</code>, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as <code>select()</code> from the <a href="http://dplyr.tidyverse.org/">dplyr</a> package (and other <a href="http://tidyverse.org/">“tidyverse”</a> packages).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(d, broad_interest, enjoyment, self_efficacy)</code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p>While these BIC values are ambiguous for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstrate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function.</p>
 <p><strong>Estimating parameters of profiles for a specific solution</strong></p>
 <p>Here, we are estimating the parameters (depending on the model specified, means, variances, and covariances) that characterize the profiles. Like the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code>, the first argument to <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> is the <code>data.frame</code>, <code>d</code>, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with <code>model = 1</code>, as well as the number of profiles (4, <code>n_profiles = 4</code>). When we run the following line, we see a number of statistics - <code>LogLik</code> for the log-likelihood, a number of information criteria (<code>AIC</code>, <code>CAIC</code>, <code>BIC</code>, <code>SABIC</code>, and <code>ICL</code>), as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. <a href="https://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor, Barron, Miller, and Davis (2007)</a> provide an accessible introduction to interpreting these values. Note that these statistics are printed as messages by default but can be suppressed by adding the argument <code>print_fit_stats = FALSE</code> to <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code>.</p>
@@ -118,18 +155,14 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                         <span class="dt">n_profiles =</span> <span class="dv">4</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
-<span class="co">#&gt; AIC is 579.023</span>
-<span class="co">#&gt; CAIC is 642.802</span>
 <span class="co">#&gt; BIC is 624.802</span>
-<span class="co">#&gt; SABIC is 567.976</span>
-<span class="co">#&gt; ICL is 635.495</span>
 <span class="co">#&gt; Entropy is 0.952</span></code></pre></div>
 <p>We fit the model and saved the output to the object <code>m3</code>. Next, we may want to examine the output in terms of the estimated means and variances of the variables for each of the profiles. We can do this with the <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(m3)</code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <p>We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation equal t 1, respectively), with the <code>to_center</code> and <code>to_scale</code> arguments to <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code>, i.e.:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>, <span class="dt">to_scale =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 <p><strong>Other options</strong></p>
 <p>There is a lot of output that is possible to obtain from the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function - much more than a tidy data frame, which is the default. The easiest way to access it is by changing what is returned; by default, the function returns a <code>data.frame</code> (more precisely, a <code>tibble</code>) with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d,
@@ -138,11 +171,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                   <span class="dt">n_profiles =</span> <span class="dv">4</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
-<span class="co">#&gt; AIC is 579.023</span>
-<span class="co">#&gt; CAIC is 642.802</span>
 <span class="co">#&gt; BIC is 624.802</span>
-<span class="co">#&gt; SABIC is 567.976</span>
-<span class="co">#&gt; ICL is 635.495</span>
 <span class="co">#&gt; Entropy is 0.952</span>
 <span class="co">#&gt; # A tibble: 94 x 5</span>
 <span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
@@ -166,11 +195,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                                <span class="dt">to_return =</span> <span class="st">"mclust"</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
-<span class="co">#&gt; AIC is 579.023</span>
-<span class="co">#&gt; CAIC is 642.802</span>
 <span class="co">#&gt; BIC is 624.802</span>
-<span class="co">#&gt; SABIC is 567.976</span>
-<span class="co">#&gt; ICL is 635.495</span>
 <span class="co">#&gt; Entropy is 0.952</span></code></pre></div>
 <p>This object can be inspected manually (see <code>str(m3_clust)</code>) or through helper functions available in mclust.</p>
 <p>Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the <code>center_raw_data</code> and <code>scale_raw_data</code> functions:</p>
@@ -182,11 +207,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                                       <span class="dt">scale_raw_data =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 356.415</span>
-<span class="co">#&gt; AIC is 748.829</span>
-<span class="co">#&gt; CAIC is 812.609</span>
 <span class="co">#&gt; BIC is 794.609</span>
-<span class="co">#&gt; SABIC is 737.783</span>
-<span class="co">#&gt; ICL is 805.386</span>
 <span class="co">#&gt; Entropy is 0.951</span></code></pre></div>
 <p>Since we often wish to use the estimated profiles in subsequent analyses, we may want the original <code>data.frame</code>, with variables that are predictors or outcomes of the profiles, included. We can return this <code>data.frame</code>, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the argument <code>return_orig_df</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
@@ -196,11 +217,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                   <span class="dt">return_orig_df =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
-<span class="co">#&gt; AIC is 579.023</span>
-<span class="co">#&gt; CAIC is 642.802</span>
 <span class="co">#&gt; BIC is 624.802</span>
-<span class="co">#&gt; SABIC is 567.976</span>
-<span class="co">#&gt; ICL is 635.495</span>
 <span class="co">#&gt; Entropy is 0.952</span>
 <span class="co">#&gt; # A tibble: 94 x 6</span>
 <span class="co">#&gt;    broad_interest enjoyment instrumental_mot self_efficacy profile</span>
@@ -333,9 +350,9 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#background-on-latent-profile-analysis-lpa">1. Background on Latent Profile Analysis (LPA)</a></li>
-      <li><a href="#software-to-carry-out-lpa">2. Software to carry out LPA</a></li>
-      <li><a href="#description-of-the-goals-of-tidylpa">3. Description of the goals of tidyLPA</a></li>
-      <li><a href="#an-example">4. An example</a></li>
+      <li><a href="#description-of-the-goals-of-tidylpa">2. Description of the goals of tidyLPA</a></li>
+      <li><a href="#software-approach-to-carrying-out-lpa-interface-to-mclust-and-to-mplus">3. Software approach to carrying out LPA: Interface to mclust (and to MPlus)</a></li>
+      <li><a href="#an-example-using-mclust">4. An example using mclust</a></li>
       <li><a href="#an-interface-to-mplus-in-development">6. An interface to MPlus (in-development)</a></li>
       <li><a href="#other-features">7. Other features</a></li>
       <li><a href="#conclusion">8. Conclusion</a></li>

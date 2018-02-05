@@ -40,11 +40,7 @@ d <- pisaUSA15[1:100, ]
 m3 <- estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)
 #> Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.
 #> LogLik is 279.692
-#> AIC is 593.384
-#> CAIC is 653.62
 #> BIC is 636.62
-#> SABIC is 582.951
-#> ICL is 681.845
 #> Entropy is 0.798
 
 plot_profiles(m3, to_center = TRUE)
