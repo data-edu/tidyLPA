@@ -10,7 +10,7 @@
 #' @param return_posterior_probs TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE
 #' @param return_orig_df TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)
 #' @param prior_control whether to include a regularizing prior; defaults to false
-#' @param print_fit_stats whether to print (as a message) information criteria and other statistics about the model; defaults to TRUE
+#' @param print_which_stats if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed
 #' @import mclust
 #' @importFrom rlang .data
 #' @examples
@@ -31,7 +31,7 @@ estimate_profiles <- function(df,
                               return_posterior_probs = TRUE,
                               return_orig_df = FALSE,
                               prior_control = FALSE,
-                              print_fit_stats = TRUE) {
+                              print_which_stats = "some") {
   if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
   df <- dplyr::mutate(df, row_number = 1:nrow(df))
@@ -48,14 +48,12 @@ estimate_profiles <- function(df,
     model <- "EEE"
   } else if (model == 3) {
     model <- "VVI"
-    # } else if (model == 4) {
-    #     model <- "EEE"
-  } else if (model == 5) {
+  } else if (model == 6) {
     model <- "VVV"
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
     model <- model
   } else {
-    stop("Model name is not correctly specified: use 1, 2, or 3 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
+    stop("Model name is not correctly specified: use 1, 2, 3, or 6 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
   }
 
   model_print <- ifelse(model == "EEI", "varying means, equal variances, covariances fixed to 0 (Model 1)",
@@ -85,14 +83,18 @@ estimate_profiles <- function(df,
 
   posterior_prob <- 1 - round(m$uncertainty, 5)
 
-  if (print_fit_stats == TRUE) {
-    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-    message("AIC is ", round(abs(as.vector(AIC)), 3))
-    message("CAIC is ", round(abs(as.vector(CAIC)), 3))
-    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-    message("SABIC is ", round(abs(as.vector(SABIC)), 3))
-    message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
-    message("Entropy is ", round(mean(posterior_prob), 3))
+  if (tolower(print_which_stats) == "some") {
+      message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+      message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+      message("Entropy is ", round(mean(posterior_prob), 3))
+  } else if (tolower(print_which_stats) == "all"){
+      message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+      message("AIC is ", round(abs(as.vector(AIC)), 3))
+      message("CAIC is ", round(abs(as.vector(CAIC)), 3))
+      message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+      message("SABIC is ", round(abs(as.vector(SABIC)), 3))
+      message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
+      message("Entropy is ", round(mean(posterior_prob), 3))
   }
 
   dff <- as.data.frame(dplyr::bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up

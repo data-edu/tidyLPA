@@ -7,7 +7,7 @@
 estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
   center_raw_data = FALSE, scale_raw_data = FALSE,
   return_posterior_probs = TRUE, return_orig_df = FALSE,
-  prior_control = FALSE, print_fit_stats = TRUE)
+  prior_control = FALSE, print_which_stats = "some")
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -30,7 +30,7 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 
 \item{prior_control}{whether to include a regularizing prior; defaults to false}
 
-\item{print_fit_stats}{whether to print (as a message) information criteria and other statistics about the model; defaults to TRUE}
+\item{print_which_stats}{if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models
