@@ -1,6 +1,6 @@
 context("test-estimate_profiles.R")
 
-test_that("estimate_profiles() works", {
+test_that("estimate_profiles() works in terms of MPlus benchmarks", {
   x <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
   y <- dplyr::group_by(x, profile)
   z <- dplyr::summarize_all(y, mean)
@@ -22,7 +22,7 @@ test_that("estimate_profiles() works", {
   expect_equal(dplyr::pull(z, Petal.Width)[3], 2.07, tolerance = .01)
 })
 
-test_that("different models for estimate_profiles() works", {
+test_that("different models (1-4) for estimate_profiles() works", {
     m1 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
     m2 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 2, n_profiles = 3)
     m3 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 3, n_profiles = 3)
