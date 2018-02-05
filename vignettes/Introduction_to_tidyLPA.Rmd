@@ -48,7 +48,45 @@ The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, 
 1. Provide functionality to specify models that are common to LPA
 2. Make it easier to use the output in subsequent analysis through a tidy user interface, in that output is in the form of a `tibble` (closely related to a `data.frame`) that can be used to create plots or for subsequent analyses
 
-Thus, tidyLPA contributes an interface to an open-source package for Gaussian mixture modeling, but focuses on models that are commonly specified as part of LPA. As will be described later, tidyLPA has been bench marked to MPlus, at least for simple models (see [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/); additional benchmarks will be included in future versions, although because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
+Thus, tidyLPA contributes an interface to an open-source package for Gaussian mixture modeling, but focuses on models that are commonly specified as part of LPA. As will be described later, tidyLPA has been bench marked to MPlus, at least for simple models (see [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/):
+
+```{r, echo = F}
+library(tibble)
+
+iris_log_lik_2_profiles <- tribble(
+    ~model, ~mplus, ~mclust,
+    1, 488.915, 488.915,
+    2, 296.448, 296.448,
+    3, 386.185, 386.185,
+    5, 214.355, 214.355
+)
+
+iris_log_lik_3_profiles <- tribble(
+    ~model, ~mplus, ~mclust,
+    1, 361.426, 361.429,
+    2, 256.354, 256.355,
+    3, 307.178, 307.181,
+    6, 180.185, 180.186
+)
+
+geyser_log_lik_2_profiles <- tribble(
+    ~model, ~mplus, ~mclust,
+    1, 1157.68, 1157.68,
+    2, 1140.187, 1140.187,
+    3, 1147.806, 1147.806,
+    6, 1130.264, 1130.264
+)
+```
+
+Here are the log-likelihoods for a series of models (models 1, 2, 3, and 6, specified by `models =` in `estimate_profiles()) for 2 and 3 profile solutions for the built-in (to R) [iris](https://en.wikipedia.org/wiki/Iris_flower_data_set) and [geyser](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/faithful.html) data.
+
+```{r}
+iris_log_lik_2_profiles
+iris_log_lik_3_profiles
+geyser_log_lik_2_profiles
+``
+
+additional benchmarks will be included in future versions, although because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
 
 ## 4. An example
 
