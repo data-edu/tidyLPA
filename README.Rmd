@@ -20,7 +20,7 @@ tidyLPA provides the functionality to carry out Latent Profile Analysis (LPA). L
 
 ## Installation
 
-You can install tidyLPA from CRAN with:
+You can install tidyLPA from CRAN with (note: may not yet be available; if this does not work, you can still install tidyLPA with the approach below):
 
 ```{r, eval = F}
 install.packages("tidyLPA")
@@ -61,7 +61,7 @@ To learn more:
 
 * Browse the tidyLPA [website](https://jrosen48.github.io/tidyLPA/)
 
-* *Read the Introduction to tidyLPA* [vignette]((https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)), which has much more information on the models that can be specified with tidyLPA and on additional functionality
+* *Read the Introduction to tidyLPA* [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html), which has much more information on the models that can be specified with tidyLPA and on additional functionality
 
 ## Contact
 
