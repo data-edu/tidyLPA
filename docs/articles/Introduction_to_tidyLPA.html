@@ -53,7 +53,7 @@
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2018-02-04</h4>
+            <h4 class="date">2018-02-14</h4>
           </div>
 
     
@@ -83,7 +83,7 @@
 <p>The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used <a href="https://www.stat.washington.edu/mclust/">mclust</a> package for Gaussian Mixture Modeling. This means that tidyLPA does not contain code to carry out LPA directly, but rather provides “wrappers” to mclust functions that make them easier to use. The primary contributions of tidyLPA are to:</p>
 <ol style="list-style-type: decimal">
 <li>Provide functionality to specify models that are common to LPA</li>
-<li>Make it easier to use the output in subsequent analysis through a <a href="https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html">“tidy” interface</a>, in that:
+<li>Make it easier to use the output in subsequent analysis through a <a href="https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html">“tidy” interface</a>, in that:
 <ul>
 <li>input and output are both a <code>data.frame</code> (specifically its modified version, a <code>tibble</code>) that can be used to create plots or can be used in subsequent analyses</li>
 <li>uses the “pipe” operator, <code>%&gt;%</code> to compose functions</li>
@@ -131,7 +131,7 @@ geyser_log_lik_2_profiles
 <h2 class="hasAnchor">
 <a href="#an-example-using-mclust" class="anchor"></a>4. An example using mclust</h2>
 <p>Here is a very short example using the built-in data set <code>pisaUSA15</code>.</p>
-<p>First, you can install the package from CRAN as follows (note: may not yet be available; if this does not work, you can still install tidyLPA with the approach below):</p>
+<p>First, you can install the package from CRAN as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"tidyLPA"</span>)</code></pre></div>
 <p>Note that this package is in the process of being submitted to CRAN and if it is not available yet, you can install it from GitHub:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
@@ -197,7 +197,68 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <span class="co">#&gt; LogLik is 271.511</span>
 <span class="co">#&gt; BIC is 624.802</span>
 <span class="co">#&gt; Entropy is 0.952</span></code></pre></div>
-<p>This object can be inspected manually (see <code>str(m3_clust)</code>) or through helper functions available in mclust.</p>
+<p>This object can be inspected manually (see <code>str(m3_clust)</code>) or through helper functions available in mclust, i.e.:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_mclust<span class="op">$</span>parameters
+<span class="co">#&gt; $pro</span>
+<span class="co">#&gt; [1] 0.20844740 0.04426354 0.31001984 0.43726922</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $mean</span>
+<span class="co">#&gt;                    [,1]     [,2]     [,3]     [,4]</span>
+<span class="co">#&gt; broad_interest 3.089074 1.435974 1.979601 2.712883</span>
+<span class="co">#&gt; enjoyment      3.833430 1.071682 2.126969 2.933941</span>
+<span class="co">#&gt; self_efficacy  1.500661 2.859656 2.224995 2.147173</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $variance</span>
+<span class="co">#&gt; $variance$modelName</span>
+<span class="co">#&gt; [1] "EEI"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $variance$d</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $variance$G</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $variance$sigma</span>
+<span class="co">#&gt; , , 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                broad_interest  enjoyment self_efficacy</span>
+<span class="co">#&gt; broad_interest      0.4760132 0.00000000     0.0000000</span>
+<span class="co">#&gt; enjoyment           0.0000000 0.05287357     0.0000000</span>
+<span class="co">#&gt; self_efficacy       0.0000000 0.00000000     0.3022866</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; , , 2</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                broad_interest  enjoyment self_efficacy</span>
+<span class="co">#&gt; broad_interest      0.4760132 0.00000000     0.0000000</span>
+<span class="co">#&gt; enjoyment           0.0000000 0.05287357     0.0000000</span>
+<span class="co">#&gt; self_efficacy       0.0000000 0.00000000     0.3022866</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; , , 3</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                broad_interest  enjoyment self_efficacy</span>
+<span class="co">#&gt; broad_interest      0.4760132 0.00000000     0.0000000</span>
+<span class="co">#&gt; enjoyment           0.0000000 0.05287357     0.0000000</span>
+<span class="co">#&gt; self_efficacy       0.0000000 0.00000000     0.3022866</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; , , 4</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                broad_interest  enjoyment self_efficacy</span>
+<span class="co">#&gt; broad_interest      0.4760132 0.00000000     0.0000000</span>
+<span class="co">#&gt; enjoyment           0.0000000 0.05287357     0.0000000</span>
+<span class="co">#&gt; self_efficacy       0.0000000 0.00000000     0.3022866</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $variance$Sigma</span>
+<span class="co">#&gt;                broad_interest  enjoyment self_efficacy</span>
+<span class="co">#&gt; broad_interest      0.4760132 0.00000000     0.0000000</span>
+<span class="co">#&gt; enjoyment           0.0000000 0.05287357     0.0000000</span>
+<span class="co">#&gt; self_efficacy       0.0000000 0.00000000     0.3022866</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $variance$scale</span>
+<span class="co">#&gt; [1] 0.1966794</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $variance$shape</span>
+<span class="co">#&gt; [1] 2.4202495 0.2688313 1.5369512</span></code></pre></div>
 <p>Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the <code>center_raw_data</code> and <code>scale_raw_data</code> functions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3_processed_raw &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
                                       broad_interest, enjoyment, self_efficacy, 
