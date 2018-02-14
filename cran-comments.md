@@ -1,8 +1,6 @@
 ## Notes in response to requests from maintainers
 
-In response to requests from Swetlana Herbrandt, I:
-
-* changed URL in vignette from https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html --> https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html
+* In response to requests from Uwe Ligges, I changed URL in vignette from https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html --> https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html
 
 ## Test environments
 * local OS X install, R 3.4.2
