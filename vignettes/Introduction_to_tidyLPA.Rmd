@@ -40,7 +40,7 @@ Different *models* (or how or whether parameters are estimated), such as models 
 The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used [mclust](https://www.stat.washington.edu/mclust/) package for Gaussian Mixture Modeling. This means that tidyLPA does not contain code to carry out LPA directly, but rather provides "wrappers" to mclust functions that make them easier to use. The primary contributions of tidyLPA are to:
 
 1. Provide functionality to specify models that are common to LPA
-2. Make it easier to use the output in subsequent analysis through a ["tidy" interface](https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html), in that:
+2. Make it easier to use the output in subsequent analysis through a ["tidy" interface](https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html), in that:
     - input and output are both a `data.frame` (specifically its modified version, a `tibble`) that can be used to create plots or can be used in subsequent analyses
     - uses the "pipe" operator, `%>%` to compose functions
     - being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)
@@ -175,7 +175,11 @@ m3_mclust <- estimate_profiles(d,
                                to_return = "mclust")
 ```
 
-This object can be inspected manually (see `str(m3_clust)`) or through helper functions available in mclust.
+This object can be inspected manually (see `str(m3_clust)`) or through helper functions available in mclust, i.e.:
+
+```{r}
+m3_mclust$parameters
+```
 
 Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the `center_raw_data` and `scale_raw_data` functions:
 
