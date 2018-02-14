@@ -1,7 +1,7 @@
 ---
 title: "Introduction to tidyLPA"
 author: "Joshua M. Rosenberg"
-date: '2018-02-04'
+date: '2018-02-14'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -99,7 +99,7 @@ Because of differences in settings for the EM algorithm and particularly for the
 
 Here is a very short example using the built-in data set `pisaUSA15`. 
 
-First, you can install the package from CRAN as follows (note: may not yet be available; if this does not work, you can still install tidyLPA with the approach below):
+First, you can install the package from CRAN as follows:
 
 ```{r, eval = F}
 install.packages("tidyLPA")
