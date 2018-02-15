@@ -75,7 +75,7 @@ We can easily plot the profiles using `plot_profiles()`:
 plot_profiles(m3, to_center = TRUE)
 ```
 
-## Learn more
+## More information
 
 To learn more: 
 

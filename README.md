@@ -86,8 +86,8 @@ plot_profiles(m3, to_center = TRUE)
 
 ![](man/figures/README-unnamed-chunk-6-1.png)
 
-Learn more
-----------
+More information
+----------------
 
 To learn more:
 
