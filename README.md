@@ -5,9 +5,9 @@ tidyLPA
 
 [![Travis build status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA) [![CRAN status](http://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
 
-Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.
+Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles, or groups, of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.
 
-tidyLPA provides the functionality to carry out Latent Profile Analysis (LPA). LPA is a statistical modeling approach for estimating parameters (i.e., the means, variances, and covariances) for distinct profiles, or groups, of variables. Note that tidyLPA is still at the beta stage! Please report any bugs at <https://github.com/jrosen48/tidyLPA> or send an email to <jrosen@msu.edu>.
+tidyLPA provides the functionality to carry out LPA. LPA is a statistical modeling approach for estimating parameters (i.e., the means, variances, and covariances) for profiles. Note that tidyLPA is still at the beta stage! Please report any bugs at <https://github.com/jrosen48/tidyLPA> or send an email to <jrosen@msu.edu>.
 
 Installation
 ------------
