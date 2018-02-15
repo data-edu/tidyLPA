@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_profiles_mplus.R
 \name{plot_profiles_mplus}
 \alias{plot_profiles_mplus}
-\title{Plot profile centroids for mplus output}
+\title{Plot profile centroids for MPlus output}
 \usage{
 plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
 }
@@ -14,7 +14,7 @@ plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
 \item{to_scale}{whether to scale the data before plotting}
 }
 \description{
-Plot profile centroids for mplus output
+Plot profile centroids for MPlus output
 }
 \details{
 Plot the centroids for tibble or mclust output from estimate_profiles_mplus()

@@ -1,4 +1,4 @@
-#' Create models for a specific mclust model
+#' Create models for a specific MPlus model
 #' @details Creates an mplus model (.inp) and associated data file (.dat)
 #' @param data_filename name of data file to prepare; defaults to d.dat
 #' @param script_filename name of script to prepare; defaults to i.inp

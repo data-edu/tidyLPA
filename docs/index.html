@@ -59,7 +59,8 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#tidylpa" class="anchor"></a>tidyLPA</h1></div>
 
-<p>tidyLPA provides the functionality to carry out Latent Profile Analysis (LPA). LPA is a statistical modeling approach for estimating parameters (i.e., the means, variances, and covariances) distinct profiles of groups of variables. Note that tidyLPA is still at the beta stage! Please report any bugs at <a href="https://github.com/jrosen48/tidyLPA" class="uri">https://github.com/jrosen48/tidyLPA</a> or send an email to <a href="mailto:jrosen@msu.edu">jrosen@msu.edu</a>.</p>
+<p>Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.</p>
+<p>tidyLPA provides the functionality to carry out Latent Profile Analysis (LPA). LPA is a statistical modeling approach for estimating parameters (i.e., the means, variances, and covariances) for distinct profiles, or groups, of variables. Note that tidyLPA is still at the beta stage! Please report any bugs at <a href="https://github.com/jrosen48/tidyLPA" class="uri">https://github.com/jrosen48/tidyLPA</a> or send an email to <a href="mailto:jrosen@msu.edu">jrosen@msu.edu</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -72,13 +73,16 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>Here is a brief example using the built-in <code>pisaUSA15</code> dataset and variables for broad interest, enjoyment, and self-efficacy. See <code><a href="reference/estimate_profiles.html">?estimate_profiles</a></code> for more details.</p>
+<p>Here is a brief example using the built-in <code>pisaUSA15</code> dataset and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See <code><a href="reference/estimate_profiles.html">?estimate_profiles</a></code> for more details.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)
 <span class="co">#&gt; tidyLPA provides the functionality to carry out Latent Profile Analysis. Note that tidyLPA is still at the beta stage! </span>
 <span class="co">#&gt; Please report any bugs at https://github.com/jrosen48/tidyLPA or send an email to jrosen@msu.edu.</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]
 
-m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, broad_interest, enjoyment, self_efficacy, <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">model =</span> <span class="dv">2</span>)
+m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
+                        broad_interest, enjoyment, self_efficacy, 
+                        <span class="dt">n_profiles =</span> <span class="dv">3</span>, 
+                        <span class="dt">model =</span> <span class="dv">2</span>)
 <span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.</span>
 <span class="co">#&gt; LogLik is 279.692</span>
 <span class="co">#&gt; BIC is 636.62</span>
@@ -86,9 +90,14 @@ m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/estimate_pr
 
 <span class="kw"><a href="reference/plot_profiles.html">plot_profiles</a></span>(m3, <span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="672"></p>
-<p>To compare a range of profile solutions, use <code><a href="reference/compare_solutions.html">compare_solutions()</a></code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/compare_solutions.html">compare_solutions</a></span>(d, broad_interest, enjoyment, self_efficacy)</code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="672"></p>
+<p>The <code>model</code> argument allows for four models to be specified:</p>
+<ul>
+<li>Varying means, equal variances, and covariances fixed to 0 (model 1)</li>
+<li>Varying means, equal variances, and equal covariances (model 2)</li>
+<li>Varying means, varying variances, and covariances fixed to 0 (model 3)</li>
+<li>Varying means, varying variances, and varying covariances (model 6)</li>
+</ul>
+<p>Two additional models can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
 </div>
 <div id="learn-more" class="section level2">
 <h2 class="hasAnchor">
@@ -104,7 +113,7 @@ m3 &lt;-<span class="st"> </span><span class="kw"><a href="reference/estimate_pr
 <a href="#contact" class="anchor"></a>Contact</h2>
 <p>As tidyLPA is at an early stage of its development, issues should be expected. If you have any questions or feedback, please do not hesitate to get in touch:</p>
 <ul>
-<li>By <a href="mailto:jrosen@msu.edu">email</a>
+<li>By <a href="mailto:jrosen@msu.edu">email (jrosen@msu.edu)</a>
 </li>
 <li>By <a href="http://twitter.com/jrosenberg6432">Twitter</a>
 </li>

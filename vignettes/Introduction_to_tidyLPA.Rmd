@@ -33,7 +33,7 @@ Latent Profile Analysis (LPA) is a statistical modeling approach for estimating 
 
 Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see [here](https://www.statmodel.com/examples/mixture.shtml)) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters. 
 
-Different *models* (or how or whether parameters are estimated), such as models that allow only the means and variances to be freely estimated across profiles, and other common combinations in terms of estimating the means, variances, and covariances, can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow. 
+Different *models* (or how or whether parameters are estimated) can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow. 
 
 ## 2. Description of the goals of tidyLPA
 
@@ -55,43 +55,7 @@ In addition to following the same general approach, using tools that are designe
 
 The approach taken is this package it to provide an interface or "wrapper" to to an open-source and widely-used package for Gaussian mixture modeling, mclust. It focuses on models that are commonly specified as part of LPA. The use of mclust to carry out LPA has been benchmarked to MPlus, at least for simple models.
 
-This [R Markdown output](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html) contains comprehensive information on how mclust and Mplus compare. The R Markdown to generate the output is also available [here](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd), and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Here are the log-likelihoods for the comparison. Note that most are the same, there are some differences in the hundreths decimal places for some. 
-
-```{r, echo = F}
-library(tibble)
-
-iris_log_lik_2_profiles <- tribble(
-    ~model, ~mplus, ~mclust,
-    1, 488.915, 488.915,
-    2, 296.448, 296.448,
-    3, 386.185, 386.185,
-    5, 214.355, 214.355
-)
-
-iris_log_lik_3_profiles <- tribble(
-    ~model, ~mplus, ~mclust,
-    1, 361.426, 361.429,
-    2, 256.354, 256.355,
-    3, 307.178, 307.181,
-    6, 180.185, 180.186
-)
-
-geyser_log_lik_2_profiles <- tribble(
-    ~model, ~mplus, ~mclust,
-    1, 1157.68, 1157.68,
-    2, 1140.187, 1140.187,
-    3, 1147.806, 1147.806,
-    6, 1130.264, 1130.264
-)
-```
-
-Here are the log-likelihoods for a series of models (models 1, 2, 3, and 6, specified by `models =` in `estimate_profiles()) for 2 and 3 profile solutions for the built-in (to R) [iris](https://en.wikipedia.org/wiki/Iris_flower_data_set) and [geyser](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/faithful.html) data.
-
-```{r}
-iris_log_lik_2_profiles
-iris_log_lik_3_profiles
-geyser_log_lik_2_profiles
-```
+This [R Markdown output](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html) contains comprehensive information on how mclust and Mplus compare. The R Markdown to generate the output is also available [here](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd), and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Note that most are the same, there are some differences in the hundreths decimal places for some. 
 
 Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
 
@@ -105,9 +69,9 @@ First, you can install the package from CRAN as follows:
 install.packages("tidyLPA")
 ```
 
-Note that this package is in the process of being submitted to CRAN and if it is not available yet, you can install it from GitHub:
+You can also install the in-development version of tidyLPA from GitHub with:
 
-```{r, eval = F}
+```{r gh-installation, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("jrosen48/tidyLPA")
 ```
@@ -242,7 +206,7 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 
-#### 5. Varying means, equal variances, and varying covariances
+#### 5. Varying means, equal variances, and varying covariances (model 5)
 
 This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. Like model 4, this model cannot be specified with mclust, though it can be with MPlus. Again, this model *can* be used with the functions to interface to MPlus described below.
 
@@ -250,7 +214,7 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
 $$
 
-#### 6. Varying means, varying variances, and varying covariances
+#### 6. Varying means, varying variances, and varying covariances (model 6)
 
 This model corresponds to the mclust model "VVV". It allows the variances and the covariances to be freely estimated across profiles. Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications. 
 
