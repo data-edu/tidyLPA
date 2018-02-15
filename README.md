@@ -47,11 +47,7 @@ m3 <- estimate_profiles(d,
 #> LogLik is 279.692
 #> BIC is 636.62
 #> Entropy is 0.798
-
-plot_profiles(m3, to_center = TRUE)
 ```
-
-![](man/figures/README-unnamed-chunk-4-1.png)
 
 The `model` argument allows for four models to be specified:
 
@@ -61,6 +57,34 @@ The `model` argument allows for four models to be specified:
 -   Varying means, varying variances, and varying covariances (model 6)
 
 Two additional models can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
+
+The output, saved to the object \`m3, is a data frame with the variable selected with the profile with the highest posterior probability (and the probability) added.
+
+``` r
+m3
+#> # A tibble: 94 x 5
+#>    broad_interest enjoyment self_efficacy profile posterior_prob
+#>             <dbl>     <dbl>         <dbl> <fct>            <dbl>
+#>  1           3.80      4.00          1.00 1                0.976
+#>  2           3.00      3.00          2.75 2                0.847
+#>  3           1.80      2.80          3.38 2                0.982
+#>  4           1.40      1.00          2.75 3                0.963
+#>  5           1.80      2.20          2.00 3                0.824
+#>  6           1.60      1.60          1.88 3                0.960
+#>  7           3.00      3.80          2.25 1                0.847
+#>  8           2.60      2.20          2.00 3                0.704
+#>  9           1.00      2.80          2.62 3                0.584
+#> 10           2.20      2.00          1.75 3                0.861
+#> # ... with 84 more rows
+```
+
+We can easily plot the profiles using `plot_profiles()`:
+
+``` r
+plot_profiles(m3, to_center = TRUE)
+```
+
+![](man/figures/README-unnamed-chunk-6-1.png)
 
 Learn more
 ----------
