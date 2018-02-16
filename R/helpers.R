@@ -1,5 +1,9 @@
 # helpers.R
 
+#' @importFrom magrittr %>%
+#' @export
+magrittr::`%>%`
+
 select_create_profiles <- function(df, ...) {
   if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
   df <- tibble::as_tibble(df)
