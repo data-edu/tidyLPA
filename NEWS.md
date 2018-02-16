@@ -3,6 +3,7 @@
 * Update README and Vignette
 * Update function names to include MPlus
 * Export %>% from magrittr (so it does not need to be loaded from dplyr)
+* Correct name of title for vignette
 
 # tidyLPA 0.1.1
 
