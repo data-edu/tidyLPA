@@ -2,6 +2,7 @@ context("test-create_profiles_mplus-r.R")
 
 test_that("estimate_solutions_mplus() works", {
     skip_on_cran()
+    skip_on_travis()
     x <- estimate_profiles_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
     y <- dplyr::count(x, C)
     expect_equal(dplyr::pull(y)[1], 50)
