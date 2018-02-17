@@ -1,4 +1,4 @@
-#' Estimate parameters for profiles for a specific MPlus model (requires purchasing and installing MPlus to use)
+#' Estimate parameters for profiles for a specific solution (requires purchasing and installing MPlus to use)
 #' @details Creates an mplus model (.inp) and associated data file (.dat)
 #' @param data_filename name of data file to prepare; defaults to d.dat
 #' @param script_filename name of script to prepare; defaults to i.inp
