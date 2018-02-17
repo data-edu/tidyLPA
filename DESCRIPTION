@@ -32,7 +32,7 @@ Suggests:
     covr,
     devtools,
     knitr,
-    MplusAutomation (== 0.7),
+    MplusAutomation,
     rmarkdown,
     roxygen2,
     testthat,

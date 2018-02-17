@@ -309,7 +309,8 @@ estimate_profiles_mplus <- function(df,
     }
 
     if (return_save_data == TRUE) {
-        x <- dplyr::tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
+        x <- dplyr::tbl_df(m1$savedata)
+        # x <- dplyr::tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
         if (remove_tmp_files == TRUE) {
             file.remove(data_filename)
