@@ -1,4 +1,4 @@
-#' Explore BIC for various MPlus model solutions (requires purchasing and installing MPlus to use)
+#' Explore BIC for various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)
 #' @details Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 #' @param n_profiles_max a vector with the range of the number of mixture components to explore; defaults to 2 through 10 (2:10)
 #' @param model which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)

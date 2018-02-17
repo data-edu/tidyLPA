@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare_solutions.R
 \name{compare_solutions}
 \alias{compare_solutions}
-\title{Explore BIC of mclust models}
+\title{Explore BIC for various models and numbers of profiles}
 \usage{
 compare_solutions(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6),
   center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC",
@@ -31,7 +31,7 @@ compare_solutions(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6),
 a ggplot2 plot of the BIC values for the explored models
 }
 \description{
-Explore BIC of mclust models
+Explore BIC for various models and numbers of profiles
 }
 \details{
 Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)

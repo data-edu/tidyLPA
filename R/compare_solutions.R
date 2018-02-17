@@ -1,4 +1,4 @@
-#' Explore BIC of mclust models
+#' Explore BIC for various models and numbers of profiles
 #' @details Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 #' @param n_profiles_range a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)
 #' @param statistic what statistic to plot; BIC or ICL are presently available as options
