@@ -1,4 +1,4 @@
-#' Plot profile centroids for MPlus output
+#' Plot variable means and variances by profile for MPlus output (requires purchasing and installing MPlus to use)
 #' @details Plot the centroids for tibble or mclust output from estimate_profiles_mplus()
 #' @param mplus_data output from estimate_profiles_mclust() with return_savedata = T specified
 #' @inheritParams plot_profiles
