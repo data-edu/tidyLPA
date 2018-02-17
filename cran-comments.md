@@ -1,6 +1,7 @@
-## Note regarding submission less than 30 days after the previous submission
+## Note regarding submission 3 days since last update
 
-* The MplusAutomation package that this package Imports pushed a breaking update; this patch requires the 0.7 version of the MplusAutomation package
+* A package this package Imports (MplusAutomation) pushed a breaking update prior to submission of this package that I did not notice when I submitted
+    * This update makes the estimate_profiles_mplus() function  work with the current 0.7-1 version of the MplusAutomation package
 
 ## Test environments
 * local OS X install, R 3.4.2

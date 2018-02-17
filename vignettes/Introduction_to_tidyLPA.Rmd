@@ -1,7 +1,7 @@
 ---
 title: "Introduction to tidyLPA"
 author: "Joshua M. Rosenberg"
-date: '2018-02-14'
+date: '2018-02-17'
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to tidyLPA}
@@ -16,7 +16,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-This introduction to tidyLPA vignette is an overview of the tidyLPA package. This vignette covers the following topics:
+Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles, or groups, of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. 
+
+tidyLPA provides the functionality to carry out LPA in R. In particular, tidyLPA provides functionality to specify different models that determine whether and how different parameters (i.e., means, variances, and covariances) are estimated and to specify (and compare solutions for) the number of profiles to estimate.
+
+This introduction to tidyLPA vignette is an overview of LPA and the tidyLPA package. This vignette covers the following topics:
 
 1. Background on Latent Profile Analysis
 1. Description of the goals of tidyLPA
