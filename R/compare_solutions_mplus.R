@@ -23,63 +23,68 @@ compare_solutions_mplus <- function(df, ...,
                                     st_iterations = 10,
                                     convergence_criterion = 1E-6,
                                     save_models = NULL,
-                                    return_table = FALSE) {
-  message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
-  out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))
-  names(out_df) <- paste0("model_", model)
-  out_df <- out_df %>%
-    mutate(n_profiles = 2:n_profiles_max) %>%
-    select(.data$n_profiles, everything())
+                                    return_table = FALSE,
+                                    n_processors = 1) {
+    message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+    out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))
+    names(out_df) <- paste0("model_", model)
+    out_df <- out_df %>%
+        mutate(n_profiles = 2:n_profiles_max) %>%
+        select(.data$n_profiles, everything())
 
-  out_list <- as.list(rep(NA, times = (nrow(out_df) * ncol(out_df))))
+    out_list <- as.list(rep(NA, times = (nrow(out_df) * ncol(out_df))))
 
-  for (i in 2:n_profiles_max) {
-    for (j in model) {
-      m <- estimate_profiles_mplus(
-        df, ...,
-        n_profiles = i,
-        model = j,
-        starts = starts,
-        m_iterations = m_iterations,
-        convergence_criterion = convergence_criterion,
-        st_iterations = st_iterations,
-        return_save_data = F
-      )
-      the_index <- sum(!is.na(out_list))
-      message(paste0("Model ", the_index + 1, "/", length(out_list)))
-      out_list[[the_index + 1]] <- m
-      r <- try_extract_fit(m)
-      out_df[i - 1, j + 1] <- r
-      message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
-      if (is.numeric(r)) {
-        message(paste0("Result: BIC = ", r))
-      } else {
-        message("Result: ", r)
-      }
+    for (i in 2:n_profiles_max) {
+        for (j in model) {
+            m <- suppressMessages(estimate_profiles_mplus(
+                df, ...,
+                n_profiles = i,
+                model = j,
+                starts = starts,
+                m_iterations = m_iterations,
+                convergence_criterion = convergence_criterion,
+                st_iterations = st_iterations,
+                return_save_data = F,
+                n_processors = n_processors
+            ))
+            the_index <- sum(!is.na(out_list))
+            message(paste0("Model ", the_index + 1, "/", length(out_list)))
+            out_list[[the_index + 1]] <- m
+            r <- try_extract_fit(m)
+            status <- try_extract_fit(m)
+            message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
+            if (any(c("Convergence problem", "LL not replicated") %in% status)) {
+                message("Result: ", r)
+                out_df[i - 1, j + 1] <- r
+            } else {
+                message(paste0("Result: BIC = ", r$BIC))
+                out_df[i - 1, j + 1] <- r$BIC
+            }
+        }
     }
-  }
 
-  print(out_df)
+    print(out_df)
 
-  if (!is.null(save_models)) {
-    readr::write_rds(m, save_models)
-  }
+    if (!is.null(save_models)) {
+        readr::write_rds(m, save_models)
+    }
 
-  if (return_table == TRUE) {
-    return(out_df)
-  } else {
-    p <- out_df %>%
-      tidyr::gather("key", "val", -.data$n_profiles) %>%
-      dplyr::filter(
-        .data$val != "Convergence problem",
-        .data$val != "LL not replicated"
-      ) %>%
-      ggplot2::ggplot(ggplot2::aes_string(x = "n_profiles", y = "val", shape = "key", color = "key", group = "key")) +
-      ggplot2::geom_line() +
-      ggplot2::geom_point()
-    print(p)
-    return(p)
-  }
+    if (return_table == TRUE) {
+        return(out_df)
+    } else {
+        p <- out_df %>%
+            tidyr::gather("key", "val", -.data$n_profiles) %>%
+            dplyr::filter(
+                .data$val != "Convergence problem",
+                .data$val != "LL not replicated"
+            ) %>%
+            dplyr::mutate(n_profiles = as.integer(.data$n_profiles)) %>%
+            ggplot2::ggplot(ggplot2::aes_string(x = "n_profiles", y = "val", shape = "key", color = "key", group = "key")) +
+            ggplot2::geom_line() +
+            ggplot2::geom_point()
+        print(p)
+        return(p)
+    }
 }
 
 extract_warnings <- function(x) {
@@ -103,7 +108,7 @@ try_extract_fit <- function(m) {
       }
     },
     error = function(cond) {
-      return(m$summaries$BIC)
+      return(m$summaries)
     }
   )
   return(out)

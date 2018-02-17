@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyLPA
 Title: Easily Carry Out Latent Profile Analysis
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com"),
     person(c("Jennifer", "A"), "Schmidt", role = "ctb", email = "jaschmid@msu.edu"),
@@ -32,7 +32,7 @@ Suggests:
     covr,
     devtools,
     knitr,
-    MplusAutomation,
+    MplusAutomation (== 0.7),
     rmarkdown,
     roxygen2,
     testthat,
