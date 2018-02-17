@@ -319,7 +319,7 @@ estimate_profiles_mplus <- function(df,
             file.remove(savedata_filename)
             file.remove("Mplus Run Models.log")
         }
-        invisible(x)
+        return(x)
 
         # invisible(list(m1, x))
     } else {
@@ -330,7 +330,7 @@ estimate_profiles_mplus <- function(df,
             file.remove("Mplus Run Models.log")
         }
 
-        invisible(m1)
+        return(m1)
     }
 }
 

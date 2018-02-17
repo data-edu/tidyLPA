@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_profiles.R
 \name{plot_profiles}
 \alias{plot_profiles}
-\title{Plot profile centroids}
+\title{Plot variable means and variances by profile for mclust output}
 \usage{
 plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
   plot_error_bars = TRUE)
@@ -19,7 +19,7 @@ plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
 \item{plot_error_bars}{whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)}
 }
 \description{
-Plot profile centroids
+Plot variable means and variances by profile for mclust output
 }
 \details{
 Plot the centroids for tibble or mclust output from estimate_profiles()
