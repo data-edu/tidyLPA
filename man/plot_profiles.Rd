@@ -22,7 +22,7 @@ plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
 Plot variable means and variances by profile for mclust output
 }
 \details{
-Plot the centroids for tibble or mclust output from estimate_profiles()
+Plot the variable means and variances for data frame output from estimate_profiles()
 }
 \examples{
 m3 <- estimate_profiles(iris,

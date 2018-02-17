@@ -17,5 +17,5 @@ plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
 Plot variable means and variances by profile for MPlus output (requires purchasing and installing MPlus to use)
 }
 \details{
-Plot the centroids for tibble or mclust output from estimate_profiles_mplus()
+Plot the variable means and variances for data frame output from estimate_profiles_mclust()
 }

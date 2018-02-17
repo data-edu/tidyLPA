@@ -1,5 +1,5 @@
 #' Plot variable means and variances by profile for mclust output
-#' @details Plot the centroids for tibble or mclust output from estimate_profiles()
+#' @details Plot the variable means and variances for data frame output from estimate_profiles()
 #' @param x output from create_profiles_mclust()
 #' @param to_center whether to center the data before plotting
 #' @param to_scale whether to scale the data before plotting
