@@ -4,7 +4,7 @@ author: "Joshua M. Rosenberg"
 date: '2018-02-14'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Introduction to tidyLPA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

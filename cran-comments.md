@@ -1,6 +1,6 @@
-## Notes in response to requests from maintainers
+## Note regarding submission less than 30 days after the previous submission
 
-* In response to requests from Swetlana Herbrandt, I changed URL in vignette from https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html --> https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html
+* The MplusAutomation package that this package Imports pushed a breaking update; this patch requires the 0.7 version of the MplusAutomation package
 
 ## Test environments
 * local OS X install, R 3.4.2
