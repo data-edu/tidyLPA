@@ -1,4 +1,4 @@
-#' Create models for a specific MPlus model
+#' Create models for a specific MPlus model (requires purchasing and instaling MPlus to use)
 #' @details Creates an mplus model (.inp) and associated data file (.dat)
 #' @param data_filename name of data file to prepare; defaults to d.dat
 #' @param script_filename name of script to prepare; defaults to i.inp
@@ -319,7 +319,7 @@ estimate_profiles_mplus <- function(df,
             file.remove(savedata_filename)
             file.remove("Mplus Run Models.log")
         }
-        invisible(x)
+        return(x)
 
         # invisible(list(m1, x))
     } else {
@@ -330,7 +330,7 @@ estimate_profiles_mplus <- function(df,
             file.remove("Mplus Run Models.log")
         }
 
-        invisible(m1)
+        return(m1)
     }
 }
 

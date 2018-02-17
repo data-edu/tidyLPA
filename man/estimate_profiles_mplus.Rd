@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_profiles_mplus.R
 \name{estimate_profiles_mplus}
 \alias{estimate_profiles_mplus}
-\title{Create models for a specific MPlus model}
+\title{Create models for a specific MPlus model (requires purchasing and instaling MPlus to use)}
 \usage{
 estimate_profiles_mplus(df, ..., n_profiles, the_title = "test",
   data_filename = "d.dat", script_filename = "i.inp",
@@ -53,7 +53,7 @@ estimate_profiles_mplus(df, ..., n_profiles, the_title = "test",
 either a tibble or a ggplot2 plot of the BIC values for the explored models
 }
 \description{
-Create models for a specific MPlus model
+Create models for a specific MPlus model (requires purchasing and instaling MPlus to use)
 }
 \details{
 Creates an mplus model (.inp) and associated data file (.dat)
