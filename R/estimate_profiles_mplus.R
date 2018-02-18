@@ -20,7 +20,7 @@
 #' @importFrom tibble tibble
 #' @examples
 #' \dontrun{
-#' m1 <- estimate_profiles_mplus(iris,
+#' m <- estimate_profiles_mplus(iris,
 #'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #'                             n_profiles = 2,
 #'                             model = 1)
@@ -290,16 +290,28 @@ estimate_profiles_mplus <- function(df,
     )
 
     x <- utils::capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
-    capture <- utils::capture.output(m1 <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
+    capture <- utils::capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
 
-    status <- try_extract_fit(m1)
-
-    if (any(c("Convergence problem", "LL not replicated") %in% status)) {
-        message(status)
+    if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated.") {
+        warning_status <- "Warning: The best loglikelihood was not replicated."
     } else {
-        message("LogLik is ", round(abs(as.vector(status$LL)), 3))
-        message("BIC is ", round(abs(as.vector(status$BIC)), 3))
-        message("Entropy is ", round(abs(as.vector(status$Entropy)), 3))
+        warning_status = ""
+    }
+
+    if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue." |
+        check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.") == "Error: Convergence issue.") {
+        error_status <- "Error: Convergence issue."
+    } else {
+        error_status = ""
+    }
+
+    if (error_status == "Error: Convergence issue." | warning_status == "Warning: The best loglikelihood was not replicated.") {
+        message(stringr::str_c(warning_status, " ", error_status))
+        return(stringr::str_trim(stringr::str_c(warning_status, " ", error_status)))
+    } else {
+        message("LogLik is ", round(abs(as.vector(m$summaries$LL)), 3))
+        message("BIC is ", round(abs(as.vector(m$summaries$BIC)), 3))
+        message("Entropy is ", round(abs(as.vector(m$summaries$Entropy)), 3))
     }
 
     if (print_input_file == TRUE) {
@@ -309,7 +321,7 @@ estimate_profiles_mplus <- function(df,
     }
 
     if (return_save_data == TRUE) {
-        x <- dplyr::tbl_df(m1$savedata)
+        x <- dplyr::tbl_df(m$savedata)
         # x <- dplyr::tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
         if (remove_tmp_files == TRUE) {
@@ -321,7 +333,7 @@ estimate_profiles_mplus <- function(df,
         }
         return(x)
 
-        # invisible(list(m1, x))
+        # invisible(list(m, x))
     } else {
         if (remove_tmp_files == TRUE) {
             file.remove(data_filename)
@@ -330,7 +342,7 @@ estimate_profiles_mplus <- function(df,
             file.remove("Mplus Run Models.log")
         }
 
-        return(m1)
+        return(m)
     }
 }
 
@@ -342,4 +354,24 @@ estimate_profiles_mplus <- function(df,
 
 extract_mplus_summary <- function(x) {
     x$summaries[c("LL", "BIC", "Entropy")]
+}
+
+check_list <- function(x, check) {
+    x[1] == check
+}
+
+check_warnings <- function(x, check) {
+    if (any(purrr::map_lgl(x$warnings, check_list, check = check))) {
+        return(stringr::str_c("Warning: ", "The best loglikelihood was not replicated."))
+    } else {
+        return("No warning")
+    }
+}
+
+check_errors <- function(x, check) {
+    if (any(purrr::map_lgl(x$errors, check_list, check = check))) {
+        return(stringr::str_c("Error: ", "Convergence issue."))
+    } else {
+        return("No error")
+    }
 }

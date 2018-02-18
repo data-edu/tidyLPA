@@ -50,15 +50,27 @@ compare_solutions_mplus <- function(df, ...,
             the_index <- sum(!is.na(out_list))
             message(paste0("Model ", the_index + 1, "/", length(out_list)))
             out_list[[the_index + 1]] <- m
-            r <- try_extract_fit(m)
-            status <- try_extract_fit(m)
+
+            # if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated.") {
+            #     warning_status <- "Warning: The best loglikelihood was not replicated."
+            # } else {
+            #     warning_status = ""
+            # }
+            #
+            # if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY") == "Error: Convergence issue." |
+            #     check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.") == "Error: Convergence issue.") {
+            #     error_status <- "Error: Convergence issue."
+            # } else {
+            #     error_status = ""
+            # }
+
             message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
-            if (any(c("Convergence problem", "LL not replicated") %in% status)) {
-                message("Result: ", r)
-                out_df[i - 1, j + 1] <- r
+            if (m == "Error: Convergence issue." | m == "Warning: The best loglikelihood was not replicated.") {
+                message(stringr::str_c("Result: ", m))
+                out_df[i - 1, j + 1] <- m
             } else {
-                message(paste0("Result: BIC = ", r$BIC))
-                out_df[i - 1, j + 1] <- r$BIC
+                message(paste0("Result: BIC = ", m$summaries$BIC))
+                out_df[i - 1, j + 1] <- m$summaries$BIC
             }
         }
     }
@@ -85,31 +97,4 @@ compare_solutions_mplus <- function(df, ...,
         print(p)
         return(p)
     }
-}
-
-extract_warnings <- function(x) {
-  x$warnings
-}
-
-extract_errors <- function(x) {
-  x$errors[[1]]
-}
-
-try_extract_fit <- function(m) {
-  out <- tryCatch(
-    {
-      warnings_list <- extract_warnings(m)
-      errors_list <- extract_errors(m)
-      if (stringr::str_detect(errors_list[[1]][1], "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY") |
-        stringr::str_detect(errors_list[[1]][1], "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.")) {
-        return("Convergence problem")
-      } else if (warnings_list[[2]][1] == "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") {
-        return("LL not replicated")
-      }
-    },
-    error = function(cond) {
-      return(m$summaries)
-    }
-  )
-  return(out)
 }
