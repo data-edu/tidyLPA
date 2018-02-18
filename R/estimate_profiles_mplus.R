@@ -299,7 +299,7 @@ estimate_profiles_mplus <- function(df,
     }
 
     if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue." |
-        check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.") == "Error: Convergence issue.") {
+        check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue.") {
         error_status <- "Error: Convergence issue."
     } else {
         error_status = ""
