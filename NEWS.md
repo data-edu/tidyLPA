@@ -1,3 +1,8 @@
+# tidyLPA 0.1.3
+
+* add function, extract_LL_mplus(), to extract log-likelihoods from models fit with estimate_profiles_mplus()
+* Update documentation for pisaUSA15 dataset
+
 # tidyLPA 0.1.2
 
 Fix: 
@@ -10,6 +15,8 @@ Minor updates:
 * Update function names to include MPlus
 * Export %>% from magrittr (so it does not need to be loaded from dplyr)
 * Correct name of title for vignette
+* Update function names
+* Change output of estimate_profiles_mplus() to be returned with return(), instead of with invisible()
 
 # tidyLPA 0.1.1
 

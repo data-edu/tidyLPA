@@ -1,5 +1,5 @@
 #' Plot variable means and variances by profile for MPlus output (requires purchasing and installing MPlus to use)
-#' @details Plot the centroids for tibble or mclust output from estimate_profiles_mplus()
+#' @details Plot the variable means and variances for data frame output from estimate_profiles_mclust()
 #' @param mplus_data output from estimate_profiles_mclust() with return_savedata = T specified
 #' @inheritParams plot_profiles
 #' @import ggplot2

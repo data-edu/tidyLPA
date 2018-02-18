@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA) [![CRAN status](http://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
+[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA)
 
 Background
 ----------
@@ -18,12 +18,14 @@ You can install tidyLPA (version 0.1.2) from CRAN with:
 install.packages("tidyLPA")
 ```
 
-You can also install the in-development version of tidyLPA from GitHub with:
+You can also install the development version of tidyLPA from GitHub with:
 
 ``` r
 install.packages("devtools")
 devtools::install_github("jrosen48/tidyLPA")
 ```
+
+**Please note that some functions documented on the References page may only be available in the development version of tidyLPA**
 
 Example
 -------

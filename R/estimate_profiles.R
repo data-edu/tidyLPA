@@ -1,4 +1,4 @@
-#' Estimate profiles for a specific mclust model
+#' Estimate parameters for profiles for a specific solution
 #' @details Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
 #' @param df data.frame with two or more columns with continuous variables
 #' @param ... unquoted variable names separated by commas

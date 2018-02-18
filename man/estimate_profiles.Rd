@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_profiles.R
 \name{estimate_profiles}
 \alias{estimate_profiles}
-\title{Estimate profiles for a specific mclust model}
+\title{Estimate parameters for profiles for a specific solution}
 \usage{
 estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
   center_raw_data = FALSE, scale_raw_data = FALSE,
@@ -36,7 +36,7 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 either a tibble or a ggplot2 plot of the BIC values for the explored models
 }
 \description{
-Estimate profiles for a specific mclust model
+Estimate parameters for profiles for a specific solution
 }
 \details{
 Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
