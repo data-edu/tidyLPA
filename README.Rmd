@@ -28,12 +28,14 @@ You can install tidyLPA (version 0.1.2) from CRAN with:
 install.packages("tidyLPA")
 ```
 
-You can also install the in-development version of tidyLPA from GitHub with:
+You can also install the development version of tidyLPA from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("jrosen48/tidyLPA")
 ```
+
+**Please note that some functions documented on the References page may only be available in the development version of tidyLPA**
 
 ## Example
 
