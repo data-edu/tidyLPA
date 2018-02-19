@@ -35,7 +35,7 @@ install.packages("devtools")
 devtools::install_github("jrosen48/tidyLPA")
 ```
 
-**Please note that some functions documented on the References page may only be available in the development version of tidyLPA**
+**Please note that some functions documented on the References page may only be available in the development version of tidyLPA. Also note that if an error occurs, you may try the development version to see if the issue is addressed.**
 
 ## Example
 
