@@ -65,7 +65,7 @@ compare_solutions_mplus <- function(df, ...,
       # }
 
       message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
-      if (m == "Error: Convergence issue." | m == "Warning: The best loglikelihood was not replicated.") {
+      if (m == "Error: Convergence issue" | m == "Warning: LL not replicated") {
         message(stringr::str_c("Result: ", m))
         out_df[i - 1, j + 1] <- m
       } else {
