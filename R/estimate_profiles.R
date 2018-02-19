@@ -84,17 +84,17 @@ estimate_profiles <- function(df,
   posterior_prob <- 1 - round(m$uncertainty, 5)
 
   if (tolower(print_which_stats) == "some") {
-      message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-      message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-      message("Entropy is ", round(mean(posterior_prob), 3))
-  } else if (tolower(print_which_stats) == "all"){
-      message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-      message("AIC is ", round(abs(as.vector(AIC)), 3))
-      message("CAIC is ", round(abs(as.vector(CAIC)), 3))
-      message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-      message("SABIC is ", round(abs(as.vector(SABIC)), 3))
-      message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
-      message("Entropy is ", round(mean(posterior_prob), 3))
+    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+    message("Entropy is ", round(mean(posterior_prob), 3))
+  } else if (tolower(print_which_stats) == "all") {
+    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+    message("AIC is ", round(abs(as.vector(AIC)), 3))
+    message("CAIC is ", round(abs(as.vector(CAIC)), 3))
+    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+    message("SABIC is ", round(abs(as.vector(SABIC)), 3))
+    message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
+    message("Entropy is ", round(mean(posterior_prob), 3))
   }
 
   dff <- as.data.frame(dplyr::bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up

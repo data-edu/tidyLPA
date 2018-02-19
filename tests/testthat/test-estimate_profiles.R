@@ -23,14 +23,13 @@ test_that("estimate_profiles() works in terms of MPlus benchmarks", {
 })
 
 test_that("different models (1-4) for estimate_profiles() works", {
-    m1 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
-    m2 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 2, n_profiles = 3)
-    m3 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 3, n_profiles = 3)
-    m4 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 6, n_profiles = 3)
+  m1 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 1, n_profiles = 3)
+  m2 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 2, n_profiles = 3)
+  m3 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 3, n_profiles = 3)
+  m4 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, model = 6, n_profiles = 3)
 
-    expect_equal(attributes(m1)$mclust_output$loglik, -361.429, tolerance = .001)
-    expect_equal(attributes(m2)$mclust_output$loglik, -256.355, tolerance = .001)
-    expect_equal(attributes(m3)$mclust_output$loglik, -307.181, tolerance = .001)
-    expect_equal(attributes(m4)$mclust_output$loglik, -180.186, tolerance = .001)
+  expect_equal(attributes(m1)$mclust_output$loglik, -361.429, tolerance = .001)
+  expect_equal(attributes(m2)$mclust_output$loglik, -256.355, tolerance = .001)
+  expect_equal(attributes(m3)$mclust_output$loglik, -307.181, tolerance = .001)
+  expect_equal(attributes(m4)$mclust_output$loglik, -180.186, tolerance = .001)
 })
-
