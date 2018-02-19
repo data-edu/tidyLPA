@@ -23,7 +23,7 @@ compare_solutions_mplus <- function(df, ...,
                                     st_iterations = 10,
                                     convergence_criterion = 1E-6,
                                     save_models = NULL,
-                                    return_table = FALSE,
+                                    return_table = TRUE,
                                     n_processors = 1) {
     message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
     out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))

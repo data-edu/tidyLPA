@@ -293,19 +293,20 @@ estimate_profiles_mplus <- function(df,
     capture <- utils::capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
 
     if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated.") {
-        warning_status <- "Warning: The best loglikelihood was not replicated."
+        warning_status <- "Warning: LL not replicated"
     } else {
         warning_status = ""
     }
 
-    if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue." |
-        check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue.") {
-        error_status <- "Error: Convergence issue."
+    if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue" |
+        check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue" |
+        check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ERROR IN THE") == "Error: Convergence issue") {
+        error_status <- "Error: Convergence issue"
     } else {
-        error_status = ""
+        error_status <- ""
     }
 
-    if (error_status == "Error: Convergence issue." | warning_status == "Warning: The best loglikelihood was not replicated.") {
+    if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicataed") {
         message(stringr::str_c(warning_status, " ", error_status))
         return(stringr::str_trim(stringr::str_c(warning_status, " ", error_status)))
     } else {
@@ -362,7 +363,7 @@ check_list <- function(x, check) {
 
 check_warnings <- function(x, check) {
     if (any(purrr::map_lgl(x$warnings, check_list, check = check))) {
-        return(stringr::str_c("Warning: ", "The best loglikelihood was not replicated."))
+        return(stringr::str_c("Warning: ", "The best loglikelihood was not replicated"))
     } else {
         return("No warning")
     }
@@ -370,7 +371,7 @@ check_warnings <- function(x, check) {
 
 check_errors <- function(x, check) {
     if (any(purrr::map_lgl(x$errors, check_list, check = check))) {
-        return(stringr::str_c("Error: ", "Convergence issue."))
+        return(stringr::str_c("Error: ", "Convergence issue"))
     } else {
         return("No error")
     }
