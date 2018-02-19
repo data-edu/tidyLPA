@@ -60,7 +60,7 @@ Creates an mplus model (.inp) and associated data file (.dat)
 }
 \examples{
 \dontrun{
-m1 <- estimate_profiles_mplus(iris,
+m <- estimate_profiles_mplus(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                             n_profiles = 2,
                             model = 1)

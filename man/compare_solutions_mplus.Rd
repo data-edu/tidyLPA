@@ -6,7 +6,7 @@
 \usage{
 compare_solutions_mplus(df, ..., n_profiles_max = 10, model = 1:6,
   starts = c(20, 4), m_iterations = 500, st_iterations = 10,
-  convergence_criterion = 1e-06, save_models = NULL, return_table = FALSE,
+  convergence_criterion = 1e-06, save_models = NULL, return_table = TRUE,
   n_processors = 1)
 }
 \arguments{
