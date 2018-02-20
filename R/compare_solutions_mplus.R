@@ -25,76 +25,63 @@ compare_solutions_mplus <- function(df, ...,
                                     save_models = NULL,
                                     return_table = TRUE,
                                     n_processors = 1) {
-  message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
-  out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))
-  names(out_df) <- paste0("model_", model)
-  out_df <- out_df %>%
-    mutate(n_profiles = 2:n_profiles_max) %>%
-    select(.data$n_profiles, everything())
+    message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+    out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - 1)))
+    names(out_df) <- paste0("model_", model)
+    out_df <- out_df %>%
+        mutate(n_profiles = 2:n_profiles_max) %>%
+        select(.data$n_profiles, everything())
 
-  out_list <- as.list(rep(NA, times = (nrow(out_df) * ncol(out_df))))
+    out_list <- as.list(rep(NA, times = (nrow(out_df) * ncol(out_df))))
 
-  for (i in 2:n_profiles_max) {
-    for (j in model) {
-      m <- suppressMessages(estimate_profiles_mplus(
-        df, ...,
-        n_profiles = i,
-        model = j,
-        starts = starts,
-        m_iterations = m_iterations,
-        convergence_criterion = convergence_criterion,
-        st_iterations = st_iterations,
-        return_save_data = F,
-        n_processors = n_processors
-      ))
-      the_index <- sum(!is.na(out_list))
-      message(paste0("Model ", the_index + 1, "/", length(out_list)))
-      out_list[[the_index + 1]] <- m
-
-      # if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated.") {
-      #     warning_status <- "Warning: The best loglikelihood was not replicated."
-      # } else {
-      #     warning_status = ""
-      # }
-      #
-      # if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY") == "Error: Convergence issue." |
-      #     check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.") == "Error: Convergence issue.") {
-      #     error_status <- "Error: Convergence issue."
-      # } else {
-      #     error_status = ""
-      # }
-
-      message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
-      if (m == "Error: Convergence issue" | m == "Warning: LL not replicated") {
-        message(stringr::str_c("Result: ", m))
-        out_df[i - 1, j + 1] <- m
-      } else {
-        message(paste0("Result: BIC = ", m$summaries$BIC))
-        out_df[i - 1, j + 1] <- m$summaries$BIC
-      }
+    for (i in 2:n_profiles_max) {
+        for (j in model) {
+            message(paste0("Processing model with n_profiles = ", i, " and model = ", j))
+            m <- suppressMessages(estimate_profiles_mplus(
+                df, ...,
+                n_profiles = i,
+                model = j,
+                starts = starts,
+                m_iterations = m_iterations,
+                convergence_criterion = convergence_criterion,
+                st_iterations = st_iterations,
+                return_save_data = F,
+                n_processors = n_processors
+            ))
+            print(m)
+            the_index <- sum(!is.na(out_list))
+            message(paste0("Model ", the_index + 1, "/", length(out_list)))
+            out_list[[the_index + 1]] <- m
+            message(paste0("Processed model with n_profiles = ", i, " and model = ", j))
+            if (m == "Error: Convergence issue" | m == "Warning: LL not replicated") {
+                message(stringr::str_c("Result: ", m))
+                out_df[i - 1, j + 1] <- m
+            } else {
+                message(paste0("Result: BIC = ", m$summaries$BIC))
+                out_df[i - 1, j + 1] <- m$summaries$BIC
+            }
+        }
     }
-  }
 
-  print(out_df)
+    if (!is.null(save_models)) {
+        readr::write_rds(m, save_models)
+    }
 
-  if (!is.null(save_models)) {
-    readr::write_rds(m, save_models)
-  }
-
-  if (return_table == TRUE) {
-    return(out_df)
-  } else {
-    p <- out_df %>%
-      tidyr::gather("key", "val", -.data$n_profiles) %>%
-      dplyr::filter(
-        .data$val != "Convergence problem",
-        .data$val != "LL not replicated"
-      ) %>%
-      dplyr::mutate(n_profiles = as.integer(.data$n_profiles)) %>%
-      ggplot2::ggplot(ggplot2::aes_string(x = "n_profiles", y = "val", shape = "key", color = "key", group = "key")) +
-      ggplot2::geom_line() +
-      ggplot2::geom_point()
-    print(p)
-    return(p)
-  }
+    if (return_table == TRUE) {
+        print(out_df)
+        invisible(out_df)
+    } else {
+        p <- out_df %>%
+            tidyr::gather("key", "val", -.data$n_profiles) %>%
+            dplyr::filter(
+                .data$val != "Convergence problem",
+                .data$val != "LL not replicated"
+            ) %>%
+            dplyr::mutate(n_profiles = as.integer(.data$n_profiles)) %>%
+            ggplot2::ggplot(ggplot2::aes_string(x = "n_profiles", y = "val", shape = "key", color = "key", group = "key")) +
+            ggplot2::geom_line() +
+            ggplot2::geom_point()
+        print(p)
+        invisible(p)
+    }
 }

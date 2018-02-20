@@ -292,7 +292,7 @@ estimate_profiles_mplus <- function(df,
   x <- utils::capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
   capture <- utils::capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
 
-  if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated.") {
+  if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated") {
     warning_status <- "Warning: LL not replicated"
   } else {
     warning_status <- ""
@@ -300,14 +300,18 @@ estimate_profiles_mplus <- function(df,
 
   if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue" |
     check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue" |
+    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY.  ESTIMATES CANNOT") == "Error: Convergence issue" |
     check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ERROR IN THE") == "Error: Convergence issue") {
     error_status <- "Error: Convergence issue"
   } else {
     error_status <- ""
   }
 
-  if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicataed") {
-    message(stringr::str_c(warning_status, " ", error_status))
+  print(error_status)
+  print(warning_status)
+
+  if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
+    message(stringr::str_trim(stringr::str_c(warning_status, " ", error_status)))
     return(stringr::str_trim(stringr::str_c(warning_status, " ", error_status)))
   } else {
     message("LogLik is ", round(abs(as.vector(m$summaries$LL)), 3))
@@ -316,7 +320,6 @@ estimate_profiles_mplus <- function(df,
   }
 
   if (print_input_file == TRUE) {
-    # f <- paste0(script_filename)
     print(readr::read_lines(script_filename))
     message("Note: This function currently prints the script output. You can also use the argument remove_tmp_files = FALSE to create the inp file, which you can then view in R Studio by clicking on the file name in the Files pane.")
   }
@@ -334,7 +337,6 @@ estimate_profiles_mplus <- function(df,
     }
     return(x)
 
-    # invisible(list(m, x))
   } else {
     if (remove_tmp_files == TRUE) {
       file.remove(data_filename)
