@@ -111,17 +111,7 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 </ul>
 <p>Two additional models can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
 <p>We can plot the profiles with by <em>piping</em> (using the <code>%&gt;%</code> operator, loaded from the <code>dplyr</code> package) the output to <code><a href="reference/plot_profiles.html">plot_profiles()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-
-<span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
                   broad_interest, enjoyment, self_efficacy, 
                   <span class="dt">n_profiles =</span> <span class="dv">3</span>, 
                   <span class="dt">model =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
