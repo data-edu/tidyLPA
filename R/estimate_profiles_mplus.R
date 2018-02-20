@@ -307,9 +307,6 @@ estimate_profiles_mplus <- function(df,
     error_status <- ""
   }
 
-  print(error_status)
-  print(warning_status)
-
   if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
     message(stringr::str_trim(stringr::str_c(warning_status, " ", error_status)))
     return(stringr::str_trim(stringr::str_c(warning_status, " ", error_status)))

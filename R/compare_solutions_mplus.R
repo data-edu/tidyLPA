@@ -48,7 +48,6 @@ compare_solutions_mplus <- function(df, ...,
                 return_save_data = F,
                 n_processors = n_processors
             ))
-            print(m)
             the_index <- sum(!is.na(out_list))
             message(paste0("Model ", the_index + 1, "/", length(out_list)))
             out_list[[the_index + 1]] <- m
