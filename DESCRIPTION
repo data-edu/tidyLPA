@@ -17,25 +17,25 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
 Imports: 
-    dplyr (>= 0.7.4),
-    forcats (>= 0.2.0),
-    ggplot2 (>= 2.2.1.9000),
-    magrittr (>= 1.5),
-    mclust (>= 5.4),
-    purrr (>= 0.2.4),
-    readr (>= 1.1.1),
-    rlang (>= 0.1.6.9003),
-    stringr (>= 1.2.0),
-    tibble (>= 1.4.2),
-    tidyr (>= 0.8.0)
+    dplyr,
+    forcats,
+    ggplot2,
+    magrittr,
+    mclust,
+    purrr,
+    readr,
+    rlang,
+    stringr,
+    tibble,
+    tidyr
 Suggests: 
-    covr (>= 3.0.1),
-    devtools (>= 1.13.4),
-    knitr (>= 1.19),
-    MplusAutomation (>= 0.7.1),
-    rmarkdown (>= 1.8),
-    roxygen2 (>= 6.0.1),
-    testthat (>= 2.0.0)
+    covr,
+    devtools,
+    knitr,
+    MplusAutomation,
+    rmarkdown,
+    roxygen2,
+    testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
