@@ -155,9 +155,10 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <span class="co">#&gt; BIC is 636.62</span>
 <span class="co">#&gt; Entropy is 0.798</span></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
-<div id="more-information-on-model-specifications" class="section level3">
-<h3 class="hasAnchor">
-<a href="#more-information-on-model-specifications" class="anchor"></a>5. More information on model specifications</h3>
+</div>
+<div id="more-information-on-model-specifications" class="section level1">
+<h1 class="hasAnchor">
+<a href="#more-information-on-model-specifications" class="anchor"></a>5. More information on model specifications</h1>
 <p>As mentioned earlier, there are a number of different models representing how–or whether–different parameters are estimated. Again, these are passed to the <code>model</code> argument to the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function (i.e. <code><a href="../reference/estimate_profiles.html">estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)</a></code>).</p>
 <p>In general, the approach to choosing the model is similar to choosing the number of profiles, requiring <strong>deciding on the basis of evidence from multiple sources</strong>, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by <a href="http://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor and colleagues (2007)</a> has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated.</p>
 <p>Note that <em>p</em> represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.</p>
@@ -212,8 +213,6 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 \]</span></p>
-</div>
-</div>
 </div>
 <div id="other-options" class="section level2">
 <h2 class="hasAnchor">
@@ -465,6 +464,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 </blockquote>
 </div>
 </div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -476,10 +476,14 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
       <li><a href="#description-of-the-goals-of-tidylpa">2. Description of the goals of tidyLPA</a></li>
       <li><a href="#software-approach-to-carrying-out-lpa-interface-to-mclust-and-to-mplus">3. Software approach to carrying out LPA: Interface to mclust (and to MPlus)</a></li>
       <li><a href="#an-example-using-mclust">4. An example using mclust</a></li>
-      <li><a href="#other-options">6. Other options</a></li>
+      <li>
+<a href="#more-information-on-model-specifications">5. More information on model specifications</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#other-options">6. Other options</a></li>
       <li><a href="#an-interface-to-mplus-in-development">7. An interface to MPlus (in-development)</a></li>
       <li><a href="#other-functions">8. Other functions</a></li>
       <li><a href="#conclusion">9. Conclusion</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>
