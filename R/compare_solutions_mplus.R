@@ -1,6 +1,6 @@
 #' Explore BIC for various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)
 #' @details Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
-#' @param n_profiles_max lower bound of the number of profiles to explore; defaults to 2
+#' @param n_profiles_min lower bound of the number of profiles to explore; defaults to 2
 #' @param n_profiles_max upper bound of the number of profiles to explore; defaults to 10
 #' @param model which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
 #' @param save_models whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)
