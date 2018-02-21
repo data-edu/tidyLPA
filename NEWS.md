@@ -1,7 +1,9 @@
 # tidyLPA 0.1.3
 
 * add function, extract_LL_mplus(), to extract log-likelihoods from models fit with estimate_profiles_mplus()
-* Update documentation for pisaUSA15 dataset
+* update documentation for pisaUSA15 dataset
+* improve compare_solutions_mplus() so it more reliably handles errors
+* improve vignette
 
 # tidyLPA 0.1.2
 
