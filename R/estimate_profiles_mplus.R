@@ -46,7 +46,7 @@ estimate_profiles_mplus <- function(df,
                                     return_save_data = TRUE,
                                     optseed = NULL,
                                     n_processors = 1) {
-  message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+    message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
   d <- select_ancillary_functions_mplus(df, ...)
   x <- utils::capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
