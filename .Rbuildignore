@@ -11,3 +11,5 @@
 ^codecov\.yml$
 ^CRAN-RELEASE$
 ^introduction-to-tidyLPA.pdf$
+iMplusThreadResults6.out
+^SUPPORT\.md$
