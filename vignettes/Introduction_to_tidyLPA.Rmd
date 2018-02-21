@@ -137,7 +137,7 @@ estimate_profiles(d,
     plot_profiles(to_center = TRUE)
 ```
 
-### 5. More information on model specifications
+# 5. More information on model specifications
 
 As mentioned earlier, there are a number of different models representing how--or whether--different parameters are estimated. Again, these are passed to the `model` argument to the `estimate_profiles()` function (i.e. `estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)`).
 
