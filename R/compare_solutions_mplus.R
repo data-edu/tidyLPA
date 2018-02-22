@@ -65,13 +65,21 @@ compare_solutions_mplus <- function(df, ...,
                 message(paste0("Result: BIC = ", m$summaries$BIC))
                 out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
 
-                #if (is.null(m$summaries$T11_VLMR_2xLLDif)) {
+                if (is.null(m$summaries$T11_VLMR_2xLLDif)) {
                     VLMR_val <- NA
                     VLMR_p <- NA
-                # } else {
-                #     VLMA_val <- m$summaries$T11_VLMR_2xLLDif
-                #     VLMR_p <- m$summaries$T11_VLMR_PValue
-                # }
+                } else {
+                    VLMA_val <- m$summaries$T11_VLMR_2xLLDif
+                    VLMR_p <- m$summaries$T11_VLMR_PValue
+                }
+
+                if (is.null(m$summaries$BLRT_2xLLDiff)) {
+                    BLRT_val <- NA
+                    BLRT_p <- NA
+                } else {
+                    BLRT_val <- m$summaries$BLRT_2xLLDiff
+                    BLRT_p <- m$summaries$BLRT_PValue
+                }
 
                 if (counter == 1) {
                     stats_df <- data.frame(n_profile = i,
@@ -85,7 +93,9 @@ compare_solutions_mplus <- function(df, ...,
                                     VLMR_val = VLMR_val,
                                     VLMR_p = VLMR_p,
                                     LMR_val = m$summaries$T11_LMR_Value,
-                                    LMR_p = m$summaries$T11_LMR_PValue)
+                                    LMR_p = m$summaries$T11_LMR_PValue,
+                                    BLRT_val = VLRT_val,
+                                    BLRT_p = BLRT_p)
                 } else {
 
                     d <- data.frame(n_profile = i,
@@ -99,8 +109,10 @@ compare_solutions_mplus <- function(df, ...,
                                     VLMR_val = VLMR_val,
                                     VLMR_p = VLMR_p,
                                     LMR_val = m$summaries$T11_LMR_Value,
-                                    LMR_p = m$summaries$T11_LMR_PValue)
-                    print(d)
+                                    LMR_p = m$summaries$T11_LMR_PValue,
+                                    BLRT_val = VLRT_val,
+                                    BLRT_p = BLRT_p)
+
                     stats_df <- dplyr::bind_rows(stats_df, d)
                 }
 

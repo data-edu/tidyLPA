@@ -93,12 +93,12 @@ estimate_profiles_mplus <- function(df,
 
 
     if (include_LMR == TRUE) {
-        OUTPUT_line0 <- "OUTPUT: TECH1 TECH11"
+        OUTPUT_line0 <- "OUTPUT: TECH1 TECH11;"
         if (include_BLRT == TRUE) {
             OUTPUT_line0 <- "OUTPUT: TECH1 TECH11 TECH14;"
         }
     } else {
-        OUTPUT_line0 <- "OUTPUT: TECH1"
+        OUTPUT_line0 <- "OUTPUT: TECH1;"
         if (include_BLRT == TRUE) {
             OUTPUT_line0 <- "OUTPUT: TECH1  TECH14;"
         }
