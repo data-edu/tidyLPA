@@ -35,7 +35,8 @@ Suggests:
     MplusAutomation,
     rmarkdown,
     roxygen2,
-    testthat
+    testthat,
+    parallel
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true

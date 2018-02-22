@@ -65,26 +65,43 @@ compare_solutions_mplus <- function(df, ...,
                 message(paste0("Result: BIC = ", m$summaries$BIC))
                 out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
 
+                #if (is.null(m$summaries$T11_VLMR_2xLLDif)) {
+                    VLMR_val <- NA
+                    VLMR_p <- NA
+                # } else {
+                #     VLMA_val <- m$summaries$T11_VLMR_2xLLDif
+                #     VLMR_p <- m$summaries$T11_VLMR_PValue
+                # }
+
                 if (counter == 1) {
                     stats_df <- data.frame(n_profile = i,
-                                           model = j,
-                                           LL = m$summaries$LL,
-                                           AIC = m$summaries$LL,
-                                           BIC = m$summaries$BIC)
+                                    model = j,
+                                    LL = m$summaries$LL,
+                                    AIC = m$summaries$LL,
+                                    BIC = m$summaries$BIC,
+                                    SABIC = m$summaries$aBIC,
+                                    CAIC = m$summaries$AICC,
+                                    Entropy = m$summaries$Entropy,
+                                    VLMR_val = VLMR_val,
+                                    VLMR_p = VLMR_p,
+                                    LMR_val = m$summaries$T11_LMR_Value,
+                                    LMR_p = m$summaries$T11_LMR_PValue)
                 } else {
-                    stats_df <- dplyr::bind_rows(stats_df,
-                                                 data.frame(n_profile = i,
-                                                            model = j,
-                                                            LL = m$summaries$LL,
-                                                            AIC = m$summaries$LL,
-                                                            BIC = m$summaries$BIC,
-                                                            SABIC = m$summaries$aBIC,
-                                                            CAIC = m$summaries$AICC,
-                                                            Entropy = m$summaries$Entropy,
-                                                            VLMR_val = m$summaries$T11_VLMR_2xLLDif,
-                                                            VLMR_p = m$summaries$T11_VLMR_PValue,
-                                                            LMR_val = m$summaries$T11_LMR_Value,
-                                                            LMR_p = m$summaries$T11_LMR_PValue))
+
+                    d <- data.frame(n_profile = i,
+                                    model = j,
+                                    LL = m$summaries$LL,
+                                    AIC = m$summaries$LL,
+                                    BIC = m$summaries$BIC,
+                                    SABIC = m$summaries$aBIC,
+                                    CAIC = m$summaries$AICC,
+                                    Entropy = m$summaries$Entropy,
+                                    VLMR_val = VLMR_val,
+                                    VLMR_p = VLMR_p,
+                                    LMR_val = m$summaries$T11_LMR_Value,
+                                    LMR_p = m$summaries$T11_LMR_PValue)
+                    print(d)
+                    stats_df <- dplyr::bind_rows(stats_df, d)
                 }
 
             }
@@ -96,7 +113,7 @@ compare_solutions_mplus <- function(df, ...,
     }
 
     if (return_stats_df == TRUE) {
-        return(dplyr::arrange(stats_df, model, n_profile))
+        return(dplyr::arrange(stats_df, .data$model, .data$n_profile))
     }
 
     if (return_table == TRUE) {
