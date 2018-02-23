@@ -88,7 +88,7 @@
   <span class='kw'>starts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>20</span>, <span class='fl'>4</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>st_iterations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>remove_tmp_files</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>print_input_file</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_save_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>optseed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_processors</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+  <span class='kw'>n_processors</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>include_LMR</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>include_BLRT</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -164,6 +164,14 @@
     <tr>
       <th>n_processors</th>
       <td><p>= 1</p></td>
+    </tr>
+    <tr>
+      <th>include_LMR</th>
+      <td><p>whether to include the Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE</p></td>
+    </tr>
+    <tr>
+      <th>include_BLRT</th>
+      <td><p>whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run</p></td>
     </tr>
     </table>
     

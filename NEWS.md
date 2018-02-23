@@ -4,6 +4,7 @@
 * update documentation for pisaUSA15 dataset
 * improve compare_solutions_mplus() so it more reliably handles errors
 * improve vignette
+* add URLs for package and bug reports to DESCRIPTION
 
 # tidyLPA 0.1.2
 
