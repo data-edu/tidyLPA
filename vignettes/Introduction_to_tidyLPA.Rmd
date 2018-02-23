@@ -269,6 +269,20 @@ Here is how to compare a number of models using MPlus (it works very similarly t
 compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy)
 ```
 
+Note that there is an option to use multiple cores (processors) to speed these functions; you can use the `detectCores()` function from the parallel package to determine how many processors you have:
+
+```{r}
+if (require('parallel')) {
+  parallel::detectCores()
+}
+```
+
+Then, you can set the `n_processors` argument (for all of the functions that use MPlus) to that number, i.e.:
+
+```{r, eval = F}
+compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy, n_processors = 4)
+```
+
 Here is how to estimate profiles for a single solution. This function is very similar to `estimate_profiles()`. Note that in addition to returning the profile assignment (`C`), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:
 
 ```{r, eval = F}

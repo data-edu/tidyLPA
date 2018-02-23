@@ -28,7 +28,9 @@ compare_solutions_mplus <- function(df, ...,
                                     save_models = NULL,
                                     return_table = TRUE,
                                     n_processors = 1,
-                                    return_stats_df = FALSE) {
+                                    return_stats_df = FALSE,
+                                    include_LMR = TRUE,
+                                    include_BLRT = FALSE) {
     message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
     out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - (n_profiles_min - 1))))
@@ -52,7 +54,9 @@ compare_solutions_mplus <- function(df, ...,
                 convergence_criterion = convergence_criterion,
                 st_iterations = st_iterations,
                 return_save_data = F,
-                n_processors = n_processors
+                n_processors = n_processors,
+                include_LMR = include_LMR,
+                include_BLRT = include_BLRT
             ))
 
             counter <- counter + 1
@@ -65,26 +69,55 @@ compare_solutions_mplus <- function(df, ...,
                 message(paste0("Result: BIC = ", m$summaries$BIC))
                 out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
 
+                if (!("T11_VLMR_2xLLDif" %in% names(m$summaries))) {
+                    VLMR_val <- NA
+                    VLMR_p <- NA
+                } else {
+                    VLMR_val <- m$summaries$T11_VLMR_2xLLDif
+                    VLMR_p <- m$summaries$T11_VLMR_PValue
+                }
+
+                if (!("BLRT_2xLLDiff" %in% names(m$summaries))) {
+                    BLRT_val <- NA
+                    BLRT_p <- NA
+                } else {
+                    BLRT_val <- m$summaries$BLRT_2xLLDiff
+                    BLRT_p <- m$summaries$BLRT_PValue
+                }
+
                 if (counter == 1) {
                     stats_df <- data.frame(n_profile = i,
-                                           model = j,
-                                           LL = m$summaries$LL,
-                                           AIC = m$summaries$LL,
-                                           BIC = m$summaries$BIC)
+                                    model = j,
+                                    LL = m$summaries$LL,
+                                    AIC = m$summaries$LL,
+                                    BIC = m$summaries$BIC,
+                                    SABIC = m$summaries$aBIC,
+                                    CAIC = m$summaries$AICC,
+                                    Entropy = m$summaries$Entropy,
+                                    VLMR_val = VLMR_val,
+                                    VLMR_p = VLMR_p,
+                                    LMR_val = m$summaries$T11_LMR_Value,
+                                    LMR_p = m$summaries$T11_LMR_PValue,
+                                    BLRT_val = BLRT_val,
+                                    BLRT_p = BLRT_p)
                 } else {
-                    stats_df <- dplyr::bind_rows(stats_df,
-                                                 data.frame(n_profile = i,
-                                                            model = j,
-                                                            LL = m$summaries$LL,
-                                                            AIC = m$summaries$LL,
-                                                            BIC = m$summaries$BIC,
-                                                            SABIC = m$summaries$aBIC,
-                                                            CAIC = m$summaries$AICC,
-                                                            Entropy = m$summaries$Entropy,
-                                                            VLMR_val = m$summaries$T11_VLMR_2xLLDif,
-                                                            VLMR_p = m$summaries$T11_VLMR_PValue,
-                                                            LMR_val = m$summaries$T11_LMR_Value,
-                                                            LMR_p = m$summaries$T11_LMR_PValue))
+
+                    d <- data.frame(n_profile = i,
+                                    model = j,
+                                    LL = m$summaries$LL,
+                                    AIC = m$summaries$LL,
+                                    BIC = m$summaries$BIC,
+                                    SABIC = m$summaries$aBIC,
+                                    CAIC = m$summaries$AICC,
+                                    Entropy = m$summaries$Entropy,
+                                    VLMR_val = VLMR_val,
+                                    VLMR_p = VLMR_p,
+                                    LMR_val = m$summaries$T11_LMR_Value,
+                                    LMR_p = m$summaries$T11_LMR_PValue,
+                                    BLRT_val = BLRT_val,
+                                    BLRT_p = BLRT_p)
+
+                    stats_df <- dplyr::bind_rows(stats_df, d)
                 }
 
             }
@@ -96,7 +129,8 @@ compare_solutions_mplus <- function(df, ...,
     }
 
     if (return_stats_df == TRUE) {
-        return(dplyr::arrange(stats_df, model, n_profile))
+        print(out_df)
+        return(dplyr::arrange(stats_df, .data$model, .data$n_profile))
     }
 
     if (return_table == TRUE) {

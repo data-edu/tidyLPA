@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA)
+[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA) [![Coverage status](https://codecov.io/gh/jrosen48/tidymixmod/branch/master/graph/badge.svg)](https://codecov.io/github/jrosen48/tidymixmod?branch=master)
 
 Background
 ----------
