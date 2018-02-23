@@ -91,7 +91,6 @@ estimate_profiles_mplus <- function(df,
     MODEL_overall_line1 <- paste0("[", unquoted_variable_name, "];")
     MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
 
-
     if (include_LMR == TRUE) {
         OUTPUT_line0 <- "OUTPUT: TECH1 TECH11;"
         if (include_BLRT == TRUE) {
