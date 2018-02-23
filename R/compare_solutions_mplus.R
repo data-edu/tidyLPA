@@ -69,7 +69,7 @@ compare_solutions_mplus <- function(df, ...,
                 message(paste0("Result: BIC = ", m$summaries$BIC))
                 out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
 
-                if (!("T11_VLMR_2xLLDif" %in% names(m$summaries))) {
+                if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
                     VLMR_val <- NA
                     VLMR_p <- NA
                 } else {
