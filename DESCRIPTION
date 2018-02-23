@@ -14,6 +14,8 @@ Description: An interface to the 'mclust' package to easily carry out latent pro
     subsequently be computed on. Also has functions to interface to the commercial 
     'MPlus' software via the 'MplusAutomation' package.
 License: MIT + file LICENSE
+URL: https://jrosen48.github.io/tidyLPA/
+BugReports: https://github.com/jrosen48/tidyLPA/issues
 Depends: 
     R (>= 2.10)
 Imports: 
