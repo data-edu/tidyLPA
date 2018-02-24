@@ -148,8 +148,8 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
                   aes(
                       x = Class,
                       colour = Variable,
-                      ymin = Value - (10 * se),
-                      ymax = Value + (10 * se)
+                      ymin = Value - (ci * se),
+                      ymax = Value + (ci * se)
                   ),
                   position = position_dodge(width = .75)
               )
