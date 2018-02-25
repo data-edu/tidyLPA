@@ -26,6 +26,7 @@
 #' plot_profiles(m3, plot_what = "mclust")
 #' }
 #' @export
+
 plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", plot_error_bars = TRUE, plot_rawdata = TRUE, ci = .95) {
   if (plot_what == "tibble") {
     n <- count(x, .data$profile)

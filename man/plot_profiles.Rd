@@ -5,7 +5,7 @@
 \title{Plot variable means and variances by profile for mclust output}
 \usage{
 plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
-  plot_error_bars = TRUE)
+  plot_error_bars = TRUE, plot_rawdata = TRUE, ci = 0.95)
 }
 \arguments{
 \item{x}{output from create_profiles_mclust()}
@@ -30,4 +30,11 @@ m3 <- estimate_profiles(iris,
     model = 1,
     n_profiles = 3)
 plot_profiles(m3)
+\dontrun{
+m3 <- estimate_profiles(iris,
+    Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+    model = 1,
+    n_profiles = 3, to_return = "mclust")
+plot_profiles(m3, plot_what = "mclust")
+}
 }
