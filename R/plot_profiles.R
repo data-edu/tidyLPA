@@ -20,13 +20,12 @@
 #'     model = 1,
 #'     n_profiles = 3)
 #' plot_profiles(m3)
-#' \dontrun{
+#'
 #' m3 <- estimate_profiles(iris,
 #'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #'     model = 1,
 #'     n_profiles = 3, to_return = "mclust")
 #' plot_profiles(m3, plot_what = "mclust")
-#' }
 #' @export
 
 plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", plot_error_bars = TRUE, plot_rawdata = TRUE, ci = .95) {
@@ -148,9 +147,9 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           classplot <-
               classplot + geom_errorbar(
                   data = plotdat,
-                  aes_string(
-                      x = "Class",
-                      colour = "Variable",
+                  aes(
+                      x = Class,
+                      colour = Variable,
                       ymin = Value - (ci * se),
                       ymax = Value + (ci * se)
                   ),

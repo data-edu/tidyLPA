@@ -122,3 +122,6 @@ extract_LL_mplus <- function(output_filename = "i.out") {
   o <- o[!is.na(o$seed), ]
   dplyr::tbl_df(o)
 }
+
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("Value", "se", "Class", "Variable"))
+

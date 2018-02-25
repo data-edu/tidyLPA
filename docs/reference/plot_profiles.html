@@ -83,7 +83,7 @@
     
 
     <pre class="usage"><span class='fu'>plot_profiles</span>(<span class='no'>x</span>, <span class='kw'>to_center</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>to_scale</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
-  <span class='kw'>plot_error_bars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>plot_error_bars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plot_rawdata</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -108,6 +108,14 @@
       <th>plot_error_bars</th>
       <td><p>whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)</p></td>
     </tr>
+    <tr>
+      <th>ci</th>
+      <td><p>confidence interval to plot (defaults to 0.95)</p></td>
+    </tr>
+    <tr>
+      <th>plot_raw_data</th>
+      <td><p>whether to plot raw data; defaults to TRUE</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -119,7 +127,13 @@
     <pre class="examples"><div class='input'><span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='no'>iris</span>,
     <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
     <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>)</div><img src='plot_profiles-7.png' alt='' width='540' height='400' /></pre>
+    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>)</div><img src='plot_profiles-7.png' alt='' width='540' height='400' /><div class='input'><span class='fu'>not_run</span>({
+  <span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='no'>iris</span>,
+      <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
+      <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+      <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>)
+  <span class='fu'>plot_profiles</span>(<span class='no'>m3</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
