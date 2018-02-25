@@ -18,9 +18,15 @@
 #'     model = 1,
 #'     n_profiles = 3)
 #' plot_profiles(m3)
+#' \dontrun{
+#' m3 <- estimate_profiles(iris,
+#'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+#'     model = 1,
+#'     n_profiles = 3, to_return = "mclust")
+#' plot_profiles(m3, plot_what = "mclust")
+#' }
 #' @export
-
-plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", plot_error_bars = TRUE) {
+plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", plot_error_bars = TRUE, plot_rawdata = TRUE, ci = .95) {
   if (plot_what == "tibble") {
     n <- count(x, .data$profile)
     x <- mutate(x, profile = factor(
@@ -72,6 +78,83 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         theme_bw()
     }
   } else if (plot_what == "mclust") {
-    stop("cannot presently plot mclust objects")
+      rawdata <- data.frame(cbind(x$z, x$data))
+      n_classes <- ncol(x$z)
+      rawdata <-
+          gather(rawdata, key = "Class", value = "Probability", 1:n_classes)
+      rawdata$Class <- ordered(rawdata$Class)
+      levels(rawdata$Class) <- 1:n_classes
+      rawdata <-
+          gather(rawdata,
+                 key = "Variable",
+                 value = "Value",
+                 -Class,
+                 -Probability)
+      plotdat <-
+          gather(
+              data.frame(Variable = rownames(x$parameters$mean), x$parameters$mean),
+              key = "Class",
+              value = "Value",
+              -Variable
+          )
+      # NOTE: THIS IS NOT THE CORRECT CALCULATION FOR THE STANDARD ERROR!
+      # BOOTSTRAPPING SHOULD YIELD MORE RELIABLE RESULTS
+      plotdat$se <-
+          gather(
+              data.frame(
+                  Variable = rownames(x$parameters$mean),
+                  sapply(1:n_classes, function(class) {
+                      diag(x$parameters$variance$sigma[, , class]) / (sum(x$z[, class]) - 1)
+                  })
+              ),
+              key = "Class",
+              value = "Value",
+              -Variable
+          )$Value
+      plotdat$Class <- ordered(plotdat$Class)
+      levels(plotdat$Class) <- 1:n_classes
+
+
+      classplot <- ggplot(NULL)
+      if (plot_rawdata) {
+          classplot <- classplot + geom_point(
+              data = rawdata,
+              position = position_jitterdodge(jitter.width = .10),
+              aes(
+                  x = Class,
+                  y = Value,
+                  colour = Variable,
+                  alpha = Probability
+              )
+          ) +
+              scale_alpha_continuous(guide = FALSE, range = c(0, .1))
+      }
+      classplot <-
+          classplot + geom_point(
+              data = plotdat,
+              aes(x = Class, y = Value, colour = Variable),
+              position = position_dodge(width = .75),
+              size = 5,
+              shape = 18
+          )
+
+
+      # Add errorbars
+      if (!is.null(ci)) {
+          ci <- qnorm(.5 * (1 - ci))
+          classplot <-
+              classplot + geom_errorbar(
+                  data = plotdat,
+                  aes(
+                      x = Class,
+                      colour = Variable,
+                      ymin = Value - (ci * se),
+                      ymax = Value + (ci * se)
+                  ),
+                  position = position_dodge(width = .75)
+              )
+      }
+      classplot + theme_bw()
+
   }
 }
