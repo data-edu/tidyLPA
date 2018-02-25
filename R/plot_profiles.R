@@ -5,6 +5,8 @@
 #' @param to_scale whether to scale the data before plotting
 #' @param plot_what whether to plot tibble or mclust output from estimate_profiles(); defaults to tibble
 #' @param plot_error_bars whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)
+#' @param plot_rawdata whether to plot raw data; defaults to TRUE
+#' @param ci confidence interval to plot (defaults to 0.95)
 #' @import ggplot2
 #' @import dplyr
 #' @import tidyr
@@ -89,14 +91,14 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           gather(rawdata,
                  key = "Variable",
                  value = "Value",
-                 -Class,
-                 -Probability)
+                 -.data$Class,
+                 -.data$Probability)
       plotdat <-
           gather(
               data.frame(Variable = rownames(x$parameters$mean), x$parameters$mean),
               key = "Class",
               value = "Value",
-              -Variable
+              -.data$Variable
           )
       # NOTE: THIS IS NOT THE CORRECT CALCULATION FOR THE STANDARD ERROR!
       # BOOTSTRAPPING SHOULD YIELD MORE RELIABLE RESULTS
@@ -110,7 +112,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
               ),
               key = "Class",
               value = "Value",
-              -Variable
+              -.data$Variable
           )$Value
       plotdat$Class <- ordered(plotdat$Class)
       levels(plotdat$Class) <- 1:n_classes
@@ -121,11 +123,11 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           classplot <- classplot + geom_point(
               data = rawdata,
               position = position_jitterdodge(jitter.width = .10),
-              aes(
-                  x = Class,
-                  y = Value,
-                  colour = Variable,
-                  alpha = Probability
+              aes_string(
+                  x = "Class",
+                  y = "Value",
+                  colour = "Variable",
+                  alpha = "Probability"
               )
           ) +
               scale_alpha_continuous(guide = FALSE, range = c(0, .1))
@@ -133,7 +135,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       classplot <-
           classplot + geom_point(
               data = plotdat,
-              aes(x = Class, y = Value, colour = Variable),
+              aes_string(x = "Class", y = "Value", colour = "Variable"),
               position = position_dodge(width = .75),
               size = 5,
               shape = 18
@@ -142,13 +144,13 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
 
       # Add errorbars
       if (!is.null(ci)) {
-          ci <- qnorm(.5 * (1 - ci))
+          ci <- stats::qnorm(.5 * (1 - ci))
           classplot <-
               classplot + geom_errorbar(
                   data = plotdat,
-                  aes(
-                      x = Class,
-                      colour = Variable,
+                  aes_string(
+                      x = "Class",
+                      colour = "Variable",
                       ymin = Value - (ci * se),
                       ymax = Value + (ci * se)
                   ),

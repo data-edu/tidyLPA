@@ -17,6 +17,10 @@ plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
 \item{plot_what}{whether to plot tibble or mclust output from estimate_profiles(); defaults to tibble}
 
 \item{plot_error_bars}{whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)}
+
+\item{ci}{confidence interval to plot (defaults to 0.95)}
+
+\item{plot_raw_data}{whether to plot raw data; defaults to TRUE}
 }
 \description{
 Plot variable means and variances by profile for mclust output
