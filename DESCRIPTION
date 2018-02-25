@@ -7,7 +7,7 @@ Authors@R: c(
     person(c("Jennifer", "A"), "Schmidt", role = "ctb", email = "jaschmid@msu.edu"),
     person(c("Patrick", "N"), "Beymer", role = "ctb", email = "beymerpa@msu.edu"),
     person(c("Rebecca", "R"), "Steingut", role = "ctb", email = "rebeccarosesteingut@gmail.com"),
-    person(c("C. J."), "van Lissa", role = "ctb")
+    person(c("C. J."), "van Lissa", role = "ctb", email = "c.j.vanlissa@uu.nl")
     )
 Description: An interface to the 'mclust' package to easily carry out latent profile
     analysis ("LPA"). Provides functionality to estimate commonly-specified models.
