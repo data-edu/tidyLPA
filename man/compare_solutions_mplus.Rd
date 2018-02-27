@@ -6,7 +6,7 @@
 \usage{
 compare_solutions_mplus(df, ..., n_profiles_min = 2, n_profiles_max = 10,
   model = 1:6, starts = c(20, 4), m_iterations = 500,
-  st_iterations = 10, convergence_criterion = 1e-06, save_models = NULL,
+  st_iterations = 10, convergence_criterion = 1e-06, save_models = FALSE,
   return_table = TRUE, n_processors = 1, return_stats_df = FALSE,
   include_LMR = TRUE, include_BLRT = FALSE)
 }
@@ -29,7 +29,7 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2, n_profiles_max = 10,
 
 \item{convergence_criterion}{convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)}
 
-\item{save_models}{whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)}
+\item{save_models}{whether to save the models as rds files}
 
 \item{return_table}{logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE}
 

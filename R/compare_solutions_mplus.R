@@ -3,7 +3,7 @@
 #' @param n_profiles_min lower bound of the number of profiles to explore; defaults to 2
 #' @param n_profiles_max upper bound of the number of profiles to explore; defaults to 10
 #' @param model which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
-#' @param save_models whether to save the models as an rds file (i.e., set to "output.rds" to save the models with this filename)
+#' @param save_models whether to save the models as rds files
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to FALSE
 #' @inheritParams estimate_profiles_mplus
@@ -25,7 +25,7 @@ compare_solutions_mplus <- function(df, ...,
                                     m_iterations = 500,
                                     st_iterations = 10,
                                     convergence_criterion = 1E-6,
-                                    save_models = NULL,
+                                    save_models = FALSE,
                                     return_table = TRUE,
                                     n_processors = 1,
                                     return_stats_df = FALSE,
@@ -42,6 +42,12 @@ compare_solutions_mplus <- function(df, ...,
 
     counter <- 0
 
+    if (save_models == TRUE) {
+        if (!dir.exists("compare_solutions_lpa_output")) dir.create("compare_solutions_lpa_output")
+    }
+
+    if (save_models == TRUE) remove_tmp_files <- FALSE
+
     for (i in n_profiles_min:n_profiles_max) {
         for (j in model) {
             message(paste0("Processing model with n_profiles = ", i, " and model = ", j))
@@ -56,8 +62,15 @@ compare_solutions_mplus <- function(df, ...,
                 return_save_data = F,
                 n_processors = n_processors,
                 include_LMR = include_LMR,
-                include_BLRT = include_BLRT
+                include_BLRT = include_BLRT,
+                remove_tmp_files = remove_tmp_files
             ))
+
+            if (save_models == TRUE) {
+                if (!dir.exists(stringr::str_c("compare_solutions_lpa_output/m", j, "_p", i))) dir.create(stringr::str_c("compare_solutions_lpa_output/m", j, "_p", i))
+                capture <- utils::capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic
+                readr::write_rds(m_all, stringr::str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds"))
+            }
 
             counter <- counter + 1
 
@@ -124,18 +137,18 @@ compare_solutions_mplus <- function(df, ...,
         }
     }
 
-    if (!is.null(save_models)) {
-        readr::write_rds(m, save_models)
+    if (return_stats_df == TRUE & return_table == TRUE) {
+        return(list(dplyr::as_tibble(out_df), dplyr::arrange(dplyr::as_tibble(stats_df), .data$model, .data$n_profile)))
     }
 
     if (return_stats_df == TRUE) {
-        print(out_df)
-        return(dplyr::arrange(stats_df, .data$model, .data$n_profile))
+        print(dplyr::as_tibble(out_df))
+        return(dplyr::arrange(dplyr::as_tibble(stats_df), .data$model, .data$n_profile))
     }
 
     if (return_table == TRUE) {
-        print(out_df)
-        invisible(out_df)
+        print(dplyr::as_tibble(out_df))
+        invisible(dplyr::as_tibble(out_df))
     } else {
         p <- out_df %>%
             tidyr::gather("key", "val", -.data$n_profiles) %>%

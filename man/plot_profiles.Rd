@@ -8,7 +8,7 @@ plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
   plot_error_bars = TRUE, plot_rawdata = TRUE, ci = 0.95)
 }
 \arguments{
-\item{x}{output from create_profiles_mclust()}
+\item{x}{output from estimate_profiles()}
 
 \item{to_center}{whether to center the data before plotting}
 
