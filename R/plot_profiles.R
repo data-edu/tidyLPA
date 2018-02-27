@@ -1,6 +1,15 @@
 #' Plot variable means and variances by profile for mclust output
 #' @details Plot the variable means and variances for data frame output from estimate_profiles()
 #' @param x output from estimate_profiles()
+#' @details Plot the variable means and variances for data frame output from estimate_profiles().
+#' When plot_what is set to 'mclust', the errorbars represent non-parametric
+#' confidence intervals, obtained using bootstrapping (100 samples). Note that
+#' 100 samples might be adequate for plotting, but is low for inference. If the
+#' number of participants per class is highly unbalanced (specifically, if the
+#' number of participants assigned to one class is less than
+#' .5*(1/number of classes), then weighted likelihood bootstrapping is used to
+#' ensure that each case is represented in the bootstrap samples (see O’Hagan,
+#' Murphy, Scrucca, & Gormley, 2015).
 #' @param to_center whether to center the data before plotting
 #' @param to_scale whether to scale the data before plotting
 #' @param plot_what whether to plot tibble or mclust output from estimate_profiles(); defaults to tibble
@@ -80,53 +89,58 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         theme_bw()
     }
   } else if (plot_what == "mclust") {
-      rawdata <- data.frame(cbind(x$z, x$data))
-      n_classes <- ncol(x$z)
-      rawdata <-
-          gather(rawdata, key = "Class", value = "Probability", 1:n_classes)
-      rawdata$Class <- ordered(rawdata$Class)
-      levels(rawdata$Class) <- 1:n_classes
-      rawdata <-
-          gather(rawdata,
-                 key = "Variable",
-                 value = "Value",
-                 -.data$Class,
-                 -.data$Probability)
+      n_classes <- x$G
       plotdat <-
-          gather(
-              data.frame(Variable = rownames(x$parameters$mean), x$parameters$mean),
-              key = "Class",
-              value = "Value",
-              -.data$Variable
-          )
-      # NOTE: THIS IS NOT THE CORRECT CALCULATION FOR THE STANDARD ERROR!
-      # BOOTSTRAPPING SHOULD YIELD MORE RELIABLE RESULTS
-      plotdat$se <-
-          gather(
-              data.frame(
-                  Variable = rownames(x$parameters$mean),
-                  sapply(1:n_classes, function(class) {
-                      diag(x$parameters$variance$sigma[, , class]) / (sum(x$z[, class]) - 1)
-                  })
-              ),
-              key = "Class",
-              value = "Value",
-              -.data$Variable
-          )$Value
+          data.frame(Variable = rownames(x$parameters$mean), x$parameters$mean)
+      names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
+      plotdat <-
+          subset(reshape(
+              plotdat,
+              direction = "long",
+              varying = 2:ncol(plotdat),
+              timevar = "Class"
+          ),
+          select = -id)
       plotdat$Class <- ordered(plotdat$Class)
-      levels(plotdat$Class) <- 1:n_classes
-
+      plotdat$Variable <- ordered(plotdat$Variable, levels = colnames(x$data))
 
       classplot <- ggplot(NULL)
       if (plot_rawdata) {
+          rawdata <- data.frame(cbind(x$z, x$data))
+          names(rawdata)[1:n_classes] <-
+              paste0("Probability.", 1:n_classes)
+          rawdata <-
+              subset(
+                  reshape(
+                      rawdata,
+                      direction = "long",
+                      varying = 1:n_classes,
+                      timevar = "Class"
+                  ),
+                  select = -id
+              )
+          rawdata$Class <- ordered(rawdata$Class)
+          levels(rawdata$Class) <- 1:n_classes
+          names(rawdata)[1:ncol(x$data)] <-
+              paste0("Value.", gsub("\\.", "_", colnames(x$data)))
+          rawdata <-
+              reshape(
+                  rawdata,
+                  direction = "long",
+                  varying = 1:ncol(x$data),
+                  timevar = "Variable"
+              )
+          rawdata$Variable <- ordered(rawdata$Variable, levels =  gsub("\\.", "_", colnames(x$data)))
+          levels(rawdata$Variable) <- colnames(x$data)
+
           classplot <- classplot + geom_point(
               data = rawdata,
               position = position_jitterdodge(jitter.width = .10),
-              aes_string(
-                  x = "Class",
-                  y = "Value",
-                  colour = "Variable",
-                  alpha = "Probability"
+              aes(
+                  x = Class,
+                  y = Value,
+                  colour = Variable,
+                  alpha = Probability
               )
           ) +
               scale_alpha_continuous(guide = FALSE, range = c(0, .1))
@@ -134,29 +148,69 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       classplot <-
           classplot + geom_point(
               data = plotdat,
-              aes_string(x = "Class", y = "Value", colour = "Variable"),
+              aes(x = Class, y = Value, colour = Variable),
               position = position_dodge(width = .75),
               size = 5,
               shape = 18
           )
-
-
       # Add errorbars
       if (!is.null(ci)) {
-          ci <- stats::qnorm(.5 * (1 - ci))
+          if (any(table(x$classification) / length(x$classification) < .5 * (1 / length(unique(
+              x$classification
+          ))))) {
+              warning(
+                  "The number of cases per class is relatively low in some classes. Used weighted likelihood bootstrap to obtain se's."
+              )
+              bootstraps <-
+                  mclust::MclustBootstrap(x,
+                                          nboot = 100,
+                                          type = "wlbs",
+                                          verbose = FALSE)
+          } else {
+              bootstraps <-
+                  mclust::MclustBootstrap(x,
+                                          nboot = 100,
+                                          type = "bs",
+                                          verbose = FALSE)
+          }
+
+          ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
+              apply(class, 2, quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
+          }))
+          names(ses) <- paste0("se.", 1:n_classes)
+          ses$Variable <- unlist(lapply(colnames(x$data), rep, 2))
+          ses$boundary <- "lower"
+          ses$boundary[seq(2, nrow(ses), by = 2)] <- "upper"
+          ses <-
+              reshape(
+                  ses,
+                  direction = "long",
+                  varying = 1:n_classes,
+                  timevar = "Class"
+              )
+          ses <-
+              reshape(
+                  ses,
+                  direction = "wide",
+                  idvar = c("Variable", "Class"),
+                  timevar = "boundary"
+              )
+          ses$Variable <- ordered(ses$Variable, levels = colnames(x$data))
           classplot <-
               classplot + geom_errorbar(
-                  data = plotdat,
+                  data = ses,
                   aes(
                       x = Class,
                       colour = Variable,
-                      ymin = Value - (ci * se),
-                      ymax = Value + (ci * se)
+                      ymin = se.lower,
+                      ymax = se.upper
                   ),
-                  position = position_dodge(width = .75)
+                  position = position_dodge(width = .75),
+                  width = .4
               )
       }
-      classplot + theme_bw()
-
+      classplot + theme_bw() +
+          geom_vline(xintercept = seq(1.5, (n_classes-1)+.5, 1), linetype = 2) +
+          scale_x_discrete(expand = c(0,0))
   }
 }
