@@ -27,6 +27,16 @@ Plot variable means and variances by profile for mclust output
 }
 \details{
 Plot the variable means and variances for data frame output from estimate_profiles()
+
+Plot the variable means and variances for data frame output from estimate_profiles().
+When plot_what is set to 'mclust', the errorbars represent non-parametric
+confidence intervals, obtained using bootstrapping (100 samples). Note that
+100 samples might be adequate for plotting, but is low for inference. If the
+number of participants per class is highly unbalanced (specifically, if the
+number of participants assigned to one class is less than
+.5*(1/number of classes), then weighted likelihood bootstrapping is used to
+ensure that each case is represented in the bootstrap samples (see O’Hagan,
+Murphy, Scrucca, & Gormley, 2015).
 }
 \examples{
 m3 <- estimate_profiles(iris,

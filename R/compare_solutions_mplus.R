@@ -46,7 +46,11 @@ compare_solutions_mplus <- function(df, ...,
         if (!dir.exists("compare_solutions_lpa_output")) dir.create("compare_solutions_lpa_output")
     }
 
-    if (save_models == TRUE) remove_tmp_files <- FALSE
+    if (save_models == TRUE) {
+        remove_tmp_files <- FALSE
+    } else {
+        remove_tmp_files <- TRUE
+    }
 
     for (i in n_profiles_min:n_profiles_max) {
         for (j in model) {
@@ -100,19 +104,19 @@ compare_solutions_mplus <- function(df, ...,
 
                 if (counter == 1) {
                     stats_df <- data.frame(n_profile = i,
-                                    model = j,
-                                    LL = m$summaries$LL,
-                                    AIC = m$summaries$LL,
-                                    BIC = m$summaries$BIC,
-                                    SABIC = m$summaries$aBIC,
-                                    CAIC = m$summaries$AICC,
-                                    Entropy = m$summaries$Entropy,
-                                    VLMR_val = VLMR_val,
-                                    VLMR_p = VLMR_p,
-                                    LMR_val = m$summaries$T11_LMR_Value,
-                                    LMR_p = m$summaries$T11_LMR_PValue,
-                                    BLRT_val = BLRT_val,
-                                    BLRT_p = BLRT_p)
+                                           model = j,
+                                           LL = m$summaries$LL,
+                                           AIC = m$summaries$LL,
+                                           BIC = m$summaries$BIC,
+                                           SABIC = m$summaries$aBIC,
+                                           CAIC = m$summaries$AICC,
+                                           Entropy = m$summaries$Entropy,
+                                           VLMR_val = VLMR_val,
+                                           VLMR_p = VLMR_p,
+                                           LMR_val = m$summaries$T11_LMR_Value,
+                                           LMR_p = m$summaries$T11_LMR_PValue,
+                                           BLRT_val = BLRT_val,
+                                           BLRT_p = BLRT_p)
                 } else {
 
                     d <- data.frame(n_profile = i,

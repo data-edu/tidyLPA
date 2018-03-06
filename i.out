@@ -1,0 +1,649 @@
+Mplus VERSION 8 (Mac)
+MUTHEN & MUTHEN
+03/06/2018   3:34 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: test
+  DATA: File is d.dat;
+  VARIABLE:
+  Names are Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Classes = c(4);
+  MODEL:
+  %overall%
+  [Sepal_Length Sepal_Width Petal_Length Petal_Width];
+  Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Sepal_Length WITH Sepal_Width;
+  Sepal_Length WITH Petal_Length;
+  Sepal_Length WITH Petal_Width;
+  Sepal_Width WITH Petal_Length;
+  Sepal_Width WITH Petal_Width;
+  Petal_Length WITH Petal_Width;
+  %c#1%
+  [Sepal_Length Sepal_Width Petal_Length Petal_Width];
+  Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Sepal_Length WITH Sepal_Width;
+  Sepal_Length WITH Petal_Length;
+  Sepal_Length WITH Petal_Width;
+  Sepal_Width WITH Petal_Length;
+  Sepal_Width WITH Petal_Width;
+  Petal_Length WITH Petal_Width;
+  %c#2%
+  [Sepal_Length Sepal_Width Petal_Length Petal_Width];
+  Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Sepal_Length WITH Sepal_Width;
+  Sepal_Length WITH Petal_Length;
+  Sepal_Length WITH Petal_Width;
+  Sepal_Width WITH Petal_Length;
+  Sepal_Width WITH Petal_Width;
+  Petal_Length WITH Petal_Width;
+  %c#3%
+  [Sepal_Length Sepal_Width Petal_Length Petal_Width];
+  Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Sepal_Length WITH Sepal_Width;
+  Sepal_Length WITH Petal_Length;
+  Sepal_Length WITH Petal_Width;
+  Sepal_Width WITH Petal_Length;
+  Sepal_Width WITH Petal_Width;
+  Petal_Length WITH Petal_Width;
+  %c#4%
+  [Sepal_Length Sepal_Width Petal_Length Petal_Width];
+  Sepal_Length Sepal_Width Petal_Length Petal_Width;
+  Sepal_Length WITH Sepal_Width;
+  Sepal_Length WITH Petal_Length;
+  Sepal_Length WITH Petal_Width;
+  Sepal_Width WITH Petal_Length;
+  Sepal_Width WITH Petal_Width;
+  Petal_Length WITH Petal_Width;
+  ANALYSIS:
+  Type is mixture;
+  start = 20 4;
+  miterations = 500;
+  stiterations = 10;
+  convergence = 1e-06;
+  processors = 1;
+  OUTPUT: TECH1 TECH11;
+  SAVEDATA: File is d-mod.dat;
+  SAVE = CPROBABILITIES;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+test
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         150
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Continuous
+   SEPAL_LENG  SEPAL_WIDT  PETAL_LENG  PETAL_WIDT
+
+Categorical latent variables
+   C
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-06
+    Relative loglikelihood change                        0.100D-06
+    Derivative                                           0.100D-05
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-05
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Optimization algorithm                                         EMA
+Random Starts Specifications
+  Number of initial stage random starts                         20
+  Number of final stage optimizations                            4
+  Number of initial stage iterations                            10
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                       0
+
+Input data file(s)
+  d.dat
+Input data format  FREE
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     SEPAL_LENGTH          5.843       0.312       4.300    0.67%       5.000      5.600      5.800
+             150.000       0.681      -0.574       7.900    0.67%       6.100      6.500
+     SEPAL_WIDTH           3.057       0.316       2.000    0.67%       2.700      3.000      3.000
+             150.000       0.189       0.181       4.400    0.67%       3.100      3.400
+     PETAL_LENGTH          3.758      -0.272       1.000    0.67%       1.500      3.900      4.350
+             150.000       3.096      -1.396       6.900    0.67%       4.600      5.300
+     PETAL_WIDTH           1.199      -0.102       0.100    3.33%       0.200      1.100      1.300
+             150.000       0.577      -1.336       2.500    2.00%       1.500      1.900
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+2 perturbed starting value run(s) did not converge in the initial stage
+optimizations.
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+
+4 perturbed starting value run(s) did not converge.
+
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT
+     NUMBER OF E STEPS.  INCREASE THE NUMBER OF MITERATIONS.  ESTIMATES
+     CANNOT BE TRUSTED.
+
+
+
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1         24.82812          0.16552
+       2         37.81757          0.25212
+       3         62.18243          0.41455
+       4         25.17188          0.16781
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1         24.82812          0.16552
+       2         37.81757          0.25212
+       3         62.18243          0.41455
+       4         25.17188          0.16781
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1               25          0.16667
+       2               36          0.24000
+       3               64          0.42667
+       4               25          0.16667
+
+
+CLASSIFICATION QUALITY
+
+     Entropy                         0.861
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1        2        3        4
+
+    1   0.980    0.000    0.000    0.020
+    2   0.000    0.855    0.145    0.000
+    3   0.000    0.110    0.890    0.000
+    4   0.014    0.000    0.000    0.986
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1        2        3        4
+
+    1   0.986    0.000    0.000    0.014
+    2   0.000    0.813    0.187    0.000
+    3   0.000    0.084    0.916    0.000
+    4   0.020    0.000    0.000    0.980
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1        2        3        4
+
+    1      4.278   -9.524   -9.524    0.000
+    2      0.000   13.609   12.136    0.000
+    3      0.000   11.341   13.728    0.000
+    4     -3.875  -13.795  -13.795    0.000
+
+
+MODEL RESULTS
+
+                    Estimate
+
+Latent Class 1
+
+ SEPAL_LE WITH
+    SEPAL_WIDT         0.193
+    PETAL_LENG        -0.031
+    PETAL_WIDT         0.000
+
+ SEPAL_WI WITH
+    PETAL_LENG        -0.011
+    PETAL_WIDT         0.000
+
+ PETAL_LE WITH
+    PETAL_WIDT         0.000
+
+ Means
+    SEPAL_LENG         5.179
+    SEPAL_WIDT         3.369
+    PETAL_LENG         1.403
+    PETAL_WIDT         0.200
+
+ Variances
+    SEPAL_LENG         0.196
+    SEPAL_WIDT         0.268
+    PETAL_LENG         0.015
+    PETAL_WIDT         0.000
+
+Latent Class 2
+
+ SEPAL_LE WITH
+    SEPAL_WIDT         0.060
+    PETAL_LENG         0.148
+    PETAL_WIDT         0.047
+
+ SEPAL_WI WITH
+    PETAL_LENG         0.079
+    PETAL_WIDT         0.038
+
+ PETAL_LE WITH
+    PETAL_WIDT         0.098
+
+ Means
+    SEPAL_LENG         5.746
+    SEPAL_WIDT         2.673
+    PETAL_LENG         4.192
+    PETAL_WIDT         1.302
+
+ Variances
+    SEPAL_LENG         0.182
+    SEPAL_WIDT         0.092
+    PETAL_LENG         0.262
+    PETAL_WIDT         0.052
+
+Latent Class 3
+
+ SEPAL_LE WITH
+    SEPAL_WIDT         0.065
+    PETAL_LENG         0.290
+    PETAL_WIDT         0.066
+
+ SEPAL_WI WITH
+    PETAL_LENG         0.053
+    PETAL_WIDT         0.038
+
+ PETAL_LE WITH
+    PETAL_WIDT         0.161
+
+ Means
+    SEPAL_LENG         6.572
+    SEPAL_WIDT         2.996
+    PETAL_LENG         5.314
+    PETAL_WIDT         1.886
+
+ Variances
+    SEPAL_LENG         0.336
+    SEPAL_WIDT         0.084
+    PETAL_LENG         0.458
+    PETAL_WIDT         0.131
+
+Latent Class 4
+
+ SEPAL_LE WITH
+    SEPAL_WIDT         0.109
+    PETAL_LENG         0.036
+    PETAL_WIDT         0.020
+
+ SEPAL_WI WITH
+    PETAL_LENG         0.025
+    PETAL_WIDT         0.015
+
+ PETAL_LE WITH
+    PETAL_WIDT         0.009
+
+ Means
+    SEPAL_LENG         4.942
+    SEPAL_WIDT         3.406
+    PETAL_LENG         1.460
+    PETAL_WIDT         0.270
+
+ Variances
+    SEPAL_LENG         0.131
+    SEPAL_WIDT         0.169
+    PETAL_LENG         0.039
+    PETAL_WIDT         0.015
+
+Categorical Latent Variables
+
+ Means
+    C#1               -0.014
+    C#2                0.407
+    C#3                0.904
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     %OVERALL%
+
+     [ c#1*-0.01375 ];
+     [ c#2*0.40705 ];
+     [ c#3*0.90435 ];
+
+     %C#1%
+
+     sepal_length WITH sepal_width*0.19268;
+     sepal_length WITH petal_length*-0.03051;
+     sepal_length WITH petal_width*0.00001;
+     sepal_width WITH petal_length*-0.01124;
+     sepal_width WITH petal_width*0.00001;
+     petal_length WITH petal_width*0.00000;
+
+     [ sepal_length*5.17936 ];
+     [ sepal_width*3.36903 ];
+     [ petal_length*1.40289 ];
+     [ petal_width*0.20000 ];
+
+     sepal_length*0.19565;
+     sepal_width*0.26770;
+     petal_length*0.01538;
+     petal_width*0.00000;
+
+     %C#2%
+
+     sepal_length WITH sepal_width*0.05965;
+     sepal_length WITH petal_length*0.14823;
+     sepal_length WITH petal_width*0.04706;
+     sepal_width WITH petal_length*0.07946;
+     sepal_width WITH petal_width*0.03829;
+     petal_length WITH petal_width*0.09824;
+
+     [ sepal_length*5.74591 ];
+     [ sepal_width*2.67298 ];
+     [ petal_length*4.19231 ];
+     [ petal_width*1.30200 ];
+
+     sepal_length*0.18243;
+     sepal_width*0.09219;
+     petal_length*0.26192;
+     petal_width*0.05173;
+
+     %C#3%
+
+     sepal_length WITH sepal_width*0.06524;
+     sepal_length WITH petal_length*0.29038;
+     sepal_length WITH petal_width*0.06599;
+     sepal_width WITH petal_length*0.05312;
+     sepal_width WITH petal_width*0.03789;
+     petal_length WITH petal_width*0.16092;
+
+     [ sepal_length*6.57154 ];
+     [ sepal_width*2.99551 ];
+     [ petal_length*5.31387 ];
+     [ petal_width*1.88591 ];
+
+     sepal_length*0.33579;
+     sepal_width*0.08411;
+     petal_length*0.45769;
+     petal_width*0.13090;
+
+     %C#4%
+
+     sepal_length WITH sepal_width*0.10872;
+     sepal_length WITH petal_length*0.03613;
+     sepal_length WITH petal_width*0.01989;
+     sepal_width WITH petal_length*0.02463;
+     sepal_width WITH petal_width*0.01463;
+     petal_length WITH petal_width*0.00910;
+
+     [ sepal_length*4.94165 ];
+     [ sepal_width*3.40648 ];
+     [ petal_length*1.45951 ];
+     [ petal_width*0.26968 ];
+
+     sepal_length*0.13138;
+     sepal_width*0.16871;
+     petal_length*0.03930;
+     petal_width*0.01544;
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 1
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                    1             2             3             4
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE           5
+ SEPAL_WI           6             7
+ PETAL_LE           8             9            10
+ PETAL_WI          11            12            13            14
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 2
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                   15            16            17            18
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE          19
+ SEPAL_WI          20            21
+ PETAL_LE          22            23            24
+ PETAL_WI          25            26            27            28
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 3
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                   29            30            31            32
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE          33
+ SEPAL_WI          34            35
+ PETAL_LE          36            37            38
+ PETAL_WI          39            40            41            42
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS 4
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                   43            44            45            46
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE          47
+ SEPAL_WI          48            49
+ PETAL_LE          50            51            52
+ PETAL_WI          53            54            55            56
+
+
+     PARAMETER SPECIFICATION FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2           C#3           C#4
+              ________      ________      ________      ________
+                   57            58            59             0
+
+
+     STARTING VALUES FOR LATENT CLASS 1
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                5.018         2.623         1.999         0.440
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE       0.341
+ SEPAL_WI       0.000         0.094
+ PETAL_LE       0.000         0.000         1.548
+ PETAL_WI       0.000         0.000         0.000         0.289
+
+
+     STARTING VALUES FOR LATENT CLASS 2
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                5.843         3.057         3.758         1.199
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE       0.341
+ SEPAL_WI       0.000         0.094
+ PETAL_LE       0.000         0.000         1.548
+ PETAL_WI       0.000         0.000         0.000         0.289
+
+
+     STARTING VALUES FOR LATENT CLASS 3
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                5.843         3.057         3.758         1.199
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE       0.341
+ SEPAL_WI       0.000         0.094
+ PETAL_LE       0.000         0.000         1.548
+ PETAL_WI       0.000         0.000         0.000         0.289
+
+
+     STARTING VALUES FOR LATENT CLASS 4
+
+
+           NU
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+                6.669         3.492         5.517         1.959
+
+
+           THETA
+              SEPAL_LE      SEPAL_WI      PETAL_LE      PETAL_WI
+              ________      ________      ________      ________
+ SEPAL_LE       0.341
+ SEPAL_WI       0.000         0.094
+ PETAL_LE       0.000         0.000         1.548
+ PETAL_WI       0.000         0.000         0.000         0.289
+
+
+     STARTING VALUES FOR LATENT CLASS REGRESSION MODEL PART
+
+
+           ALPHA(C)
+              C#1           C#2           C#3           C#4
+              ________      ________      ________      ________
+                0.000         0.000         0.000         0.000
+
+
+TECHNICAL 11 OUTPUT
+
+     Random Starts Specifications for the k-1 Class Analysis Model
+        Number of initial stage random starts                  20
+        Number of final stage optimizations                     4
+
+
+
+SAVEDATA INFORMATION
+
+     Class probabilities were not computed.
+     No data were saved.
+
+
+     Beginning Time:  15:34:52
+        Ending Time:  15:34:53
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
