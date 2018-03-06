@@ -25,6 +25,6 @@ m1 <- estimate_profiles_mplus(iris,
                             n_profiles = 2,
                             model = 1,
                             remove_tmp_files = FALSE)
-extract_LL_mplus(m1)
+extract_LL_mplus()
 }
 }

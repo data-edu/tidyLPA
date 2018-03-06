@@ -99,7 +99,7 @@ extract_stats <- function(x) {
 #'                             n_profiles = 2,
 #'                             model = 1,
 #'                             remove_tmp_files = FALSE)
-#' extract_LL_mplus(m1)
+#' extract_LL_mplus()
 #' }
 #' @return a tibble or a ggplot2 plot of the BIC values for the explored modelswith the log-likelihood, random start seed, and the number of the iteration
 #' @export
