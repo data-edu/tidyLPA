@@ -154,7 +154,7 @@ compare_solutions_mplus <- function(df, ...,
         invisible(dplyr::as_tibble(out_df))
     } else {
         out_df %>%
-            tidyr::gather("Model", "BIC", -.data$n_profiles, convert = TRUE) %>%
+            tidyr::gather("Model", "BIC", -.data$n_profiles) %>%
             dplyr::filter(stringr::str_detect(.data$BIC, "\\d+\\.*\\d*")) %>%
             dplyr::mutate(BIC = as.numeric(.data$BIC),
                           n_profiles = as.integer(.data$n_profiles),
