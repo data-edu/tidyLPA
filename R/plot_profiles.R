@@ -94,7 +94,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           data.frame(Variable = rownames(x$parameters$mean), x$parameters$mean)
       names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
       plotdat <-
-          subset(reshape(
+          subset(stats::reshape(
               plotdat,
               direction = "long",
               varying = 2:ncol(plotdat),
@@ -111,7 +111,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
               paste0("Probability.", 1:n_classes)
           rawdata <-
               subset(
-                  reshape(
+                  stats::reshape(
                       rawdata,
                       direction = "long",
                       varying = 1:n_classes,
@@ -124,7 +124,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           names(rawdata)[1:ncol(x$data)] <-
               paste0("Value.", gsub("\\.", "_", colnames(x$data)))
           rawdata <-
-              reshape(
+              stats::reshape(
                   rawdata,
                   direction = "long",
                   varying = 1:ncol(x$data),
@@ -136,11 +136,11 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           classplot <- classplot + geom_point(
               data = rawdata,
               position = position_jitterdodge(jitter.width = .10),
-              aes(
-                  x = Class,
-                  y = Value,
-                  colour = Variable,
-                  alpha = Probability
+              aes_string(
+                  x = "Class",
+                  y = "Value",
+                  colour = "Variable",
+                  alpha = "Probability"
               )
           ) +
               scale_alpha_continuous(guide = FALSE, range = c(0, .1))
@@ -175,21 +175,21 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           }
 
           ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
-              apply(class, 2, quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
+              apply(class, 2, stats::quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
           }))
           names(ses) <- paste0("se.", 1:n_classes)
           ses$Variable <- unlist(lapply(colnames(x$data), rep, 2))
           ses$boundary <- "lower"
           ses$boundary[seq(2, nrow(ses), by = 2)] <- "upper"
           ses <-
-              reshape(
+              stats::reshape(
                   ses,
                   direction = "long",
                   varying = 1:n_classes,
                   timevar = "Class"
               )
           ses <-
-              reshape(
+              stats::reshape(
                   ses,
                   direction = "wide",
                   idvar = c("Variable", "Class"),
@@ -199,11 +199,11 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           classplot <-
               classplot + geom_errorbar(
                   data = ses,
-                  aes(
-                      x = Class,
-                      colour = Variable,
-                      ymin = se.lower,
-                      ymax = se.upper
+                  aes_string(
+                      x = "Class",
+                      colour = "Variable",
+                      ymin = "se.lower",
+                      ymax = "se.upper"
                   ),
                   position = position_dodge(width = .75),
                   width = .4
