@@ -8,7 +8,6 @@
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to FALSE
 #' @inheritParams estimate_profiles_mplus
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
-#' @import mclust
 #' @importFrom dplyr %>%
 #' @examples
 #' \dontrun{
@@ -154,17 +153,14 @@ compare_solutions_mplus <- function(df, ...,
         print(dplyr::as_tibble(out_df))
         invisible(dplyr::as_tibble(out_df))
     } else {
-        p <- out_df %>%
-            tidyr::gather("key", "val", -.data$n_profiles) %>%
-            dplyr::filter(
-                .data$val != "Convergence problem",
-                .data$val != "LL not replicated"
-            ) %>%
-            dplyr::mutate(n_profiles = as.integer(.data$n_profiles)) %>%
-            ggplot2::ggplot(ggplot2::aes_string(x = "n_profiles", y = "val", shape = "key", color = "key", group = "key")) +
+        out_df %>%
+            tidyr::gather("Model", "BIC", -.data$n_profiles, convert = TRUE) %>%
+            dplyr::filter(stringr::str_detect(.data$BIC, "\\d+\\.*\\d*")) %>%
+            dplyr::mutate(BIC = as.numeric(.data$BIC),
+                          n_profiles = as.integer(.data$n_profiles),
+                          Model = stringr::str_extract(.data$Model, "\\d")) %>% 
+        ggplot2::ggplot(ggplot2::aes_string(x = "n_profiles", y = "BIC", shape = "Model", color = "Model", group = "Model")) +
             ggplot2::geom_line() +
             ggplot2::geom_point()
-        print(p)
-        invisible(p)
     }
 }
