@@ -120,7 +120,6 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           rawdata <- data.frame(cbind(x$z, rawdata))
           names(rawdata)[1:n_classes] <-
               paste0("Probability.", 1:n_classes)
-
           rawdata <- reshape(
                       rawdata,
                       direction = "long",
@@ -132,7 +131,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           names(rawdata)[1:ncol(x$data)] <-
               paste0("Value.", gsub("\\.", "_", colnames(x$data)))
           rawdata <-
-              reshape(
+              stats::reshape(
                   rawdata,
                   direction = "long",
                   varying = 1:ncol(x$data),
@@ -183,7 +182,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           }
 
           ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
-              apply(class, 2, quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
+              apply(class, 2, stats::quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
           }))
           if(to_center){
               ses <- ses - rep(colMeans(x$data, na.rm = TRUE), each = 2)
@@ -196,14 +195,14 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           ses$boundary <- "lower"
           ses$boundary[seq(2, nrow(ses), by = 2)] <- "upper"
           ses <-
-              reshape(
+              stats::reshape(
                   ses,
                   direction = "long",
                   varying = 1:n_classes,
                   timevar = "Class"
               )
           ses <-
-              reshape(
+              stats::reshape(
                   ses,
                   direction = "wide",
                   idvar = c("Variable", "Class"),
