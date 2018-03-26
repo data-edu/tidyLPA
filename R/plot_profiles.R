@@ -44,8 +44,8 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       .data$profile,
       labels = paste0("Profile ", n$profile, " (n = ", n$n, ")")
     ))
-
     if (plot_error_bars == TRUE) {
+      ci <- stats::qnorm(.5 * (1 - ci))
       x %>%
         select(-.data$posterior_prob) %>%
         mutate_at(vars(-.data$profile), center_scale_function, center_raw_data = to_center, scale_raw_data = to_scale) %>%
@@ -64,7 +64,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         mutate(
           n_string = str_sub(as.character(.data$profile), start = 11),
           n = as.numeric(str_extract(.data$n_string, "\\-*\\d+\\.*\\d*")),
-          se = 1.96 * (.data$sd / sqrt(.data$n - 1)),
+          se = ci * (.data$sd / sqrt(.data$n - 1)),
           ymin = .data$mean - .data$se,
           ymax = .data$mean + .data$se
         ) %>%
@@ -90,35 +90,42 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
     }
   } else if (plot_what == "mclust") {
       n_classes <- x$G
-      plotdat <-
-          data.frame(Variable = rownames(x$parameters$mean), x$parameters$mean)
+      plotdat <- x$parameters$mean
+      if(to_center){
+          plotdat <- plotdat - colMeans(x$data, na.rm = TRUE)
+      }
+      if(to_scale){
+          plotdat <- plotdat / apply(x$data, 2, stats::sd, na.rm = TRUE)
+      }
+      plotdat <- data.frame(Variable = rownames(plotdat), plotdat)
       names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
-      plotdat <-
-          subset(stats::reshape(
+      plotdat <- reshape(
               plotdat,
               direction = "long",
               varying = 2:ncol(plotdat),
               timevar = "Class"
-          ),
-          select = -id)
+          )[ , -4]
       plotdat$Class <- ordered(plotdat$Class)
       plotdat$Variable <- ordered(plotdat$Variable, levels = colnames(x$data))
 
       classplot <- ggplot(NULL)
       if (plot_rawdata) {
-          rawdata <- data.frame(cbind(x$z, x$data))
+          rawdata <- x$data
+          if(to_center){
+              rawdata <- sweep(rawdata, 2, colMeans(x$data, na.rm = TRUE), "-")
+          }
+          if(to_scale){
+              rawdata <- sweep(rawdata, 2, apply(x$data, 2, stats::sd, na.rm = TRUE), "/")
+          }
+          rawdata <- data.frame(cbind(x$z, rawdata))
           names(rawdata)[1:n_classes] <-
               paste0("Probability.", 1:n_classes)
-          rawdata <-
-              subset(
-                  stats::reshape(
+          rawdata <- reshape(
                       rawdata,
                       direction = "long",
                       varying = 1:n_classes,
                       timevar = "Class"
-                  ),
-                  select = -id
-              )
+                  )[ , -(length(names(rawdata)[-grep("^Probability", names(rawdata))])+3)]
           rawdata$Class <- ordered(rawdata$Class)
           levels(rawdata$Class) <- 1:n_classes
           names(rawdata)[1:ncol(x$data)] <-
@@ -177,6 +184,12 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
               apply(class, 2, stats::quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
           }))
+          if(to_center){
+              ses <- ses - rep(colMeans(x$data, na.rm = TRUE), each = 2)
+          }
+          if(to_scale){
+              ses <- ses / rep(apply(x$data, 2, stats::sd, na.rm = TRUE), each = 2)
+          }
           names(ses) <- paste0("se.", 1:n_classes)
           ses$Variable <- unlist(lapply(colnames(x$data), rep, 2))
           ses$boundary <- "lower"
@@ -214,3 +227,4 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           scale_x_discrete(expand = c(0,0))
   }
 }
+
