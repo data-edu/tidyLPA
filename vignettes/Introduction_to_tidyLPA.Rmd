@@ -34,7 +34,7 @@ This introduction to tidyLPA vignette is an overview of LPA and the tidyLPA pack
 
 ## 1. Background on Latent Profile Analysis (LPA)
 
-Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.
+Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. Note that LPA works best with continuous variables (and, in some cases, ordinal variables), but is not appropriate for dichotomous (binary) variables.
 
 Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see [here](https://www.statmodel.com/examples/mixture.shtml)) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters. 
 
@@ -135,6 +135,17 @@ estimate_profiles(d,
                   n_profiles = 3, 
                   model = 2) %>% 
     plot_profiles(to_center = TRUE)
+```
+
+Finally, we can use the output from **mclust** directly by using adding `to_return = "mclust"` to the `estimate_profiles()` function, plotting the (bootstrapped) standard errors (and, by default--but optionally--the raw data), rather than from the posterior classifications of the observations, as in the plots not using the **mclust** output:
+
+```{r}
+m3 <- estimate_profiles(d, 
+                        broad_interest, enjoyment, self_efficacy, 
+                        model = 1,
+                        n_profiles = 3, to_return = "mclust")
+
+plot_profiles(m3, plot_what = "mclust")
 ```
 
 # 5. More information on model specifications

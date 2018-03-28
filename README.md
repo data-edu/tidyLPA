@@ -104,8 +104,9 @@ Contact
 
 As tidyLPA is at an early stage of its development, issues should be expected. If you have any questions or feedback, please do not hesitate to get in touch:
 
--   By [email (jrosen@msu.edu)](mailto:jrosen@msu.edu)
--   By [Twitter](http://twitter.com/jrosenberg6432)
+-   Via [the tidyLPA group](https://groups.google.com/forum/#!forum/tidylpa) on Google Groups (preferred)
 -   Through filing an issue on GitHub [here](https://github.com/jrosen48/tidyLPA)
+-   Via [Twitter](http://twitter.com/jrosenberg6432)
+-   By [email (jrosen@msu.edu)](mailto:jrosen@msu.edu)
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.

@@ -99,7 +99,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       }
       plotdat <- data.frame(Variable = rownames(plotdat), plotdat)
       names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
-      plotdat <- reshape(
+      plotdat <- stats::reshape(
               plotdat,
               direction = "long",
               varying = 2:ncol(plotdat),
@@ -120,7 +120,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           rawdata <- data.frame(cbind(x$z, rawdata))
           names(rawdata)[1:n_classes] <-
               paste0("Probability.", 1:n_classes)
-          rawdata <- reshape(
+          rawdata <- stats::reshape(
                       rawdata,
                       direction = "long",
                       varying = 1:n_classes,

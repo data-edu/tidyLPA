@@ -1,10 +1,13 @@
 # tidyLPA 0.1.3
 
-* add function, extract_LL_mplus(), to extract log-likelihoods from models fit with estimate_profiles_mplus()
+* improve plot_profiles() plots, including plotting bootstrapped standard when mclust output is directly used (thanks @cjvanlissa) & updated vignette with example of this
+* improve output from compare_solutions_mplus (thanks @DJAnderson07)
+* add function, extract_LL_mplus(), to extract log-likelihoods from models fit witsah estimate_profiles_mplus()
 * update documentation for pisaUSA15 dataset
 * improve compare_solutions_mplus() so it more reliably handles errors
-* improve vignette
+* improve vignette (thanks @oreojo for suggestion to mention that this package works best for continuous variables)
 * add URLs for package and bug reports to DESCRIPTION
+* add C.J. van Lissa and Daniel John Anderson as contributors
 
 # tidyLPA 0.1.2
 
