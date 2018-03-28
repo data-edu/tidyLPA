@@ -12,7 +12,7 @@ tidyLPA provides the functionality to carry out LPA in R. In particular, tidyLPA
 Installation
 ------------
 
-You can install tidyLPA (version 0.1.2) from CRAN with:
+You can install tidyLPA from CRAN with:
 
 ``` r
 install.packages("tidyLPA")
