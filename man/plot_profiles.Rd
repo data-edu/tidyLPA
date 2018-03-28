@@ -36,7 +36,7 @@ number of participants per class is highly unbalanced (specifically, if the
 number of participants assigned to one class is less than
 .5*(1/number of classes), then weighted likelihood bootstrapping is used to
 ensure that each case is represented in the bootstrap samples (see O’Hagan,
-Murphy, Scrucca, & Gormley, 2015).
+Murphy, Scrucca, and Gormley, 2015).
 }
 \examples{
 m3 <- estimate_profiles(iris,

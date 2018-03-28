@@ -9,7 +9,7 @@
 #' number of participants assigned to one class is less than
 #' .5*(1/number of classes), then weighted likelihood bootstrapping is used to
 #' ensure that each case is represented in the bootstrap samples (see O’Hagan,
-#' Murphy, Scrucca, & Gormley, 2015).
+#' Murphy, Scrucca, and Gormley, 2015).
 #' @param to_center whether to center the data before plotting
 #' @param to_scale whether to scale the data before plotting
 #' @param plot_what whether to plot tibble or mclust output from estimate_profiles(); defaults to tibble
