@@ -90,7 +90,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>output from create_profiles_mclust()</p></td>
+      <td><p>output from estimate_profiles()</p></td>
     </tr>
     <tr>
       <th>to_center</th>
@@ -121,6 +121,15 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Plot the variable means and variances for data frame output from estimate_profiles()</p>
+<p>Plot the variable means and variances for data frame output from estimate_profiles().
+When plot_what is set to 'mclust', the errorbars represent non-parametric
+confidence intervals, obtained using bootstrapping (100 samples). Note that
+100 samples might be adequate for plotting, but is low for inference. If the
+number of participants per class is highly unbalanced (specifically, if the
+number of participants assigned to one class is less than
+.5*(1/number of classes), then weighted likelihood bootstrapping is used to
+ensure that each case is represented in the bootstrap samples (see O’Hagan,
+Murphy, Scrucca, and Gormley, 2015).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
