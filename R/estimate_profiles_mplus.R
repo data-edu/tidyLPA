@@ -17,9 +17,6 @@
 #' @param include_BLRT whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run
 #' @param n_processors = 1
 #' @inheritParams estimate_profiles
-#' @import dplyr
-#' @import tidyr
-#' @importFrom tibble tibble
 #' @examples
 #' \dontrun{
 #' m <- estimate_profiles_mplus(iris,
@@ -53,7 +50,7 @@ estimate_profiles_mplus <- function(df,
     message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
     d <- select_ancillary_functions_mplus(df, ...)
-    x <- utils::capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
+    x <- capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
 
     unquoted_variable_name <- paste0(names(d), collapse = " ")
 
@@ -288,7 +285,7 @@ estimate_profiles_mplus <- function(df,
         }
     }
 
-    readr::write_lines(
+    write_lines(
         c(
             TITLE,
             DATA,
@@ -304,8 +301,8 @@ estimate_profiles_mplus <- function(df,
         script_filename
     )
 
-    x <- utils::capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
-    capture <- utils::capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
+    x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
+    capture <- capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
 
     if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated") {
         warning_status <- "Warning: LL not replicated"
@@ -323,8 +320,8 @@ estimate_profiles_mplus <- function(df,
     }
 
     if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
-        message(stringr::str_trim(stringr::str_c(warning_status, " ", error_status)))
-        return(stringr::str_trim(stringr::str_c(warning_status, " ", error_status)))
+        message(str_trim(str_c(warning_status, " ", error_status)))
+        return(str_trim(str_c(warning_status, " ", error_status)))
     } else {
         message("LogLik is ", round(abs(as.vector(m$summaries$LL)), 3))
         message("BIC is ", round(abs(as.vector(m$summaries$BIC)), 3))
@@ -332,13 +329,13 @@ estimate_profiles_mplus <- function(df,
     }
 
     if (print_input_file == TRUE) {
-        print(readr::read_lines(script_filename))
+        print(read_lines(script_filename))
         message("Note: This function currently prints the script output. You can also use the argument remove_tmp_files = FALSE to create the inp file, which you can then view in R Studio by clicking on the file name in the Files pane.")
     }
 
     if (return_save_data == TRUE) {
-        x <- dplyr::tbl_df(m$savedata)
-        # x <- dplyr::tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
+        x <- tbl_df(m$savedata)
+        # x <- tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
         if (remove_tmp_files == TRUE) {
             file.remove(data_filename)
@@ -376,16 +373,16 @@ check_list <- function(x, check) {
 }
 
 check_warnings <- function(x, check) {
-    if (any(purrr::map_lgl(x$warnings, check_list, check = check))) {
-        return(stringr::str_c("Warning: ", "The best loglikelihood was not replicated"))
+    if (any(map_lgl(x$warnings, check_list, check = check))) {
+        return(str_c("Warning: ", "The best loglikelihood was not replicated"))
     } else {
         return("No warning")
     }
 }
 
 check_errors <- function(x, check) {
-    if (any(purrr::map_lgl(x$errors, check_list, check = check))) {
-        return(stringr::str_c("Error: ", "Convergence issue"))
+    if (any(map_lgl(x$errors, check_list, check = check))) {
+        return(str_c("Error: ", "Convergence issue"))
     } else {
         return("No error")
     }

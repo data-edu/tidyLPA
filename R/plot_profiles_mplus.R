@@ -2,13 +2,6 @@
 #' @details Plot the variable means and variances for data frame output from estimate_profiles_mclust()
 #' @param mplus_data output from estimate_profiles_mclust() with return_savedata = T specified
 #' @inheritParams plot_profiles
-#' @import ggplot2
-#' @import dplyr
-#' @import tidyr
-#' @import stringr
-#' @importFrom magrittr %>%
-#' @importFrom rlang .data
-#' @importFrom stats sd
 #' @export
 
 plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {

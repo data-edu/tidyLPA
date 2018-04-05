@@ -11,8 +11,6 @@
 #' @param return_orig_df TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)
 #' @param prior_control whether to include a regularizing prior; defaults to false
 #' @param print_which_stats if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed
-#' @import mclust
-#' @importFrom rlang .data
 #' @examples
 #' estimate_profiles(iris,
 #'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
@@ -34,7 +32,7 @@ estimate_profiles <- function(df,
                               print_which_stats = "some") {
   if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
-  df <- dplyr::mutate(df, row_number = 1:nrow(df))
+  df <- mutate(df, row_number = 1:nrow(df))
 
   d <- select_create_profiles(df, ...)
 
@@ -64,12 +62,12 @@ estimate_profiles <- function(df,
     )
   )
 
-  d_model <- dplyr::select(d, -row_number)
+  d_model <- select(d, -row_number)
 
   if (prior_control == FALSE) {
-    m <- mclust::Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE)
+    m <- Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE)
   } else {
-    m <- mclust::Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE, prior = mclust::priorControl())
+    m <- Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE, prior = priorControl())
   }
 
   if (is.null(m)) stop("Model could not be fitted")
@@ -93,34 +91,34 @@ estimate_profiles <- function(df,
     message("CAIC is ", round(abs(as.vector(CAIC)), 3))
     message("BIC is ", round(abs(as.vector(m$BIC)), 3))
     message("SABIC is ", round(abs(as.vector(SABIC)), 3))
-    message("ICL is ", round(abs(as.vector(mclust::icl(m))), 3))
+    message("ICL is ", round(abs(as.vector(icl(m))), 3))
     message("Entropy is ", round(mean(posterior_prob), 3))
   }
 
-  dff <- as.data.frame(dplyr::bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up
+  dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up
 
-  test <- nrow(dplyr::count(dff, .data$profile))
+  test <- nrow(count(dff, .data$profile))
 
   if (test < n_profiles) warning("Some profiles are associated with no assignments. Interpret this solution with caution and consider other models.")
 
   if (return_posterior_probs == TRUE) {
-    dff <- dplyr::bind_cols(dff, posterior_prob = posterior_prob)
+    dff <- bind_cols(dff, posterior_prob = posterior_prob)
   }
 
   attributes(dff)$mclust_output <- m
 
   if (return_orig_df == TRUE) {
-    to_join <- dplyr::select(dff, .data$profile, .data$posterior_prob)
-    dff <- dplyr::semi_join(df, dff, by = "row_number")
-    dff <- dplyr::select(dff, -.data$row_number)
+    to_join <- select(dff, .data$profile, .data$posterior_prob)
+    dff <- semi_join(df, dff, by = "row_number")
+    dff <- select(dff, -.data$row_number)
     dff <- bind_cols(dff, to_join)
   } else {
-    dff <- dplyr::semi_join(dff, df, by = "row_number")
-    dff <- dplyr::select(dff, -.data$row_number)
+    dff <- semi_join(dff, df, by = "row_number")
+    dff <- select(dff, -.data$row_number)
   }
 
   if (to_return == "tibble" | to_return == "data.frame") {
-    return(tibble::as_tibble(dff))
+    return(as_tibble(dff))
   } else if (to_return == "mclust") {
     return(attributes(dff)$mclust_output)
   }
