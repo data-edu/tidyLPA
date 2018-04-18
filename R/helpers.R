@@ -116,7 +116,7 @@ extract_LL_mplus <- function(output_filename = "i.out") {
   tbl_df(o)
 }
 
-if(getRversion() >= "2.15.1")  globalVariables(c("Value", "se", "Class", "Variable"))
+if(getRversion() >= "2.15.1")  globalVariables(c("Value", "se", "Class", "Variable", "."))
 
 write_mplus <- function(d, file_name, na_string = "-999", ...) {
 	write.table(d,
