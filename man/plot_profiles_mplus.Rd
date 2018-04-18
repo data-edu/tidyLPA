@@ -7,7 +7,7 @@
 plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
 }
 \arguments{
-\item{mplus_data}{output from estimate_profiles_mclust() with return_savedata = T specified}
+\item{mplus_data}{output from estimate_profiles_mplus() with return_savedata = T specified}
 
 \item{to_center}{whether to center the data before plotting}
 

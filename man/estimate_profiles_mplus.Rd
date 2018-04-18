@@ -4,8 +4,8 @@
 \alias{estimate_profiles_mplus}
 \title{Estimate parameters for profiles for a specific solution (requires purchasing and installing MPlus to use)}
 \usage{
-estimate_profiles_mplus(df, ..., n_profiles, the_title = "test",
-  data_filename = "d.dat", script_filename = "i.inp",
+estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
+  the_title = "test", data_filename = "d.dat", script_filename = "i.inp",
   output_filename = "i.out", savedata_filename = "d-mod.dat", model = 1,
   starts = c(20, 4), m_iterations = 500, st_iterations = 10,
   convergence_criterion = 1e-06, remove_tmp_files = TRUE,
@@ -18,6 +18,8 @@ estimate_profiles_mplus(df, ..., n_profiles, the_title = "test",
 \item{...}{unquoted variable names separated by commas}
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
+
+\item{idvar}{optional name of the column to be used as the ID variable (should be supplied as a string). Defaults to \code{NULL}, in which case row numbers will be used. Note the ID can be numeric or string, but must be unique.}
 
 \item{the_title}{title of the model; defaults to test}
 
