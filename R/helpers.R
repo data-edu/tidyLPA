@@ -22,12 +22,9 @@ select_ancillary_functions <- function(df, ...) {
 
 select_ancillary_functions_mplus <- function(df, ...) {
   if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
-  df <- as_tibble(df)
-  df_ss <- select(df, ...)
-  cases_to_keep <- complete.cases(df_ss) # to use later for comparing function to index which cases to keep
-  d <- df_ss[cases_to_keep, ] # removes incomplete cases
-  names(d) <- str_replace(names(d), "\\.", "_")
-  return(d)
+  df %>%
+      as_tibble() %>%
+      select(...)
 }
 
 scale_vector <- function(x) {
@@ -121,3 +118,12 @@ extract_LL_mplus <- function(output_filename = "i.out") {
 
 if(getRversion() >= "2.15.1")  globalVariables(c("Value", "se", "Class", "Variable"))
 
+write_mplus <- function(d, file_name, na_string = "-999", ...) {
+	write.table(d,
+	            file = file_name,
+	            row.names = FALSE,
+	            col.names = FALSE,
+	            sep = "\t",
+	            na = as.character(na_string),
+	            ...)
+}
