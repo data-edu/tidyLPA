@@ -1,11 +1,16 @@
 #' Plot variable means and variances by profile for MPlus output (requires purchasing and installing MPlus to use)
 #' @details Plot the variable means and variances for data frame output from estimate_profiles_mclust()
-#' @param mplus_data output from estimate_profiles_mclust() with return_savedata = T specified
+#' @param mplus_data output from estimate_profiles_mplus() with return_savedata = T specified
 #' @inheritParams plot_profiles
 #' @export
 
 plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
   message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+
+  # remove id variable, which should be the last column unless the user changed
+  # it, but then that wouldn't be the direct output from estimate_profiles_mplus
+
+  mplus_data <- mplus_data[ ,-ncol(mplus_data)]
 
   z <- count(mplus_data, .data$C)
 
@@ -15,7 +20,7 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
     select(-contains("CPROB"), -.data$C, -.data$n) %>%
     mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
     group_by(.data$profile) %>%
-    summarize_all(funs(mean, sd)) %>%
+    summarize_all(funs(mean(., na.rm = TRUE), sd(., na.rm = TRUE))) %>%
     gather("key", "val", -.data$profile) %>%
     mutate(
       new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),

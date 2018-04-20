@@ -1,5 +1,6 @@
 #' Estimate parameters for profiles for a specific solution (requires purchasing and installing MPlus to use)
 #' @details Creates an mplus model (.inp) and associated data file (.dat)
+#' @param idvar optional name of the column to be used as the ID variable (should be supplied as a string). Defaults to \code{NULL}, in which case row numbers will be used. Note the ID can be numeric or string, but must be unique.
 #' @param data_filename name of data file to prepare; defaults to d.dat
 #' @param script_filename name of script to prepare; defaults to i.inp
 #' @param output_filename name of the output; defaults to o.out
@@ -30,6 +31,7 @@
 estimate_profiles_mplus <- function(df,
                                     ...,
                                     n_profiles,
+                                    idvar = NULL,
                                     the_title = "test",
                                     data_filename = "d.dat",
                                     script_filename = "i.inp",
@@ -50,12 +52,34 @@ estimate_profiles_mplus <- function(df,
     message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
     d <- select_ancillary_functions_mplus(df, ...)
-    x <- capture.output(suppressWarnings(MplusAutomation::prepareMplusData(d, data_filename, inpfile = FALSE)))
+    if(is.null(idvar)) {
+        id <- data_frame(id = as.numeric(rownames(df)))
+        idvar <- "rownum"
+    } else {
+        if(length(unique(df[[idvar]])) != length(df[[idvar]])) {
+            stop("ID variable must be unique")
+        }
+        if(is.character(df[[idvar]])) {
+            string_id <- df[[idvar]]
+            num_id    <- seq_along(df[[idvar]])
+            id <- data_frame(id = num_id)
+            names(id) <- idvar
+        }
+        else {
+            id <- data_frame(id = df[[idvar]])
+            names(id) <- idvar
+        }
+    }
+    d <- bind_cols(id, d)
+    names(d) <- gsub("\\.", "_", names(d))
 
-    unquoted_variable_name <- paste0(names(d), collapse = " ")
+    x <- write_mplus(d, data_filename)
 
-    var_list <- list()
-    for (i in 1:length(names(d))) {
+    unquoted_variable_name <- paste0(names(d)[-1], collapse = " ")
+
+# helps with efficiency a bit to pre-specify list length
+    var_list <- vector("list", ncol(d))
+    for (i in seq_along(names(d))) {
         var_list[[i]] <- names(d)[i]
     }
 
@@ -64,8 +88,10 @@ estimate_profiles_mplus <- function(df,
     DATA <- paste0("DATA: File is ", data_filename, ";")
 
     VARIABLE_line0 <- "VARIABLE:"
-    VARIABLE_line1 <- paste0("Names are ", unquoted_variable_name, ";")
+    VARIABLE_line1 <- paste0("Names are ", idvar, " ", unquoted_variable_name, ";")
     VARIABLE_line2 <- paste0("Classes = c(", n_profiles, ");")
+    VARIABLE_line3 <- paste0("IDVARIABLE = ", idvar, ";")
+    MISSING <- "Missing are all (-999);"
 
     ANALYSIS_line0 <- "ANALYSIS:"
     ANALYSIS_line1 <- "Type is mixture;"
@@ -73,6 +99,8 @@ estimate_profiles_mplus <- function(df,
     ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
     ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
     ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")
+
+    var_list <- var_list[-1]
 
     if (is.null(optseed)) {
         ANALYSIS_line6 <- NULL
@@ -289,7 +317,8 @@ estimate_profiles_mplus <- function(df,
         c(
             TITLE,
             DATA,
-            VARIABLE_line0, VARIABLE_line1, VARIABLE_line2,
+            VARIABLE_line0, VARIABLE_line1, VARIABLE_line2, VARIABLE_line3,
+            MISSING,
             MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
             overall_collector,
             class_collector,
@@ -335,6 +364,9 @@ estimate_profiles_mplus <- function(df,
 
     if (return_save_data == TRUE) {
         x <- tbl_df(m$savedata)
+        if(is.character(df[[idvar]])) {
+            x[[toupper(idvar)]] <- string_id[match(x[[toupper(idvar)]], num_id)]
+        }
         # x <- tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
         if (remove_tmp_files == TRUE) {

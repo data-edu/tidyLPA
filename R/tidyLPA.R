@@ -33,5 +33,5 @@
 #' str_sub str_split
 #' @importFrom tibble tibble rownames_to_column as_tibble
 #' @importFrom tidyr gather spread
-#' @importFrom utils capture.output globalVariables
+#' @importFrom utils capture.output globalVariables write.table
 NULL
