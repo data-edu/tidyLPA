@@ -87,7 +87,7 @@ To learn more:
 
 As tidyLPA is at an early stage of its development, issues should be expected. If you have any questions or feedback, please do not hesitate to get in touch:
 
-* Via [the tidyLPA group](https://groups.google.com/forum/#!forum/tidylpa) on Google Groups (preferred)
+* Send a message via ([mailto:tidylpa@googlegroups.com](tidylpa@googlegroups.com) or view the [the tidyLPA group page](https://groups.google.com/forum/#!forum/tidylpa) (*preferred*)
 * Through filing an issue on GitHub [here](https://github.com/jrosen48/tidyLPA)
 * Via [Twitter](http://twitter.com/jrosenberg6432)
 * By [email (jrosen@msu.edu)](mailto:jrosen@msu.edu)
