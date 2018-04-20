@@ -16,13 +16,6 @@
 #' @param plot_error_bars whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)
 #' @param plot_rawdata whether to plot raw data; defaults to TRUE
 #' @param ci confidence interval to plot (defaults to 0.95)
-#' @import ggplot2
-#' @import dplyr
-#' @import tidyr
-#' @import stringr
-#' @importFrom magrittr %>%
-#' @importFrom rlang .data
-#' @importFrom stats sd
 #' @examples
 #' m3 <- estimate_profiles(iris,
 #'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
@@ -45,7 +38,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       labels = paste0("Profile ", n$profile, " (n = ", n$n, ")")
     ))
     if (plot_error_bars == TRUE) {
-      ci <- stats::qnorm(.5 * (1 - ci))
+      ci <- qnorm(.5 * (1 - ci))
       x %>%
         select(-.data$posterior_prob) %>%
         mutate_at(vars(-.data$profile), center_scale_function, center_raw_data = to_center, scale_raw_data = to_scale) %>%
@@ -76,12 +69,12 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         theme_bw()
     } else {
       x %>%
-        dplyr::select(-.data$posterior_prob) %>%
-        dplyr::mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
-        dplyr::mutate(profile = as.factor(.data$profile)) %>%
+        select(-.data$posterior_prob) %>%
+        mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
+        mutate(profile = as.factor(.data$profile)) %>%
         group_by(.data$profile) %>%
         summarize_all(mean) %>%
-        tidyr::gather("key", "val", -.data$profile) %>%
+        gather("key", "val", -.data$profile) %>%
         ggplot(aes_string(x = "profile", y = "val", fill = "key")) +
         geom_col(position = "dodge") +
         scale_fill_brewer("", type = "qual", palette = 6) +
@@ -95,11 +88,11 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           plotdat <- plotdat - colMeans(x$data, na.rm = TRUE)
       }
       if(to_scale){
-          plotdat <- plotdat / apply(x$data, 2, stats::sd, na.rm = TRUE)
+          plotdat <- plotdat / apply(x$data, 2, sd, na.rm = TRUE)
       }
       plotdat <- data.frame(Variable = rownames(plotdat), plotdat)
       names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
-      plotdat <- stats::reshape(
+      plotdat <- reshape(
               plotdat,
               direction = "long",
               varying = 2:ncol(plotdat),
@@ -115,12 +108,12 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
               rawdata <- sweep(rawdata, 2, colMeans(x$data, na.rm = TRUE), "-")
           }
           if(to_scale){
-              rawdata <- sweep(rawdata, 2, apply(x$data, 2, stats::sd, na.rm = TRUE), "/")
+              rawdata <- sweep(rawdata, 2, apply(x$data, 2, sd, na.rm = TRUE), "/")
           }
           rawdata <- data.frame(cbind(x$z, rawdata))
           names(rawdata)[1:n_classes] <-
               paste0("Probability.", 1:n_classes)
-          rawdata <- stats::reshape(
+          rawdata <- reshape(
                       rawdata,
                       direction = "long",
                       varying = 1:n_classes,
@@ -131,7 +124,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           names(rawdata)[1:ncol(x$data)] <-
               paste0("Value.", gsub("\\.", "_", colnames(x$data)))
           rawdata <-
-              stats::reshape(
+              reshape(
                   rawdata,
                   direction = "long",
                   varying = 1:ncol(x$data),
@@ -169,40 +162,40 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
                   "The number of cases per class is relatively low in some classes. Used weighted likelihood bootstrap to obtain se's."
               )
               bootstraps <-
-                  mclust::MclustBootstrap(x,
-                                          nboot = 100,
-                                          type = "wlbs",
-                                          verbose = FALSE)
+                  MclustBootstrap(x,
+                                  nboot = 100,
+                                  type = "wlbs",
+                                  verbose = FALSE)
           } else {
               bootstraps <-
-                  mclust::MclustBootstrap(x,
-                                          nboot = 100,
-                                          type = "bs",
-                                          verbose = FALSE)
+                  MclustBootstrap(x,
+                                  nboot = 100,
+                                  type = "bs",
+                                  verbose = FALSE)
           }
 
           ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
-              apply(class, 2, stats::quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
+              apply(class, 2, quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
           }))
           if(to_center){
               ses <- ses - rep(colMeans(x$data, na.rm = TRUE), each = 2)
           }
           if(to_scale){
-              ses <- ses / rep(apply(x$data, 2, stats::sd, na.rm = TRUE), each = 2)
+              ses <- ses / rep(apply(x$data, 2, sd, na.rm = TRUE), each = 2)
           }
           names(ses) <- paste0("se.", 1:n_classes)
           ses$Variable <- unlist(lapply(colnames(x$data), rep, 2))
           ses$boundary <- "lower"
           ses$boundary[seq(2, nrow(ses), by = 2)] <- "upper"
           ses <-
-              stats::reshape(
+              reshape(
                   ses,
                   direction = "long",
                   varying = 1:n_classes,
                   timevar = "Class"
               )
           ses <-
-              stats::reshape(
+              reshape(
                   ses,
                   direction = "wide",
                   idvar = c("Variable", "Class"),

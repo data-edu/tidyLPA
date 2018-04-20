@@ -8,7 +8,6 @@
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to FALSE
 #' @inheritParams estimate_profiles_mplus
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
-#' @importFrom dplyr %>%
 #' @examples
 #' \dontrun{
 #' compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
@@ -37,7 +36,7 @@ compare_solutions_mplus <- function(df, ...,
 
     out_df <- out_df %>%
         mutate(n_profiles = n_profiles_min:n_profiles_max) %>%
-        select(.data$n_profiles, dplyr::everything())
+        select(.data$n_profiles, everything())
 
     counter <- 0
 
@@ -70,16 +69,16 @@ compare_solutions_mplus <- function(df, ...,
             ))
 
             if (save_models == TRUE) {
-                if (!dir.exists(stringr::str_c("compare_solutions_lpa_output/m", j, "_p", i))) dir.create(stringr::str_c("compare_solutions_lpa_output/m", j, "_p", i))
-                capture <- utils::capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic
-                readr::write_rds(m_all, stringr::str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds"))
+                if (!dir.exists(str_c("compare_solutions_lpa_output/m", j, "_p", i))) dir.create(str_c("compare_solutions_lpa_output/m", j, "_p", i))
+                capture <- capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic
+                write_rds(m_all, str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds"))
             }
 
             counter <- counter + 1
 
             # fix (remove) suppressWarnings()
             if (m[1] == "Error: Convergence issue" | m[1] == "Warning: LL not replicated") {
-                message(stringr::str_c("Result: ", m))
+                message(str_c("Result: ", m))
                 out_df[i - (n_profiles_min - 1), j + 1] <- m
             } else {
                 message(paste0("Result: BIC = ", m$summaries$BIC))
@@ -133,7 +132,7 @@ compare_solutions_mplus <- function(df, ...,
                                     BLRT_val = BLRT_val,
                                     BLRT_p = BLRT_p)
 
-                    stats_df <- dplyr::bind_rows(stats_df, d)
+                    stats_df <- bind_rows(stats_df, d)
                 }
 
             }
@@ -141,26 +140,26 @@ compare_solutions_mplus <- function(df, ...,
     }
 
     if (return_stats_df == TRUE & return_table == TRUE) {
-        return(list(dplyr::as_tibble(out_df), dplyr::arrange(dplyr::as_tibble(stats_df), .data$model, .data$n_profile)))
+        return(list(as_tibble(out_df), arrange(as_tibble(stats_df), .data$model, .data$n_profile)))
     }
 
     if (return_stats_df == TRUE) {
-        print(dplyr::as_tibble(out_df))
-        return(dplyr::arrange(dplyr::as_tibble(stats_df), .data$model, .data$n_profile))
+        print(as_tibble(out_df))
+        return(arrange(as_tibble(stats_df), .data$model, .data$n_profile))
     }
 
     if (return_table == TRUE) {
-        print(dplyr::as_tibble(out_df))
-        invisible(dplyr::as_tibble(out_df))
+        print(as_tibble(out_df))
+        invisible(as_tibble(out_df))
     } else {
         out_df %>%
-            tidyr::gather("Model", "BIC", -.data$n_profiles) %>%
-            dplyr::filter(stringr::str_detect(.data$BIC, "\\d+\\.*\\d*")) %>%
-            dplyr::mutate(BIC = as.numeric(.data$BIC),
+            gather("Model", "BIC", -.data$n_profiles) %>%
+            filter(str_detect(.data$BIC, "\\d+\\.*\\d*")) %>%
+            mutate(BIC = as.numeric(.data$BIC),
                           n_profiles = as.integer(.data$n_profiles),
-                          Model = stringr::str_extract(.data$Model, "\\d")) %>% 
-        ggplot2::ggplot(ggplot2::aes_string(x = "n_profiles", y = "BIC", shape = "Model", color = "Model", group = "Model")) +
-            ggplot2::geom_line() +
-            ggplot2::geom_point()
+                          Model = str_extract(.data$Model, "\\d")) %>%
+        ggplot(aes_string(x = "n_profiles", y = "BIC", shape = "Model", color = "Model", group = "Model")) +
+            geom_line() +
+            geom_point()
     }
 }
