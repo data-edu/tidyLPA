@@ -27,7 +27,7 @@ compare_solutions_mplus <- function(df, ...,
                                     return_table = TRUE,
                                     n_processors = 1,
                                     return_stats_df = FALSE,
-                                    include_LMR = TRUE,
+                                    include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
     message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
