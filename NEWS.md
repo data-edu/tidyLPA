@@ -1,3 +1,10 @@
+# tidyLPA 0.1.4
+
+* improve NAMESPACE documentation
+* add option to return original data frame for functions that use MPlus
+* add option to use missing data for functions that use MPlus
+* change include_LMR argument to include VLMR
+
 # tidyLPA 0.1.3
 
 * improve plot_profiles() plots, including plotting bootstrapped standard when mclust output is directly used (thanks @cjvanlissa) & updated vignette with example of this
