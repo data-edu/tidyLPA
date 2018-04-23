@@ -10,7 +10,7 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
   starts = c(20, 4), m_iterations = 500, st_iterations = 10,
   convergence_criterion = 1e-06, remove_tmp_files = TRUE,
   print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
-  n_processors = 1, include_LMR = TRUE, include_BLRT = FALSE)
+  n_processors = 1, include_VLMR = TRUE, include_BLRT = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -51,7 +51,7 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 
 \item{n_processors}{= 1}
 
-\item{include_LMR}{whether to include the Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE}
+\item{include_VLMR}{whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE}
 
 \item{include_BLRT}{whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run}
 }

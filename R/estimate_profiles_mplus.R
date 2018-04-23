@@ -14,7 +14,7 @@
 #' @param print_input_file whether to print the input file to the console
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabilities for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
 #' @param optseed random seed for analysis
-#' @param include_LMR whether to include the Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE
+#' @param include_VLMR whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE
 #' @param include_BLRT whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run
 #' @param n_processors = 1
 #' @inheritParams estimate_profiles
@@ -47,7 +47,7 @@ estimate_profiles_mplus <- function(df,
                                     return_save_data = TRUE,
                                     optseed = NULL,
                                     n_processors = 1,
-                                    include_LMR = TRUE,
+                                    include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
     message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
@@ -116,7 +116,7 @@ estimate_profiles_mplus <- function(df,
     MODEL_overall_line1 <- paste0("[", unquoted_variable_name, "];")
     MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
 
-    if (include_LMR == TRUE) {
+    if (include_VLMR == TRUE) {
         OUTPUT_line0 <- "OUTPUT: TECH1 TECH11;"
         if (include_BLRT == TRUE) {
             OUTPUT_line0 <- "OUTPUT: TECH1 TECH11 TECH14;"

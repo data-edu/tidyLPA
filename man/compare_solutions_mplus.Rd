@@ -37,8 +37,6 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2, n_profiles_max = 10,
 
 \item{return_stats_df}{whether to return a list of fit statistics for the solutions explored; defaults to FALSE}
 
-\item{include_LMR}{whether to include the Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE}
-
 \item{include_BLRT}{whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run}
 }
 \value{
