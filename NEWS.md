@@ -4,6 +4,7 @@
 * add option to return original data frame for functions that use MPlus
 * add option to use missing data for functions that use MPlus
 * change include_LMR argument to include VLMR
+* add tidylpa@googlegroups.com mailing list address to README as preferred contact method 
 
 # tidyLPA 0.1.3
 

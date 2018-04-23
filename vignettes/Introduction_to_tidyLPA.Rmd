@@ -280,6 +280,13 @@ Here is how to compare a number of models using MPlus (it works very similarly t
 compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy)
 ```
 
+In order to see a number of fit statistics, you can add the argument `return_stats_df = TRUE`, i.e.: 
+
+```{r, eval = F}
+compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy,
+                        return_stats_df = TRUE)
+```
+
 Note that there is an option to use multiple cores (processors) to speed these functions; you can use the `detectCores()` function from the parallel package to determine how many processors you have:
 
 ```{r}
