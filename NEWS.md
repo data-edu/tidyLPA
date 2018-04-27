@@ -5,6 +5,7 @@
 * add option to use missing data for functions that use MPlus
 * change include_LMR argument to include VLMR
 * add tidylpa@googlegroups.com mailing list address to README as preferred contact method 
+* remove scale_fill_brewer("", type = "qual", palette = "Set3") so that solutions with larger numbers of profiles may be plotted
 
 # tidyLPA 0.1.3
 
