@@ -64,7 +64,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         ggplot(aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
         geom_col(position = "dodge") +
         geom_errorbar(position = position_dodge()) +
-        scale_fill_brewer("", type = "qual", palette = 6) +
+        # scale_fill_brewer("", type = "qual", palette = 6) +
         scale_x_discrete("") +
         theme_bw()
     } else {
@@ -77,7 +77,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         gather("key", "val", -.data$profile) %>%
         ggplot(aes_string(x = "profile", y = "val", fill = "key")) +
         geom_col(position = "dodge") +
-        scale_fill_brewer("", type = "qual", palette = 6) +
+        # scale_fill_brewer("", type = "qual", palette = 6) +
         scale_x_discrete("") +
         theme_bw()
     }
