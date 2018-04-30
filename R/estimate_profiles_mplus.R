@@ -390,16 +390,6 @@ estimate_profiles_mplus <- function(df,
     }
 }
 
-#' Extract summary statistics from an Mplus model
-#' @details Extract log likelihood, BIC, and entropy statistics from an Mplus model
-#' @param x an mplus model
-#' @return a tibble with summary statistics
-#' @export
-
-extract_mplus_summary <- function(x) {
-    x$summaries[c("LL", "BIC", "Entropy")]
-}
-
 check_list <- function(x, check) {
     x[1] == check
 }
