@@ -63,7 +63,7 @@ compare_solutions_mplus <- function(df, ...,
                 st_iterations = st_iterations,
                 return_save_data = F,
                 n_processors = n_processors,
-                include_LMR = include_LMR,
+                include_VLMR = include_VLMR,
                 include_BLRT = include_BLRT,
                 remove_tmp_files = remove_tmp_files
             ))
