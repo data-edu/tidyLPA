@@ -13,7 +13,7 @@ bootstrap_lrt(df, ..., n_profiles, model = 1)
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means and variances, covariances fixed to 0); 3 (varying means, equal variances and covariances; and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 }
 \description{
 Bootstrap the likelihood-ratio test statistic for mixture components

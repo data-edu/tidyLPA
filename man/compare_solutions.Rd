@@ -4,9 +4,9 @@
 \alias{compare_solutions}
 \title{Explore BIC for various models and numbers of profiles}
 \usage{
-compare_solutions(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6),
-  center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC",
-  return_table = FALSE, prior_control = F)
+compare_solutions(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3,
+  6), center_raw_data = FALSE, scale_raw_data = FALSE,
+  statistic = "BIC", return_table = FALSE, prior_control = F)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -15,7 +15,7 @@ compare_solutions(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6),
 
 \item{n_profiles_range}{a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means and variances, covariances fixed to 0); 3 (varying means, equal variances and covariances; and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
 
 \item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
 
