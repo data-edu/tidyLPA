@@ -2,7 +2,7 @@
 #' @details Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 #' @param n_profiles_min lower bound of the number of profiles to explore; defaults to 2
 #' @param n_profiles_max upper bound of the number of profiles to explore; defaults to 10
-#' @param model which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
+#' @param model which models to include; defaults to 1:4 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
 #' @param save_models whether to save the models as rds files
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to TRUE
@@ -18,7 +18,7 @@
 compare_solutions_mplus <- function(df, ...,
                                     n_profiles_min = 2,
                                     n_profiles_max = 10,
-                                    model = 1:6,
+                                    model = 1:4,
                                     starts = c(20, 4),
                                     m_iterations = 500,
                                     st_iterations = 10,

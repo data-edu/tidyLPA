@@ -10,6 +10,7 @@
 * make it so that a data frame with fit and other statistics is returned by default from compare_solutions_mplus()
 * added two new values to the statistics returned by compare_solutions_mplus(), a) the cell size (the number of observations associated with each profile) and b) the number of times the log-likelihood was replicated, based on the number of optimization steps
 * remove the messages about the software being in beta
+* fix issue where lines longer than 90 characters (i.e., when there are many variables) cause an error
 
 # tidyLPA 0.1.3
 
