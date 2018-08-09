@@ -154,12 +154,12 @@ compare_solutions_mplus <- function(df, ...,
     }
 
     if (return_stats_df == TRUE & return_table == TRUE) {
-        return(list(as_tibble(out_df), arrange(as_tibble(stats_df), .data$model, .data$n_profile)))
+        return(list(as_tibble(out_df), arrange(as_tibble(stats_df), .data$model, .data$n_profiles)))
     }
 
     if (return_stats_df == TRUE) {
         print(as_tibble(out_df))
-        return(arrange(as_tibble(stats_df), .data$model, .data$n_profile))
+        return(arrange(as_tibble(stats_df), .data$model, .data$n_profiles))
     }
 
     if (return_table == TRUE) {
