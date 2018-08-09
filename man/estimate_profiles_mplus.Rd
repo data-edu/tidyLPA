@@ -9,7 +9,7 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
   script_filename = "i.inp", output_filename = "i.out",
   savedata_filename = "d-mod.dat", model = 1, starts = c(20, 4),
   m_iterations = 500, st_iterations = 10,
-  convergence_criterion = 1e-06, remove_tmp_files = TRUE,
+  convergence_criterion = 1e-06, remove_tmp_files = FALSE,
   print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
   n_processors = 1, include_VLMR = TRUE, include_BLRT = FALSE)
 }
@@ -67,9 +67,5 @@ Creates an mplus model (.inp) and associated data file (.dat)
 }
 \examples{
 \dontrun{
-m <- estimate_profiles_mplus(iris,
-                            Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-                            n_profiles = 2,
-                            model = 1)
 }
 }

@@ -1,4 +1,4 @@
-# tidyLPA 0.1.4
+# tidyLPA 0.2.0
 
 * improve NAMESPACE documentation
 * add option to return original data frame for functions that use MPlus
@@ -7,6 +7,9 @@
 * add tidylpa@googlegroups.com mailing list address to README as preferred contact method 
 * remove scale_fill_brewer("", type = "qual", palette = "Set3") so that solutions with larger numbers of profiles may be plotted
 * remove deprecated function (to extract key statistics from an MPlus model)
+* make it so that a data frame with fit and other statistics is returned by default from compare_solutions_mplus()
+* added two new values to the statistics returned by compare_solutions_mplus(), a) the cell size (the number of observations associated with each profile) and b) the number of times the log-likelihood was replicated, based on the number of optimization steps
+* remove the messages about the software being in beta
 
 # tidyLPA 0.1.3
 

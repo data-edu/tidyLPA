@@ -4,8 +4,8 @@
 #' @param n_profiles_max upper bound of the number of profiles to explore; defaults to 10
 #' @param model which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
 #' @param save_models whether to save the models as rds files
-#' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE
-#' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to FALSE
+#' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE
+#' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to TRUE
 #' @inheritParams estimate_profiles_mplus
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @examples
@@ -26,10 +26,10 @@ compare_solutions_mplus <- function(df, ...,
                                     save_models = FALSE,
                                     return_table = TRUE,
                                     n_processors = 1,
-                                    return_stats_df = FALSE,
+                                    return_stats_df = TRUE,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
-    message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+    # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
     out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - (n_profiles_min - 1))))
     names(out_df) <- paste0("model_", model)
@@ -44,11 +44,12 @@ compare_solutions_mplus <- function(df, ...,
         if (!dir.exists("compare_solutions_lpa_output")) dir.create("compare_solutions_lpa_output")
     }
 
-    if (save_models == TRUE) {
-        remove_tmp_files <- FALSE
-    } else {
-        remove_tmp_files <- TRUE
-    }
+    remove_tmp_files <- FALSE
+    # if (save_models == TRUE) {
+    #     remove_tmp_files <- FALSE
+    # } else {
+    #     remove_tmp_files <- TRUE
+    # }
 
     for (i in n_profiles_min:n_profiles_max) {
         for (j in model) {
@@ -81,6 +82,8 @@ compare_solutions_mplus <- function(df, ...,
                 message(str_c("Result: ", m))
                 out_df[i - (n_profiles_min - 1), j + 1] <- m
             } else {
+                n_LL_replicated <- extract_LL_mplus("i.out")
+                t <- as.character(str_c(table(m$savedata$C), collapse= ", "))
                 message(paste0("Result: BIC = ", m$summaries$BIC))
                 out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
 
@@ -109,6 +112,8 @@ compare_solutions_mplus <- function(df, ...,
                                            SABIC = m$summaries$aBIC,
                                            CAIC = m$summaries$AICC,
                                            Entropy = m$summaries$Entropy,
+                                           LL_replicated = str_c(nrow(n_LL_replicated), "/", as.character(starts[2])),
+                                           cell_size = t,
                                            VLMR_val = VLMR_val,
                                            VLMR_p = VLMR_p,
                                            LMR_val = m$summaries$T11_LMR_Value,
@@ -125,6 +130,8 @@ compare_solutions_mplus <- function(df, ...,
                                     SABIC = m$summaries$aBIC,
                                     CAIC = m$summaries$AICC,
                                     Entropy = m$summaries$Entropy,
+                                    LL_replicated = str_c(nrow(n_LL_replicated), "/", as.character(starts[2])),
+                                    cell_size = t,
                                     VLMR_val = VLMR_val,
                                     VLMR_p = VLMR_p,
                                     LMR_val = m$summaries$T11_LMR_Value,
@@ -132,10 +139,16 @@ compare_solutions_mplus <- function(df, ...,
                                     BLRT_val = BLRT_val,
                                     BLRT_p = BLRT_p)
 
-                    stats_df <- bind_rows(stats_df, d)
+                    stats_df <- suppressWarnings(bind_rows(stats_df, d))
+                    stats_df$cell_size <- as.character(stats_df$cell_size)
                 }
 
             }
+            file.remove("d.dat")
+            file.remove("i.inp")
+            file.remove("i.out")
+            file.remove("d-mod.dat")
+            file.remove("Mplus Run Models.log")
         }
     }
 

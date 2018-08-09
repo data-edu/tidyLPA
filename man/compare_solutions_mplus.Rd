@@ -8,7 +8,7 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
   n_profiles_max = 10, model = 1:6, starts = c(20, 4),
   m_iterations = 500, st_iterations = 10,
   convergence_criterion = 1e-06, save_models = FALSE,
-  return_table = TRUE, n_processors = 1, return_stats_df = FALSE,
+  return_table = TRUE, n_processors = 1, return_stats_df = TRUE,
   include_VLMR = TRUE, include_BLRT = FALSE)
 }
 \arguments{
@@ -32,11 +32,11 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 
 \item{save_models}{whether to save the models as rds files}
 
-\item{return_table}{logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE}
+\item{return_table}{logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE}
 
 \item{n_processors}{= 1}
 
-\item{return_stats_df}{whether to return a list of fit statistics for the solutions explored; defaults to FALSE}
+\item{return_stats_df}{whether to return a list of fit statistics for the solutions explored; defaults to TRUE}
 
 \item{include_VLMR}{whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE}
 

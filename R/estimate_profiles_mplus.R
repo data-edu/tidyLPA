@@ -20,10 +20,10 @@
 #' @inheritParams estimate_profiles
 #' @examples
 #' \dontrun{
-#' m <- estimate_profiles_mplus(iris,
-#'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-#'                             n_profiles = 2,
-#'                             model = 1)
+# m <- estimate_profiles_mplus(iris,
+#                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+#                             n_profiles = 2,
+#                             model = 1)
 #' }
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
@@ -49,7 +49,7 @@ estimate_profiles_mplus <- function(df,
                                     n_processors = 1,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
-    message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+    # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
     d <- select_ancillary_functions_mplus(df, ...)
     if(is.null(idvar)) {
@@ -383,6 +383,7 @@ estimate_profiles_mplus <- function(df,
             file.remove(data_filename)
             file.remove(script_filename)
             file.remove(output_filename)
+            file.remove(savedata_filename)
             file.remove("Mplus Run Models.log")
         }
 
