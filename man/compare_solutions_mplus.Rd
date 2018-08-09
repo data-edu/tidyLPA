@@ -5,7 +5,7 @@
 \title{Explore BIC for various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)}
 \usage{
 compare_solutions_mplus(df, ..., n_profiles_min = 2,
-  n_profiles_max = 10, model = 1:6, starts = c(20, 4),
+  n_profiles_max = 10, model = 1:4, starts = c(20, 4),
   m_iterations = 500, st_iterations = 10,
   convergence_criterion = 1e-06, save_models = FALSE,
   return_table = TRUE, n_processors = 1, return_stats_df = TRUE,
@@ -20,7 +20,7 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 
 \item{n_profiles_max}{upper bound of the number of profiles to explore; defaults to 10}
 
-\item{model}{which models to include; defaults to 1:6 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
+\item{model}{which models to include; defaults to 1:4 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
 
 \item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
 
