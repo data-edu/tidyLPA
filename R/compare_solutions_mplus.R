@@ -83,6 +83,7 @@ compare_solutions_mplus <- function(df, ...,
                 out_df[i - (n_profiles_min - 1), j + 1] <- m
             } else {
                 n_LL_replicated <- extract_LL_mplus("i.out")
+                count_LL <- dplyr::count(n_LL_replicated, .data$LL)
                 t <- as.character(str_c(table(m$savedata$C), collapse= ", "))
                 message(paste0("Result: BIC = ", m$summaries$BIC))
                 out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
@@ -104,7 +105,7 @@ compare_solutions_mplus <- function(df, ...,
                 }
 
                 if (counter == 1) {
-                    stats_df <- data.frame(n_profile = i,
+                    stats_df <- data.frame(n_profiles = i,
                                            model = j,
                                            LL = m$summaries$LL,
                                            AIC = m$summaries$LL,
@@ -112,7 +113,7 @@ compare_solutions_mplus <- function(df, ...,
                                            SABIC = m$summaries$aBIC,
                                            CAIC = m$summaries$AICC,
                                            Entropy = m$summaries$Entropy,
-                                           LL_replicated = str_c(nrow(n_LL_replicated), "/", as.character(starts[2])),
+                                           LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
                                            cell_size = t,
                                            VLMR_val = VLMR_val,
                                            VLMR_p = VLMR_p,
@@ -122,7 +123,7 @@ compare_solutions_mplus <- function(df, ...,
                                            BLRT_p = BLRT_p)
                 } else {
 
-                    d <- data.frame(n_profile = i,
+                    d <- data.frame(n_profiles = i,
                                     model = j,
                                     LL = m$summaries$LL,
                                     AIC = m$summaries$LL,
@@ -130,7 +131,7 @@ compare_solutions_mplus <- function(df, ...,
                                     SABIC = m$summaries$aBIC,
                                     CAIC = m$summaries$AICC,
                                     Entropy = m$summaries$Entropy,
-                                    LL_replicated = str_c(nrow(n_LL_replicated), "/", as.character(starts[2])),
+                                    LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
                                     cell_size = t,
                                     VLMR_val = VLMR_val,
                                     VLMR_p = VLMR_p,
