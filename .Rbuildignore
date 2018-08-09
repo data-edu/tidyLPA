@@ -13,3 +13,5 @@
 ^introduction-to-tidyLPA.pdf$
 iMplusThreadResults6.out
 ^SUPPORT\.md$
+.bib
+^paper.md$
