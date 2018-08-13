@@ -12,7 +12,11 @@
 * add tidylpa@googlegroups.com mailing list address to README as preferred contact method 
 * remove deprecated function (to extract key statistics from an MPlus model)
 * make it so that a data frame with fit and other statistics is returned by default from compare_solutions_mplus()
-* added two new values to the statistics returned by compare_solutions_mplus(), a) the cell size (the number of observations associated with each profile) and b) the number of times the log-likelihood was replicated, based on the number of optimization steps
+* added new values to the statistics returned by compare_solutions_mplus():
+    - the cell size (the number of observations associated with each profile)
+    - the number of times the log-likelihood was replicated, based on the number of optimization steps
+    - Approximate Weight of Evidence (AWE) criterion
+    - the number of parameters estimated
 * remove the messages about the software being in beta
 
 ## Bug fixes
