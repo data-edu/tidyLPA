@@ -31,8 +31,6 @@ install.packages("devtools")
 devtools::install_github("jrosen48/tidyLPA")
 ```
 
-**Please note that some functions documented on the References page may only be available in the development version of tidyLPA. Also note that if an error occurs, you may try the development version to see if the issue is addressed.**
-
 Example
 -------
 
@@ -74,9 +72,9 @@ See the output is simply a data frame with the profile (and its posterior probab
 In addition to the number of profiles (specified with the `n_profiles` argument), the model is important. The `model` argument allows for four models to be specified:
 
 -   Varying means, equal variances, and covariances fixed to 0 (model 1)
--   Varying means, equal variances, and equal covariances (model 2)
--   Varying means, varying variances, and covariances fixed to 0 (model 3)
--   Varying means, varying variances, and varying covariances (model 6)
+-   Varying means, varying variances, and covariances fixed to 0 (model 2)
+-   Varying means, equal variances, and equal covariances (model 3)
+-   Varying means, varying variances, and varying covariances (model 4)
 
 Two additional models can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
 
