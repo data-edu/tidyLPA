@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA) [![](https://cranlogs.r-pkg.org/badges/tidylpa)](https://cran.r-project.org/package=tidylpa)
+[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA)
 
 Background
 ----------
@@ -109,14 +109,14 @@ To learn more:
 
 -   *Read the Introduction to tidyLPA* [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html), which has much more information on the models that can be specified with tidyLPA and on additional functionality
 
-Contact
--------
+Contributing and Contact Information
+------------------------------------
 
-As tidyLPA is at an early stage of its development, issues should be expected. If you have any questions or feedback, please do not hesitate to get in touch:
+As tidyLPA is at an early stage of its development, issues should be expected. If you have any questions or feedback, please do not hesitate to get in touch. One of the best ways to contribute is by pointing out bugs (or requesting features):
 
 -   Send a message via <tidylpa@googlegroups.com> or view the [the tidyLPA group page](https://groups.google.com/forum/#!forum/tidylpa) (*preferred*)
 -   Through filing an issue on GitHub [here](https://github.com/jrosen48/tidyLPA)
--   Via [Twitter](http://twitter.com/jrosenberg6432)
--   By [email (jrosen@msu.edu)](mailto:jrosen@msu.edu)
+
+Contributions are also welcome via making pull requests, e.g. through [this page on GitHub](https://github.com/jrosen48/tidyLPA/pulls).
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
