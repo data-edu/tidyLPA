@@ -11,7 +11,8 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
   m_iterations = 500, st_iterations = 10,
   convergence_criterion = 1e-06, remove_tmp_files = TRUE,
   print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
-  n_processors = 1, include_VLMR = TRUE, include_BLRT = FALSE)
+  n_processors = 1, cluster_ID = NULL, include_VLMR = TRUE,
+  include_BLRT = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -51,6 +52,8 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 \item{optseed}{random seed for analysis}
 
 \item{n_processors}{= 1}
+
+\item{cluster_ID}{clustering variable (i.e., if data are from students clustered into distinct classrooms) to be used as cluster variables as part of the type = complex option}
 
 \item{include_VLMR}{whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE}
 

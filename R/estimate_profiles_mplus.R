@@ -14,6 +14,7 @@
 #' @param print_input_file whether to print the input file to the console
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabilities for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
 #' @param optseed random seed for analysis
+#' @param cluster_ID clustering variable (i.e., if data are from students clustered into distinct classrooms) to be used as cluster variables as part of the type = complex option
 #' @param include_VLMR whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE
 #' @param include_BLRT whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run
 #' @param n_processors = 1
@@ -47,11 +48,12 @@ estimate_profiles_mplus <- function(df,
                                     return_save_data = TRUE,
                                     optseed = NULL,
                                     n_processors = 1,
+                                    cluster_ID = NULL,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
     # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
-    d <- select_ancillary_functions_mplus(df, ...)
+    d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
     if(is.null(idvar)) {
         id <- data_frame(id = as.numeric(rownames(df)))
         idvar <- "rownum"
@@ -71,13 +73,15 @@ estimate_profiles_mplus <- function(df,
         }
     }
     d <- bind_cols(id, d)
+    # if (!is.null(cluster_ID)) {
+    #     d <- bind_cols(d, d[[cluster_ID]])
+    # }
     names(d) <- gsub("\\.", "_", names(d))
 
     x <- write_mplus(d, data_filename)
 
     unquoted_variable_name <- paste0(names(d)[-1], collapse = " ")
 
-    # helps with efficiency a bit to pre-specify list length
     var_list <- vector("list", ncol(d))
     for (i in seq_along(names(d))) {
         var_list[[i]] <- names(d)[i]
@@ -93,8 +97,19 @@ estimate_profiles_mplus <- function(df,
     VARIABLE_line3 <- paste0("IDVARIABLE = ", idvar, ";")
     MISSING <- "Missing are all (-999);"
 
+    if (!is.null(cluster_ID)) {
+        VARIABLE_line4 <- paste0("Cluster = ", cluster_ID,";")
+    } else {
+        VARIABLE_line4 <- NULL
+    }
+
     ANALYSIS_line0 <- "ANALYSIS:"
     ANALYSIS_line1 <- "Type is mixture;"
+    if (!is.null(cluster_ID)) {
+        ANALYSIS_line1b <- paste0("Type is complex", ";")
+    } else {
+        ANALYSIS_line1b <- NULL
+    }
     ANALYSIS_line2 <- paste0("start = ", starts[1], " ", starts[2], ";")
     ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
     ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
@@ -117,14 +132,14 @@ estimate_profiles_mplus <- function(df,
     MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
 
     if (include_VLMR == TRUE) {
-        OUTPUT_line0 <- "OUTPUT: TECH1 TECH11;"
+        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
         if (include_BLRT == TRUE) {
-            OUTPUT_line0 <- "OUTPUT: TECH1 TECH11 TECH14;"
+            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx TECH14;"
         }
     } else {
-        OUTPUT_line0 <- "OUTPUT: TECH1;"
+        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
         if (include_BLRT == TRUE) {
-            OUTPUT_line0 <- "OUTPUT: TECH1  TECH14;"
+            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 tech13 sampstat svalues patterns residual stdyx TECH14;"
         }
     }
 
@@ -254,12 +269,12 @@ estimate_profiles_mplus <- function(df,
     all_the_lines <- c(
         TITLE,
         DATA,
-        VARIABLE_line0, VARIABLE_line1, VARIABLE_line2, VARIABLE_line3,
+        VARIABLE_line0, VARIABLE_line1, VARIABLE_line2, VARIABLE_line3, VARIABLE_line4,
         MISSING,
         MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
         overall_collector,
         class_collector,
-        ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7,
+        ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line1b, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7,
         OUTPUT_line0,
         SAVEDATA_line0,
         SAVEDATA_line1

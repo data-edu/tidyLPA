@@ -1,0 +1,119 @@
+TITLE: test
+
+DATA: File is d.dat;
+
+VARIABLE:
+
+Names are rownum Sepal_Length Sepal_Width Petal_Length Petal_Width cluster_var;
+
+Classes = c(2);
+
+IDVARIABLE = rownum;
+
+Cluster = cluster_var;
+
+Missing are all (-999);
+
+MODEL:
+
+%overall%
+
+[Sepal_Length Sepal_Width Petal_Length Petal_Width cluster_var];
+
+Sepal_Length Sepal_Width Petal_Length Petal_Width cluster_var;
+
+Sepal_Length WITH Sepal_Width@0;
+
+Sepal_Length WITH Petal_Length@0;
+
+Sepal_Length WITH Petal_Width@0;
+
+Sepal_Length WITH cluster_var@0;
+
+Sepal_Width WITH Petal_Length@0;
+
+Sepal_Width WITH Petal_Width@0;
+
+Sepal_Width WITH cluster_var@0;
+
+Petal_Length WITH Petal_Width@0;
+
+Petal_Length WITH cluster_var@0;
+
+Petal_Width WITH cluster_var@0;
+
+%c#1%
+
+[Sepal_Length Sepal_Width Petal_Length Petal_Width cluster_var];
+
+Sepal_Length Sepal_Width Petal_Length Petal_Width cluster_var(1-5);
+
+Sepal_Length WITH Sepal_Width@0;
+
+Sepal_Length WITH Petal_Length@0;
+
+Sepal_Length WITH Petal_Width@0;
+
+Sepal_Length WITH cluster_var@0;
+
+Sepal_Width WITH Petal_Length@0;
+
+Sepal_Width WITH Petal_Width@0;
+
+Sepal_Width WITH cluster_var@0;
+
+Petal_Length WITH Petal_Width@0;
+
+Petal_Length WITH cluster_var@0;
+
+Petal_Width WITH cluster_var@0;
+
+%c#2%
+
+[Sepal_Length Sepal_Width Petal_Length Petal_Width cluster_var];
+
+Sepal_Length Sepal_Width Petal_Length Petal_Width cluster_var(1-5);
+
+Sepal_Length WITH Sepal_Width@0;
+
+Sepal_Length WITH Petal_Length@0;
+
+Sepal_Length WITH Petal_Width@0;
+
+Sepal_Length WITH cluster_var@0;
+
+Sepal_Width WITH Petal_Length@0;
+
+Sepal_Width WITH Petal_Width@0;
+
+Sepal_Width WITH cluster_var@0;
+
+Petal_Length WITH Petal_Width@0;
+
+Petal_Length WITH cluster_var@0;
+
+Petal_Width WITH cluster_var@0;
+
+ANALYSIS:
+
+Type is mixture;
+
+Type is complex;
+
+start = 20 4;
+
+miterations = 500;
+
+stiterations = 10;
+
+convergence = 1e-06;
+
+processors = 1;
+
+OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 tech13 sampstat svalues patterns residual
+stdyx;
+
+SAVEDATA: File is d-mod.dat;
+
+SAVE = CPROBABILITIES;
+
