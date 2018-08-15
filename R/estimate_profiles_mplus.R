@@ -332,6 +332,13 @@ estimate_profiles_mplus <- function(df,
             file.remove(savedata_filename)
             file.remove("Mplus Run Models.log")
         }
+        fit_stats = c("LL","BIC","aBIC","AIC","Entropy")
+        fs = rep(NA,length(fit_stats))
+        names(fs) = fit_stats
+        available_fit_stats = intersect(names(m$summaries),fit_stats)
+        for (s in available_fit_stats)
+            fs[s] = m$summaries[,s]
+        attr(x,"fit_stats") = fs
         return(x)
 
     } else {
