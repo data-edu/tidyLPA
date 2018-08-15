@@ -53,7 +53,7 @@ estimate_profiles_mplus <- function(df,
                                     include_BLRT = FALSE) {
     # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
-    d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
+    d <- select_ancillary_functions_mplus(df, ...)
     if(is.null(idvar)) {
         id <- data_frame(id = as.numeric(rownames(df)))
         idvar <- "rownum"
@@ -132,14 +132,14 @@ estimate_profiles_mplus <- function(df,
     MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
 
     if (include_VLMR == TRUE) {
-        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
+        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 sampstat svalues patterns residual stdyx;"
         if (include_BLRT == TRUE) {
-            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx TECH14;"
+            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
         }
     } else {
-        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
+        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx;"
         if (include_BLRT == TRUE) {
-            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 tech13 sampstat svalues patterns residual stdyx TECH14;"
+            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
         }
     }
 
@@ -280,8 +280,9 @@ estimate_profiles_mplus <- function(df,
         SAVEDATA_line1
     )
 
-    all_the_lines <- gsub('(.{1,90})(\\s|$)', '\\1\n', all_the_lines) # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
-
+    all_the_lines <- as.list(gsub('(.{1,90})(\\s|$)', '\\1\n', all_the_lines)) # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
+    # print(all_the_lines)
+    # all_the_lines <- as.list(all_the_lines[all_the_lines!=""])
     write_lines(all_the_lines,
         script_filename
     )
