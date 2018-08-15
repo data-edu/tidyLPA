@@ -110,7 +110,7 @@ estimate_profiles_mplus <- function(df,
     } else {
         ANALYSIS_line1b <- NULL
     }
-    ANALYSIS_line2 <- paste0("start = ", starts[1], " ", starts[2], ";")
+    ANALYSIS_line2 <- paste0("starts = ", starts[1], " ", starts[2], ";")
     ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
     ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
     ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")
