@@ -157,14 +157,8 @@ estimate_profiles_mplus <- function(df,
             class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
             class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
             class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, "(", 1, "-", length(var_list), ");")
-            for (j in 1:length(var_list)) {
-                for (k in j:length(var_list)) {
-                    if (var_list[[j]] != var_list[[k]]) {
-                        the_index <- length(class_collector)
-                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "@0;")
-                    }
-                }
-            }
+            class_collector = c(class_collector,
+                                variances_mplus(var_list, estimate_variance = F))
         }
     } else if (model == 3) {
         overall_collector <- variances_mplus(var_list, estimate_variance = F)
@@ -177,14 +171,8 @@ estimate_profiles_mplus <- function(df,
             class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
             class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
             class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, ";")
-            for (j in 1:length(var_list)) {
-                for (k in j:length(var_list)) {
-                    if (var_list[[j]] != var_list[[k]]) {
-                        the_index <- length(class_collector)
-                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "@0;")
-                    }
-                }
-            }
+            class_collector = c(class_collector,
+                                variances_mplus(var_list, estimate_variance = F))
         }
     } else if (model == 2) {
         overall_collector <- variances_mplus(var_list, estimate_variance = T)
