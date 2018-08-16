@@ -39,7 +39,7 @@ estimate_profiles_mplus <- function(df,
                                     output_filename = "i.out",
                                     savedata_filename = "d-mod.dat",
                                     model = 1,
-                                    starts = c(20, 4),
+                                    starts = c(100, 10),
                                     m_iterations = 500,
                                     st_iterations = 10,
                                     convergence_criterion = 1E-6,
@@ -86,8 +86,13 @@ estimate_profiles_mplus <- function(df,
     for (i in seq_along(names(d))) {
         var_list[[i]] <- names(d)[i]
     }
-
-    TITLE <- paste0("TITLE: ", the_title)
+    titles = c("Equal variances, and covariances fixed to 0 (model 1)",
+               "Equal variances, and equal covariances (model 2)",
+               "Varying variances, and covariances fixed to 0 (model 3)",
+               "Varying variances, and equal covariances (model 4)",
+               "Equal variances, and varying covariances (model 5)",
+               "Varying variances, and varying covariances (model 6)")
+    TITLE <- paste0("TITLE: ", titles[model])
 
     DATA <- paste0("DATA: File is ", data_filename, ";")
 
@@ -170,15 +175,32 @@ estimate_profiles_mplus <- function(df,
                                  make_class_mplus(var_list,class_number = i,fix_variances = T),
                                  covariances_mplus(var_list,
                                                  estimate_covariance = T,
-                                                 param_counter = length(varlist)))
-
+                                                 param_counter = length(var_list)))
+        }
+    } else if (model == 4) { # Varying means, varying variances, and equal covariances
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+        class_collector <- list()
+        for (i in 1:n_profiles) {
+            class_collector <- c(class_collector,
+                                 make_class_mplus(var_list,class_number = i,fix_variances = F),
+                                 covariances_mplus(var_list,
+                                                   estimate_covariance = T,
+                                                   param_counter = 0))
+        }
+    } else if (model == 5) { # Varying means, equal variances, and varying covariances
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+        class_collector <- list()
+        for (i in 1:n_profiles) {
+            class_collector <- c(class_collector,
+                                 make_class_mplus(var_list,class_number = i,fix_variances = T),
+                                 covariances_mplus(var_list, estimate_covariance = T))
         }
     } else if (model == 6) { # Varying means, varying variances, and varying covariances
         overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
         class_collector <- list()
         for (i in 1:n_profiles) {
             class_collector <- c(class_collector,
-                                 make_class_mplus(var_list,class_number = 1,fix_variances = F),
+                                 make_class_mplus(var_list,class_number = i,fix_variances = F),
                                  covariances_mplus(var_list, estimate_covariance = T))
         }
     }
