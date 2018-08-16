@@ -132,14 +132,14 @@ estimate_profiles_mplus <- function(df,
     MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
 
     if (include_VLMR == TRUE) {
-        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
+        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 sampstat svalues patterns residual stdyx;"
         if (include_BLRT == TRUE) {
-            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx TECH14;"
+            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
         }
     } else {
-        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
+        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx;"
         if (include_BLRT == TRUE) {
-            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 tech13 sampstat svalues patterns residual stdyx TECH14;"
+            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
         }
     }
 
@@ -174,7 +174,7 @@ estimate_profiles_mplus <- function(df,
                 }
             }
         }
-    } else if (model == 2) {
+    } else if (model == 3) {
         overall_collector <- list()
         for (j in 1:length(var_list)) {
             for (k in j:length(var_list)) {
@@ -202,7 +202,7 @@ estimate_profiles_mplus <- function(df,
                 }
             }
         }
-    } else if (model == 3) {
+    } else if (model == 2) {
         overall_collector <- list()
         for (j in 1:length(var_list)) {
             for (k in j:length(var_list)) {
@@ -233,7 +233,7 @@ estimate_profiles_mplus <- function(df,
                 }
             }
         }
-    } else if (model == 4) {
+    } else if (model == 6) {
         overall_collector <- list()
         for (j in 1:length(var_list)) {
             for (k in j:length(var_list)) {
