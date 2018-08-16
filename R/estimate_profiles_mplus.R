@@ -147,15 +147,7 @@ estimate_profiles_mplus <- function(df,
     SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
     if (model == 1) {
-        overall_collector <- list()
-        for (j in 1:length(var_list)) {
-            for (k in j:length(var_list)) {
-                if (var_list[[j]] != var_list[[k]]) {
-                    the_index <- length(overall_collector)
-                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "@0;")
-                }
-            }
-        }
+        overall_collector <- variances_mplus(var_list, estimate_variance = F)
         the_index <- 0
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -175,15 +167,7 @@ estimate_profiles_mplus <- function(df,
             }
         }
     } else if (model == 3) {
-        overall_collector <- list()
-        for (j in 1:length(var_list)) {
-            for (k in j:length(var_list)) {
-                if (var_list[[j]] != var_list[[k]]) {
-                    the_index <- length(overall_collector)
-                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "@0;")
-                }
-            }
-        }
+        overall_collector <- variances_mplus(var_list, estimate_variance = F)
         the_index <- 0
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -203,15 +187,7 @@ estimate_profiles_mplus <- function(df,
             }
         }
     } else if (model == 2) {
-        overall_collector <- list()
-        for (j in 1:length(var_list)) {
-            for (k in j:length(var_list)) {
-                if (var_list[[j]] != var_list[[k]]) {
-                    the_index <- length(overall_collector)
-                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
-                }
-            }
-        }
+        overall_collector <- variances_mplus(var_list, estimate_variance = T)
         the_index <- 0
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -234,15 +210,7 @@ estimate_profiles_mplus <- function(df,
             }
         }
     } else if (model == 6) {
-        overall_collector <- list()
-        for (j in 1:length(var_list)) {
-            for (k in j:length(var_list)) {
-                if (var_list[[j]] != var_list[[k]]) {
-                    the_index <- length(overall_collector)
-                    overall_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
-                }
-            }
-        }
+        overall_collector <- variances_mplus(var_list, estimate_variance = T)
         the_index <- 0
         class_collector <- list()
         for (i in 1:n_profiles) {

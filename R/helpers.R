@@ -127,3 +127,19 @@ write_mplus <- function(d, file_name, na_string = "-999", ...) {
 	            na = as.character(na_string),
 	            ...)
 }
+
+variances_mplus = function(var_list, estimate_variance = F) {
+    variances <- list()
+    for (j in 1:length(var_list)) {
+        for (k in j:length(var_list)) {
+            if (var_list[[j]] != var_list[[k]]) {
+                the_index <- length(variances)
+                variances[[the_index + 1]] <- paste0(var_list[[j]],
+                                                             " WITH ",
+                                                             var_list[[k]],
+                                                             ifelse(estimate_variance,"","@0"),";")
+            }
+        }
+    }
+    return(variances)
+}
