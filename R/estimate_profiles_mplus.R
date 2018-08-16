@@ -221,9 +221,8 @@ estimate_profiles_mplus <- function(df,
 
     all_the_lines <- gsub('(.{1,90})(\\s|$)', '\\1\n', all_the_lines) # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
 
-    write_lines(all_the_lines,
-        script_filename
-    )
+    cat(paste0(all_the_lines, collapse = ""),
+        file = script_filename)
 
     x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
     capture <- capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
