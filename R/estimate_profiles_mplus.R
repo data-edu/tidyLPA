@@ -339,6 +339,8 @@ estimate_profiles_mplus <- function(df,
         for (s in available_fit_stats)
             fs[s] = m$summaries[,s]
         attr(x,"fit_stats") = fs
+        attr(x,"mplus_warnings") = m$warnings
+        attr(x,"mplus_errors") = m$errors
         return(x)
 
     } else {
