@@ -14,8 +14,8 @@ A *tidy* user-interface
 
 The input for *tidyLPA* assumes a tidy data structure (see Wickham and others 2014), and all output are returned in a tidy from, which aligns with the broad array of tools within the [**tidyverse**](https://www.tidyverse.org/) collection of R packages. The data can be efficiently used to create plots, explore model results, or used in subsequent analyses. The interface is also designed to work efficiently with the *pipe* operator, `%>%`, and **dplyr** helper functions can be used to select variables (e.g., `data %>% tidyLPA::estimate_profiles(dplyr::starts_with())`). The package is designed and documented to be easy to use, especially for beginners, but with finer-grained options available for estimating models and for evaluating specific output.
 
-Functionality is provided through both open-source and commercial software
---------------------------------------------------------------------------
+Functionality through both open-source and commercial software
+--------------------------------------------------------------
 
 The *tidyLPA* package provides an interface to two different tools for estimating models, one from the open-source **mclust** R package (Scrucca et al. 2017) and the other the commercial **MPlus** (L. Muthen and Muthen 2017) software (via the **MplusAutomation** R package \[hallquist\_et\_al\_2018\]). Both the open-source and commercial tools allow for the specification of four model parameterizations, which range from very restricted to means, variances, and covariances being freely-estimated across profiles. The packages are benchmarked to one another; the benchmarks are checked when **tidyLPA** is deployed through automated tests.
 

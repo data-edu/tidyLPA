@@ -54,7 +54,7 @@ The package is designed and documented to be easy to use, especially for
 beginners, but with finer-grained options available for estimating models and
 for evaluating specific output.
 
-## Functionality is provided through both open-source and commercial software
+## Functionality through both open-source and commercial software
 
 The *tidyLPA* package provides an interface to two different
 tools for estimating models, one from the open-source **mclust** R
