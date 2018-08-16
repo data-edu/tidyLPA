@@ -146,79 +146,40 @@ estimate_profiles_mplus <- function(df,
     SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
     SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
-    if (model == 1) {
-        overall_collector <- variances_mplus(var_list, estimate_variance = F)
-        the_index <- 0
+    if (model == 1) { # Varying means, equal variances, and covariances fixed to 0
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
         class_collector <- list()
         for (i in 1:n_profiles) {
-            if (the_index != 0) {
-                the_index <- the_index + 1
-            }
-            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
-            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
-            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, "(", 1, "-", length(var_list), ");")
-            class_collector = c(class_collector,
-                                variances_mplus(var_list, estimate_variance = F))
+            class_collector <- c(class_collector,
+                                 make_class_mplus(var_list,class_number = i,fix_variances = T),
+                                 covariances_mplus(var_list, estimate_covariance = F))
         }
-    } else if (model == 3) {
-        overall_collector <- variances_mplus(var_list, estimate_variance = F)
-        the_index <- 0
+    } else if (model == 3) { # Varying means, varying variances, and covariances fixed to 0
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
         class_collector <- list()
         for (i in 1:n_profiles) {
-            if (the_index != 0) {
-                the_index <- the_index + 1
-            }
-            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
-            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
-            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, ";")
-            class_collector = c(class_collector,
-                                variances_mplus(var_list, estimate_variance = F))
+            class_collector <- c(class_collector,
+                                 make_class_mplus(var_list,class_number = i,fix_variances = F),
+                                 covariances_mplus(var_list, estimate_covariance = F))
         }
-    } else if (model == 2) {
-        overall_collector <- variances_mplus(var_list, estimate_variance = T)
-        the_index <- 0
+    } else if (model == 2) { # Varying means, equal variances, and equal covariances
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
         class_collector <- list()
         for (i in 1:n_profiles) {
-            if (the_index != 0) {
-                the_index <- the_index + 1
-            }
-            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
-            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
-            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, "(", 1, "-", length(var_list), ");")
+            class_collector <- c(class_collector,
+                                 make_class_mplus(var_list,class_number = i,fix_variances = T),
+                                 covariances_mplus(var_list,
+                                                 estimate_covariance = T,
+                                                 param_counter = length(varlist)))
 
-            temp_index <- 0
-            for (j in 1:length(var_list)) {
-                for (k in j:length(var_list)) {
-                    if (var_list[[j]] != var_list[[k]]) {
-                        the_index <- length(class_collector)
-                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], "(", length(var_list) + temp_index + 1, ");")
-                        temp_index <- (temp_index + 1)
-                    }
-                }
-            }
         }
-    } else if (model == 6) {
-        overall_collector <- variances_mplus(var_list, estimate_variance = T)
-        the_index <- 0
+    } else if (model == 6) { # Varying means, varying variances, and varying covariances
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
         class_collector <- list()
         for (i in 1:n_profiles) {
-            if (the_index != 0) {
-                the_index <- the_index + 1
-            }
-            class_collector[[the_index + 1]] <- paste0("%c#", i, "%")
-            class_collector[[the_index + 2]] <- paste0("[", unquoted_variable_name, "];")
-            class_collector[[the_index + 3]] <- paste0(unquoted_variable_name, ";")
-
-            temp_index <- 0
-            for (j in 1:length(var_list)) {
-                for (k in j:length(var_list)) {
-                    if (var_list[[j]] != var_list[[k]]) {
-                        the_index <- length(class_collector)
-                        class_collector[[the_index + 1]] <- paste0(var_list[[j]], " WITH ", var_list[[k]], ";")
-                        temp_index <- (temp_index + 1)
-                    }
-                }
-            }
+            class_collector <- c(class_collector,
+                                 make_class_mplus(var_list,class_number = 1,fix_variances = F),
+                                 covariances_mplus(var_list, estimate_covariance = T))
         }
     }
 
