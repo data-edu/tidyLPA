@@ -158,3 +158,11 @@ covariances_mplus = function(var_list, estimate_covariance = F, param_counter = 
     }
     return(variances)
 }
+
+
+get_fit_stat = function(m,stat) {
+    return(ifelse(stat %in% names(m$summaries),
+                  m$summaries[[stat]],
+                  NA)
+    )
+}

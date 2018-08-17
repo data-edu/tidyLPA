@@ -41,7 +41,7 @@ estimate_profiles_mplus <- function(df,
                                     model = 1,
                                     starts = c(100, 10),
                                     m_iterations = 500,
-                                    st_iterations = 10,
+                                    st_iterations = 20,
                                     convergence_criterion = 1E-6,
                                     remove_tmp_files = TRUE,
                                     print_input_file = FALSE,
@@ -129,6 +129,7 @@ estimate_profiles_mplus <- function(df,
     }
 
     ANALYSIS_line7 <- paste0("processors = ", n_processors, ";")
+    ANALYSIS_line8 <- paste0("stscale = 3;")
 
     MODEL_overall_line000 <- paste0("! model specified is: ", model)
     MODEL_overall_line00 <- paste0("MODEL:")
@@ -151,7 +152,8 @@ estimate_profiles_mplus <- function(df,
     SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
     SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
-    if (model == 1) { # Varying means, equal variances, and covariances fixed to 0
+    if (model == 1) {
+        model_name =  "Varying means, equal variances, and covariances fixed to 0"
         overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -159,7 +161,8 @@ estimate_profiles_mplus <- function(df,
                                  make_class_mplus(var_list,class_number = i,fix_variances = T),
                                  covariances_mplus(var_list, estimate_covariance = F))
         }
-    } else if (model == 3) { # Varying means, varying variances, and covariances fixed to 0
+    } else if (model == 3) {
+        model_name =  "Varying means, varying variances, and covariances fixed to 0"
         overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -167,7 +170,8 @@ estimate_profiles_mplus <- function(df,
                                  make_class_mplus(var_list,class_number = i,fix_variances = F),
                                  covariances_mplus(var_list, estimate_covariance = F))
         }
-    } else if (model == 2) { # Varying means, equal variances, and equal covariances
+    } else if (model == 2) {
+        model_name =  "Varying means, equal variances, and equal covariances"
         overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -177,7 +181,8 @@ estimate_profiles_mplus <- function(df,
                                                  estimate_covariance = T,
                                                  param_counter = length(var_list)))
         }
-    } else if (model == 4) { # Varying means, varying variances, and equal covariances
+    } else if (model == 4) {
+        model_name =  "Varying means, varying variances, and equal covariances"
         overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -187,7 +192,8 @@ estimate_profiles_mplus <- function(df,
                                                    estimate_covariance = T,
                                                    param_counter = 0))
         }
-    } else if (model == 5) { # Varying means, equal variances, and varying covariances
+    } else if (model == 5) {
+        model_name =  "Varying means, equal variances, and varying covariances"
         overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -195,7 +201,8 @@ estimate_profiles_mplus <- function(df,
                                  make_class_mplus(var_list,class_number = i,fix_variances = T),
                                  covariances_mplus(var_list, estimate_covariance = T))
         }
-    } else if (model == 6) { # Varying means, varying variances, and varying covariances
+    } else if (model == 6) {
+        model_name =  "Varying means, varying variances, and varying covariances"
         overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
         class_collector <- list()
         for (i in 1:n_profiles) {
@@ -213,7 +220,7 @@ estimate_profiles_mplus <- function(df,
         MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
         overall_collector,
         class_collector,
-        ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line1b, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7,
+        ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line1b, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7, ANALYSIS_line8,
         OUTPUT_line0,
         SAVEDATA_line0,
         SAVEDATA_line1
@@ -224,6 +231,7 @@ estimate_profiles_mplus <- function(df,
     cat(paste0(all_the_lines, collapse = ""),
         file = script_filename)
 
+    message("Model ", paste0(model_name, " (",n_profiles," latent classes)"))
     x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
     capture <- capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
 
@@ -242,13 +250,22 @@ estimate_profiles_mplus <- function(df,
         error_status <- ""
     }
 
+
     if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
         message(str_trim(str_c(warning_status, " ", error_status)))
         return(str_trim(str_c(warning_status, " ", error_status)))
     } else {
-        message("LogLik is ", round(abs(as.vector(m$summaries$LL)), 3))
-        message("BIC is ", round(abs(as.vector(m$summaries$BIC)), 3))
-        message("Entropy is ", round(abs(as.vector(m$summaries$Entropy)), 3))
+        message("LogLik is ", round(abs(as.vector(get_fit_stat(m,"LL"))), 3))
+        message("BIC is ", round(abs(as.vector(get_fit_stat(m,"BIC"))), 3))
+        message("Entropy is ", round(abs(as.vector(get_fit_stat(m,"Entropy"))), 3))
+    }
+
+    if ((m$summaries$Observations/m$summaries$Parameters) < 10) {
+        mm = paste0("Only ",
+                    round(m$summaries$Observations/m$summaries$Parameters,digits = 2),
+                    " observations per parameter")
+        message(mm)
+        warning(mm)
     }
 
     if (print_input_file == TRUE) {
