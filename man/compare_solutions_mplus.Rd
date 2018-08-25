@@ -5,8 +5,8 @@
 \title{Explore BIC for various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)}
 \usage{
 compare_solutions_mplus(df, ..., n_profiles_min = 2,
-  n_profiles_max = 10, model = 1:4, starts = c(20, 4),
-  m_iterations = 500, st_iterations = 10,
+  n_profiles_max = 10, model = 1:4, starts = c(100, 10),
+  m_iterations = 500, st_iterations = 20,
   convergence_criterion = 1e-06, save_models = FALSE,
   return_table = TRUE, n_processors = 1, return_stats_df = TRUE,
   include_VLMR = TRUE, include_BLRT = FALSE)
