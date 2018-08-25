@@ -127,3 +127,42 @@ write_mplus <- function(d, file_name, na_string = "-999", ...) {
 	            na = as.character(na_string),
 	            ...)
 }
+
+make_class_mplus = function(var_list,class_number, fix_variances = F) {
+
+    class_init <- vector(length = 3, mode = "list")
+    class_init[[1]] <- paste0("%c#", class_number, "%")
+    class_init[[2]] <- paste0("[",paste(var_list, collapse = " "),"];")
+    class_init[[3]] <- paste0(paste(var_list, collapse = " "),
+                              ifelse(fix_variances,
+                                     paste0("(1-",length(var_list),")"),
+                                     ""),
+                              ";")
+    return(class_init)
+}
+
+covariances_mplus = function(var_list, estimate_covariance = F, param_counter = NULL) {
+
+    combine2 <- combn(length(var_list),2)
+    variances <- vector(length = ncol(combine2), mode = "list")
+
+    for (k in 1:ncol(combine2)) {
+        variances[[k]] <- paste0(var_list[[combine2[1,k]]],
+                                 " WITH ",
+                                 var_list[[combine2[2,k]]],
+                                 ifelse(estimate_covariance,"","@0"),
+                                 ifelse(is.null(param_counter),
+                                        "",
+                                        paste0(" (",param_counter+k,")")),
+                                 ";")
+    }
+    return(variances)
+}
+
+
+get_fit_stat = function(m,stat) {
+    return(ifelse(stat %in% names(m$summaries),
+                  m$summaries[[stat]],
+                  NA)
+    )
+}
