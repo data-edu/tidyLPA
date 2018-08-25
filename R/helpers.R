@@ -143,7 +143,7 @@ make_class_mplus = function(var_list,class_number, fix_variances = F) {
 
 covariances_mplus = function(var_list, estimate_covariance = F, param_counter = NULL) {
 
-    combine2 <- combn(length(var_list),2)
+    combine2 <- utils::combn(length(var_list),2)
     variances <- vector(length = ncol(combine2), mode = "list")
 
     for (k in 1:ncol(combine2)) {
