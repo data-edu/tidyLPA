@@ -98,22 +98,22 @@ extract_stats <- function(x) {
 #' @export
 
 extract_LL_mplus <- function(output_filename = "i.out") {
-  raw_text <- read_lines(output_filename)
-  start <- which(str_detect(raw_text, "Final stage loglikelihood")) + 2
-  start_vals <- raw_text[str_detect(raw_text, "start =")]
-  start_vals <- str_trim(start_vals)
-  start_vals <- str_sub(start_vals, end = -2L)
-  start_vals <- strsplit(start_vals, "[^[:digit:]]")
+  raw_text <- readr::read_lines(output_filename)
+  start <- which(stringr::str_detect(raw_text, "Final stage loglikelihood")) + 2
+  start_vals <- raw_text[stringr::str_detect(raw_text, "starts =")]
+  start_vals <- stringr::str_trim(start_vals)
+  start_vals <- stringr::str_sub(start_vals, end = -2L)
+  start_vals <- stringr::str_split(start_vals, "[^[:digit:]]")
   start_vals <- as.numeric(unlist(start_vals))
   start_vals <- unique(start_vals[!is.na(start_vals)])
   stop <- start + (start_vals[2] - 1)
   subset_text <- raw_text[start:stop]
-  trimmed_text <- str_trim(subset_text)
-  fin_text <- str_split(trimmed_text, " ")
-  o <- suppressWarnings(map_df(fin_text, extract_stats))
+  trimmed_text <- stringr::str_trim(subset_text)
+  fin_text <- stringr::str_split(trimmed_text, " ")
+  o <- suppressWarnings(purrr::map_df(fin_text, extract_stats))
   o$seed <- suppressWarnings(as.numeric(o$seed))
   o <- o[!is.na(o$seed), ]
-  tbl_df(o)
+  dplyr::tbl_df(o)
 }
 
 if(getRversion() >= "2.15.1")  globalVariables(c("Value", "se", "Class", "Variable", "."))
