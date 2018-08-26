@@ -9,7 +9,15 @@
 #' compare_solutions(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
 #' @export
 
-compare_solutions <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3, 6), center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC", return_table = FALSE, prior_control = F) {
+compare_solutions <- function(df, ...,
+                              n_profiles_range = 1:9,
+                              models = list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated")),
+                              center_raw_data = FALSE,
+                              scale_raw_data = FALSE,
+                              statistic = "BIC",
+                              return_table = FALSE,
+                              prior_control = F) {
+
   d <- select_ancillary_functions(df, ...)
 
   if (center_raw_data == T | scale_raw_data == T) {
@@ -17,12 +25,21 @@ compare_solutions <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3
   }
 
   model <- case_when(
-    model == 1 ~ "EEI",
-    model == 2 ~ "EEE",
-    model == 3 ~ "VVI",
-    model == 6 ~ "VVV",
-    TRUE ~ as.character(model)
+      variances == "fixed" & covariances == "zero" ~ "EEI",
+      variances == "freely-estimated" & covariances == "zero" ~ "EEE",
+      variances == "fixed" & covariances == "fixed" ~ "VVI",
+      # variances == "freely-estimated" & covariances == "fixed" ~ 4,
+      # variances == "fixed" & covariances == "freely-estimated" ~ 5,
+      variances == "freely-estimated" & covariances == "freely-estimated" ~ "VVV"
   )
+
+  # model <- case_when(
+  #   model == 1 ~ "EEI",
+  #   model == 2 ~ "EEE",
+  #   model == 3 ~ "VVI",
+  #   model == 6 ~ "VVV",
+  #   TRUE ~ as.character(model)
+  # )
 
   if (prior_control == FALSE) {
     if (statistic == "BIC") {
@@ -44,13 +61,13 @@ compare_solutions <- function(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3
 
   y <- x %>%
     as.data.frame.matrix() %>%
-    rownames_to_column("n_profiles") %>%
-    rename(
-      `Varying means, equal variances, covariances fixed to 0 (Model 1)` = "EEI",
-      `Varying means, equal variances and covariances (Model 2)` = "EEE",
-      `Varying means and variances, covariances fixed to 0 (Model 3)` = "VVI",
-      `Varying means, variances, and covariances (Model 6)` = "VVV"
-    )
+    rownames_to_column("n_profiles")
+    # rename(
+    #   `Varying means, equal variances, covariances fixed to 0 (Model 1)` = "EEI",
+    #   `Varying means and variances, covariances fixed to 0 (Model 2)` = "VVI",
+    #   `Varying means, equal variances and covariances (Model 3)` = "EEE",
+    #   `Varying means, variances, and covariances (Model 6)` = "VVV"
+    # )
 
   to_plot <- y %>%
     gather("Model", "val", -.data$n_profiles) %>%

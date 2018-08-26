@@ -3,7 +3,8 @@
 #' @param df data.frame with two or more columns with continuous variables
 #' @param ... unquoted variable names separated by commas
 #' @param n_profiles the number of profiles (or mixture components) to be estimated
-#' @param model the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means and variances, covariances fixed to 0); 3 (varying means, equal variances and covariances; and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information
+#' @param variances how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other options is "freely-estimated" (to be varying across profiles)
+#' @param covariances how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)
 #' @param center_raw_data logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE
 #' @param scale_raw_data logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE
 #' @param to_return character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
@@ -40,13 +41,13 @@ estimate_profiles <- function(df,
     d <- mutate_at(d, vars(-row_number), center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
   }
 
-  if (model == 1) {
+  if (variances == "fixed" & covariances == "zero") {
     model <- "EEI"
-  } else if (model == 3) {
+  } else if (variances == "fixed" & covariances == "fixed") {
     model <- "EEE"
-  } else if (model == 2) {
+  } else if (variances == "freely-estimated" & covariances == "zero") {
     model <- "VVI"
-  } else if (model == 4) {
+  } else if (variances == "freely-estimated" & covariances == "freely-estimated") {
     model <- "VVV"
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
     model <- model

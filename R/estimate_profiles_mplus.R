@@ -38,7 +38,8 @@ estimate_profiles_mplus <- function(df,
                                     script_filename = "i.inp",
                                     output_filename = "i.out",
                                     savedata_filename = "d-mod.dat",
-                                    model = 1,
+                                    variances = "fixed",
+                                    covariances = "zero",
                                     starts = c(100, 10),
                                     m_iterations = 500,
                                     st_iterations = 20,
@@ -86,6 +87,16 @@ estimate_profiles_mplus <- function(df,
   for (i in seq_along(names(d))) {
     var_list[[i]] <- names(d)[i]
   }
+
+  model <- case_when(
+      variances == "fixed" & covariances == "zero" ~ 1,
+      variances == "freely-estimated" & covariances == "zero" ~ 2,
+      variances == "fixed" & covariances == "fixed" ~ 3,
+      variances == "freely-estimated" & covariances == "fixed" ~ 4,
+      variances == "fixed" & covariances == "freely-estimated" ~ 5,
+      variances == "freely-estimated" & covariances == "freely-estimated" ~ 6,
+  )
+
   titles <- c(
     "Equal variances, and covariances fixed to 0 (model 1)",
     "Equal variances, and equal covariances (model 2)",
@@ -94,6 +105,7 @@ estimate_profiles_mplus <- function(df,
     "Equal variances, and varying covariances (model 5)",
     "Varying variances, and varying covariances (model 6)"
   )
+
   TITLE <- paste0("TITLE: ", titles[model])
 
   DATA <- paste0("DATA: File is ", data_filename, ";")
@@ -140,21 +152,21 @@ estimate_profiles_mplus <- function(df,
   MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
 
   if (include_VLMR == TRUE) {
-    OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 sampstat svalues patterns residual stdyx;"
+    OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
     if (include_BLRT == TRUE) {
-      OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
+      OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx TECH14;"
     }
   } else {
-    OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx;"
+    OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
     if (include_BLRT == TRUE) {
-      OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
+      OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 tech13 sampstat svalues patterns residual stdyx TECH14;"
     }
   }
 
   SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
   SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
-  if (model == 1) {
+  if (variances == "fixed" & covariances == "zero") {
     model_name <- "Varying means, equal variances, and covariances fixed to 0"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
     class_collector <- list()
@@ -165,7 +177,7 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = F)
       )
     }
-  } else if (model == 3) {
+    } else if (variances == "freely-estimated" & covariances == "zero") {
     model_name <- "Varying means, varying variances, and covariances fixed to 0"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
     class_collector <- list()
@@ -176,7 +188,7 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = F)
       )
     }
-  } else if (model == 2) {
+    } else if (variances == "fixed" & covariances == "fixed") {
     model_name <- "Varying means, equal variances, and equal covariances"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
@@ -190,8 +202,8 @@ estimate_profiles_mplus <- function(df,
         )
       )
     }
-  } else if (model == 4) {
-    model_name <- "Varying means, varying variances, and equal covariances"
+    } else if (variances == "freely-estimated" & covariances == "fixed") {
+        model_name <- "Varying means, varying variances, and equal covariances"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
     for (i in 1:n_profiles) {
@@ -204,7 +216,7 @@ estimate_profiles_mplus <- function(df,
         )
       )
     }
-  } else if (model == 5) {
+    } else if (variances == "fixed" & covariances == "freely-estimated") {
     model_name <- "Varying means, equal variances, and varying covariances"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
@@ -215,7 +227,7 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = T)
       )
     }
-  } else if (model == 6) {
+    } else if (variances == "freely-estimated" & covariances == "freely-estimated") {
     model_name <- "Varying means, varying variances, and varying covariances"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
@@ -250,7 +262,7 @@ estimate_profiles_mplus <- function(df,
 
   message("Model ", paste0(model_name, " (", n_profiles, " latent profiles)"))
   x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
-  capture <- capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
+  capture <- capture.output(m <- suppressWarnings(MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename))))
 
   if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated") {
     warning_status <- "Warning: LL not replicated"

@@ -18,7 +18,7 @@
 compare_solutions_mplus <- function(df, ...,
                                     n_profiles_min = 2,
                                     n_profiles_max = 10,
-                                    model = 1:4,
+                                    models = list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated")),
                                     starts = c(100, 10),
                                     m_iterations = 500,
                                     st_iterations = 20,
@@ -31,8 +31,10 @@ compare_solutions_mplus <- function(df, ...,
                                     include_BLRT = FALSE) {
   # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
-  out_df <- data.frame(matrix(ncol = length(model), nrow = (n_profiles_max - (n_profiles_min - 1))))
-  names(out_df) <- paste0("model_", model)
+  out_df <- data.frame(matrix(ncol = length(models),
+                              nrow = (n_profiles_max - (n_profiles_min - 1))))
+
+  names(out_df) <- paste0("model_", 1:length(models))
 
   out_df <- out_df %>%
     mutate(n_profiles = n_profiles_min:n_profiles_max) %>%
@@ -51,13 +53,23 @@ compare_solutions_mplus <- function(df, ...,
   #     remove_tmp_files <- TRUE
   # }
 
+  # case_when(
+  #     variances == "fixed" & covariances == "zero" ~ 1,
+  #     variances == "freely-estimated" & covariances == "zero" ~ 2,
+  #     variances == "fixed" & covariances == "fixed" ~ 3,
+  #     variances == "freely-estimated" & covariances == "fixed" ~ 4,
+  #     variances == "fixed" & covariances == "freely-estimated" ~ 5,
+  #     variances == "freely-estimated" & covariances == "freely-estimated" ~ 6,
+  # )
+
   for (i in n_profiles_min:n_profiles_max) {
-    for (j in model) {
+    for (j in seq(length(model_list))) {
       message(paste0("Processing model with n_profiles = ", i, " and model = ", j))
       m <- suppressMessages(estimate_profiles_mplus(
         df, ...,
         n_profiles = i,
-        model = j,
+        variances = models[[j]][1],
+        covariances = models[[j]][2],
         starts = starts,
         m_iterations = m_iterations,
         convergence_criterion = convergence_criterion,
@@ -107,7 +119,8 @@ compare_solutions_mplus <- function(df, ...,
         if (counter == 1) {
           stats_df <- data.frame(
             n_profiles = i,
-            model = j,
+            variances = models[[j]][1],
+            covariances = models[[j]][2],
             LL = m$summaries$LL,
             npar = m$summaries$Parameters,
             AIC = m$summaries$LL,
@@ -128,7 +141,8 @@ compare_solutions_mplus <- function(df, ...,
         } else {
           d <- data.frame(
             n_profiles = i,
-            model = j,
+            variances = models[[j]][1],
+            covariances = models[[j]][2],
             LL = m$summaries$LL,
             npar = m$summaries$Parameters,
             AIC = m$summaries$LL,
@@ -160,7 +174,7 @@ compare_solutions_mplus <- function(df, ...,
   }
 
   if (return_stats_df == TRUE & return_table == TRUE) {
-    return(list(as_tibble(out_df), arrange(as_tibble(stats_df), .data$model, .data$n_profiles)))
+    return(list(as_tibble(out_df), arrange(as_tibble(stats_df), .data$npar, .data$n_profiles)))
   }
 
   if (return_stats_df == TRUE) {
