@@ -55,6 +55,7 @@ estimate_profiles_mplus <- function(df,
   # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
   d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
+
   if (is.null(idvar)) {
     id <- data_frame(id = as.numeric(rownames(df)))
     idvar <- "rownum"
@@ -74,14 +75,20 @@ estimate_profiles_mplus <- function(df,
     }
   }
   d <- bind_cols(id, d)
-  # if (!is.null(cluster_ID)) {
-  #     d <- bind_cols(d, d[[cluster_ID]])
-  # }
+
+  if (!is.null(cluster_ID)) {
+      d <- bind_cols(d, d[[cluster_ID]])
+  }
+
   names(d) <- gsub("\\.", "_", names(d))
 
   x <- write_mplus(d, data_filename)
 
-  unquoted_variable_name <- paste0(names(d)[-1], collapse = " ")
+  if (!is.null(cluster_ID)) {
+      unquoted_variable_name <- paste0(names(d)[-1], collapse = " ")
+  } else {
+      unquoted_variable_name <- paste0(names(d)[-c(1:2)], collapse = " ")
+  }
 
   var_list <- vector("list", ncol(d))
   for (i in seq_along(names(d))) {
@@ -129,6 +136,7 @@ estimate_profiles_mplus <- function(df,
   } else {
     ANALYSIS_line1b <- NULL
   }
+
   ANALYSIS_line2 <- paste0("starts = ", starts[1], " ", starts[2], ";")
   ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
   ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
