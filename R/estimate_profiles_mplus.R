@@ -248,7 +248,7 @@ estimate_profiles_mplus <- function(df,
     file = script_filename
   )
 
-  message("Model ", paste0(model_name, " (", n_profiles, " latent classes)"))
+  message("Model ", paste0(model_name, " (", n_profiles, " latent profiles)"))
   x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
   capture <- capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
 
