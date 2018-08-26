@@ -19,17 +19,17 @@ bootstrap_lrt <- function(df,
   d <- select_ancillary_functions(df, ...)
 
   if (model == 1) {
-      model <- "EEI"
+    model <- "EEI"
   } else if (model == 3) {
-      model <- "EEE"
+    model <- "EEE"
   } else if (model == 2) {
-      model <- "VVI"
+    model <- "VVI"
   } else if (model == 4) {
-      model <- "VVV"
+    model <- "VVV"
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
-      model <- model
+    model <- model
   } else {
-      stop("Model name is not correctly specified: use 1, 2, 3, or 6 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
+    stop("Model name is not correctly specified: use 1, 2, 3, or 6 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
   }
 
   mclustBootstrapLRT(data = d, modelName = model)

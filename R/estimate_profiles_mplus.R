@@ -51,282 +51,300 @@ estimate_profiles_mplus <- function(df,
                                     cluster_ID = NULL,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
-    # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+  # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
-    d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
-    if(is.null(idvar)) {
-        id <- data_frame(id = as.numeric(rownames(df)))
-        idvar <- "rownum"
-    } else {
-        if(length(unique(df[[idvar]])) != length(df[[idvar]])) {
-            stop("ID variable must be unique")
-        }
-        if(is.character(df[[idvar]])) {
-            string_id <- df[[idvar]]
-            num_id    <- seq_along(df[[idvar]])
-            id <- data_frame(id = num_id)
-            names(id) <- idvar
-        }
-        else {
-            id <- data_frame(id = df[[idvar]])
-            names(id) <- idvar
-        }
+  d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
+  if (is.null(idvar)) {
+    id <- data_frame(id = as.numeric(rownames(df)))
+    idvar <- "rownum"
+  } else {
+    if (length(unique(df[[idvar]])) != length(df[[idvar]])) {
+      stop("ID variable must be unique")
     }
-    d <- bind_cols(id, d)
-    # if (!is.null(cluster_ID)) {
-    #     d <- bind_cols(d, d[[cluster_ID]])
-    # }
-    names(d) <- gsub("\\.", "_", names(d))
-
-    x <- write_mplus(d, data_filename)
-
-    unquoted_variable_name <- paste0(names(d)[-1], collapse = " ")
-
-    var_list <- vector("list", ncol(d))
-    for (i in seq_along(names(d))) {
-        var_list[[i]] <- names(d)[i]
+    if (is.character(df[[idvar]])) {
+      string_id <- df[[idvar]]
+      num_id <- seq_along(df[[idvar]])
+      id <- data_frame(id = num_id)
+      names(id) <- idvar
     }
-    titles = c("Equal variances, and covariances fixed to 0 (model 1)",
-               "Equal variances, and equal covariances (model 2)",
-               "Varying variances, and covariances fixed to 0 (model 3)",
-               "Varying variances, and equal covariances (model 4)",
-               "Equal variances, and varying covariances (model 5)",
-               "Varying variances, and varying covariances (model 6)")
-    TITLE <- paste0("TITLE: ", titles[model])
-
-    DATA <- paste0("DATA: File is ", data_filename, ";")
-
-    VARIABLE_line0 <- "VARIABLE:"
-    VARIABLE_line1 <- paste0("Names are ", idvar, " ", unquoted_variable_name, ";")
-    VARIABLE_line2 <- paste0("Classes = c(", n_profiles, ");")
-    VARIABLE_line3 <- paste0("IDVARIABLE = ", idvar, ";")
-    MISSING <- "Missing are all (-999);"
-
-    if (!is.null(cluster_ID)) {
-        VARIABLE_line4 <- paste0("Cluster = ", cluster_ID,";")
-    } else {
-        VARIABLE_line4 <- NULL
+    else {
+      id <- data_frame(id = df[[idvar]])
+      names(id) <- idvar
     }
+  }
+  d <- bind_cols(id, d)
+  # if (!is.null(cluster_ID)) {
+  #     d <- bind_cols(d, d[[cluster_ID]])
+  # }
+  names(d) <- gsub("\\.", "_", names(d))
 
-    ANALYSIS_line0 <- "ANALYSIS:"
-    ANALYSIS_line1 <- "Type is mixture;"
-    if (!is.null(cluster_ID)) {
-        ANALYSIS_line1b <- paste0("Type is complex", ";")
-    } else {
-        ANALYSIS_line1b <- NULL
+  x <- write_mplus(d, data_filename)
+
+  unquoted_variable_name <- paste0(names(d)[-1], collapse = " ")
+
+  var_list <- vector("list", ncol(d))
+  for (i in seq_along(names(d))) {
+    var_list[[i]] <- names(d)[i]
+  }
+  titles <- c(
+    "Equal variances, and covariances fixed to 0 (model 1)",
+    "Equal variances, and equal covariances (model 2)",
+    "Varying variances, and covariances fixed to 0 (model 3)",
+    "Varying variances, and equal covariances (model 4)",
+    "Equal variances, and varying covariances (model 5)",
+    "Varying variances, and varying covariances (model 6)"
+  )
+  TITLE <- paste0("TITLE: ", titles[model])
+
+  DATA <- paste0("DATA: File is ", data_filename, ";")
+
+  VARIABLE_line0 <- "VARIABLE:"
+  VARIABLE_line1 <- paste0("Names are ", idvar, " ", unquoted_variable_name, ";")
+  VARIABLE_line2 <- paste0("Classes = c(", n_profiles, ");")
+  VARIABLE_line3 <- paste0("IDVARIABLE = ", idvar, ";")
+  MISSING <- "Missing are all (-999);"
+
+  if (!is.null(cluster_ID)) {
+    VARIABLE_line4 <- paste0("Cluster = ", cluster_ID, ";")
+  } else {
+    VARIABLE_line4 <- NULL
+  }
+
+  ANALYSIS_line0 <- "ANALYSIS:"
+  ANALYSIS_line1 <- "Type is mixture;"
+  if (!is.null(cluster_ID)) {
+    ANALYSIS_line1b <- paste0("Type is complex", ";")
+  } else {
+    ANALYSIS_line1b <- NULL
+  }
+  ANALYSIS_line2 <- paste0("starts = ", starts[1], " ", starts[2], ";")
+  ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
+  ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
+  ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")
+
+  var_list <- var_list[-1]
+
+  if (is.null(optseed)) {
+    ANALYSIS_line6 <- NULL
+  } else {
+    ANALYSIS_line6 <- paste0("optseed = ", optseed, ";")
+  }
+
+  ANALYSIS_line7 <- paste0("processors = ", n_processors, ";")
+  ANALYSIS_line8 <- paste0("stscale = 3;")
+
+  MODEL_overall_line000 <- paste0("! model specified is: ", model)
+  MODEL_overall_line00 <- paste0("MODEL:")
+  MODEL_overall_line0 <- paste0("%overall%")
+  MODEL_overall_line1 <- paste0("[", unquoted_variable_name, "];")
+  MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
+
+  if (include_VLMR == TRUE) {
+    OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 sampstat svalues patterns residual stdyx;"
+    if (include_BLRT == TRUE) {
+      OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
     }
-    ANALYSIS_line2 <- paste0("starts = ", starts[1], " ", starts[2], ";")
-    ANALYSIS_line3 <- paste0("miterations = ", m_iterations, ";")
-    ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
-    ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")
-
-    var_list <- var_list[-1]
-
-    if (is.null(optseed)) {
-        ANALYSIS_line6 <- NULL
-    } else {
-        ANALYSIS_line6 <- paste0("optseed = ", optseed, ";")
+  } else {
+    OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx;"
+    if (include_BLRT == TRUE) {
+      OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
     }
+  }
 
-    ANALYSIS_line7 <- paste0("processors = ", n_processors, ";")
-    ANALYSIS_line8 <- paste0("stscale = 3;")
+  SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
+  SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
-    MODEL_overall_line000 <- paste0("! model specified is: ", model)
-    MODEL_overall_line00 <- paste0("MODEL:")
-    MODEL_overall_line0 <- paste0("%overall%")
-    MODEL_overall_line1 <- paste0("[", unquoted_variable_name, "];")
-    MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
-
-    if (include_VLMR == TRUE) {
-        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 sampstat svalues patterns residual stdyx;"
-        if (include_BLRT == TRUE) {
-            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech11 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
-        }
-    } else {
-        OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx;"
-        if (include_BLRT == TRUE) {
-            OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 tech14 tech12 sampstat svalues patterns residual stdyx TECH14;"
-        }
-    }
-
-    SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
-    SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
-
-    if (model == 1) {
-        model_name =  "Varying means, equal variances, and covariances fixed to 0"
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
-        class_collector <- list()
-        for (i in 1:n_profiles) {
-            class_collector <- c(class_collector,
-                                 make_class_mplus(var_list,class_number = i,fix_variances = T),
-                                 covariances_mplus(var_list, estimate_covariance = F))
-        }
-    } else if (model == 3) {
-        model_name =  "Varying means, varying variances, and covariances fixed to 0"
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
-        class_collector <- list()
-        for (i in 1:n_profiles) {
-            class_collector <- c(class_collector,
-                                 make_class_mplus(var_list,class_number = i,fix_variances = F),
-                                 covariances_mplus(var_list, estimate_covariance = F))
-        }
-    } else if (model == 2) {
-        model_name =  "Varying means, equal variances, and equal covariances"
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
-        class_collector <- list()
-        for (i in 1:n_profiles) {
-            class_collector <- c(class_collector,
-                                 make_class_mplus(var_list,class_number = i,fix_variances = T),
-                                 covariances_mplus(var_list,
-                                                 estimate_covariance = T,
-                                                 param_counter = length(var_list)))
-        }
-    } else if (model == 4) {
-        model_name =  "Varying means, varying variances, and equal covariances"
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
-        class_collector <- list()
-        for (i in 1:n_profiles) {
-            class_collector <- c(class_collector,
-                                 make_class_mplus(var_list,class_number = i,fix_variances = F),
-                                 covariances_mplus(var_list,
-                                                   estimate_covariance = T,
-                                                   param_counter = 0))
-        }
-    } else if (model == 5) {
-        model_name =  "Varying means, equal variances, and varying covariances"
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
-        class_collector <- list()
-        for (i in 1:n_profiles) {
-            class_collector <- c(class_collector,
-                                 make_class_mplus(var_list,class_number = i,fix_variances = T),
-                                 covariances_mplus(var_list, estimate_covariance = T))
-        }
-    } else if (model == 6) {
-        model_name =  "Varying means, varying variances, and varying covariances"
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
-        class_collector <- list()
-        for (i in 1:n_profiles) {
-            class_collector <- c(class_collector,
-                                 make_class_mplus(var_list,class_number = i,fix_variances = F),
-                                 covariances_mplus(var_list, estimate_covariance = T))
-        }
-    }
-
-    all_the_lines <- c(
-        TITLE,
-        DATA,
-        VARIABLE_line0, VARIABLE_line1, VARIABLE_line2, VARIABLE_line3, VARIABLE_line4,
-        MISSING,
-        MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
-        overall_collector,
+  if (model == 1) {
+    model_name <- "Varying means, equal variances, and covariances fixed to 0"
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
+    class_collector <- list()
+    for (i in 1:n_profiles) {
+      class_collector <- c(
         class_collector,
-        ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line1b, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7, ANALYSIS_line8,
-        OUTPUT_line0,
-        SAVEDATA_line0,
-        SAVEDATA_line1
+        make_class_mplus(var_list, class_number = i, fix_variances = T),
+        covariances_mplus(var_list, estimate_covariance = F)
+      )
+    }
+  } else if (model == 3) {
+    model_name <- "Varying means, varying variances, and covariances fixed to 0"
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
+    class_collector <- list()
+    for (i in 1:n_profiles) {
+      class_collector <- c(
+        class_collector,
+        make_class_mplus(var_list, class_number = i, fix_variances = F),
+        covariances_mplus(var_list, estimate_covariance = F)
+      )
+    }
+  } else if (model == 2) {
+    model_name <- "Varying means, equal variances, and equal covariances"
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    class_collector <- list()
+    for (i in 1:n_profiles) {
+      class_collector <- c(
+        class_collector,
+        make_class_mplus(var_list, class_number = i, fix_variances = T),
+        covariances_mplus(var_list,
+          estimate_covariance = T,
+          param_counter = length(var_list)
+        )
+      )
+    }
+  } else if (model == 4) {
+    model_name <- "Varying means, varying variances, and equal covariances"
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    class_collector <- list()
+    for (i in 1:n_profiles) {
+      class_collector <- c(
+        class_collector,
+        make_class_mplus(var_list, class_number = i, fix_variances = F),
+        covariances_mplus(var_list,
+          estimate_covariance = T,
+          param_counter = 0
+        )
+      )
+    }
+  } else if (model == 5) {
+    model_name <- "Varying means, equal variances, and varying covariances"
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    class_collector <- list()
+    for (i in 1:n_profiles) {
+      class_collector <- c(
+        class_collector,
+        make_class_mplus(var_list, class_number = i, fix_variances = T),
+        covariances_mplus(var_list, estimate_covariance = T)
+      )
+    }
+  } else if (model == 6) {
+    model_name <- "Varying means, varying variances, and varying covariances"
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    class_collector <- list()
+    for (i in 1:n_profiles) {
+      class_collector <- c(
+        class_collector,
+        make_class_mplus(var_list, class_number = i, fix_variances = F),
+        covariances_mplus(var_list, estimate_covariance = T)
+      )
+    }
+  }
+
+  all_the_lines <- c(
+    TITLE,
+    DATA,
+    VARIABLE_line0, VARIABLE_line1, VARIABLE_line2, VARIABLE_line3, VARIABLE_line4,
+    MISSING,
+    MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
+    overall_collector,
+    class_collector,
+    ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line1b, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7, ANALYSIS_line8,
+    OUTPUT_line0,
+    SAVEDATA_line0,
+    SAVEDATA_line1
+  )
+
+  all_the_lines <- gsub("(.{1,90})(\\s|$)", "\\1\n", all_the_lines) # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
+
+  cat(paste0(all_the_lines, collapse = ""),
+    file = script_filename
+  )
+
+  message("Model ", paste0(model_name, " (", n_profiles, " latent classes)"))
+  x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
+  capture <- capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
+
+  if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated") {
+    warning_status <- "Warning: LL not replicated"
+  } else {
+    warning_status <- ""
+  }
+
+  if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue" |
+    check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue" |
+    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY.  ESTIMATES CANNOT") == "Error: Convergence issue" |
+    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ERROR IN THE") == "Error: Convergence issue") {
+    error_status <- "Error: Convergence issue"
+  } else {
+    error_status <- ""
+  }
+
+
+  if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
+    message(str_trim(str_c(warning_status, " ", error_status)))
+    return(str_trim(str_c(warning_status, " ", error_status)))
+  } else {
+    message("LogLik is ", round(abs(as.vector(get_fit_stat(m, "LL"))), 3))
+    message("BIC is ", round(abs(as.vector(get_fit_stat(m, "BIC"))), 3))
+    message("Entropy is ", round(abs(as.vector(get_fit_stat(m, "Entropy"))), 3))
+  }
+
+  if ((m$summaries$Observations / m$summaries$Parameters) < 10) {
+    mm <- paste0(
+      "Only ",
+      round(m$summaries$Observations / m$summaries$Parameters, digits = 2),
+      " observations per parameter"
     )
+    message(mm)
+    warning(mm)
+  }
 
-    all_the_lines <- gsub('(.{1,90})(\\s|$)', '\\1\n', all_the_lines) # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
+  if (print_input_file == TRUE) {
+    print(read_lines(script_filename))
+    message("Note: This function currently prints the script output. You can also use the argument remove_tmp_files = FALSE to create the inp file, which you can then view in R Studio by clicking on the file name in the Files pane.")
+  }
 
-    cat(paste0(all_the_lines, collapse = ""),
-        file = script_filename)
+  if (return_save_data == TRUE) {
+    x <- tbl_df(m$savedata)
+    if (is.character(df[[idvar]])) {
+      x[[toupper(idvar)]] <- string_id[match(x[[toupper(idvar)]], num_id)]
+    }
+    # x <- tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
-    message("Model ", paste0(model_name, " (",n_profiles," latent classes)"))
-    x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
-    capture <- capture.output(m <- MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename)))
-
-    if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated") {
-        warning_status <- "Warning: LL not replicated"
-    } else {
-        warning_status <- ""
+    if (remove_tmp_files == TRUE) {
+      file.remove(data_filename)
+      file.remove(script_filename)
+      file.remove(output_filename)
+      file.remove(savedata_filename)
+      file.remove("Mplus Run Models.log")
+    }
+    fit_stats <- c("LL", "BIC", "aBIC", "AIC", "Entropy")
+    fs <- rep(NA, length(fit_stats))
+    names(fs) <- fit_stats
+    available_fit_stats <- intersect(names(m$summaries), fit_stats)
+    for (s in available_fit_stats)
+      fs[s] <- m$summaries[, s]
+    attr(x, "fit_stats") <- fs
+    attr(x, "mplus_warnings") <- m$warnings
+    attr(x, "mplus_errors") <- m$errors
+    return(x)
+  } else {
+    if (remove_tmp_files == TRUE) {
+      file.remove(data_filename)
+      file.remove(script_filename)
+      file.remove(output_filename)
+      file.remove(savedata_filename)
+      file.remove("Mplus Run Models.log")
     }
 
-    if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue" |
-        check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue" |
-        check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY.  ESTIMATES CANNOT") == "Error: Convergence issue" |
-        check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ERROR IN THE") == "Error: Convergence issue") {
-        error_status <- "Error: Convergence issue"
-    } else {
-        error_status <- ""
-    }
-
-
-    if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
-        message(str_trim(str_c(warning_status, " ", error_status)))
-        return(str_trim(str_c(warning_status, " ", error_status)))
-    } else {
-        message("LogLik is ", round(abs(as.vector(get_fit_stat(m,"LL"))), 3))
-        message("BIC is ", round(abs(as.vector(get_fit_stat(m,"BIC"))), 3))
-        message("Entropy is ", round(abs(as.vector(get_fit_stat(m,"Entropy"))), 3))
-    }
-
-    if ((m$summaries$Observations/m$summaries$Parameters) < 10) {
-        mm = paste0("Only ",
-                    round(m$summaries$Observations/m$summaries$Parameters,digits = 2),
-                    " observations per parameter")
-        message(mm)
-        warning(mm)
-    }
-
-    if (print_input_file == TRUE) {
-        print(read_lines(script_filename))
-        message("Note: This function currently prints the script output. You can also use the argument remove_tmp_files = FALSE to create the inp file, which you can then view in R Studio by clicking on the file name in the Files pane.")
-    }
-
-    if (return_save_data == TRUE) {
-        x <- tbl_df(m$savedata)
-        if(is.character(df[[idvar]])) {
-            x[[toupper(idvar)]] <- string_id[match(x[[toupper(idvar)]], num_id)]
-        }
-        # x <- tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
-
-        if (remove_tmp_files == TRUE) {
-            file.remove(data_filename)
-            file.remove(script_filename)
-            file.remove(output_filename)
-            file.remove(savedata_filename)
-            file.remove("Mplus Run Models.log")
-        }
-        fit_stats = c("LL","BIC","aBIC","AIC","Entropy")
-        fs = rep(NA,length(fit_stats))
-        names(fs) = fit_stats
-        available_fit_stats = intersect(names(m$summaries),fit_stats)
-        for (s in available_fit_stats)
-            fs[s] = m$summaries[,s]
-        attr(x,"fit_stats") = fs
-        attr(x,"mplus_warnings") = m$warnings
-        attr(x,"mplus_errors") = m$errors
-        return(x)
-
-    } else {
-        if (remove_tmp_files == TRUE) {
-            file.remove(data_filename)
-            file.remove(script_filename)
-            file.remove(output_filename)
-            file.remove(savedata_filename)
-            file.remove("Mplus Run Models.log")
-        }
-
-        return(m)
-    }
+    return(m)
+  }
 }
 
 check_list <- function(x, check) {
-    x[1] == check
+  x[1] == check
 }
 
 check_warnings <- function(x, check) {
-    if (any(map_lgl(x$warnings, check_list, check = check))) {
-        return(str_c("Warning: ", "The best loglikelihood was not replicated"))
-    } else {
-        return("No warning")
-    }
+  if (any(map_lgl(x$warnings, check_list, check = check))) {
+    return(str_c("Warning: ", "The best loglikelihood was not replicated"))
+  } else {
+    return("No warning")
+  }
 }
 
 check_errors <- function(x, check) {
-    if (any(map_lgl(x$errors, check_list, check = check))) {
-        return(str_c("Error: ", "Convergence issue"))
-    } else {
-        return("No error")
-    }
+  if (any(map_lgl(x$errors, check_list, check = check))) {
+    return(str_c("Error: ", "Convergence issue"))
+  } else {
+    return("No error")
+  }
 }

@@ -82,142 +82,143 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         theme_bw()
     }
   } else if (plot_what == "mclust") {
-      n_classes <- x$G
-      plotdat <- x$parameters$mean
-      if(to_center){
-          plotdat <- plotdat - colMeans(x$data, na.rm = TRUE)
-      }
-      if(to_scale){
-          plotdat <- plotdat / apply(x$data, 2, sd, na.rm = TRUE)
-      }
-      plotdat <- data.frame(Variable = rownames(plotdat), plotdat)
-      names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
-      plotdat <- reshape(
-              plotdat,
-              direction = "long",
-              varying = 2:ncol(plotdat),
-              timevar = "Class"
-          )[ , -4]
-      plotdat$Class <- ordered(plotdat$Class)
-      plotdat$Variable <- ordered(plotdat$Variable, levels = colnames(x$data))
+    n_classes <- x$G
+    plotdat <- x$parameters$mean
+    if (to_center) {
+      plotdat <- plotdat - colMeans(x$data, na.rm = TRUE)
+    }
+    if (to_scale) {
+      plotdat <- plotdat / apply(x$data, 2, sd, na.rm = TRUE)
+    }
+    plotdat <- data.frame(Variable = rownames(plotdat), plotdat)
+    names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
+    plotdat <- reshape(
+      plotdat,
+      direction = "long",
+      varying = 2:ncol(plotdat),
+      timevar = "Class"
+    )[, -4]
+    plotdat$Class <- ordered(plotdat$Class)
+    plotdat$Variable <- ordered(plotdat$Variable, levels = colnames(x$data))
 
-      classplot <- ggplot(NULL)
-      if (plot_rawdata) {
-          rawdata <- x$data
-          if(to_center){
-              rawdata <- sweep(rawdata, 2, colMeans(x$data, na.rm = TRUE), "-")
-          }
-          if(to_scale){
-              rawdata <- sweep(rawdata, 2, apply(x$data, 2, sd, na.rm = TRUE), "/")
-          }
-          rawdata <- data.frame(cbind(x$z, rawdata))
-          names(rawdata)[1:n_classes] <-
-              paste0("Probability.", 1:n_classes)
-          rawdata <- reshape(
-                      rawdata,
-                      direction = "long",
-                      varying = 1:n_classes,
-                      timevar = "Class"
-                  )[ , -(length(names(rawdata)[-grep("^Probability", names(rawdata))])+3)]
-          rawdata$Class <- ordered(rawdata$Class)
-          levels(rawdata$Class) <- 1:n_classes
-          names(rawdata)[1:ncol(x$data)] <-
-              paste0("Value.", gsub("\\.", "_", colnames(x$data)))
-          rawdata <-
-              reshape(
-                  rawdata,
-                  direction = "long",
-                  varying = 1:ncol(x$data),
-                  timevar = "Variable"
-              )
-          rawdata$Variable <- ordered(rawdata$Variable, levels =  gsub("\\.", "_", colnames(x$data)))
-          levels(rawdata$Variable) <- colnames(x$data)
-
-          classplot <- classplot + geom_point(
-              data = rawdata,
-              position = position_jitterdodge(jitter.width = .10),
-              aes_string(
-                  x = "Class",
-                  y = "Value",
-                  colour = "Variable",
-                  alpha = "Probability"
-              )
-          ) +
-              scale_alpha_continuous(guide = FALSE, range = c(0, .1))
+    classplot <- ggplot(NULL)
+    if (plot_rawdata) {
+      rawdata <- x$data
+      if (to_center) {
+        rawdata <- sweep(rawdata, 2, colMeans(x$data, na.rm = TRUE), "-")
       }
-      classplot <-
-          classplot + geom_point(
-              data = plotdat,
-              aes(x = Class, y = Value, colour = Variable),
-              position = position_dodge(width = .75),
-              size = 5,
-              shape = 18
+      if (to_scale) {
+        rawdata <- sweep(rawdata, 2, apply(x$data, 2, sd, na.rm = TRUE), "/")
+      }
+      rawdata <- data.frame(cbind(x$z, rawdata))
+      names(rawdata)[1:n_classes] <-
+        paste0("Probability.", 1:n_classes)
+      rawdata <- reshape(
+        rawdata,
+        direction = "long",
+        varying = 1:n_classes,
+        timevar = "Class"
+      )[, -(length(names(rawdata)[-grep("^Probability", names(rawdata))]) + 3)]
+      rawdata$Class <- ordered(rawdata$Class)
+      levels(rawdata$Class) <- 1:n_classes
+      names(rawdata)[1:ncol(x$data)] <-
+        paste0("Value.", gsub("\\.", "_", colnames(x$data)))
+      rawdata <-
+        reshape(
+          rawdata,
+          direction = "long",
+          varying = 1:ncol(x$data),
+          timevar = "Variable"
+        )
+      rawdata$Variable <- ordered(rawdata$Variable, levels = gsub("\\.", "_", colnames(x$data)))
+      levels(rawdata$Variable) <- colnames(x$data)
+
+      classplot <- classplot + geom_point(
+        data = rawdata,
+        position = position_jitterdodge(jitter.width = .10),
+        aes_string(
+          x = "Class",
+          y = "Value",
+          colour = "Variable",
+          alpha = "Probability"
+        )
+      ) +
+        scale_alpha_continuous(guide = FALSE, range = c(0, .1))
+    }
+    classplot <-
+      classplot + geom_point(
+        data = plotdat,
+        aes(x = Class, y = Value, colour = Variable),
+        position = position_dodge(width = .75),
+        size = 5,
+        shape = 18
+      )
+    # Add errorbars
+    if (!is.null(ci)) {
+      if (any(table(x$classification) / length(x$classification) < .5 * (1 / length(unique(
+        x$classification
+      ))))) {
+        warning(
+          "The number of cases per class is relatively low in some classes. Used weighted likelihood bootstrap to obtain se's."
+        )
+        bootstraps <-
+          MclustBootstrap(x,
+            nboot = 100,
+            type = "wlbs",
+            verbose = FALSE
           )
-      # Add errorbars
-      if (!is.null(ci)) {
-          if (any(table(x$classification) / length(x$classification) < .5 * (1 / length(unique(
-              x$classification
-          ))))) {
-              warning(
-                  "The number of cases per class is relatively low in some classes. Used weighted likelihood bootstrap to obtain se's."
-              )
-              bootstraps <-
-                  MclustBootstrap(x,
-                                  nboot = 100,
-                                  type = "wlbs",
-                                  verbose = FALSE)
-          } else {
-              bootstraps <-
-                  MclustBootstrap(x,
-                                  nboot = 100,
-                                  type = "bs",
-                                  verbose = FALSE)
-          }
-
-          ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
-              apply(class, 2, quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
-          }))
-          if(to_center){
-              ses <- ses - rep(colMeans(x$data, na.rm = TRUE), each = 2)
-          }
-          if(to_scale){
-              ses <- ses / rep(apply(x$data, 2, sd, na.rm = TRUE), each = 2)
-          }
-          names(ses) <- paste0("se.", 1:n_classes)
-          ses$Variable <- unlist(lapply(colnames(x$data), rep, 2))
-          ses$boundary <- "lower"
-          ses$boundary[seq(2, nrow(ses), by = 2)] <- "upper"
-          ses <-
-              reshape(
-                  ses,
-                  direction = "long",
-                  varying = 1:n_classes,
-                  timevar = "Class"
-              )
-          ses <-
-              reshape(
-                  ses,
-                  direction = "wide",
-                  idvar = c("Variable", "Class"),
-                  timevar = "boundary"
-              )
-          ses$Variable <- ordered(ses$Variable, levels = colnames(x$data))
-          classplot <-
-              classplot + geom_errorbar(
-                  data = ses,
-                  aes_string(
-                      x = "Class",
-                      colour = "Variable",
-                      ymin = "se.lower",
-                      ymax = "se.upper"
-                  ),
-                  position = position_dodge(width = .75),
-                  width = .4
-              )
+      } else {
+        bootstraps <-
+          MclustBootstrap(x,
+            nboot = 100,
+            type = "bs",
+            verbose = FALSE
+          )
       }
-      classplot + theme_bw() +
-          geom_vline(xintercept = seq(1.5, (n_classes-1)+.5, 1), linetype = 2) +
-          scale_x_discrete(expand = c(0,0))
+
+      ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
+        apply(class, 2, quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
+      }))
+      if (to_center) {
+        ses <- ses - rep(colMeans(x$data, na.rm = TRUE), each = 2)
+      }
+      if (to_scale) {
+        ses <- ses / rep(apply(x$data, 2, sd, na.rm = TRUE), each = 2)
+      }
+      names(ses) <- paste0("se.", 1:n_classes)
+      ses$Variable <- unlist(lapply(colnames(x$data), rep, 2))
+      ses$boundary <- "lower"
+      ses$boundary[seq(2, nrow(ses), by = 2)] <- "upper"
+      ses <-
+        reshape(
+          ses,
+          direction = "long",
+          varying = 1:n_classes,
+          timevar = "Class"
+        )
+      ses <-
+        reshape(
+          ses,
+          direction = "wide",
+          idvar = c("Variable", "Class"),
+          timevar = "boundary"
+        )
+      ses$Variable <- ordered(ses$Variable, levels = colnames(x$data))
+      classplot <-
+        classplot + geom_errorbar(
+          data = ses,
+          aes_string(
+            x = "Class",
+            colour = "Variable",
+            ymin = "se.lower",
+            ymax = "se.upper"
+          ),
+          position = position_dodge(width = .75),
+          width = .4
+        )
+    }
+    classplot + theme_bw() +
+      geom_vline(xintercept = seq(1.5, (n_classes - 1) + .5, 1), linetype = 2) +
+      scale_x_discrete(expand = c(0, 0))
   }
 }
-

@@ -10,7 +10,7 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
   # remove id variable, which should be the last column unless the user changed
   # it, but then that wouldn't be the direct output from estimate_profiles_mplus
 
-  mplus_data <- mplus_data[ ,-ncol(mplus_data)]
+  mplus_data <- mplus_data[, -ncol(mplus_data)]
 
   z <- count(mplus_data, .data$C)
 
