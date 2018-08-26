@@ -16,8 +16,6 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means and variances, covariances fixed to 0); 3 (varying means, equal variances and covariances; and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
-
 \item{to_return}{character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
 
 \item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
@@ -31,6 +29,10 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 \item{prior_control}{whether to include a regularizing prior; defaults to false}
 
 \item{print_which_stats}{if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed}
+
+\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other options is "freely-estimated" (to be varying across profiles)}
+
+\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models

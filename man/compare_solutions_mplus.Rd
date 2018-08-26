@@ -5,11 +5,12 @@
 \title{Explore BIC for various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)}
 \usage{
 compare_solutions_mplus(df, ..., n_profiles_min = 2,
-  n_profiles_max = 10, model = 1:4, starts = c(100, 10),
-  m_iterations = 500, st_iterations = 20,
-  convergence_criterion = 1e-06, save_models = FALSE,
-  return_table = TRUE, n_processors = 1, return_stats_df = TRUE,
-  include_VLMR = TRUE, include_BLRT = FALSE)
+  n_profiles_max = 10, models = list(c("fixed", "zero"),
+  c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated",
+  "freely-estimated")), starts = c(100, 10), m_iterations = 500,
+  st_iterations = 20, convergence_criterion = 1e-06,
+  save_models = FALSE, return_table = TRUE, n_processors = 1,
+  return_stats_df = TRUE, include_VLMR = TRUE, include_BLRT = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -19,8 +20,6 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 \item{n_profiles_min}{lower bound of the number of profiles to explore; defaults to 2}
 
 \item{n_profiles_max}{upper bound of the number of profiles to explore; defaults to 10}
-
-\item{model}{which models to include; defaults to 1:4 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
 
 \item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
 
@@ -41,6 +40,8 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 \item{include_VLMR}{whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE}
 
 \item{include_BLRT}{whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run}
+
+\item{model}{which models to include; defaults to 1:4 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
 }
 \value{
 a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned

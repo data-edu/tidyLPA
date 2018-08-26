@@ -7,12 +7,12 @@
 estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
   the_title = "test", data_filename = "d.dat",
   script_filename = "i.inp", output_filename = "i.out",
-  savedata_filename = "d-mod.dat", model = 1, starts = c(100, 10),
-  m_iterations = 500, st_iterations = 20,
-  convergence_criterion = 1e-06, remove_tmp_files = TRUE,
-  print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
-  n_processors = 1, cluster_ID = NULL, include_VLMR = TRUE,
-  include_BLRT = FALSE)
+  savedata_filename = "d-mod.dat", variances = "fixed",
+  covariances = "zero", starts = c(100, 10), m_iterations = 500,
+  st_iterations = 20, convergence_criterion = 1e-06,
+  remove_tmp_files = TRUE, print_input_file = FALSE,
+  return_save_data = TRUE, optseed = NULL, n_processors = 1,
+  cluster_ID = NULL, include_VLMR = TRUE, include_BLRT = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -33,7 +33,9 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 
 \item{savedata_filename}{name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means and variances, covariances fixed to 0); 3 (varying means, equal variances and covariances; and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other options is "freely-estimated" (to be varying across profiles)}
+
+\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)}
 
 \item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
 
