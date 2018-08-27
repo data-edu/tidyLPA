@@ -3,7 +3,7 @@
 #' @param df data.frame with two or more columns with continuous variables
 #' @param ... unquoted variable names separated by commas
 #' @param n_profiles the number of profiles (or mixture components) to be estimated
-#' @param variances how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other options is "freely-estimated" (to be varying across profiles)
+#' @param variances how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other option is "freely-estimated" (to be varying across profiles)
 #' @param covariances how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)
 #' @param center_raw_data logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE
 #' @param scale_raw_data logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE
