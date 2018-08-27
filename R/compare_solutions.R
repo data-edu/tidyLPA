@@ -24,6 +24,9 @@ compare_solutions <- function(df, ...,
     d <- mutate_all(d, center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
   }
 
+  variances <- purrr::map_chr(models, ~ .[1])
+  covariances <- purrr::map_chr(models, ~ .[2])
+
   model <- case_when(
       variances == "fixed" & covariances == "zero" ~ "EEI",
       variances == "freely-estimated" & covariances == "zero" ~ "EEE",
@@ -76,14 +79,13 @@ compare_solutions <- function(df, ...,
       val = abs(.data$val)
     ) # this is to make the BIC values positive (to align with more common formula / interpretation of BIC)
 
-  to_plot$`Model` <- fct_relevel(
-    to_plot$`Model`,
-    "Varying means, equal variances, covariances fixed to 0 (Model 1)",
-    "Varying means, equal variances and covariances (Model 2)",
-    "Varying means and variances, covariances fixed to 0 (Model 3)",
-    "Varying means, variances, and covariances (Model 6)"
-  )
-
+  # to_plot$`Model` <- fct_relevel(
+  #   to_plot$`Model`,
+  #   "Varying means, equal variances, covariances fixed to 0 (Model 1)",
+  #   "Varying means, equal variances and covariances (Model 2)",
+  #   "Varying means and variances, covariances fixed to 0 (Model 3)",
+  #   "Varying means, variances, and covariances (Model 6)"
+  # )
 
   if (return_table == TRUE) {
     return(to_plot)

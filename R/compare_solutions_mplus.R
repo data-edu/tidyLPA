@@ -11,7 +11,7 @@
 #' @examples
 #' \dontrun{
 #' compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-#' n_profiles_max = 4)
+#' n_profiles_max = 3)
 #' }
 #' @export
 
@@ -63,8 +63,8 @@ compare_solutions_mplus <- function(df, ...,
   # )
 
   for (i in n_profiles_min:n_profiles_max) {
-    for (j in seq(length(model_list))) {
-      message(paste0("Processing model with n_profiles = ", i, " and model = ", j))
+    for (j in seq(length(models))) {
+      message(str_c("Processing model with n_profiles = ", i, " and model = ", j))
       m <- suppressMessages(estimate_profiles_mplus(
         df, ...,
         n_profiles = i,

@@ -15,7 +15,6 @@
 #' @examples
 #' estimate_profiles(iris,
 #'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-#'     model = 1,
 #'     n_profiles = 3)
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
@@ -23,7 +22,8 @@
 estimate_profiles <- function(df,
                               ...,
                               n_profiles,
-                              model = 1,
+                              variances = "fixed",
+                              covariances = "zero",
                               to_return = "tibble",
                               center_raw_data = FALSE,
                               scale_raw_data = FALSE,
