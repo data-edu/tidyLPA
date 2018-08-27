@@ -5,14 +5,14 @@
 \title{Estimate parameters for profiles for a specific solution (requires purchasing and installing MPlus to use)}
 \usage{
 estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
-  the_title = "test", data_filename = "d.dat",
-  script_filename = "i.inp", output_filename = "i.out",
-  savedata_filename = "d-mod.dat", variances = "fixed",
-  covariances = "zero", starts = c(100, 10), m_iterations = 500,
-  st_iterations = 20, convergence_criterion = 1e-06,
-  remove_tmp_files = TRUE, print_input_file = FALSE,
-  return_save_data = TRUE, optseed = NULL, n_processors = 1,
-  cluster_ID = NULL, include_VLMR = TRUE, include_BLRT = FALSE)
+  data_filename = "d.dat", script_filename = "i.inp",
+  output_filename = "i.out", savedata_filename = "d-mod.dat",
+  variances = "fixed", covariances = "zero", starts = c(100, 10),
+  m_iterations = 500, st_iterations = 20,
+  convergence_criterion = 1e-06, remove_tmp_files = TRUE,
+  print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
+  n_processors = 1, cluster_ID = NULL, include_VLMR = TRUE,
+  include_BLRT = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -22,8 +22,6 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 
 \item{idvar}{optional name of the column to be used as the ID variable (should be supplied as a string). Defaults to \code{NULL}, in which case row numbers will be used. Note the ID can be numeric or string, but must be unique.}
-
-\item{the_title}{title of the model; defaults to test}
 
 \item{data_filename}{name of data file to prepare; defaults to d.dat}
 
