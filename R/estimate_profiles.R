@@ -12,6 +12,7 @@
 #' @param return_orig_df TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)
 #' @param prior_control whether to include a regularizing prior; defaults to false
 #' @param print_which_stats if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed
+#' @inheritParams compare_solutions_mplus
 #' @examples
 #' estimate_profiles(iris,
 #'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,

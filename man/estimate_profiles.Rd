@@ -4,7 +4,8 @@
 \alias{estimate_profiles}
 \title{Estimate parameters for profiles for a specific solution}
 \usage{
-estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
+estimate_profiles(df, ..., n_profiles, variances = "fixed",
+  covariances = "zero", to_return = "tibble",
   center_raw_data = FALSE, scale_raw_data = FALSE,
   return_posterior_probs = TRUE, return_orig_df = FALSE,
   prior_control = FALSE, print_which_stats = "some")
@@ -15,6 +16,10 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 \item{...}{unquoted variable names separated by commas}
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
+
+\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other option is "freely-estimated" (to be varying across profiles)}
+
+\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)}
 
 \item{to_return}{character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
 
@@ -29,10 +34,6 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 \item{prior_control}{whether to include a regularizing prior; defaults to false}
 
 \item{print_which_stats}{if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed}
-
-\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other option is "freely-estimated" (to be varying across profiles)}
-
-\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models
@@ -46,6 +47,5 @@ Creates profiles (or estimates of the mixture components) for a specific mclust 
 \examples{
 estimate_profiles(iris,
     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-    model = 1,
     n_profiles = 3)
 }

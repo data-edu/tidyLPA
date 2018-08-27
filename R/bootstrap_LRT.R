@@ -13,23 +13,25 @@
 bootstrap_lrt <- function(df,
                           ...,
                           n_profiles,
-                          model = 1) {
+                          variances = "fixed",
+                          covariances = "zero"
+                          ) {
   message("Note. This function is still in-development and may cause unexpected errors.")
 
   d <- select_ancillary_functions(df, ...)
 
-  if (model == 1) {
-    model <- "EEI"
-  } else if (model == 3) {
-    model <- "EEE"
-  } else if (model == 2) {
-    model <- "VVI"
-  } else if (model == 4) {
-    model <- "VVV"
+  if (variances == "fixed" & covariances == "zero") {
+      model <- "EEI"
+  } else if (variances == "fixed" & covariances == "fixed") {
+      model <- "EEE"
+  } else if (variances == "freely-estimated" & covariances == "zero") {
+      model <- "VVI"
+  } else if (variances == "freely-estimated" & covariances == "freely-estimated") {
+      model <- "VVV"
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
-    model <- model
+      model <- model
   } else {
-    stop("Model name is not correctly specified: use 1, 2, 3, or 6 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
+      stop("Model name is not correctly specified: use 1, 2, 3, or 6 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
   }
 
   mclustBootstrapLRT(data = d, modelName = model)

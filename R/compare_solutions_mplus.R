@@ -2,7 +2,7 @@
 #' @details Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 #' @param n_profiles_min lower bound of the number of profiles to explore; defaults to 2
 #' @param n_profiles_max upper bound of the number of profiles to explore; defaults to 10
-#' @param model which models to include; defaults to 1:4 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)
+#' @param models which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated"))
 #' @param save_models whether to save the models as rds files
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to TRUE
@@ -31,8 +31,10 @@ compare_solutions_mplus <- function(df, ...,
                                     include_BLRT = FALSE) {
   # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
-  out_df <- data.frame(matrix(ncol = length(models),
-                              nrow = (n_profiles_max - (n_profiles_min - 1))))
+  out_df <- data.frame(matrix(
+    ncol = length(models),
+    nrow = (n_profiles_max - (n_profiles_min - 1))
+  ))
 
   names(out_df) <- paste0("model_", 1:length(models))
 

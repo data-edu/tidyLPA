@@ -49,7 +49,6 @@ estimate_profiles_mplus <- function(df,
                                     cluster_ID = NULL,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
-
   d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
 
   if (is.null(idvar)) {
@@ -74,7 +73,7 @@ estimate_profiles_mplus <- function(df,
   d <- bind_cols(id, d)
 
   if (!is.null(cluster_ID)) {
-      d[[cluster_ID]] <- as.integer(as.factor(d[[cluster_ID]])) # I guess MPlus requires an integer for factors
+    d[[cluster_ID]] <- as.integer(as.factor(d[[cluster_ID]])) # I guess MPlus requires an integer for factors
   }
 
   names(d) <- gsub("\\.", "_", names(d))
@@ -84,9 +83,9 @@ estimate_profiles_mplus <- function(df,
   unquoted_use_variable_names <- paste0(names(d), collapse = " ")
 
   if (is.null(cluster_ID)) {
-      unquoted_variable_names <- paste0(names(d)[-1], collapse = " ")
+    unquoted_variable_names <- paste0(names(d)[-1], collapse = " ")
   } else {
-      unquoted_variable_names <- paste0(names(d)[c(-1, -ncol(d))], collapse = " ")
+    unquoted_variable_names <- paste0(names(d)[c(-1, -ncol(d))], collapse = " ")
   }
 
   var_list <- vector("list", ncol(d))
@@ -95,12 +94,12 @@ estimate_profiles_mplus <- function(df,
   }
 
   model <- case_when(
-      variances == "fixed" & covariances == "zero" ~ 1,
-      variances == "freely-estimated" & covariances == "zero" ~ 2,
-      variances == "fixed" & covariances == "fixed" ~ 3,
-      variances == "freely-estimated" & covariances == "fixed" ~ 4,
-      variances == "fixed" & covariances == "freely-estimated" ~ 5,
-      variances == "freely-estimated" & covariances == "freely-estimated" ~ 6
+    variances == "fixed" & covariances == "zero" ~ 1,
+    variances == "freely-estimated" & covariances == "zero" ~ 2,
+    variances == "fixed" & covariances == "fixed" ~ 3,
+    variances == "freely-estimated" & covariances == "fixed" ~ 4,
+    variances == "fixed" & covariances == "freely-estimated" ~ 5,
+    variances == "freely-estimated" & covariances == "freely-estimated" ~ 6
   )
 
   titles <- c(
@@ -144,9 +143,9 @@ estimate_profiles_mplus <- function(df,
   ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")
 
   if (is.null(cluster_ID)) {
-      var_list <- var_list[-1]
+    var_list <- var_list[-1]
   } else {
-      var_list <- var_list[c(-1, -length(var_list))]
+    var_list <- var_list[c(-1, -length(var_list))]
   }
 
   if (is.null(optseed)) {
@@ -190,7 +189,7 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = F)
       )
     }
-    } else if (variances == "freely-estimated" & covariances == "zero") {
+  } else if (variances == "freely-estimated" & covariances == "zero") {
     model_name <- "Varying means, varying variances, and covariances fixed to 0"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
     class_collector <- list()
@@ -201,7 +200,7 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = F)
       )
     }
-    } else if (variances == "fixed" & covariances == "fixed") {
+  } else if (variances == "fixed" & covariances == "fixed") {
     model_name <- "Varying means, equal variances, and equal covariances"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
@@ -215,8 +214,8 @@ estimate_profiles_mplus <- function(df,
         )
       )
     }
-    } else if (variances == "freely-estimated" & covariances == "fixed") {
-        model_name <- "Varying means, varying variances, and equal covariances"
+  } else if (variances == "freely-estimated" & covariances == "fixed") {
+    model_name <- "Varying means, varying variances, and equal covariances"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
     for (i in 1:n_profiles) {
@@ -229,7 +228,7 @@ estimate_profiles_mplus <- function(df,
         )
       )
     }
-    } else if (variances == "fixed" & covariances == "freely-estimated") {
+  } else if (variances == "fixed" & covariances == "freely-estimated") {
     model_name <- "Varying means, equal variances, and varying covariances"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
@@ -240,7 +239,7 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = T)
       )
     }
-    } else if (variances == "freely-estimated" & covariances == "freely-estimated") {
+  } else if (variances == "freely-estimated" & covariances == "freely-estimated") {
     model_name <- "Varying means, varying variances, and varying covariances"
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()

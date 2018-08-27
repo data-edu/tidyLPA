@@ -17,23 +17,22 @@ compare_solutions <- function(df, ...,
                               statistic = "BIC",
                               return_table = FALSE,
                               prior_control = F) {
-
   d <- select_ancillary_functions(df, ...)
 
   if (center_raw_data == T | scale_raw_data == T) {
     d <- mutate_all(d, center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
   }
 
-  variances <- purrr::map_chr(models, ~ .[1])
-  covariances <- purrr::map_chr(models, ~ .[2])
+  variances <- purrr::map_chr(models, ~.[1])
+  covariances <- purrr::map_chr(models, ~.[2])
 
   model <- case_when(
-      variances == "fixed" & covariances == "zero" ~ "EEI",
-      variances == "freely-estimated" & covariances == "zero" ~ "EEE",
-      variances == "fixed" & covariances == "fixed" ~ "VVI",
-      # variances == "freely-estimated" & covariances == "fixed" ~ 4,
-      # variances == "fixed" & covariances == "freely-estimated" ~ 5,
-      variances == "freely-estimated" & covariances == "freely-estimated" ~ "VVV"
+    variances == "fixed" & covariances == "zero" ~ "EEI",
+    variances == "freely-estimated" & covariances == "zero" ~ "EEE",
+    variances == "fixed" & covariances == "fixed" ~ "VVI",
+    # variances == "freely-estimated" & covariances == "fixed" ~ 4,
+    # variances == "fixed" & covariances == "freely-estimated" ~ 5,
+    variances == "freely-estimated" & covariances == "freely-estimated" ~ "VVV"
   )
 
   # model <- case_when(
@@ -65,12 +64,12 @@ compare_solutions <- function(df, ...,
   y <- x %>%
     as.data.frame.matrix() %>%
     rownames_to_column("n_profiles")
-    # rename(
-    #   `Varying means, equal variances, covariances fixed to 0 (Model 1)` = "EEI",
-    #   `Varying means and variances, covariances fixed to 0 (Model 2)` = "VVI",
-    #   `Varying means, equal variances and covariances (Model 3)` = "EEE",
-    #   `Varying means, variances, and covariances (Model 6)` = "VVV"
-    # )
+  # rename(
+  #   `Varying means, equal variances, covariances fixed to 0 (Model 1)` = "EEI",
+  #   `Varying means and variances, covariances fixed to 0 (Model 2)` = "VVI",
+  #   `Varying means, equal variances and covariances (Model 3)` = "EEE",
+  #   `Varying means, variances, and covariances (Model 6)` = "VVV"
+  # )
 
   to_plot <- y %>%
     gather("Model", "val", -.data$n_profiles) %>%
