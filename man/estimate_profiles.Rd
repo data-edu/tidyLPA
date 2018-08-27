@@ -30,7 +30,7 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 
 \item{print_which_stats}{if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed}
 
-\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other options is "freely-estimated" (to be varying across profiles)}
+\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other option is "freely-estimated" (to be varying across profiles)}
 
 \item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)}
 }

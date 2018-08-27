@@ -4,9 +4,11 @@
 \alias{compare_solutions}
 \title{Explore BIC for various models and numbers of profiles}
 \usage{
-compare_solutions(df, ..., n_profiles_range = 1:9, model = c(1, 2, 3,
-  6), center_raw_data = FALSE, scale_raw_data = FALSE,
-  statistic = "BIC", return_table = FALSE, prior_control = F)
+compare_solutions(df, ..., n_profiles_range = 1:9,
+  models = list(c("fixed", "zero"), c("freely-estimated", "zero"),
+  c("fixed", "fixed"), c("freely-estimated", "freely-estimated")),
+  center_raw_data = FALSE, scale_raw_data = FALSE, statistic = "BIC",
+  return_table = FALSE, prior_control = F)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}

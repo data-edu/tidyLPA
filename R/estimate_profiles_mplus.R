@@ -5,7 +5,6 @@
 #' @param script_filename name of script to prepare; defaults to i.inp
 #' @param output_filename name of the output; defaults to o.out
 #' @param savedata_filename name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out
-#' @param the_title title of the model; defaults to test
 #' @param starts number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)
 #' @param m_iterations number of iterations for the EM algorithm; defaults to 500
 #' @param st_iterations the number of initial stage iterations; defaults to 10; can be set more to be more conservative to 50
@@ -23,8 +22,7 @@
 #' \dontrun{
 #' m <- estimate_profiles_mplus(iris,
 #'                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-#'                             n_profiles = 2,
-#'                             model = 1)
+#'                             n_profiles = 2)
 #' }
 #' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
 #' @export
@@ -33,7 +31,6 @@ estimate_profiles_mplus <- function(df,
                                     ...,
                                     n_profiles,
                                     idvar = NULL,
-                                    the_title = "test",
                                     data_filename = "d.dat",
                                     script_filename = "i.inp",
                                     output_filename = "i.out",
@@ -52,13 +49,12 @@ estimate_profiles_mplus <- function(df,
                                     cluster_ID = NULL,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
-  # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
   d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
 
   if (is.null(idvar)) {
     id <- data_frame(id = as.numeric(rownames(df)))
-    idvar <- "rownum"
+    idvar <- "id"
   } else {
     if (length(unique(df[[idvar]])) != length(df[[idvar]])) {
       stop("ID variable must be unique")
@@ -74,20 +70,23 @@ estimate_profiles_mplus <- function(df,
       names(id) <- idvar
     }
   }
+
   d <- bind_cols(id, d)
 
   if (!is.null(cluster_ID)) {
-      d <- bind_cols(d, d[[cluster_ID]])
+      d[[cluster_ID]] <- as.integer(as.factor(d[[cluster_ID]])) # I guess MPlus requires an integer for factors
   }
 
   names(d) <- gsub("\\.", "_", names(d))
 
   x <- write_mplus(d, data_filename)
 
-  if (!is.null(cluster_ID)) {
-      unquoted_variable_name <- paste0(names(d)[-1], collapse = " ")
+  unquoted_use_variable_names <- paste0(names(d), collapse = " ")
+
+  if (is.null(cluster_ID)) {
+      unquoted_variable_names <- paste0(names(d)[-1], collapse = " ")
   } else {
-      unquoted_variable_name <- paste0(names(d)[-c(1:2)], collapse = " ")
+      unquoted_variable_names <- paste0(names(d)[c(-1, -ncol(d))], collapse = " ")
   }
 
   var_list <- vector("list", ncol(d))
@@ -101,7 +100,7 @@ estimate_profiles_mplus <- function(df,
       variances == "fixed" & covariances == "fixed" ~ 3,
       variances == "freely-estimated" & covariances == "fixed" ~ 4,
       variances == "fixed" & covariances == "freely-estimated" ~ 5,
-      variances == "freely-estimated" & covariances == "freely-estimated" ~ 6,
+      variances == "freely-estimated" & covariances == "freely-estimated" ~ 6
   )
 
   titles <- c(
@@ -118,7 +117,8 @@ estimate_profiles_mplus <- function(df,
   DATA <- paste0("DATA: File is ", data_filename, ";")
 
   VARIABLE_line0 <- "VARIABLE:"
-  VARIABLE_line1 <- paste0("Names are ", idvar, " ", unquoted_variable_name, ";")
+
+  VARIABLE_line1 <- paste0("Names are ", unquoted_use_variable_names, ";")
   VARIABLE_line2 <- paste0("Classes = c(", n_profiles, ");")
   VARIABLE_line3 <- paste0("IDVARIABLE = ", idvar, ";")
   MISSING <- "Missing are all (-999);"
@@ -131,6 +131,7 @@ estimate_profiles_mplus <- function(df,
 
   ANALYSIS_line0 <- "ANALYSIS:"
   ANALYSIS_line1 <- "Type is mixture;"
+
   if (!is.null(cluster_ID)) {
     ANALYSIS_line1b <- paste0("Type is complex", ";")
   } else {
@@ -142,7 +143,11 @@ estimate_profiles_mplus <- function(df,
   ANALYSIS_line4 <- paste0("stiterations = ", st_iterations, ";")
   ANALYSIS_line5 <- paste0("convergence = ", convergence_criterion, ";")
 
-  var_list <- var_list[-1]
+  if (is.null(cluster_ID)) {
+      var_list <- var_list[-1]
+  } else {
+      var_list <- var_list[c(-1, -length(var_list))]
+  }
 
   if (is.null(optseed)) {
     ANALYSIS_line6 <- NULL
@@ -156,8 +161,8 @@ estimate_profiles_mplus <- function(df,
   MODEL_overall_line000 <- paste0("! model specified is: ", model)
   MODEL_overall_line00 <- paste0("MODEL:")
   MODEL_overall_line0 <- paste0("%overall%")
-  MODEL_overall_line1 <- paste0("[", unquoted_variable_name, "];")
-  MODEL_overall_line2 <- paste0(unquoted_variable_name, ";")
+  MODEL_overall_line1 <- paste0("[", unquoted_variable_names, "];")
+  MODEL_overall_line2 <- paste0(unquoted_variable_names, ";")
 
   if (include_VLMR == TRUE) {
     OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"

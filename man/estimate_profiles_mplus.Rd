@@ -33,7 +33,7 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 
 \item{savedata_filename}{name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out}
 
-\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other options is "freely-estimated" (to be varying across profiles)}
+\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other option is "freely-estimated" (to be varying across profiles)}
 
 \item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)}
 
@@ -74,7 +74,6 @@ Creates an mplus model (.inp) and associated data file (.dat)
 \dontrun{
 m <- estimate_profiles_mplus(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-                            n_profiles = 2,
-                            model = 1)
+                            n_profiles = 2)
 }
 }

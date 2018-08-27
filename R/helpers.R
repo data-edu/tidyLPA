@@ -19,7 +19,6 @@ select_ancillary_functions <- function(df, ...) {
   return(d)
 }
 
-
 select_ancillary_functions_mplus <- function(df, ...) {
   if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
   df %>%
