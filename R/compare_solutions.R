@@ -4,6 +4,7 @@
 #' @param statistic what statistic to plot; BIC or ICL are presently available as options
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE
 #' @inheritParams estimate_profiles
+#' @inheritParams compare_solutions_mplus
 #' @return a ggplot2 plot of the BIC values for the explored models
 #' @examples
 #' compare_solutions(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
