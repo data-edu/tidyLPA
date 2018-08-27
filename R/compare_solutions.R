@@ -35,14 +35,6 @@ compare_solutions <- function(df, ...,
     variances == "freely-estimated" & covariances == "freely-estimated" ~ "VVV"
   )
 
-  # model <- case_when(
-  #   model == 1 ~ "EEI",
-  #   model == 2 ~ "EEE",
-  #   model == 3 ~ "VVI",
-  #   model == 6 ~ "VVV",
-  #   TRUE ~ as.character(model)
-  # )
-
   if (prior_control == FALSE) {
     if (statistic == "BIC") {
       x <- suppressWarnings(mclustBIC(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE))
