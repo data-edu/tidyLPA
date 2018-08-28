@@ -3,6 +3,7 @@
 #' @param n_profiles_min lower bound of the number of profiles to explore; defaults to 2
 #' @param n_profiles_max upper bound of the number of profiles to explore; defaults to 10
 #' @param models which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated"))
+#' @param cluster_ID clustering variable to use as part of MPlus 'type is complex' command
 #' @param save_models whether to save the models as rds files
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to TRUE
@@ -20,6 +21,7 @@ compare_solutions_mplus <- function(df, ...,
                                     n_profiles_max = 10,
                                     models = list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated")),
                                     starts = c(100, 10),
+                                    cluster_ID = NULL,
                                     m_iterations = 500,
                                     st_iterations = 20,
                                     convergence_criterion = 1E-6,
@@ -72,6 +74,7 @@ compare_solutions_mplus <- function(df, ...,
         n_profiles = i,
         variances = models[[j]][1],
         covariances = models[[j]][2],
+        cluster_ID = cluster_ID,
         starts = starts,
         m_iterations = m_iterations,
         convergence_criterion = convergence_criterion,
@@ -123,6 +126,7 @@ compare_solutions_mplus <- function(df, ...,
             n_profiles = i,
             variances = models[[j]][1],
             covariances = models[[j]][2],
+            cluster_ID = cluster_ID,
             LL = m$summaries$LL,
             npar = m$summaries$Parameters,
             AIC = m$summaries$LL,

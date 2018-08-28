@@ -3,8 +3,8 @@
 #' @param n_profiles_range a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)
 #' @param statistic what statistic to plot; BIC or ICL are presently available as options
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE
+#' @param models which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated"))
 #' @inheritParams estimate_profiles
-#' @inheritParams compare_solutions_mplus
 #' @return a ggplot2 plot of the BIC values for the explored models
 #' @examples
 #' compare_solutions(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)

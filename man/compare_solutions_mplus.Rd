@@ -7,10 +7,11 @@
 compare_solutions_mplus(df, ..., n_profiles_min = 2,
   n_profiles_max = 10, models = list(c("fixed", "zero"),
   c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated",
-  "freely-estimated")), starts = c(100, 10), m_iterations = 500,
-  st_iterations = 20, convergence_criterion = 1e-06,
-  save_models = FALSE, return_table = TRUE, n_processors = 1,
-  return_stats_df = TRUE, include_VLMR = TRUE, include_BLRT = FALSE)
+  "freely-estimated")), starts = c(100, 10), cluster_ID = NULL,
+  m_iterations = 500, st_iterations = 20,
+  convergence_criterion = 1e-06, save_models = FALSE,
+  return_table = TRUE, n_processors = 1, return_stats_df = TRUE,
+  include_VLMR = TRUE, include_BLRT = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -24,6 +25,8 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 \item{models}{which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated"))}
 
 \item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
+
+\item{cluster_ID}{clustering variable to use as part of MPlus 'type is complex' command}
 
 \item{m_iterations}{number of iterations for the EM algorithm; defaults to 500}
 
