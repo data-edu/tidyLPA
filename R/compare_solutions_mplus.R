@@ -51,6 +51,7 @@ compare_solutions_mplus <- function(df, ...,
   }
 
   remove_tmp_files <- FALSE
+
   # if (save_models == TRUE) {
   #     remove_tmp_files <- FALSE
   # } else {
@@ -121,12 +122,18 @@ compare_solutions_mplus <- function(df, ...,
           BLRT_p <- m$summaries$BLRT_PValue
         }
 
+        if (is.null(cluster_ID)){
+            cluster_ID_label <- NA
+        } else {
+            cluster_ID_label <- cluster_ID
+        }
+
         if (counter == 1) {
           stats_df <- data.frame(
             n_profiles = i,
             variances = models[[j]][1],
             covariances = models[[j]][2],
-            cluster_ID = cluster_ID,
+            cluster_ID = cluster_ID_label,
             LL = m$summaries$LL,
             npar = m$summaries$Parameters,
             AIC = m$summaries$LL,
@@ -149,6 +156,7 @@ compare_solutions_mplus <- function(df, ...,
             n_profiles = i,
             variances = models[[j]][1],
             covariances = models[[j]][2],
+            cluster_ID = cluster_ID_label,
             LL = m$summaries$LL,
             npar = m$summaries$Parameters,
             AIC = m$summaries$LL,
