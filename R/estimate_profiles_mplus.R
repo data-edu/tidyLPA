@@ -301,15 +301,15 @@ estimate_profiles_mplus <- function(df,
     message("Entropy is ", round(abs(as.vector(get_fit_stat(m, "Entropy"))), 3))
   }
 
-  if ((m$summaries$Observations / m$summaries$Parameters) < 10) {
-    mm <- paste0(
-      "Only ",
-      round(m$summaries$Observations / m$summaries$Parameters, digits = 2),
-      " observations per parameter"
-    )
-    message(mm)
-    warning(mm)
-  }
+  # if ((m$summaries$Observations / m$summaries$Parameters) < 10) {
+  #   mm <- paste0(
+  #     "Only ",
+  #     round(m$summaries$Observations / m$summaries$Parameters, digits = 2),
+  #     " observations per parameter"
+  #   )
+  #   message(mm)
+  #   warning(mm)
+  # }
 
   if (print_input_file == TRUE) {
     print(read_lines(script_filename))
