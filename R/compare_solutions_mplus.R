@@ -2,7 +2,7 @@
 #' @details Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
 #' @param n_profiles_min lower bound of the number of profiles to explore; defaults to 2
 #' @param n_profiles_max upper bound of the number of profiles to explore; defaults to 10
-#' @param models which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated"))
+#' @param models which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "varying"))
 #' @param cluster_ID clustering variable to use as part of MPlus 'type is complex' command
 #' @param save_models whether to save the models as rds files
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE
@@ -19,7 +19,7 @@
 compare_solutions_mplus <- function(df, ...,
                                     n_profiles_min = 2,
                                     n_profiles_max = 10,
-                                    models = list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated")),
+                                    models = list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "varying")),
                                     starts = c(100, 10),
                                     cluster_ID = NULL,
                                     m_iterations = 500,
@@ -38,7 +38,18 @@ compare_solutions_mplus <- function(df, ...,
     nrow = (n_profiles_max - (n_profiles_min - 1))
   ))
 
-  names(out_df) <- paste0("model_", 1:length(models))
+  all_models_names = list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "equal"), c("equal", "varying"), c("varying", "varying"))
+
+  titles <- c(
+      "Equal variances and covariances fixed to 0 (model 1)",
+      "Varying variances and covariances fixed to 0 (model 2)",
+      "Equal variances and equal covariances (model 3)",
+      "Varying variances and equal covariances (model 4)",
+      "Equal variances and varying covariances (model 5)",
+      "Varying variances and varying covariances (model 6)"
+  )
+
+  names(out_df) <- titles[all_models_names %in% models]
 
   out_df <- out_df %>%
     mutate(n_profiles = n_profiles_min:n_profiles_max) %>%
@@ -60,17 +71,18 @@ compare_solutions_mplus <- function(df, ...,
 
   # case_when(
   #     variances == "fixed" & covariances == "zero" ~ 1,
-  #     variances == "freely-estimated" & covariances == "zero" ~ 2,
+  #     variances == "varying" & covariances == "zero" ~ 2,
   #     variances == "fixed" & covariances == "fixed" ~ 3,
-  #     variances == "freely-estimated" & covariances == "fixed" ~ 4,
-  #     variances == "fixed" & covariances == "freely-estimated" ~ 5,
-  #     variances == "freely-estimated" & covariances == "freely-estimated" ~ 6,
+  #     variances == "varying" & covariances == "fixed" ~ 4,
+  #     variances == "fixed" & covariances == "varying" ~ 5,
+  #     variances == "varying" & covariances == "varying" ~ 6,
   # )
 
   for (i in n_profiles_min:n_profiles_max) {
     for (j in seq(length(models))) {
       message(str_c("Processing model with n_profiles = ", i, " and model = ", j))
-      m <- suppressMessages(estimate_profiles_mplus(
+
+    m <- suppressMessages(estimate_profiles_mplus(
         df, ...,
         n_profiles = i,
         variances = models[[j]][1],
@@ -128,9 +140,19 @@ compare_solutions_mplus <- function(df, ...,
             cluster_ID_label <- cluster_ID
         }
 
+        model_number <- case_when(
+            models[[j]][1] == "equal" & models[[j]][2] == "zero" ~ 1,
+            models[[j]][1] == "varying" & models[[j]][2] == "zero" ~ 2,
+            models[[j]][1] == "equal" & models[[j]][2] == "equal" ~ 3,
+            models[[j]][1] == "varying" & models[[j]][2] == "equal" ~ 4,
+            models[[j]][1] == "equal" & models[[j]][2] == "varying" ~ 5,
+            models[[j]][1] == "varying" & models[[j]][2] == "varying" ~ 6
+        )
+
         if (counter == 1) {
           stats_df <- data.frame(
             n_profiles = i,
+            model_number = model_number,
             variances = models[[j]][1],
             covariances = models[[j]][2],
             cluster_ID = cluster_ID_label,
@@ -154,6 +176,7 @@ compare_solutions_mplus <- function(df, ...,
         } else {
           d <- data.frame(
             n_profiles = i,
+            model_number = model_number,
             variances = models[[j]][1],
             covariances = models[[j]][2],
             LL = m$summaries$LL,

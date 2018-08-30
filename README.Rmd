@@ -60,15 +60,6 @@ estimate_profiles(d,
 
 See the output is simply a data frame with the profile (and its posterior probability) and the variables used to create the profiles (this is the "tidy" part, in that the function takes and returns a data frame).
 
-In addition to the number of profiles (specified with the `n_profiles` argument), the model is important. The `model` argument allows for four models to be specified:
-
-* Varying means, equal variances, and covariances fixed to 0 (model 1)
-* Varying means, varying variances, and covariances fixed to 0 (model 2)
-* Varying means, equal variances, and equal covariances (model 3)
-* Varying means, varying variances, and varying covariances (model 4)
-
-Two additional models can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
-
 We can plot the profiles with by *piping* (using the `%>%` operator, loaded from the `dplyr` package) the output to `plot_profiles()`.
 
 ```{r}
@@ -78,6 +69,32 @@ estimate_profiles(d,
                   broad_interest, enjoyment, self_efficacy, 
                   n_profiles = 3) %>% 
     plot_profiles(to_center = TRUE)
+```
+
+## Model specification
+
+In addition to the number of profiles (specified with the `n_profiles` argument), the model is important. The `variances` and `covariances` arguments allow for four models to be specified:
+
+* Equal variances, and covariances fixed to 0 (Model 1)
+* Varying variances, and covariances fixed to 0 (Model 2)
+* Equal variances, and equal covariances (Model 3)
+* Varying variances, and varying covariances (Model 6)
+
+Two additional models (Models 4 and 5) can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
+
+The models are specified by passing arguments to the `variance` and `covariance` arguments. The possible values for these arguments are:
+
+- `variances`: "equal" and "zero"
+- `covariances`: "varying", "equal", and "zero"
+
+Here is an example of specifying a model with varying variances and covariances (Model 6): 
+
+```{r, eval = F}
+estimate_profiles(d, 
+                  broad_interest, enjoyment, self_efficacy, 
+                  variances = "varying",
+                  covariances = "varying",
+                  n_profiles = 3)
 ```
 
 ## More information

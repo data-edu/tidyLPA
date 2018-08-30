@@ -12,12 +12,13 @@
 
 compare_solutions <- function(df, ...,
                               n_profiles_range = 1:9,
-                              models = list(c("fixed", "zero"), c("freely-estimated", "zero"), c("fixed", "fixed"), c("freely-estimated", "freely-estimated")),
+                              models = list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "varying")),
                               center_raw_data = FALSE,
                               scale_raw_data = FALSE,
                               statistic = "BIC",
                               return_table = FALSE,
                               prior_control = F) {
+
   d <- select_ancillary_functions(df, ...)
 
   if (center_raw_data == T | scale_raw_data == T) {
@@ -28,13 +29,25 @@ compare_solutions <- function(df, ...,
   covariances <- purrr::map_chr(models, ~.[2])
 
   model <- case_when(
-    variances == "fixed" & covariances == "zero" ~ "EEI",
-    variances == "freely-estimated" & covariances == "zero" ~ "EEE",
-    variances == "fixed" & covariances == "fixed" ~ "VVI",
-    # variances == "freely-estimated" & covariances == "fixed" ~ 4,
-    # variances == "fixed" & covariances == "freely-estimated" ~ 5,
-    variances == "freely-estimated" & covariances == "freely-estimated" ~ "VVV"
+    variances == "equal" & covariances == "zero" ~ "EEI",
+    variances == "varying" & covariances == "zero" ~ "EEE",
+    variances == "equal" & covariances == "equal" ~ "VVI",
+    # variances == "varying" & covariances == "equal" ~ 4,
+    # variances == "equal" & covariances == "varying" ~ 5,
+    variances == "varying" & covariances == "varying" ~ "VVV"
   )
+
+
+  titles <- c(
+      "Equal variances and covariances fixed to 0 (model 1)",
+      "Varying variances and covariances fixed to 0 (model 2)",
+      "Equal variances and equal covariances (model 3)",
+      #"Varying variances and equal covariances (model 4)",
+      #"Equal variances and varying covariances (model 5)",
+      "Varying variances and varying covariances (model 6)"
+  )
+
+  title <- titles[model]
 
   if (prior_control == FALSE) {
     if (statistic == "BIC") {

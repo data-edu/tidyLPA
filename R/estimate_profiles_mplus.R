@@ -37,6 +37,7 @@ estimate_profiles_mplus <- function(df,
                                     savedata_filename = "d-mod.dat",
                                     variances = "equal",
                                     covariances = "zero",
+                                    model = NULL,
                                     starts = c(100, 10),
                                     m_iterations = 500,
                                     st_iterations = 20,
@@ -49,6 +50,18 @@ estimate_profiles_mplus <- function(df,
                                     cluster_ID = NULL,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
+
+    model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
+Model 1: variances = 'equal'; covariances = 'zero';
+Model 2: variances = 'equal'; covariances = 'equal';
+Model 3: variances = 'equal'; covariances = 'zero';
+Model 4: variances = 'varying'; covariances = 'equal' (Cannot be estimated without MPlus);
+Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated without MPlus);
+Model 6: variances = 'varying'; covariances = 'varying';
+                     ")
+
+    if (!is.null(model)) stop(model_message)
+
   d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
 
   if (is.null(idvar)) {
@@ -77,8 +90,6 @@ estimate_profiles_mplus <- function(df,
   }
 
   names(d) <- gsub("\\.", "_", names(d))
-
-
 
   x <- write_mplus(d, data_filename)
 

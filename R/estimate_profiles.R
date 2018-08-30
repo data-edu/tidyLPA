@@ -5,6 +5,7 @@
 #' @param n_profiles the number of profiles (or mixture components) to be estimated
 #' @param variances how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)
 #' @param covariances how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)
+#' @param model which model to estimate (DEPRECATED; use variances and covariances instead)
 #' @param center_raw_data logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE
 #' @param scale_raw_data logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE
 #' @param to_return character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
@@ -26,114 +27,127 @@ estimate_profiles <- function(df,
                               variances = "equal",
                               covariances = "zero",
                               to_return = "tibble",
+                              model = NULL,
                               center_raw_data = FALSE,
                               scale_raw_data = FALSE,
                               return_posterior_probs = TRUE,
                               return_orig_df = FALSE,
                               prior_control = FALSE,
                               print_which_stats = "some") {
-  if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
-  df <- mutate(df, row_number = 1:nrow(df))
+    model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
+Model 1: variances = 'equal'; covariances = 'zero';
+Model 2: variances = 'equal'; covariances = 'equal';
+Model 3: variances = 'equal'; covariances = 'zero';
+Model 4: variances = 'varying'; covariances = 'equal' (Cannot be estimated without MPlus);
+Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated without MPlus);
+Model 6: variances = 'varying'; covariances = 'varying';
+                     ")
 
-  d <- select_create_profiles(df, ...)
+    if (!is.null(model)) stop(model_message)
 
-  if (center_raw_data == T | scale_raw_data == T) {
-    d <- mutate_at(d, vars(-row_number), center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
-  }
+    if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
-  if (variances == "equal" & covariances == "zero") {
-    model <- "EEI"
-  } else if (variances == "equal" & covariances == "equal") {
-    model <- "EEE"
-  } else if (variances == "varying" & covariances == "zero") {
-    model <- "VVI"
-  } else if (variances == "varying" & covariances == "varying") {
-    model <- "VVV"
-  } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
-    model <- model
-  } else {
-    stop("Model name is not correctly specified")
-  }
+    df <- mutate(df, row_number = 1:nrow(df))
 
-  model <- case_when(
-      variances == "equal" & covariances == "zero" ~ 1,
-      variances == "varying" & covariances == "zero" ~ 2,
-      variances == "equal" & covariances == "equal" ~ 3,
-      variances == "varying" & covariances == "equal" ~ 4,
-      variances == "equal" & covariances == "varying" ~ 5,
-      variances == "varying" & covariances == "varying" ~ 6
-  )
+    d <- select_create_profiles(df, ...)
 
-  titles <- c(
-      "Equal variances and covariances fixed to 0 (model 1)",
-      "Varying variances and covariances fixed to 0 (model 2)",
-      "Equal variances and equal covariances (model 3)",
-      #"Varying variances and equal covariances (model 4)",
-      #"Equal variances and varying covariances (model 5)",
-      "Varying variances and varying covariances (model 6)"
-  )
+    if (center_raw_data == T | scale_raw_data == T) {
+        d <- mutate_at(d, vars(-row_number), center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
+    }
 
-  title <- titles[model]
+    if (variances == "equal" & covariances == "zero") {
+        model <- "EEI"
+    } else if (variances == "equal" & covariances == "equal") {
+        model <- "EEE"
+    } else if (variances == "varying" & covariances == "zero") {
+        model <- "VVI"
+    } else if (variances == "varying" & covariances == "varying") {
+        model <- "VVV"
+    } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
+        model <- model
+    } else {
+        stop("Model name is not correctly specified")
+    }
 
-  d_model <- select(d, -row_number)
+    model_number <- case_when(
+        variances == "equal" & covariances == "zero" ~ 1,
+        variances == "varying" & covariances == "zero" ~ 2,
+        variances == "equal" & covariances == "equal" ~ 3,
+        variances == "varying" & covariances == "equal" ~ 4,
+        variances == "equal" & covariances == "varying" ~ 5,
+        variances == "varying" & covariances == "varying" ~ 6
+    )
 
-  if (prior_control == FALSE) {
-    m <- Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE)
-  } else {
-    m <- Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE, prior = priorControl())
-  }
+    titles <- c(
+        "Equal variances and covariances fixed to 0 (model 1)",
+        "Varying variances and covariances fixed to 0 (model 2)",
+        "Equal variances and equal covariances (model 3)",
+        #"Varying variances and equal covariances (model 4)",
+        #"Equal variances and varying covariances (model 5)",
+        "Varying variances and varying covariances (model 6)"
+    )
 
-  if (is.null(m)) stop("Model could not be fitted")
+    title <- titles[model_number]
 
-  message("Fit ", model_print, " model with ", n_profiles, " profiles.")
+    d_model <- select(d, -row_number)
 
-  AIC <- (2 * m$df - 2 * m$loglik)
-  # BIC1 <- (m$df * log(m$n) - 2 * m$loglik) # same as BIC output from mclust
-  CAIC <- (((log(m$n) + 1) * m$df) - 2 * m$loglik)
-  SABIC <- (m$df * log((m$n + 2) / 24) - 2 * m$loglik)
+    if (prior_control == FALSE) {
+        m <- Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE)
+    } else {
+        m <- Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE, prior = priorControl())
+    }
 
-  posterior_prob <- 1 - round(m$uncertainty, 5)
+    if (is.null(m)) stop("Model could not be fitted")
 
-  if (tolower(print_which_stats) == "some") {
-    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-    message("Entropy is ", round(mean(posterior_prob), 3))
-  } else if (tolower(print_which_stats) == "all") {
-    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-    message("AIC is ", round(abs(as.vector(AIC)), 3))
-    message("CAIC is ", round(abs(as.vector(CAIC)), 3))
-    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-    message("SABIC is ", round(abs(as.vector(SABIC)), 3))
-    message("ICL is ", round(abs(as.vector(icl(m))), 3))
-    message("Entropy is ", round(mean(posterior_prob), 3))
-  }
+    message("Fit ", titles[model], " model with ", n_profiles, " profiles.")
 
-  dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up
+    AIC <- (2 * m$df - 2 * m$loglik)
+    # BIC1 <- (m$df * log(m$n) - 2 * m$loglik) # same as BIC output from mclust
+    CAIC <- (((log(m$n) + 1) * m$df) - 2 * m$loglik)
+    SABIC <- (m$df * log((m$n + 2) / 24) - 2 * m$loglik)
 
-  test <- nrow(count(dff, .data$profile))
+    posterior_prob <- 1 - round(m$uncertainty, 5)
 
-  if (test < n_profiles) warning("Some profiles are associated with no assignments. Interpret this solution with caution and consider other models.")
+    if (tolower(print_which_stats) == "some") {
+        message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+        message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+        message("Entropy is ", round(mean(posterior_prob), 3))
+    } else if (tolower(print_which_stats) == "all") {
+        message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+        message("AIC is ", round(abs(as.vector(AIC)), 3))
+        message("CAIC is ", round(abs(as.vector(CAIC)), 3))
+        message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+        message("SABIC is ", round(abs(as.vector(SABIC)), 3))
+        message("ICL is ", round(abs(as.vector(icl(m))), 3))
+        message("Entropy is ", round(mean(posterior_prob), 3))
+    }
 
-  if (return_posterior_probs == TRUE) {
-    dff <- bind_cols(dff, posterior_prob = posterior_prob)
-  }
+    dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up
 
-  attributes(dff)$mclust_output <- m
+    test <- nrow(count(dff, .data$profile))
 
-  if (return_orig_df == TRUE) {
-    to_join <- select(dff, .data$profile, .data$posterior_prob)
-    dff <- semi_join(df, dff, by = "row_number")
-    dff <- select(dff, -.data$row_number)
-    dff <- bind_cols(dff, to_join)
-  } else {
-    dff <- semi_join(dff, df, by = "row_number")
-    dff <- select(dff, -.data$row_number)
-  }
+    if (test < n_profiles) warning("Some profiles are associated with no assignments. Interpret this solution with caution and consider other models.")
 
-  if (to_return == "tibble" | to_return == "data.frame") {
-    return(as_tibble(dff))
-  } else if (to_return == "mclust") {
-    return(attributes(dff)$mclust_output)
-  }
+    if (return_posterior_probs == TRUE) {
+        dff <- bind_cols(dff, posterior_prob = posterior_prob)
+    }
+
+    attributes(dff)$mclust_output <- m
+
+    if (return_orig_df == TRUE) {
+        to_join <- select(dff, .data$profile, .data$posterior_prob)
+        dff <- semi_join(df, dff, by = "row_number")
+        dff <- select(dff, -.data$row_number)
+        dff <- bind_cols(dff, to_join)
+    } else {
+        dff <- semi_join(dff, df, by = "row_number")
+        dff <- select(dff, -.data$row_number)
+    }
+
+    if (to_return == "tibble" | to_return == "data.frame") {
+        return(as_tibble(dff))
+    } else if (to_return == "mclust") {
+        return(attributes(dff)$mclust_output)
+    }
 }

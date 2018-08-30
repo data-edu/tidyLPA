@@ -14,9 +14,9 @@ bootstrap_lrt(df, ..., n_profiles, variances = "fixed",
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 
-\item{variances}{how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other option is "freely-estimated" (to be varying across profiles)}
+\item{variances}{how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)}
 
-\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)}
+\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)}
 }
 \description{
 Bootstrap the likelihood-ratio test statistic for mixture components

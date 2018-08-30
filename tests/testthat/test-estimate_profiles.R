@@ -1,7 +1,7 @@
 context("test-estimate_profiles.R")
 
 test_that("estimate_profiles() works in terms of MPlus benchmarks", {
-  x <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "fixed", covariances = "zero", n_profiles = 3)
+  x <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "equal", covariances = "zero", n_profiles = 3)
   y <- dplyr::group_by(x, profile)
   z <- dplyr::summarize_all(y, mean)
 
@@ -23,10 +23,10 @@ test_that("estimate_profiles() works in terms of MPlus benchmarks", {
 })
 
 test_that("different models for estimate_profiles() works", {
-  m1 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "fixed", covariances = "zero", n_profiles = 3)
-  m3 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "fixed", covariances = "fixed", n_profiles = 3)
-  m2 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "freely-estimated", covariances = "zero", n_profiles = 3)
-  m4 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "freely-estimated", covariances = "freely-estimated", n_profiles = 3)
+  m1 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "equal", covariances = "zero", n_profiles = 3)
+  m3 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "equal", covariances = "equal", n_profiles = 3)
+  m2 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "varying", covariances = "zero", n_profiles = 3)
+  m4 <- estimate_profiles(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, variances = "varying", covariances = "varying", n_profiles = 3)
 
   expect_equal(attributes(m1)$mclust_output$loglik, -361.429, tolerance = .001)
   expect_equal(attributes(m3)$mclust_output$loglik, -256.355, tolerance = .001)
