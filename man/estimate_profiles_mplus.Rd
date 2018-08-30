@@ -5,10 +5,10 @@
 \title{Estimate parameters for profiles for a specific solution (requires purchasing and installing MPlus to use)}
 \usage{
 estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
-  the_title = "test", data_filename = "d.dat",
-  script_filename = "i.inp", output_filename = "i.out",
-  savedata_filename = "d-mod.dat", model = 1, starts = c(100, 10),
-  m_iterations = 500, st_iterations = 20,
+  data_filename = "d.dat", script_filename = "i.inp",
+  output_filename = "i.out", savedata_filename = "d-mod.dat",
+  variances = "equal", covariances = "zero", model = NULL,
+  starts = c(100, 10), m_iterations = 500, st_iterations = 20,
   convergence_criterion = 1e-06, remove_tmp_files = TRUE,
   print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
   n_processors = 1, cluster_ID = NULL, include_VLMR = TRUE,
@@ -23,8 +23,6 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 
 \item{idvar}{optional name of the column to be used as the ID variable (should be supplied as a string). Defaults to \code{NULL}, in which case row numbers will be used. Note the ID can be numeric or string, but must be unique.}
 
-\item{the_title}{title of the model; defaults to test}
-
 \item{data_filename}{name of data file to prepare; defaults to d.dat}
 
 \item{script_filename}{name of script to prepare; defaults to i.inp}
@@ -33,7 +31,11 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 
 \item{savedata_filename}{name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means and variances, covariances fixed to 0); 3 (varying means, equal variances and covariances; and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+\item{variances}{how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)}
+
+\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)}
+
+\item{model}{which model to estimate (DEPRECATED; use variances and covariances instead)}
 
 \item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
 
@@ -72,7 +74,6 @@ Creates an mplus model (.inp) and associated data file (.dat)
 \dontrun{
 m <- estimate_profiles_mplus(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-                            n_profiles = 2,
-                            model = 1)
+                            n_profiles = 2)
 }
 }

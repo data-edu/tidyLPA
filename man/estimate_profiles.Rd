@@ -4,7 +4,8 @@
 \alias{estimate_profiles}
 \title{Estimate parameters for profiles for a specific solution}
 \usage{
-estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
+estimate_profiles(df, ..., n_profiles, variances = "equal",
+  covariances = "zero", to_return = "tibble", model = NULL,
   center_raw_data = FALSE, scale_raw_data = FALSE,
   return_posterior_probs = TRUE, return_orig_df = FALSE,
   prior_control = FALSE, print_which_stats = "some")
@@ -16,9 +17,13 @@ estimate_profiles(df, ..., n_profiles, model = 1, to_return = "tibble",
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means and variances, covariances fixed to 0); 3 (varying means, equal variances and covariances; and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+\item{variances}{how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)}
+
+\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)}
 
 \item{to_return}{character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
+
+\item{model}{which model to estimate (DEPRECATED; use variances and covariances instead)}
 
 \item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
 
@@ -44,6 +49,5 @@ Creates profiles (or estimates of the mixture components) for a specific mclust 
 \examples{
 estimate_profiles(iris,
     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-    model = 1,
     n_profiles = 3)
 }

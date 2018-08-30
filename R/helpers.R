@@ -19,12 +19,11 @@ select_ancillary_functions <- function(df, ...) {
   return(d)
 }
 
-
 select_ancillary_functions_mplus <- function(df, ...) {
   if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
   df %>%
-      as_tibble() %>%
-      select(...)
+    as_tibble() %>%
+    select(...)
 }
 
 scale_vector <- function(x) {
@@ -116,53 +115,58 @@ extract_LL_mplus <- function(output_filename = "i.out") {
   dplyr::tbl_df(o)
 }
 
-if(getRversion() >= "2.15.1")  globalVariables(c("Value", "se", "Class", "Variable", "."))
+if (getRversion() >= "2.15.1") globalVariables(c("Value", "se", "Class", "Variable", "."))
 
 write_mplus <- function(d, file_name, na_string = "-999", ...) {
-	write.table(d,
-	            file = file_name,
-	            row.names = FALSE,
-	            col.names = FALSE,
-	            sep = "\t",
-	            na = as.character(na_string),
-	            ...)
+  write.table(d,
+    file = file_name,
+    row.names = FALSE,
+    col.names = FALSE,
+    sep = "\t",
+    na = as.character(na_string),
+    ...
+  )
 }
 
-make_class_mplus = function(var_list,class_number, fix_variances = F) {
-
-    class_init <- vector(length = 3, mode = "list")
-    class_init[[1]] <- paste0("%c#", class_number, "%")
-    class_init[[2]] <- paste0("[",paste(var_list, collapse = " "),"];")
-    class_init[[3]] <- paste0(paste(var_list, collapse = " "),
-                              ifelse(fix_variances,
-                                     paste0("(1-",length(var_list),")"),
-                                     ""),
-                              ";")
-    return(class_init)
+make_class_mplus <- function(var_list, class_number, fix_variances = F) {
+  class_init <- vector(length = 3, mode = "list")
+  class_init[[1]] <- paste0("%c#", class_number, "%")
+  class_init[[2]] <- paste0("[", paste(var_list, collapse = " "), "];")
+  class_init[[3]] <- paste0(
+    paste(var_list, collapse = " "),
+    ifelse(fix_variances,
+      paste0("(1-", length(var_list), ")"),
+      ""
+    ),
+    ";"
+  )
+  return(class_init)
 }
 
-covariances_mplus = function(var_list, estimate_covariance = F, param_counter = NULL) {
+covariances_mplus <- function(var_list, estimate_covariance = F, param_counter = NULL) {
+  combine2 <- utils::combn(length(var_list), 2)
+  variances <- vector(length = ncol(combine2), mode = "list")
 
-    combine2 <- combn(length(var_list),2)
-    variances <- vector(length = ncol(combine2), mode = "list")
-
-    for (k in 1:ncol(combine2)) {
-        variances[[k]] <- paste0(var_list[[combine2[1,k]]],
-                                 " WITH ",
-                                 var_list[[combine2[2,k]]],
-                                 ifelse(estimate_covariance,"","@0"),
-                                 ifelse(is.null(param_counter),
-                                        "",
-                                        paste0(" (",param_counter+k,")")),
-                                 ";")
-    }
-    return(variances)
-}
-
-
-get_fit_stat = function(m,stat) {
-    return(ifelse(stat %in% names(m$summaries),
-                  m$summaries[[stat]],
-                  NA)
+  for (k in 1:ncol(combine2)) {
+    variances[[k]] <- paste0(
+      var_list[[combine2[1, k]]],
+      " WITH ",
+      var_list[[combine2[2, k]]],
+      ifelse(estimate_covariance, "", "@0"),
+      ifelse(is.null(param_counter),
+        "",
+        paste0(" (", param_counter + k, ")")
+      ),
+      ";"
     )
+  }
+  return(variances)
+}
+
+
+get_fit_stat <- function(m, stat) {
+  return(ifelse(stat %in% names(m$summaries),
+    m$summaries[[stat]],
+    NA
+  ))
 }

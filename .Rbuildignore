@@ -15,3 +15,6 @@ iMplusThreadResults6.out
 ^SUPPORT\.md$
 .bib
 ^paper.md$
+^paper.Rmd$
+^paper.pdf$
+^paper.docx$

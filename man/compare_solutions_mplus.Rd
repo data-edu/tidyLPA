@@ -5,8 +5,9 @@
 \title{Explore BIC for various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)}
 \usage{
 compare_solutions_mplus(df, ..., n_profiles_min = 2,
-  n_profiles_max = 10, model = 1:4, starts = c(100, 10),
-  m_iterations = 500, st_iterations = 20,
+  n_profiles_max = 10, models = list(c("equal", "zero"), c("varying",
+  "zero"), c("equal", "equal"), c("varying", "varying")), starts = c(100,
+  10), cluster_ID = NULL, m_iterations = 500, st_iterations = 20,
   convergence_criterion = 1e-06, save_models = FALSE,
   return_table = TRUE, n_processors = 1, return_stats_df = TRUE,
   include_VLMR = TRUE, include_BLRT = FALSE)
@@ -20,9 +21,11 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 
 \item{n_profiles_max}{upper bound of the number of profiles to explore; defaults to 10}
 
-\item{model}{which models to include; defaults to 1:4 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
+\item{models}{which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "varying"))}
 
 \item{starts}{number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)}
+
+\item{cluster_ID}{clustering variable to use as part of MPlus 'type is complex' command}
 
 \item{m_iterations}{number of iterations for the EM algorithm; defaults to 500}
 
@@ -54,6 +57,6 @@ Explore the BIC values of a range of Mplus models in terms of a) the structure o
 \examples{
 \dontrun{
 compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-n_profiles_max = 4)
+n_profiles_max = 3)
 }
 }

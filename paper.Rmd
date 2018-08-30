@@ -15,8 +15,9 @@ affiliations:
 date: 14 August 2018
 bibliography: paper.bib
 output:
-     github_document: default
+     word_document: default
      pdf_document: default
+     github_document: default
 ---
 
 # tidyLPA: Easily carry out latent profile analysis

@@ -13,18 +13,20 @@
 bootstrap_lrt <- function(df,
                           ...,
                           n_profiles,
-                          model = 1) {
+                          variances = "fixed",
+                          covariances = "zero"
+                          ) {
   message("Note. This function is still in-development and may cause unexpected errors.")
 
   d <- select_ancillary_functions(df, ...)
 
-  if (model == 1) {
+  if (variances == "fixed" & covariances == "zero") {
       model <- "EEI"
-  } else if (model == 3) {
+  } else if (variances == "fixed" & covariances == "fixed") {
       model <- "EEE"
-  } else if (model == 2) {
+  } else if (variances == "freely-estimated" & covariances == "zero") {
       model <- "VVI"
-  } else if (model == 4) {
+  } else if (variances == "freely-estimated" & covariances == "freely-estimated") {
       model <- "VVV"
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
       model <- model
