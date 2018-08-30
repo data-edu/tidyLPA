@@ -47,23 +47,23 @@ estimate_profiles(d,
                   broad_interest, enjoyment, self_efficacy, 
                   n_profiles = 3, 
                   model = 2)
-#> Fit varying means and variances, covariances fixed to 0 (Model 3) model with 3 profiles.
-#> LogLik is 278.715
-#> BIC is 648.296
-#> Entropy is 0.84
+#> Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.
+#> LogLik is 283.991
+#> BIC is 631.589
+#> Entropy is 0.914
 #> # A tibble: 94 x 5
-#>    broad_interest enjoyment self_efficacy profile posterior_prob
-#>             <dbl>     <dbl>         <dbl> <fct>            <dbl>
-#>  1            3.8       4            1    1                0.999
-#>  2            3         3            2.75 2                0.707
-#>  3            1.8       2.8          3.38 2                0.999
-#>  4            1.4       1            2.75 2                1    
-#>  5            1.8       2.2          2    3                0.882
-#>  6            1.6       1.6          1.88 2                0.555
-#>  7            3         3.8          2.25 1                0.951
-#>  8            2.6       2.2          2    3                0.898
-#>  9            1         2.8          2.62 2                0.996
-#> 10            2.2       2            1.75 2                0.517
+#>    broad_interest model self_efficacy profile posterior_prob
+#>             <dbl> <dbl>         <dbl> <fct>            <dbl>
+#>  1            3.8   4            1    1                1.000
+#>  2            3     3            2.75 3                0.917
+#>  3            1.8   2.8          3.38 3                0.997
+#>  4            1.4   1            2.75 2                0.899
+#>  5            1.8   2.2          2    3                0.997
+#>  6            1.6   1.6          1.88 3                0.997
+#>  7            3     3.8          2.25 1                0.927
+#>  8            2.6   2.2          2    3                0.990
+#>  9            1     2.8          2.62 3                0.998
+#> 10            2.2   2            1.75 3                0.996
 #> # ... with 84 more rows
 ```
 
@@ -93,13 +93,12 @@ library(dplyr)
 
 estimate_profiles(d, 
                   broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 3, 
-                  model = 2) %>% 
+                  n_profiles = 3) %>% 
     plot_profiles(to_center = TRUE)
-#> Fit varying means and variances, covariances fixed to 0 (Model 3) model with 3 profiles.
-#> LogLik is 278.715
-#> BIC is 648.296
-#> Entropy is 0.84
+#> Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.
+#> LogLik is 283.991
+#> BIC is 631.589
+#> Entropy is 0.914
 ```
 
 ![](man/figures/README-unnamed-chunk-5-1.png)

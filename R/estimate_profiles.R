@@ -3,8 +3,8 @@
 #' @param df data.frame with two or more columns with continuous variables
 #' @param ... unquoted variable names separated by commas
 #' @param n_profiles the number of profiles (or mixture components) to be estimated
-#' @param variances how the variable variances are estimated; defaults to "fixed" (to be constant across profiles); other option is "freely-estimated" (to be varying across profiles)
-#' @param covariances how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "freely-estimated" (to be varying across profiles) and "fixed" (to be constant across profiles)
+#' @param variances how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)
+#' @param covariances how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)
 #' @param center_raw_data logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE
 #' @param scale_raw_data logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE
 #' @param to_return character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
@@ -23,7 +23,7 @@
 estimate_profiles <- function(df,
                               ...,
                               n_profiles,
-                              variances = "fixed",
+                              variances = "equal",
                               covariances = "zero",
                               to_return = "tibble",
                               center_raw_data = FALSE,
@@ -42,27 +42,39 @@ estimate_profiles <- function(df,
     d <- mutate_at(d, vars(-row_number), center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
   }
 
-  if (variances == "fixed" & covariances == "zero") {
+  if (variances == "equal" & covariances == "zero") {
     model <- "EEI"
-  } else if (variances == "fixed" & covariances == "fixed") {
+  } else if (variances == "equal" & covariances == "equal") {
     model <- "EEE"
-  } else if (variances == "freely-estimated" & covariances == "zero") {
+  } else if (variances == "varying" & covariances == "zero") {
     model <- "VVI"
-  } else if (variances == "freely-estimated" & covariances == "freely-estimated") {
+  } else if (variances == "varying" & covariances == "varying") {
     model <- "VVV"
   } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
     model <- model
   } else {
-    stop("Model name is not correctly specified: use 1, 2, 3, or 6 (see ?estimate_profiles for descriptions) or one of the model names specified from mclustModelNames() from mclust")
+    stop("Model name is not correctly specified")
   }
 
-  model_print <- ifelse(model == "EEI", "varying means, equal variances, covariances fixed to 0 (Model 1)",
-    ifelse(model == "EEE", "varying means, equal variances and covariances (Model 2)",
-      ifelse(model == "VVI", "varying means and variances, covariances fixed to 0 (Model 3)",
-        ifelse(model == "VVV", "varying means, variances, and covariances (Model 4)", model)
-      )
-    )
+  model <- case_when(
+      variances == "equal" & covariances == "zero" ~ 1,
+      variances == "varying" & covariances == "zero" ~ 2,
+      variances == "equal" & covariances == "equal" ~ 3,
+      variances == "varying" & covariances == "equal" ~ 4,
+      variances == "equal" & covariances == "varying" ~ 5,
+      variances == "varying" & covariances == "varying" ~ 6
   )
+
+  titles <- c(
+      "Equal variances and covariances fixed to 0 (model 1)",
+      "Varying variances and covariances fixed to 0 (model 2)",
+      "Equal variances and equal covariances (model 3)",
+      #"Varying variances and equal covariances (model 4)",
+      #"Equal variances and varying covariances (model 5)",
+      "Varying variances and varying covariances (model 6)"
+  )
+
+  title <- titles[model]
 
   d_model <- select(d, -row_number)
 

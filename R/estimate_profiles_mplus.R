@@ -35,7 +35,7 @@ estimate_profiles_mplus <- function(df,
                                     script_filename = "i.inp",
                                     output_filename = "i.out",
                                     savedata_filename = "d-mod.dat",
-                                    variances = "fixed",
+                                    variances = "equal",
                                     covariances = "zero",
                                     starts = c(100, 10),
                                     m_iterations = 500,
@@ -78,6 +78,8 @@ estimate_profiles_mplus <- function(df,
 
   names(d) <- gsub("\\.", "_", names(d))
 
+
+
   x <- write_mplus(d, data_filename)
 
   unquoted_use_variable_names <- paste0(names(d), collapse = " ")
@@ -94,21 +96,21 @@ estimate_profiles_mplus <- function(df,
   }
 
   model <- case_when(
-    variances == "fixed" & covariances == "zero" ~ 1,
-    variances == "freely-estimated" & covariances == "zero" ~ 2,
-    variances == "fixed" & covariances == "fixed" ~ 3,
-    variances == "freely-estimated" & covariances == "fixed" ~ 4,
-    variances == "fixed" & covariances == "freely-estimated" ~ 5,
-    variances == "freely-estimated" & covariances == "freely-estimated" ~ 6
+    variances == "equal" & covariances == "zero" ~ 1,
+    variances == "varying" & covariances == "zero" ~ 2,
+    variances == "equal" & covariances == "equal" ~ 3,
+    variances == "varying" & covariances == "equal" ~ 4,
+    variances == "equal" & covariances == "varying" ~ 5,
+    variances == "varying" & covariances == "varying" ~ 6
   )
 
   titles <- c(
-    "Equal variances, and covariances fixed to 0 (model 1)",
-    "Equal variances, and equal covariances (model 2)",
-    "Varying variances, and covariances fixed to 0 (model 3)",
-    "Varying variances, and equal covariances (model 4)",
-    "Equal variances, and varying covariances (model 5)",
-    "Varying variances, and varying covariances (model 6)"
+    "Equal variances and covariances fixed to 0 (model 1)",
+    "Varying variances and covariances fixed to 0 (model 2)",
+    "Equal variances and equal covariances (model 3)",
+    "Varying variances and equal covariances (model 4)",
+    "Equal variances and varying covariances (model 5)",
+    "Varying variances and varying covariances (model 6)"
   )
 
   TITLE <- paste0("TITLE: ", titles[model])
@@ -178,8 +180,8 @@ estimate_profiles_mplus <- function(df,
   SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
   SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
-  if (variances == "fixed" & covariances == "zero") {
-    model_name <- "Varying means, equal variances, and covariances fixed to 0"
+  if (variances == "equal" & covariances == "zero") {
+    model_name <- titles[1]
     overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
     class_collector <- list()
     for (i in 1:n_profiles) {
@@ -189,8 +191,8 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = F)
       )
     }
-  } else if (variances == "freely-estimated" & covariances == "zero") {
-    model_name <- "Varying means, varying variances, and covariances fixed to 0"
+  } else if (variances == "varying" & covariances == "zero") {
+    model_name <- titles[2]
     overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
     class_collector <- list()
     for (i in 1:n_profiles) {
@@ -200,8 +202,8 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = F)
       )
     }
-  } else if (variances == "fixed" & covariances == "fixed") {
-    model_name <- "Varying means, equal variances, and equal covariances"
+  } else if (variances == "equal" & covariances == "equal") {
+    model_name <- titles[3]
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
     for (i in 1:n_profiles) {
@@ -214,8 +216,8 @@ estimate_profiles_mplus <- function(df,
         )
       )
     }
-  } else if (variances == "freely-estimated" & covariances == "fixed") {
-    model_name <- "Varying means, varying variances, and equal covariances"
+  } else if (variances == "varying" & covariances == "equal") {
+    model_name <- titles[4]
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
     for (i in 1:n_profiles) {
@@ -228,8 +230,8 @@ estimate_profiles_mplus <- function(df,
         )
       )
     }
-  } else if (variances == "fixed" & covariances == "freely-estimated") {
-    model_name <- "Varying means, equal variances, and varying covariances"
+  } else if (variances == "equal" & covariances == "varying") {
+    model_name <- titles[5]
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
     for (i in 1:n_profiles) {
@@ -239,8 +241,8 @@ estimate_profiles_mplus <- function(df,
         covariances_mplus(var_list, estimate_covariance = T)
       )
     }
-  } else if (variances == "freely-estimated" & covariances == "freely-estimated") {
-    model_name <- "Varying means, varying variances, and varying covariances"
+  } else if (variances == "varying" & covariances == "varying") {
+    model_name <- titles[6]
     overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
     class_collector <- list()
     for (i in 1:n_profiles) {
