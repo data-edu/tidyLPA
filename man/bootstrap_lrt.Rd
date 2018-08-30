@@ -4,7 +4,8 @@
 \alias{bootstrap_lrt}
 \title{Bootstrap the likelihood-ratio test statistic for mixture components}
 \usage{
-bootstrap_lrt(df, ..., n_profiles, model = 1)
+bootstrap_lrt(df, ..., n_profiles, variances = "fixed",
+  covariances = "zero")
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -13,7 +14,9 @@ bootstrap_lrt(df, ..., n_profiles, model = 1)
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 
-\item{model}{the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means and variances, covariances fixed to 0); 3 (varying means, equal variances and covariances; and 4 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information}
+\item{variances}{how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)}
+
+\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)}
 }
 \description{
 Bootstrap the likelihood-ratio test statistic for mixture components

@@ -47,62 +47,71 @@ estimate_profiles(d,
                   broad_interest, enjoyment, self_efficacy, 
                   n_profiles = 3, 
                   model = 2)
-#> Fit varying means and variances, covariances fixed to 0 (Model 3) model with 3 profiles.
-#> LogLik is 278.715
-#> BIC is 648.296
-#> Entropy is 0.84
+#> Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.
+#> LogLik is 283.991
+#> BIC is 631.589
+#> Entropy is 0.914
 #> # A tibble: 94 x 5
-#>    broad_interest enjoyment self_efficacy profile posterior_prob
-#>             <dbl>     <dbl>         <dbl> <fct>            <dbl>
-#>  1            3.8       4            1    1                0.999
-#>  2            3         3            2.75 2                0.707
-#>  3            1.8       2.8          3.38 2                0.999
-#>  4            1.4       1            2.75 2                1    
-#>  5            1.8       2.2          2    3                0.882
-#>  6            1.6       1.6          1.88 2                0.555
-#>  7            3         3.8          2.25 1                0.951
-#>  8            2.6       2.2          2    3                0.898
-#>  9            1         2.8          2.62 2                0.996
-#> 10            2.2       2            1.75 2                0.517
+#>    broad_interest model self_efficacy profile posterior_prob
+#>             <dbl> <dbl>         <dbl> <fct>            <dbl>
+#>  1            3.8   4            1    1                1.000
+#>  2            3     3            2.75 3                0.917
+#>  3            1.8   2.8          3.38 3                0.997
+#>  4            1.4   1            2.75 2                0.899
+#>  5            1.8   2.2          2    3                0.997
+#>  6            1.6   1.6          1.88 3                0.997
+#>  7            3     3.8          2.25 1                0.927
+#>  8            2.6   2.2          2    3                0.990
+#>  9            1     2.8          2.62 3                0.998
+#> 10            2.2   2            1.75 3                0.996
 #> # ... with 84 more rows
 ```
 
 See the output is simply a data frame with the profile (and its posterior probability) and the variables used to create the profiles (this is the "tidy" part, in that the function takes and returns a data frame).
 
-In addition to the number of profiles (specified with the `n_profiles` argument), the model is important. The `model` argument allows for four models to be specified:
-
--   Varying means, equal variances, and covariances fixed to 0 (model 1)
--   Varying means, varying variances, and covariances fixed to 0 (model 2)
--   Varying means, equal variances, and equal covariances (model 3)
--   Varying means, varying variances, and varying covariances (model 4)
-
-Two additional models can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
-
 We can plot the profiles with by *piping* (using the `%>%` operator, loaded from the `dplyr` package) the output to `plot_profiles()`.
 
 ``` r
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
+library(dplyr, warn.conflicts = FALSE)
 
 estimate_profiles(d, 
                   broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 3, 
-                  model = 2) %>% 
+                  n_profiles = 3) %>% 
     plot_profiles(to_center = TRUE)
-#> Fit varying means and variances, covariances fixed to 0 (Model 3) model with 3 profiles.
-#> LogLik is 278.715
-#> BIC is 648.296
-#> Entropy is 0.84
+#> Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.
+#> LogLik is 283.991
+#> BIC is 631.589
+#> Entropy is 0.914
 ```
 
 ![](man/figures/README-unnamed-chunk-5-1.png)
+
+Model specification
+-------------------
+
+In addition to the number of profiles (specified with the `n_profiles` argument), the model is important. The `variances` and `covariances` arguments allow for four models to be specified:
+
+-   Equal variances, and covariances fixed to 0 (Model 1)
+-   Varying variances, and covariances fixed to 0 (Model 2)
+-   Equal variances, and equal covariances (Model 3)
+-   Varying variances, and varying covariances (Model 6)
+
+Two additional models (Models 4 and 5) can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
+
+The models are specified by passing arguments to the `variance` and `covariance` arguments. The possible values for these arguments are:
+
+-   `variances`: "equal" and "zero"
+-   `covariances`: "varying", "equal", and "zero"
+
+Here is an example of specifying a model with varying variances and covariances (Model 6):
+
+``` r
+estimate_profiles(d, 
+                  broad_interest, enjoyment, self_efficacy, 
+                  variances = "varying",
+                  covariances = "varying",
+                  n_profiles = 3)
+```
 
 More information
 ----------------

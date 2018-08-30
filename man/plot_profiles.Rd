@@ -41,13 +41,11 @@ Murphy, Scrucca, and Gormley, 2015).
 \examples{
 m3 <- estimate_profiles(iris,
     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-    model = 1,
     n_profiles = 3)
 plot_profiles(m3)
 
 m3 <- estimate_profiles(iris,
     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-    model = 1,
     n_profiles = 3, to_return = "mclust")
 plot_profiles(m3, plot_what = "mclust")
 }

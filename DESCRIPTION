@@ -37,10 +37,10 @@ Suggests:
     devtools,
     knitr,
     MplusAutomation,
+    parallel,
     rmarkdown,
     roxygen2,
-    testthat,
-    parallel
+    testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true

@@ -100,7 +100,7 @@ While these BIC values are ambiguous for this data, Model 1 with 4 profiles is a
 
 **Estimating parameters of profiles for a specific solution**
 
-Here, we are estimating the parameters (depending on the model specified, means, variances, and covariances) that characterize the profiles. Like the `compare_solutions()`, the first argument to `estimate_profiles()` is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas. In addition, we must specify the model (1, with `model = 1`, as well as the number of profiles (4, `n_profiles = 4`). 
+Here, we are estimating the parameters (depending on the model specified, means, variances, and covariances) that characterize the profiles. Like the `compare_solutions()`, the first argument to `estimate_profiles()` is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas.
 
 When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, information criteria, as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values. 
 
@@ -109,7 +109,6 @@ Note that these statistics are printed as messages by default but can be suppres
 ```{r}
 m3 <- estimate_profiles(d, 
                         broad_interest, enjoyment, self_efficacy,
-                        model = 1,
                         n_profiles = 4)
 ```
 
@@ -132,8 +131,7 @@ library(dplyr, warn.conflicts = FALSE)
 
 estimate_profiles(d, 
                   broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 3, 
-                  model = 2) %>% 
+                  n_profiles = 3) %>% 
     plot_profiles(to_center = TRUE)
 ```
 
@@ -142,7 +140,6 @@ Finally, we can use the output from **mclust** directly by using adding `to_retu
 ```{r}
 m3 <- estimate_profiles(d, 
                         broad_interest, enjoyment, self_efficacy, 
-                        model = 1,
                         n_profiles = 3, to_return = "mclust")
 
 plot_profiles(m3, plot_what = "mclust")
@@ -150,25 +147,42 @@ plot_profiles(m3, plot_what = "mclust")
 
 # 5. More information on model specifications
 
-As mentioned earlier, there are a number of different models representing how--or whether--different parameters are estimated. Again, these are passed to the `model` argument to the `estimate_profiles()` function (i.e. `estimate_profiles(d, broad_interest, enjoyment, self_efficacy, n_profiles = 3, model = 2)`).
+As mentioned earlier, there are a number of different models representing how - or whether - different parameters are estimated. These are passed to the `variance` and `covariance` arguments. The possible values for these arguments are:
 
-In general, the approach to choosing the model is similar to choosing the number of profiles, requiring **deciding on the basis of evidence from multiple sources**, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by [Pastor and colleagues (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the four models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. 
+- `variances`: "equal" and "zero"
+- `covariances`: "varying", "equal", and "zero"
+
+Here is an example of specifying a model with varying variances and covariances: 
+
+```{r}
+estimate_profiles(d, 
+                  broad_interest, enjoyment, self_efficacy, 
+                  variances = "varying",
+                  covariances = "varying",
+                  n_profiles = 3)
+```
+
+In general, the approach to choosing the model is similar to choosing the number of profiles, requiring **deciding on the basis of evidence from multiple sources**, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by [Pastor and colleagues (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. 
 
 Note that *p* represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.
 
-#### 1. Varying means, equal variances, and covariances fixed to 0 (model 1)
+#### 1. Equal variances, and covariances fixed to 0 (model 1)
 
 In this model, which corresponds to the mclust model wit the name "EEI", the variances are estimated to be equal across profiles, indicated by the absence of a p subscript for any of the diagonal elements of the matrix. The covariances are constrained to be zero, as indicated by the 0's between every combination of the variables. 
 
-Thus, this model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables' variances are identical for each of the profiles, and the relationships between the variables are not estimated. In this way, less degrees of freedom are taken used to explain the observations that make up the data. However, estimating more parameters--as in the other models--may better explain the data, justifying the addition in complexity that their addition involves (and their reduction in degrees of freedom).
+It is specified with `variances = "equal"` and `covariances = "zero"`. 
+
+This model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables' variances are identical for each of the profiles, and the relationships between the variables are not estimated. In this way, less degrees of freedom are taken used to explain the observations that make up the data. However, estimating more parameters--as in the other models--may better explain the data, justifying the addition in complexity that their addition involves (and their reduction in degrees of freedom).
 
 $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2 }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3 }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 $$
 
-#### 2. Varying means, varying variances, and covariances fixed to 0 (model 2)
+#### 2. Varying variances and covariances fixed to 0 (model 2)
 
 This model corresponds to the mclust model "VVI" and allows for the variances to be freely estimated across profiles. The covariances are constrained to zero. 
+
+It is specified with `variances = "varying"` and `covariances = "zero"`. 
 
 Thus, it is more flexible (and less parsimonious) than model 1, but in terms of the covariances, is more constrained than model 2.
 
@@ -177,9 +191,11 @@ $$
 $$
 
 
-#### 3. Varying means, equal variances, and equal covariances (model 3)
+#### 3. Equal variances and equal covariances (model 3)
 
 This model corresponds to the mclust model "EEE". In this model, the variances are still constrained to be the same across the profiles, although now the covariances are estimated (but like the variances, are constrained to be the same across profiles). 
+
+It is specified with `variances = "equal"` and `covariances = "equal"`. 
 
 Thus, this model is the first to estimate the covariance (or correlations) of the variables used to create the profiles, thus adding more information that can be used to better understand the characteristics of the profiles (and, potentially, better explain the data).
 
@@ -187,9 +203,36 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 $$
 
-#### 4. Varying means, varying variances, and varying covariances (model 4)
+
+#### 4. Varying means, varying variances, and equal covariances (model 4)
+
+This model, which specifies for the variances to be freely estimated across the profiles and for the covariances to be estimated to be equal across profiles, extends model 3. 
+
+It is specified with `variances = "varying"` and `covariances = "equal"`. 
+
+Unfortunately, this model cannot be specified with mclust, though it can be with MPlus; this model *can* be used with the functions to interface to MPlus described below.
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+$$
+
+#### 5. Varying means, equal variances, and varying covariances (model 5)
+
+This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. 
+
+It is specified with `variances = "equal"` and `covariances = "varying"`. 
+
+Like model 4, this model cannot be specified with mclust, though it can be with MPlus. Again, this model *can* be used with the functions to interface to MPlus described below.
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
+$$
+
+#### 6. Varying variances and varying covariances (model 4)
 
 This model corresponds to the mclust model "VVV". It allows the variances and the covariances to be freely estimated across profiles. 
+
+It is specified with `variances = "varying"` and `covariances = "varying"`. 
 
 Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications. 
 
@@ -204,7 +247,6 @@ There is a lot of output that is possible to obtain from the `estimate_profiles(
 ```{r}
 estimate_profiles(d,
                   broad_interest, enjoyment, self_efficacy,
-                  model = 1,
                   n_profiles = 4)
 ```
 
@@ -219,7 +261,6 @@ Another way is to change the `to_return` argument to "mclust" to instead return 
 ```{r}
 m3_mclust <- estimate_profiles(d, 
                                broad_interest, enjoyment, self_efficacy, 
-                               model = 1, 
                                n_profiles = 4, 
                                to_return = "mclust")
 ```
@@ -235,7 +276,6 @@ Other options include how the raw data is processed. We can center or scale the 
 ```{r}
 m3_processed_raw <- estimate_profiles(d, 
                                       broad_interest, enjoyment, self_efficacy, 
-                                      model = 1, 
                                       n_profiles = 4, 
                                       center_raw_data = TRUE, 
                                       scale_raw_data = TRUE)
@@ -246,7 +286,6 @@ Since we often wish to use the estimated profiles in subsequent analyses, we may
 ```{r}
 estimate_profiles(d, 
                   broad_interest, enjoyment,
-                  model = 1, 
                   n_profiles = 4, 
                   return_orig_df = TRUE)
 ```
@@ -291,7 +330,6 @@ Here is how to estimate profiles for a single solution. This function is very si
 ```{r, eval = F}
 m1 <- estimate_profiles_mplus(d, 
                               broad_interest, enjoyment, self_efficacy, 
-                              model = 1, 
                               n_profiles = 3)
 ```
 
@@ -314,7 +352,7 @@ There are a few other features of tidyLPA that will be described further in subs
 To determine the number of profiles for a specified model (i.e., models `1`-`4` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small data set. 
 
 ```{r, eval = F}
-bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy, model = 3)
+bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy)
 ```
 
 **Use of a prior**
@@ -324,7 +362,6 @@ Models fit with mclust can be estimated with a prior. This can be helpful for es
 ```{r, eval = F}
 estimate_profiles(d,
                   broad_interest, enjoyment, self_efficacy, 
-                  model = 1,
                   n_profiles = 4,
                   prior_control = TRUE)
 ```
