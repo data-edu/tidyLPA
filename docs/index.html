@@ -8,14 +8,21 @@
 <title>Easily Carry Out Latent Profile Analysis • tidyLPA</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><meta property="og:title" content="Easily Carry Out Latent Profile Analysis">
+<meta property="og:description" content="An interface to the 'mclust' package to easily carry out latent profile
+    analysis (&quot;LPA&quot;). Provides functionality to estimate commonly-specified models.
+    Follows a tidy approach, in that output is in the form of a data frame that can
+    subsequently be computed on. Also has functions to interface to the commercial 
+    'MPlus' software via the 'MplusAutomation' package.">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -24,18 +31,37 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">tidyLPA</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">tidyLPA</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="articles/index.html">Articles</a>
+      <a href="articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -48,12 +74,11 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     
 
     
     
-<div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <div id="background" class="section level2">
@@ -69,8 +94,7 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"tidyLPA"</span>)</code></pre></div>
 <p>You can also install the development version of tidyLPA from GitHub with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jrosen48/tidyLPA"</span>)</code></pre></div>
-<p><strong>Please note that some functions documented on the References page may only be available in the development version of tidyLPA. Also note that if an error occurs, you may try the development version to see if the issue is addressed.</strong></p>
+devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"jrosen48/tidyLPA"</span>)</code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
@@ -81,46 +105,65 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 
 <span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
                   broad_interest, enjoyment, self_efficacy, 
-                  <span class="dt">n_profiles =</span> <span class="dv">3</span>, 
-                  <span class="dt">model =</span> <span class="dv">2</span>)
-<span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.</span>
-<span class="co">#&gt; LogLik is 279.692</span>
-<span class="co">#&gt; BIC is 636.62</span>
-<span class="co">#&gt; Entropy is 0.798</span>
+                  <span class="dt">n_profiles =</span> <span class="dv">3</span>)
+<span class="co">#&gt; Fit NA model with 3 profiles.</span>
+<span class="co">#&gt; LogLik is 283.991</span>
+<span class="co">#&gt; BIC is 631.589</span>
+<span class="co">#&gt; Entropy is 0.914</span>
 <span class="co">#&gt; # A tibble: 94 x 5</span>
 <span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
 <span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;</span>
-<span class="co">#&gt;  1           3.80      4.00          1.00 1                0.976</span>
-<span class="co">#&gt;  2           3.00      3.00          2.75 2                0.847</span>
-<span class="co">#&gt;  3           1.80      2.80          3.38 2                0.982</span>
-<span class="co">#&gt;  4           1.40      1.00          2.75 3                0.963</span>
-<span class="co">#&gt;  5           1.80      2.20          2.00 3                0.824</span>
-<span class="co">#&gt;  6           1.60      1.60          1.88 3                0.960</span>
-<span class="co">#&gt;  7           3.00      3.80          2.25 1                0.847</span>
-<span class="co">#&gt;  8           2.60      2.20          2.00 3                0.704</span>
-<span class="co">#&gt;  9           1.00      2.80          2.62 3                0.584</span>
-<span class="co">#&gt; 10           2.20      2.00          1.75 3                0.861</span>
+<span class="co">#&gt;  1            3.8       4            1    1                1.000</span>
+<span class="co">#&gt;  2            3         3            2.75 3                0.917</span>
+<span class="co">#&gt;  3            1.8       2.8          3.38 3                0.997</span>
+<span class="co">#&gt;  4            1.4       1            2.75 2                0.899</span>
+<span class="co">#&gt;  5            1.8       2.2          2    3                0.997</span>
+<span class="co">#&gt;  6            1.6       1.6          1.88 3                0.997</span>
+<span class="co">#&gt;  7            3         3.8          2.25 1                0.927</span>
+<span class="co">#&gt;  8            2.6       2.2          2    3                0.990</span>
+<span class="co">#&gt;  9            1         2.8          2.62 3                0.998</span>
+<span class="co">#&gt; 10            2.2       2            1.75 3                0.996</span>
 <span class="co">#&gt; # ... with 84 more rows</span></code></pre></div>
 <p>See the output is simply a data frame with the profile (and its posterior probability) and the variables used to create the profiles (this is the “tidy” part, in that the function takes and returns a data frame).</p>
-<p>In addition to the number of profiles (specified with the <code>n_profiles</code> argument), the model is important. The <code>model</code> argument allows for four models to be specified:</p>
-<ul>
-<li>Varying means, equal variances, and covariances fixed to 0 (model 1)</li>
-<li>Varying means, equal variances, and equal covariances (model 2)</li>
-<li>Varying means, varying variances, and covariances fixed to 0 (model 3)</li>
-<li>Varying means, varying variances, and varying covariances (model 6)</li>
-</ul>
-<p>Two additional models can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
 <p>We can plot the profiles with by <em>piping</em> (using the <code>%&gt;%</code> operator, loaded from the <code>dplyr</code> package) the output to <code><a href="reference/plot_profiles.html">plot_profiles()</a></code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
+
+<span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
+                  broad_interest, enjoyment, self_efficacy, 
+                  <span class="dt">n_profiles =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="reference/plot_profiles.html">plot_profiles</a></span>(<span class="dt">to_center =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; Fit NA model with 3 profiles.</span>
+<span class="co">#&gt; LogLik is 283.991</span>
+<span class="co">#&gt; BIC is 631.589</span>
+<span class="co">#&gt; Entropy is 0.914</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="700"></p>
+</div>
+<div id="model-specification" class="section level2">
+<h2 class="hasAnchor">
+<a href="#model-specification" class="anchor"></a>Model specification</h2>
+<p>In addition to the number of profiles (specified with the <code>n_profiles</code> argument), the model can be specified in terms of whether and how the variable variances and covariances are estimated.</p>
+<p>The models are specified by passing arguments to the <code>variance</code> and <code>covariance</code> arguments. The possible values for these arguments are:</p>
+<ul>
+<li>
+<code>variances</code>: “equal” and “zero”</li>
+<li>
+<code>covariances</code>: “varying”, “equal”, and “zero”</li>
+</ul>
+<p>If no values are specified for these, then the equal variances and covariances fixed to 0 model is specified by default.</p>
+<p>These arguments allow for four models to be specified:</p>
+<ul>
+<li>Equal variances and covariances fixed to 0 (Model 1)</li>
+<li>Varying variances and covariances fixed to 0 (Model 2)</li>
+<li>Equal variances and equal covariances (Model 3)</li>
+<li>Varying variances and varying covariances (Model 6)</li>
+</ul>
+<p>Two additional models (Models 4 and 5) can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
+<p>Here is an example of specifying a model with varying variances and covariances (Model 6; not run here):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
                   broad_interest, enjoyment, self_efficacy, 
-                  <span class="dt">n_profiles =</span> <span class="dv">3</span>, 
-                  <span class="dt">model =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="reference/plot_profiles.html">plot_profiles</a></span>(<span class="dt">to_center =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; Fit varying means, equal variances and covariances (Model 2) model with 3 profiles.</span>
-<span class="co">#&gt; LogLik is 279.692</span>
-<span class="co">#&gt; BIC is 636.62</span>
-<span class="co">#&gt; Entropy is 0.798</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="672"></p>
+                  <span class="dt">variances =</span> <span class="st">"varying"</span>,
+                  <span class="dt">covariances =</span> <span class="st">"varying"</span>,
+                  <span class="dt">n_profiles =</span> <span class="dv">3</span>)</code></pre></div>
 </div>
 <div id="more-information" class="section level2">
 <h2 class="hasAnchor">
@@ -131,46 +174,54 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <li><p><em>Read the Introduction to tidyLPA</em> <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>, which has much more information on the models that can be specified with tidyLPA and on additional functionality</p></li>
 </ul>
 </div>
-<div id="contact" class="section level2">
+<div id="contributing-and-contact-information" class="section level2">
 <h2 class="hasAnchor">
-<a href="#contact" class="anchor"></a>Contact</h2>
-<p>As tidyLPA is at an early stage of its development, issues should be expected. If you have any questions or feedback, please do not hesitate to get in touch:</p>
+<a href="#contributing-and-contact-information" class="anchor"></a>Contributing and Contact Information</h2>
+<p>One of the easiest but also most important ways to contribute is to post a question or to provide feedback. Both positive <em>and</em> negative feedback is welcome and helpful. You can get in touch by . . .</p>
 <ul>
-<li>Send a message via <a href="mailto:tidylpa@googlegroups.com">tidylpa@googlegroups.com</a> or view the <a href="https://groups.google.com/forum/#!forum/tidylpa">the tidyLPA group page</a> (<em>preferred</em>)</li>
-<li>Through filing an issue on GitHub <a href="https://github.com/jrosen48/tidyLPA">here</a>
-</li>
-<li>Via <a href="http://twitter.com/jrosenberg6432">Twitter</a>
-</li>
-<li>By <a href="mailto:jrosen@msu.edu">email (jrosen@msu.edu)</a>
+<li>Sending a message via <a href="mailto:tidylpa@googlegroups.com">tidylpa@googlegroups.com</a> or view the <a href="https://groups.google.com/forum/#!forum/tidylpa">the tidyLPA group page</a> (<em>preferred</em>)</li>
+<li>Filing an issue on GitHub <a href="https://github.com/jrosen48/tidyLPA">here</a>
 </li>
 </ul>
-<p>Please note that this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
-</div>
+<p>Contributions are also welcome via by making pull requests (PR), e.g. through <a href="https://github.com/jrosen48/tidyLPA/pulls">this page on GitHub</a>. It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.</p>
+<p>Please note that this project is released with a <a href="CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>Links</h2>
+    <div class="links">
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cran.r-project.org/package=tidyLPA">https://​cran.r-project.org/​package=tidyLPA</a>
-</li>
-<li>Browse source code at <br><a href="https://jrosen48.github.io/tidyLPA/">https://​jrosen48.github.io/​tidyLPA/​</a>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=tidyLPA">https://​cloud.r-project.org/​package=tidyLPA</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/jrosen48/tidyLPA/issues">https://​github.com/​jrosen48/​tidyLPA/​issues</a>
 </li>
 </ul>
+</div>
+<div class="license">
 <h2>License</h2>
-<p><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE.html">LICENSE</a></p>
+<ul class="list-unstyled">
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+</ul>
+</div>
+<div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Joshua M Rosenberg <br><small class="roles"> Author, maintainer </small> </li>
+<li>Joshua M Rosenberg <br><small class="roles"> Author, maintainer </small>  </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
+</div>
+
+      <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/jrosen48/tidyLPA"><img src="https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://cran.r-project.org/package=tidyLPA"><img src="https://www.r-pkg.org/badges/version/tidyLPA" alt="CRAN status"></a></li>
+<li><a href="https://cran.r-project.org/package=tidyLPA"><img src="https://cranlogs.r-pkg.org/badges/tidyLPA"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
 </ul>
+</div>
 </div>
 
 </div>
@@ -181,11 +232,13 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

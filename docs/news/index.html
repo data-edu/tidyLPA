@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • tidyLPA</title>
+<title>Changelog • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Changelog" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,24 +56,44 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tidyLPA</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tidyLPA</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/index.html">Articles</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -72,41 +101,51 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      
     </div>
 
-    <div class="contents">
-    <div id="tidylpa-0-1-4" class="section level1">
-<h1 class="hasAnchor">
-<a href="#tidylpa-0-1-4" class="anchor"></a>tidyLPA 0.1.4</h1>
+    <div id="tidylpa-0-2-0" class="section level1">
+<h1 class="page-header">
+<a href="#tidylpa-0-2-0" class="anchor"></a>tidyLPA 0.2.0<small> Unreleased </small>
+</h1>
+<div id="major-breaking-change" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-breaking-change" class="anchor"></a>Major breaking change:</h2>
 <ul>
-<li>improve NAMESPACE documentation</li>
-<li>add option to return original data frame for functions that use MPlus</li>
-<li>add option to use missing data for functions that use MPlus</li>
-<li>change include_LMR argument to include VLMR</li>
+<li>change how models are specified; instead of using the model argument, whether and how the variances are covariances are estimated are passed the the variances and covariances argument; there are details in the readme and vignette and if a model argument is passed to a function, a message is returned describing how to specify the model using the variances and covariances arguments</li>
 </ul>
 </div>
-    <div id="tidylpa-0-1-3" class="section level1">
-<h1 class="hasAnchor">
-<a href="#tidylpa-0-1-3" class="anchor"></a>tidyLPA 0.1.3</h1>
+<div id="major-change" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-change" class="anchor"></a>Major change</h2>
 <ul>
-<li>improve plot_profiles() plots, including plotting bootstrapped standard when mclust output is directly used (thanks @cjvanlissa) &amp; updated vignette with example of this</li>
-<li>improve output from compare_solutions_mplus (thanks @DJAnderson07)</li>
+<li>change the compare_solutions_mplus() functions Mplus to still allow for the specification of six models, but to use the same four as compare_solutions() (which uses the mclust package, not MPlus) by default</li>
+</ul>
+</div>
+</div>
+    <div id="tidylpa-0-1-3" class="section level1">
+<h1 class="page-header">
+<a href="#tidylpa-0-1-3" class="anchor"></a>tidyLPA 0.1.3<small> 2018-03-28 </small>
+</h1>
+<ul>
+<li>improve plot_profiles() plots, including plotting bootstrapped standard when mclust output is directly used (thanks <a href='http://github.com/cjvanlissa'>@cjvanlissa</a>) &amp; updated vignette with example of this</li>
+<li>improve output from compare_solutions_mplus (thanks <a href='http://github.com/DJAnderson07'>@DJAnderson07</a>)</li>
 <li>add function, extract_LL_mplus(), to extract log-likelihoods from models fit witsah estimate_profiles_mplus()</li>
 <li>update documentation for pisaUSA15 dataset</li>
 <li>improve compare_solutions_mplus() so it more reliably handles errors</li>
-<li>improve vignette (thanks @oreojo for suggestion to mention that this package works best for continuous variables)</li>
+<li>improve vignette (thanks <a href='http://github.com/oreojo'>@oreojo</a> for suggestion to mention that this package works best for continuous variables)</li>
 <li>add URLs for package and bug reports to DESCRIPTION</li>
 <li>add C.J. van Lissa and Daniel John Anderson as contributors</li>
 </ul>
 </div>
     <div id="tidylpa-0-1-2" class="section level1">
-<h1 class="hasAnchor">
-<a href="#tidylpa-0-1-2" class="anchor"></a>tidyLPA 0.1.2</h1>
+<h1 class="page-header">
+<a href="#tidylpa-0-1-2" class="anchor"></a>tidyLPA 0.1.2<small> 2018-02-18 </small>
+</h1>
 <p>Fix:</p>
 <ul>
 <li>Specify version 0.7 of MplusAutomation in Imports to address error</li>
@@ -122,20 +161,20 @@
 </ul>
 </div>
     <div id="tidylpa-0-1-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#tidylpa-0-1-1" class="anchor"></a>tidyLPA 0.1.1</h1>
+<h1 class="page-header">
+<a href="#tidylpa-0-1-1" class="anchor"></a>tidyLPA 0.1.1<small> 2018-02-14 </small>
+</h1>
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#tidylpa-0-1-4">0.1.4</a></li>
+        <li><a href="#tidylpa-0-2-0">0.2.0</a></li>
         <li><a href="#tidylpa-0-1-3">0.1.3</a></li>
         <li><a href="#tidylpa-0-1-2">0.1.2</a></li>
         <li><a href="#tidylpa-0-1-1">0.1.1</a></li>
@@ -151,11 +190,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

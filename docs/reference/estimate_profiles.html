@@ -18,13 +18,25 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Estimate parameters for profiles for a specific solution — estimate_profiles" />
+
+<meta property="og:description" content="Estimate parameters for profiles for a specific solution" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,24 +59,44 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">tidyLPA</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">tidyLPA</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../articles/index.html">Articles</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+    </li>
+  </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -72,22 +104,27 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Estimate parameters for profiles for a specific solution</h1>
+    
+    <div class="hidden name"><code>estimate_profiles.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Estimate parameters for profiles for a specific solution</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>estimate_profiles</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
+    <pre class="usage"><span class='fu'>estimate_profiles</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>variances</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
+  <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='st'>"zero"</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>return_posterior_probs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>return_orig_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>print_which_stats</span> <span class='kw'>=</span> <span class='st'>"some"</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -103,12 +140,20 @@
       <td><p>the number of profiles (or mixture components) to be estimated</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p>the mclust model to explore: 1 (varying means, equal variances, and residual covariances fixed to 0); 2 (varying means, equal variances and covariances; 3 (varying means and variances, covariances fixed to 0), 4 (varying means and covariances, equal variances; can only be specified in Mplus); 5 (varying means, equal variances, varying covariances); and 6 (varying means, variances, and covariances), in order least to most freely-estimated; see the introductory vignette for more information</p></td>
+      <th>variances</th>
+      <td><p>how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)</p></td>
+    </tr>
+    <tr>
+      <th>covariances</th>
+      <td><p>how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)</p></td>
     </tr>
     <tr>
       <th>to_return</th>
       <td><p>character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p>which model to estimate (DEPRECATED; use variances and covariances instead)</p></td>
     </tr>
     <tr>
       <th>center_raw_data</th>
@@ -148,20 +193,19 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>estimate_profiles</span>(<span class='no'>iris</span>,
     <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
-    <span class='kw'>model</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit varying means, equal variances, covariances fixed to 0 (Model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='output co'>#&gt; # A tibble: 150 x 6
+    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit NA model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='output co'>#&gt; # A tibble: 150 x 6
 #&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width profile posterior_prob
 #&gt;           &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;
-#&gt;  1         5.10        3.50         1.40       0.200 1                   1.
-#&gt;  2         4.90        3.00         1.40       0.200 1                   1.
-#&gt;  3         4.70        3.20         1.30       0.200 1                   1.
-#&gt;  4         4.60        3.10         1.50       0.200 1                   1.
-#&gt;  5         5.00        3.60         1.40       0.200 1                   1.
-#&gt;  6         5.40        3.90         1.70       0.400 1                   1.
-#&gt;  7         4.60        3.40         1.40       0.300 1                   1.
-#&gt;  8         5.00        3.40         1.50       0.200 1                   1.
-#&gt;  9         4.40        2.90         1.40       0.200 1                   1.
-#&gt; 10         4.90        3.10         1.50       0.100 1                   1.
+#&gt;  1          5.1         3.5          1.4         0.2 1                    1
+#&gt;  2          4.9         3            1.4         0.2 1                    1
+#&gt;  3          4.7         3.2          1.3         0.2 1                    1
+#&gt;  4          4.6         3.1          1.5         0.2 1                    1
+#&gt;  5          5           3.6          1.4         0.2 1                    1
+#&gt;  6          5.4         3.9          1.7         0.4 1                    1
+#&gt;  7          4.6         3.4          1.4         0.3 1                    1
+#&gt;  8          5           3.4          1.5         0.2 1                    1
+#&gt;  9          4.4         2.9          1.4         0.2 1                    1
+#&gt; 10          4.9         3.1          1.5         0.1 1                    1
 #&gt; # ... with 140 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -185,11 +229,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
