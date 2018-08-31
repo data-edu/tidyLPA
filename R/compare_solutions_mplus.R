@@ -39,7 +39,7 @@ compare_solutions_mplus <- function(df, ...,
   ))
 
   all_models_names = list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "equal"), c("equal", "varying"), c("varying", "varying"))
-
+1111
   titles <- c(
       "Equal variances and covariances fixed to 0 (model 1)",
       "Varying variances and covariances fixed to 0 (model 2)",
