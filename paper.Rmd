@@ -26,7 +26,6 @@ output:
      github_document: default
 ---
 
-
 # tidyLPA: Easily carry out latent profile analysis
 
 Researchers are often interested in identifying homogeneous subgroups within
