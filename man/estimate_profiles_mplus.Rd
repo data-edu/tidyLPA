@@ -12,7 +12,7 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
   convergence_criterion = 1e-06, remove_tmp_files = TRUE,
   print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
   n_processors = 1, cluster_ID = NULL, include_VLMR = TRUE,
-  include_BLRT = FALSE, return_all_stats = FALSE)
+  include_BLRT = FALSE)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -60,8 +60,6 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 \item{include_VLMR}{whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE}
 
 \item{include_BLRT}{whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run}
-
-\item{return_all_stats}{defaults to FALSE; if TRUE, returns as a one-row data frame all of the statistics returned from compare_solutions_mplus()}
 }
 \value{
 either a tibble or a ggplot2 plot of the BIC values for the explored models

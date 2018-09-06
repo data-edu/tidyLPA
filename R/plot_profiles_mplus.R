@@ -5,7 +5,7 @@
 #' @export
 
 plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
-  message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+  # message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
   # remove id variable, which should be the last column unless the user changed
   # it, but then that wouldn't be the direct output from estimate_profiles_mplus
