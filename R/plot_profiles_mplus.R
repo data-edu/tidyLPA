@@ -1,4 +1,4 @@
-#' Plot variable means and variances by profile for MPlus output (requires purchasing and installing MPlus to use)
+#' Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)
 #' @details Plot the variable means and variances for data frame output from estimate_profiles_mclust()
 #' @param mplus_data output from estimate_profiles_mplus() with return_savedata = T specified
 #' @inheritParams plot_profiles

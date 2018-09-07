@@ -1,4 +1,4 @@
-#' Plot variable means and variances by profile for mclust output
+#' Plot variable means and variances by profile
 #' @details Plot the variable means and variances for data frame output from estimate_profiles()
 #' @param x output from estimate_profiles()
 #' @details Plot the variable means and variances for data frame output from estimate_profiles().
@@ -8,7 +8,7 @@
 #' number of participants per class is highly unbalanced (specifically, if the
 #' number of participants assigned to one class is less than
 #' .5*(1/number of classes), then weighted likelihood bootstrapping is used to
-#' ensure that each case is represented in the bootstrap samples (see O’Hagan,
+#' ensure that each case is represented in the bootstrap samples (see O'Hagan,
 #' Murphy, Scrucca, and Gormley, 2015).
 #' @param to_center whether to center the data before plotting
 #' @param to_scale whether to scale the data before plotting

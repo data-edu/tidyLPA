@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_profiles.R
 \name{plot_profiles}
 \alias{plot_profiles}
-\title{Plot variable means and variances by profile for mclust output}
+\title{Plot variable means and variances by profile}
 \usage{
 plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
   plot_error_bars = TRUE, plot_rawdata = TRUE, ci = 0.95)
@@ -23,7 +23,7 @@ plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
 \item{ci}{confidence interval to plot (defaults to 0.95)}
 }
 \description{
-Plot variable means and variances by profile for mclust output
+Plot variable means and variances by profile
 }
 \details{
 Plot the variable means and variances for data frame output from estimate_profiles()
@@ -35,7 +35,7 @@ confidence intervals, obtained using bootstrapping (100 samples). Note that
 number of participants per class is highly unbalanced (specifically, if the
 number of participants assigned to one class is less than
 .5*(1/number of classes), then weighted likelihood bootstrapping is used to
-ensure that each case is represented in the bootstrap samples (see O’Hagan,
+ensure that each case is represented in the bootstrap samples (see O'Hagan,
 Murphy, Scrucca, and Gormley, 2015).
 }
 \examples{

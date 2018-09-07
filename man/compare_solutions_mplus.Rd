@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare_solutions_mplus.R
 \name{compare_solutions_mplus}
 \alias{compare_solutions_mplus}
-\title{Explore BIC for various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)}
+\title{Explore fit statistics various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)}
 \usage{
 compare_solutions_mplus(df, ..., n_profiles_min = 2,
   n_profiles_max = 10, models = list(c("equal", "zero"), c("varying",
@@ -49,7 +49,7 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 }
 \description{
-Explore BIC for various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)
+Explore fit statistics various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)
 }
 \details{
 Explore the BIC values of a range of Mplus models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)

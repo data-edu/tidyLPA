@@ -126,7 +126,7 @@
   <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>remove_tmp_files</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>print_input_file</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_save_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>optseed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>n_processors</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cluster_ID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>include_VLMR</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>include_BLRT</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>include_BLRT</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_all_stats</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,6 +222,10 @@
     <tr>
       <th>include_BLRT</th>
       <td><p>whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run</p></td>
+    </tr>
+    <tr>
+      <th>return_all_stats</th>
+      <td><p>defaults to FALSE; if TRUE, returns as a one-row data frame all of the statistics returned from compare_solutions_mplus()</p></td>
     </tr>
     </table>
     

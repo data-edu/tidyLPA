@@ -72,9 +72,9 @@ center_scale_function <- function(x, center_raw_data, scale_raw_data) {
 
 "pisaUSA15"
 
-.onAttach <- function(libname, pkgname) {
-  packageStartupMessage("\nPlease report any issues or feature requests at https://github.com/jrosen48/tidyLPA or via email to tidylpa@googlegroups.com.")
-}
+# .onAttach <- function(libname, pkgname) {
+#   packageStartupMessage("\nPlease report any issues or feature requests at https://github.com/jrosen48/tidyLPA or via email to tidylpa@googlegroups.com.")
+# }
 
 extract_stats <- function(x) {
   x <- x[x != ""]

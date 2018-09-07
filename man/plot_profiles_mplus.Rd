@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_profiles_mplus.R
 \name{plot_profiles_mplus}
 \alias{plot_profiles_mplus}
-\title{Plot variable means and variances by profile for MPlus output (requires purchasing and installing MPlus to use)}
+\title{Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)}
 \usage{
 plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
 }
@@ -14,7 +14,7 @@ plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
 \item{to_scale}{whether to scale the data before plotting}
 }
 \description{
-Plot variable means and variances by profile for MPlus output (requires purchasing and installing MPlus to use)
+Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)
 }
 \details{
 Plot the variable means and variances for data frame output from estimate_profiles_mclust()
