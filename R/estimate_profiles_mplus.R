@@ -361,7 +361,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
                 cluster_ID = cluster_ID_label,
                 LL = m$summaries$LL,
                 npar = m$summaries$Parameters,
-                AIC = m$summaries$LL,
+                AIC = m$summaries$AIC,
                 BIC = m$summaries$BIC,
                 SABIC = m$summaries$aBIC,
                 CAIC = m$summaries$AICC,
