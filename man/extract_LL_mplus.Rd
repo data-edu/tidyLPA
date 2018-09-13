@@ -23,7 +23,6 @@ Extract log-likelihoods associated with solutions from random starts from estima
 m1 <- estimate_profiles_mplus(iris,
                             Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
                             n_profiles = 2,
-                            model = 1,
                             remove_tmp_files = FALSE)
 extract_LL_mplus()
 }

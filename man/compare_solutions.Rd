@@ -17,7 +17,7 @@ compare_solutions(df, ..., n_profiles_range = 1:9,
 
 \item{n_profiles_range}{a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)}
 
-\item{models}{which models to include; defaults to 1:4 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)}
+\item{models}{which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "varying"))}
 
 \item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
 
