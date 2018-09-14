@@ -25,7 +25,7 @@
 #' @importFrom magrittr "%>%"
 #' @importFrom mclust Mclust MclustBootstrap mclustBootstrapLRT mclustBIC
 #' mclustICL priorControl icl
-#' @importFrom purrr map map_lgl map_df
+#' @importFrom purrr map map_chr map_lgl map_df
 #' @importFrom readr write_rds write_lines read_lines
 #' @importFrom rlang .data
 #' @importFrom stats complete.cases sd reshape quantile qnorm

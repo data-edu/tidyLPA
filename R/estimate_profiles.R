@@ -53,7 +53,11 @@ Model 6: variances = 'varying'; covariances = 'varying';
     d <- select_create_profiles(df, ...)
 
     if (center_raw_data == T | scale_raw_data == T) {
-        d <- mutate_at(d, vars(-row_number), center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
+        d <- mutate_at(d, 
+                       vars(-row_number), 
+                       center_scale_function, 
+                       center_raw_data = center_raw_data, 
+                       scale_raw_data = scale_raw_data)
     }
 
     if (variances == "equal" & covariances == "zero") {
@@ -64,10 +68,14 @@ Model 6: variances = 'varying'; covariances = 'varying';
         model <- "VVI"
     } else if (variances == "varying" & covariances == "varying") {
         model <- "VVV"
-    } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", "VVV", "X", "XII", "XXI", "XXX")) {
+    } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", 
+                            "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", 
+                            "VVV", "X", "XII", "XXI", "XXX")) {
         model <- model
     } else {
-        stop("Model name is not correctly specified")
+       # if you can figure out a way to give a more informative error message,
+       # that would probably be pretty helpful
+        stop("Model name is not correctly specified") 
     }
 
     model_number <- case_when(
@@ -93,12 +101,21 @@ Model 6: variances = 'varying'; covariances = 'varying';
     d_model <- select(d, -row_number)
 
     if (prior_control == FALSE) {
-        m <- Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE)
+        m <- Mclust(d_model, 
+                    G = n_profiles, 
+                    modelNames = model, 
+                    warn = FALSE, 
+                    verbose = FALSE)
     } else {
-        m <- Mclust(d_model, G = n_profiles, modelNames = model, warn = FALSE, verbose = FALSE, prior = priorControl())
+        m <- Mclust(d_model, 
+                    G = n_profiles, 
+                    modelNames = model, 
+                    warn = FALSE, 
+                    verbose = FALSE, 
+                    prior = priorControl())
     }
-
-    if (is.null(m)) stop("Model could not be fitted")
+    # More info in the below would also be ideal, if possible
+    if (is.null(m)) stop("Model could not be fit")
 
     message("Fit ", titles[model], " model with ", n_profiles, " profiles.")
 

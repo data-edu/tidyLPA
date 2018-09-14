@@ -31,6 +31,11 @@ compare_solutions_mplus <- function(df, ...,
                                     return_stats_df = TRUE,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
+  
+  # I would remove the below entirely, at least for the review portion. Seems
+  # to me if you're ready to submit to JOSS you're probably out of the 
+  # experimental stage, for the most part.
+
   # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
 
   out_df <- data.frame(matrix(
@@ -39,14 +44,14 @@ compare_solutions_mplus <- function(df, ...,
   ))
 
   all_models_names = list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "equal"), c("equal", "varying"), c("varying", "varying"))
-1111
+1111 # what is this? Looks like something that doesn't belong...
   titles <- c(
-      "Equal variances and covariances fixed to 0 (model 1)",
-      "Varying variances and covariances fixed to 0 (model 2)",
-      "Equal variances and equal covariances (model 3)",
-      "Varying variances and equal covariances (model 4)",
-      "Equal variances and varying covariances (model 5)",
-      "Varying variances and varying covariances (model 6)"
+      "Equal variances and covariances fixed to 0",
+      "Varying variances and covariances fixed to 0",
+      "Equal variances and equal covariances",
+      "Varying variances and equal covariances",
+      "Equal variances and varying covariances",
+      "Varying variances and varying covariances"
   )
 
   names(out_df) <- titles[all_models_names %in% models]
@@ -58,11 +63,15 @@ compare_solutions_mplus <- function(df, ...,
   counter <- 0
 
   if (save_models == TRUE) {
-    if (!dir.exists("compare_solutions_lpa_output")) dir.create("compare_solutions_lpa_output")
+    if (!dir.exists("compare_solutions_lpa_output")) { 
+      dir.create("compare_solutions_lpa_output")
+    }
   }
 
-  remove_tmp_files <- FALSE
+  remove_tmp_files <- FALSE # this isn't in an if... is that an error?
 
+  # Remove/archive the below
+  
   # if (save_models == TRUE) {
   #     remove_tmp_files <- FALSE
   # } else {
@@ -78,6 +87,10 @@ compare_solutions_mplus <- function(df, ...,
   #     variances == "varying" & covariances == "varying" ~ 6,
   # )
 
+  # Probably more work than it's worth at this point, but I hate nested for
+  # loops. I have to practice them more than once every time before I really
+  # figure out what they're doing. I'd recommend going to purrr here. Can't
+  # remember if you're already importing it or not, but it's a gem
   for (i in n_profiles_min:n_profiles_max) {
     for (j in seq(length(models))) {
       message(str_c("Processing model with n_profiles = ", i, " and model = ", j))
@@ -100,24 +113,28 @@ compare_solutions_mplus <- function(df, ...,
       ))
 
       if (save_models == TRUE) {
-        if (!dir.exists(str_c("compare_solutions_lpa_output/m", j, "_p", i))) dir.create(str_c("compare_solutions_lpa_output/m", j, "_p", i))
-        capture <- capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic
-        write_rds(m_all, str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds"))
+        if (!dir.exists(str_c("compare_solutions_lpa_output/m", j, "_p", i))) {
+          dir.create(str_c("compare_solutions_lpa_output/m", j, "_p", i))  
+        }
+        capture <- capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic # DA: I'd clean these things up too and not have any comments when you submit 
+        write_rds(m_all, str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds")) # I'd *highly* recommend you work on getting all of this code within 80 characters, which is the standard, and helps make it more readable
       }
 
       counter <- counter + 1
 
       # fix (remove) suppressWarnings()
-      if (m[1] == "Error: Convergence issue" | m[1] == "Warning: LL not replicated") {
+      if (m[1] == "Error: Convergence issue" 
+          | m[1] == "Warning: LL not replicated") { # here's another example where it just spilled over, hence the suggested change
         message(str_c("Result: ", m))
-        out_df[i - (n_profiles_min - 1), j + 1] <- m
+        out_df[i - (n_profiles_min - 1), j + 1] <- m # This is the sort of stuff I was referring to with nested for loops. Kinda hard to tell what's actually going on here...
       } else {
         n_LL_replicated <- extract_LL_mplus("i.out")
-        count_LL <- dplyr::count(n_LL_replicated, .data$LL)
+        count_LL <- count(n_LL_replicated, .data$LL) 
         t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
         message(paste0("Result: BIC = ", m$summaries$BIC))
         out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
 
+        # This and BLRT might be another candidate for `switch`
         if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
           VLMR_val <- NA
           VLMR_p <- NA
@@ -173,7 +190,7 @@ compare_solutions_mplus <- function(df, ...,
             BLRT_val = BLRT_val,
             BLRT_p = BLRT_p
           )
-        } else {
+        } else { # I can't actually even see the difference between these two. Is there a way you could write this without so much redundancy of code? Maybe assemble the full df and then just change the value of one column based on counter?
           d <- data.frame(
             n_profiles = i,
             model_number = model_number,
@@ -185,7 +202,7 @@ compare_solutions_mplus <- function(df, ...,
             BIC = m$summaries$BIC,
             SABIC = m$summaries$aBIC,
             CAIC = m$summaries$AICC,
-            AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)),
+            AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)), # long again
             Entropy = m$summaries$Entropy,
             LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
             cell_size = t,
@@ -201,6 +218,7 @@ compare_solutions_mplus <- function(df, ...,
           stats_df$cell_size <- as.character(stats_df$cell_size)
         }
       }
+      # shouldn't the below be wrapped in some sort of if in case the user wants to keep them?
       file.remove("d.dat")
       file.remove("i.inp")
       file.remove("i.out")
@@ -210,12 +228,17 @@ compare_solutions_mplus <- function(df, ...,
   }
 
   if (return_stats_df == TRUE & return_table == TRUE) {
-    return(list(as_tibble(out_df), arrange(as_tibble(stats_df), .data$npar, .data$n_profiles)))
+    return(list(as_tibble(out_df), 
+                arrange(as_tibble(stats_df), 
+                        .data$npar, 
+                        .data$n_profiles)))
   }
 
   if (return_stats_df == TRUE) {
     print(as_tibble(out_df))
-    return(arrange(as_tibble(stats_df), .data$model, .data$n_profiles))
+    return(arrange(as_tibble(stats_df), 
+                   .data$model, 
+                   .data$n_profiles))
   }
 
   if (return_table == TRUE) {
@@ -230,7 +253,11 @@ compare_solutions_mplus <- function(df, ...,
         n_profiles = as.integer(.data$n_profiles),
         Model = str_extract(.data$Model, "\\d")
       ) %>%
-      ggplot(aes_string(x = "n_profiles", y = "BIC", shape = "Model", color = "Model", group = "Model")) +
+      ggplot(aes_string(x = "n_profiles", 
+                        y = "BIC", 
+                        shape = "Model", 
+                        color = "Model", 
+                        group = "Model")) +
       geom_line() +
       geom_point()
   }

@@ -25,7 +25,9 @@ select_ancillary_functions_mplus <- function(df, ...) {
     as_tibble() %>%
     select(...)
 }
-
+# are these three any different than `base::scale`? `scale(x, center = FALSE)`,
+# `scale(x, scale = FALSE)`, and `scale(x)`, right? Except I guess they remove
+# missing data...
 scale_vector <- function(x) {
   x / sd(x, na.rm = TRUE)
 }
@@ -56,6 +58,9 @@ center_scale_function <- function(x, center_raw_data, scale_raw_data) {
 
 # addresses concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation
 # if (getRversion() >= "2.15.1") utils::globalVariables(c("matrix", "structure", "EEE", "EEI", "VVV", "est", "key", "model_names", "Covariance matrix structure", "n_profiles", "param_name", "posterior_prob", "profile", "val", "value", "var_name"))
+
+# I would put this documentation in its own file. It's not really a helper
+# function but rather the documentation for some data.
 
 #' student questionnaire data with four variables from the 2015 PISA for students in the United States
 #'
@@ -96,25 +101,27 @@ extract_stats <- function(x) {
 #' @export
 
 extract_LL_mplus <- function(output_filename = "i.out") {
-  raw_text <- readr::read_lines(output_filename)
-  start <- which(stringr::str_detect(raw_text, "Final stage loglikelihood")) + 2
-  start_vals <- raw_text[stringr::str_detect(raw_text, "starts =")]
-  start_vals <- stringr::str_trim(start_vals)
-  start_vals <- stringr::str_sub(start_vals, end = -2L)
-  start_vals <- stringr::str_split(start_vals, "[^[:digit:]]")
+  raw_text <- read_lines(output_filename)
+  start <- which(str_detect(raw_text, "Final stage loglikelihood")) + 2
+  start_vals <- raw_text[str_detect(raw_text, "starts =")]
+  start_vals <- str_trim(start_vals)
+  start_vals <- str_sub(start_vals, end = -2L)
+  start_vals <- str_split(start_vals, "[^[:digit:]]")
   start_vals <- as.numeric(unlist(start_vals))
   start_vals <- unique(start_vals[!is.na(start_vals)])
   stop <- start + (start_vals[2] - 1)
   subset_text <- raw_text[start:stop]
-  trimmed_text <- stringr::str_trim(subset_text)
-  fin_text <- stringr::str_split(trimmed_text, " ")
-  o <- suppressWarnings(purrr::map_df(fin_text, extract_stats))
+  trimmed_text <- str_trim(subset_text)
+  fin_text <- str_split(trimmed_text, " ")
+  o <- suppressWarnings(map_df(fin_text, extract_stats))
   o$seed <- suppressWarnings(as.numeric(o$seed))
   o <- o[!is.na(o$seed), ]
-  dplyr::tbl_df(o)
+  tbl_df(o)
 }
 
-if (getRversion() >= "2.15.1") globalVariables(c("Value", "se", "Class", "Variable", "."))
+if (getRversion() >= "2.15.1") {
+  globalVariables(c("Value", "se", "Class", "Variable", "."))
+}
 
 write_mplus <- function(d, file_name, na_string = "-999", ...) {
   write.table(d,
@@ -123,8 +130,7 @@ write_mplus <- function(d, file_name, na_string = "-999", ...) {
     col.names = FALSE,
     sep = "\t",
     na = as.character(na_string),
-    ...
-  )
+    ...)
 }
 
 make_class_mplus <- function(var_list, class_number, fix_variances = F) {
@@ -142,7 +148,8 @@ make_class_mplus <- function(var_list, class_number, fix_variances = F) {
   return(class_init)
 }
 
-covariances_mplus <- function(var_list, estimate_covariance = F, param_counter = NULL) {
+covariances_mplus <- function(var_list, estimate_covariance = F, 
+                              param_counter = NULL) {
   combine2 <- utils::combn(length(var_list), 2)
   variances <- vector(length = ncol(combine2), mode = "list")
 

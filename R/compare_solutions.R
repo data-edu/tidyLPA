@@ -12,7 +12,10 @@
 
 compare_solutions <- function(df, ...,
                               n_profiles_range = 1:9,
-                              models = list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "varying")),
+                              models = list(c("equal", "zero"), 
+                                            c("varying", "zero"), 
+                                            c("equal", "equal"), 
+                                            c("varying", "varying")),
                               center_raw_data = FALSE,
                               scale_raw_data = FALSE,
                               statistic = "BIC",
@@ -22,21 +25,23 @@ compare_solutions <- function(df, ...,
   d <- select_ancillary_functions(df, ...)
 
   if (center_raw_data == T | scale_raw_data == T) {
-    d <- mutate_all(d, center_scale_function, center_raw_data = center_raw_data, scale_raw_data = scale_raw_data)
+    d <- mutate_all(d, 
+                    center_scale_function, 
+                    center_raw_data = center_raw_data, 
+                    scale_raw_data = scale_raw_data)
   }
 
-  variances <- purrr::map_chr(models, ~.[1])
-  covariances <- purrr::map_chr(models, ~.[2])
+  variances <- map_chr(models, ~.[1])
+  covariances <- map_chr(models, ~.[2])
 
   model <- case_when(
     variances == "equal" & covariances == "zero" ~ "EEI",
     variances == "varying" & covariances == "zero" ~ "EEE",
     variances == "equal" & covariances == "equal" ~ "VVI",
-    # variances == "varying" & covariances == "equal" ~ 4,
+    # variances == "varying" & covariances == "equal" ~ 4, # I'd remove
     # variances == "equal" & covariances == "varying" ~ 5,
     variances == "varying" & covariances == "varying" ~ "VVV"
   )
-
 
   titles <- c(
       "Equal variances and covariances fixed to 0 (model 1)",
@@ -51,17 +56,35 @@ compare_solutions <- function(df, ...,
 
   if (prior_control == FALSE) {
     if (statistic == "BIC") {
-      x <- suppressWarnings(mclustBIC(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE))
+      x <- suppressWarnings(mclustBIC(d, 
+                                      G = n_profiles_range, 
+                                      modelNames = model, 
+                                      warn = TRUE, 
+                                      verbose = FALSE))
     } else if (statistic == "ICL") {
-      x <- suppressWarnings(mclustICL(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE))
+      x <- suppressWarnings(mclustICL(d, 
+                                      G = n_profiles_range, 
+                                      modelNames = model, 
+                                      warn = TRUE, 
+                                      verbose = FALSE))
     } else {
       stop("This statistic cannot presently be computed")
     }
   } else {
-    if (statistic == "BIC") {
-      x <- suppressWarnings(mclustBIC(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE, prior = priorControl()))
+    if (statistic == "BIC") { # for these sorts of things you could also check to see if they put it in the wrong case and give a more informative error message (e.g., did you mean "BIC"?).
+      x <- suppressWarnings(mclustBIC(d, 
+                                      G = n_profiles_range, 
+                                      modelNames = model, 
+                                      warn = TRUE, 
+                                      verbose = FALSE, 
+                                      prior = priorControl()))
     } else if (statistic == "ICL") {
-      x <- suppressWarnings(mclustICL(d, G = n_profiles_range, modelNames = model, warn = TRUE, verbose = FALSE, prior = priorControl()))
+      x <- suppressWarnings(mclustICL(d, 
+                                      G = n_profiles_range, 
+                                      modelNames = model, 
+                                      warn = TRUE, 
+                                      verbose = FALSE, 
+                                      prior = priorControl()))
     } else {
       stop("This statistic cannot presently be computed")
     }
@@ -70,6 +93,8 @@ compare_solutions <- function(df, ...,
   y <- x %>%
     as.data.frame.matrix() %>%
     rownames_to_column("n_profiles")
+  
+  # I'd remove the below
   # rename(
   #   `Varying means, equal variances, covariances fixed to 0 (Model 1)` = "EEI",
   #   `Varying means and variances, covariances fixed to 0 (Model 2)` = "VVI",
@@ -98,12 +123,10 @@ compare_solutions <- function(df, ...,
 
   to_plot$n_profiles <- as.factor(to_plot$n_profiles)
 
-  p <- ggplot(to_plot, aes_string(
-    x = "n_profiles",
-    y = "val",
-    color = "`Model`",
-    group = "`Model`"
-  )) +
+  p <- ggplot(to_plot, aes_string(x = "n_profiles",
+                                  y = "val",
+                                  color = "`Model`",
+                                  group = "`Model`")) +
     geom_line(na.rm = TRUE) +
     geom_point(na.rm = TRUE) +
     ylab(paste0(statistic, " (smaller value is better)")) +
