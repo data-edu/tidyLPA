@@ -53,6 +53,8 @@ estimate_profiles_mplus <- function(df,
                                     include_BLRT = FALSE,
                                     return_all_stats = FALSE) {
 
+ # The below is long again and I honestly never really know what to do with
+ # them. I end up using paste but I'm not sure that's actually better.
     model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
 Model 1: variances = 'equal'; covariances = 'zero';
 Model 2: variances = 'equal'; covariances = 'equal';
@@ -118,15 +120,22 @@ Model 6: variances = 'varying'; covariances = 'varying';
   )
 
   titles <- c(
-    "Equal variances and covariances fixed to 0 (model 1)",
-    "Varying variances and covariances fixed to 0 (model 2)",
-    "Equal variances and equal covariances (model 3)",
-    "Varying variances and equal covariances (model 4)",
-    "Equal variances and varying covariances (model 5)",
-    "Varying variances and varying covariances (model 6)"
+    "Equal variances and covariances fixed to 0",
+    "Varying variances and covariances fixed to 0",
+    "Equal variances and equal covariances",
+    "Varying variances and equal covariances",
+    "Equal variances and varying covariances",
+    "Varying variances and varying covariances"
   )
 
-  TITLE <- paste0("TITLE: ", titles[model])
+  # I wonder if you could make all of the below clearer by using glue with one
+  # big string and various {} inputs. I think it probably would be clearer, 
+  # because it would end up looking basically just like MPlus code, but it 
+  # would be another import. Probably not worth it at the moment but might
+  # be worth considering down the line.
+  TITLE <- paste0("TITLE: ", titles[model]) # small thing, but I would keep all
+  # the TITLE, DATA, etc. lowercase to match your coding style. I know this is
+  # because it's going into MPlus but I'd keep the R coding style consistent.
 
   DATA <- paste0("DATA: File is ", data_filename, ";")
 
@@ -193,11 +202,14 @@ Model 6: variances = 'varying'; covariances = 'varying';
   SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
   SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
+  # I think there's probably a more concise way to do the below. I'd have to
+  # think about how a little more but it seems like a good spot for a helper
+  # function
   if (variances == "equal" & covariances == "zero") {
     model_name <- titles[1]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = F) # I would spell out all the TRUE/FALSE arguments
     class_collector <- list()
-    for (i in 1:n_profiles) {
+    for (i in 1:n_profiles) { # not sure exactly how this works but `seq_len(n_profiles)` is probably safer
       class_collector <- c(
         class_collector,
         make_class_mplus(var_list, class_number = i, fix_variances = T),
@@ -280,7 +292,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
     SAVEDATA_line0,
     SAVEDATA_line1
   )
-
+  # I like the below, but I'd change the wrapping to 80, which is more standard, I think
   all_the_lines <- gsub("(.{1,90})(\\s|$)", "\\1\n", all_the_lines) # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
 
   cat(paste0(all_the_lines, collapse = ""),
@@ -291,12 +303,13 @@ Model 6: variances = 'varying'; covariances = 'varying';
   x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
   capture <- capture.output(m <- suppressWarnings(MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename))))
 
+  # Do you need to put the whole warning in like this? Seems like a lot. 
   if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated") {
     warning_status <- "Warning: LL not replicated"
   } else {
     warning_status <- ""
   }
-
+  # Also seems like in the below you could look for patterns. Maybe not though..
   if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue" |
     check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue" |
     check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY.  ESTIMATES CANNOT") == "Error: Convergence issue" |
@@ -318,7 +331,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
     if (return_all_stats == TRUE) {
 
         n_LL_replicated <- extract_LL_mplus("i.out")
-        count_LL <- dplyr::count(n_LL_replicated, .data$LL)
+        count_LL <- count(n_LL_replicated, .data$LL)
         t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
         message(paste0("Result: BIC = ", m$summaries$BIC))
 
@@ -344,6 +357,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
             cluster_ID_label <- cluster_ID
         }
 
+        # Do you need this at all?
         model_number <- case_when(
             variances == "equal" & covariances == "zero" ~ 1,
             variances == "varying" & covariances == "zero" ~ 2,

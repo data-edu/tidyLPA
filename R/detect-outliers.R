@@ -1,3 +1,8 @@
+# I'd remove this file entirely if it's not implemented. If you want, you could
+# refer to this in your docs when describing the methods, but I wouldn't
+# actually include it in your package. Maybe publish it as a gist and then
+# link to the gist.
+
 # # detect_outliers.R
 #
 # outlierHadi <- function(X) {
