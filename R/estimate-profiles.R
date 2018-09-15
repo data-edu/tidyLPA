@@ -53,10 +53,10 @@ Model 6: variances = 'varying'; covariances = 'varying';
     d <- select_create_profiles(df, ...)
 
     if (center_raw_data == T | scale_raw_data == T) {
-        d <- mutate_at(d, 
-                       vars(-row_number), 
-                       center_scale_function, 
-                       center_raw_data = center_raw_data, 
+        d <- mutate_at(d,
+                       vars(-row_number),
+                       center_scale_function,
+                       center_raw_data = center_raw_data,
                        scale_raw_data = scale_raw_data)
     }
 
@@ -68,14 +68,12 @@ Model 6: variances = 'varying'; covariances = 'varying';
         model <- "VVI"
     } else if (variances == "varying" & covariances == "varying") {
         model <- "VVV"
-    } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI", 
-                            "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV", 
+    } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI",
+                            "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV",
                             "VVV", "X", "XII", "XXI", "XXX")) {
         model <- model
     } else {
-       # if you can figure out a way to give a more informative error message,
-       # that would probably be pretty helpful
-        stop("Model name is not correctly specified") 
+        stop("Model name is not correctly specified; see ?estimate_profiles for details on how to specify the model")
     }
 
     model_number <- case_when(
@@ -91,8 +89,8 @@ Model 6: variances = 'varying'; covariances = 'varying';
         "Equal variances and covariances fixed to 0 (model 1)",
         "Varying variances and covariances fixed to 0 (model 2)",
         "Equal variances and equal covariances (model 3)",
-        #"Varying variances and equal covariances (model 4)",
-        #"Equal variances and varying covariances (model 5)",
+        #"Varying variances and equal covariances (model 4)", # only available in MPlus
+        #"Equal variances and varying covariances (model 5)", # only available in MPlus
         "Varying variances and varying covariances (model 6)"
     )
 
@@ -101,26 +99,25 @@ Model 6: variances = 'varying'; covariances = 'varying';
     d_model <- select(d, -row_number)
 
     if (prior_control == FALSE) {
-        m <- Mclust(d_model, 
-                    G = n_profiles, 
-                    modelNames = model, 
-                    warn = FALSE, 
+        m <- Mclust(d_model,
+                    G = n_profiles,
+                    modelNames = model,
+                    warn = FALSE,
                     verbose = FALSE)
     } else {
-        m <- Mclust(d_model, 
-                    G = n_profiles, 
-                    modelNames = model, 
-                    warn = FALSE, 
-                    verbose = FALSE, 
+        m <- Mclust(d_model,
+                    G = n_profiles,
+                    modelNames = model,
+                    warn = FALSE,
+                    verbose = FALSE,
                     prior = priorControl())
     }
-    # More info in the below would also be ideal, if possible
-    if (is.null(m)) stop("Model could not be fit")
+
+    if (is.null(m)) stop("Model could not be estimated.")
 
     message("Fit ", titles[model], " model with ", n_profiles, " profiles.")
 
     AIC <- (2 * m$df - 2 * m$loglik)
-    # BIC1 <- (m$df * log(m$n) - 2 * m$loglik) # same as BIC output from mclust
     CAIC <- (((log(m$n) + 1) * m$df) - 2 * m$loglik)
     SABIC <- (m$df * log((m$n + 2) / 24) - 2 * m$loglik)
 
@@ -140,7 +137,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
         message("Entropy is ", round(mean(posterior_prob), 3))
     }
 
-    dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification))) # replace with tibble as bind_cols acts up
+    dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification)))
 
     test <- nrow(count(dff, .data$profile))
 

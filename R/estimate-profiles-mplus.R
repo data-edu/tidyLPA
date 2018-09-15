@@ -53,13 +53,11 @@ estimate_profiles_mplus <- function(df,
                                     include_BLRT = FALSE,
                                     return_all_stats = FALSE) {
 
- # The below is long again and I honestly never really know what to do with
- # them. I end up using paste but I'm not sure that's actually better.
     model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
 Model 1: variances = 'equal'; covariances = 'zero';
 Model 2: variances = 'equal'; covariances = 'equal';
 Model 3: variances = 'equal'; covariances = 'zero';
-Model 4: variances = 'varying'; covariances = 'equal' (Cannot be estimated without MPlus);
+Model 4: variances = 'varying'; covariances = 'equal' .(Cannot be estimated without MPlus);
 Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated without MPlus);
 Model 6: variances = 'varying'; covariances = 'varying';
                      ")
@@ -90,7 +88,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
   d <- bind_cols(id, d)
 
   if (!is.null(cluster_ID)) {
-    d[[cluster_ID]] <- as.integer(as.factor(d[[cluster_ID]])) # I guess MPlus requires an integer for factors
+    d[[cluster_ID]] <- as.integer(as.factor(d[[cluster_ID]])) # MPlus requires an integer for factors
   }
 
   names(d) <- gsub("\\.", "_", names(d))
@@ -128,14 +126,8 @@ Model 6: variances = 'varying'; covariances = 'varying';
     "Varying variances and varying covariances"
   )
 
-  # I wonder if you could make all of the below clearer by using glue with one
-  # big string and various {} inputs. I think it probably would be clearer, 
-  # because it would end up looking basically just like MPlus code, but it 
-  # would be another import. Probably not worth it at the moment but might
-  # be worth considering down the line.
-  TITLE <- paste0("TITLE: ", titles[model]) # small thing, but I would keep all
-  # the TITLE, DATA, etc. lowercase to match your coding style. I know this is
-  # because it's going into MPlus but I'd keep the R coding style consistent.
+  # consider changing to use glue()
+  TITLE <- paste0("TITLE: ", titles[model])
 
   DATA <- paste0("DATA: File is ", data_filename, ";")
 
@@ -202,79 +194,76 @@ Model 6: variances = 'varying'; covariances = 'varying';
   SAVEDATA_line0 <- paste0("SAVEDATA: File is ", savedata_filename, ";")
   SAVEDATA_line1 <- "SAVE = CPROBABILITIES;"
 
-  # I think there's probably a more concise way to do the below. I'd have to
-  # think about how a little more but it seems like a good spot for a helper
-  # function
   if (variances == "equal" & covariances == "zero") {
     model_name <- titles[1]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = F) # I would spell out all the TRUE/FALSE arguments
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE) # I would spell out all the TRUE/FALSE arguments
     class_collector <- list()
-    for (i in 1:n_profiles) { # not sure exactly how this works but `seq_len(n_profiles)` is probably safer
+    for (i in seq_len(n_profiles)) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = T),
-        covariances_mplus(var_list, estimate_covariance = F)
+        make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
+        covariances_mplus(var_list, estimate_covariance = FALSE)
       )
     }
   } else if (variances == "varying" & covariances == "zero") {
     model_name <- titles[2]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = F),
-        covariances_mplus(var_list, estimate_covariance = F)
+        make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
+        covariances_mplus(var_list, estimate_covariance = FALSE)
       )
     }
   } else if (variances == "equal" & covariances == "equal") {
     model_name <- titles[3]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = T),
+        make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
         covariances_mplus(var_list,
-          estimate_covariance = T,
+          estimate_covariance = TRUE,
           param_counter = length(var_list)
         )
       )
     }
   } else if (variances == "varying" & covariances == "equal") {
     model_name <- titles[4]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = F),
+        make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
         covariances_mplus(var_list,
-          estimate_covariance = T,
+          estimate_covariance = TRUE,
           param_counter = 0
         )
       )
     }
   } else if (variances == "equal" & covariances == "varying") {
     model_name <- titles[5]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = T),
-        covariances_mplus(var_list, estimate_covariance = T)
+        make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
+        covariances_mplus(var_list, estimate_covariance = TRUE)
       )
     }
   } else if (variances == "varying" & covariances == "varying") {
     model_name <- titles[6]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = F),
-        covariances_mplus(var_list, estimate_covariance = T)
+        make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
+        covariances_mplus(var_list, estimate_covariance = TRUE)
       )
     }
   }
@@ -292,8 +281,9 @@ Model 6: variances = 'varying'; covariances = 'varying';
     SAVEDATA_line0,
     SAVEDATA_line1
   )
-  # I like the below, but I'd change the wrapping to 80, which is more standard, I think
-  all_the_lines <- gsub("(.{1,90})(\\s|$)", "\\1\n", all_the_lines) # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
+
+  # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
+  all_the_lines <- gsub("(.{1,90})(\\s|$)", "\\1\n", all_the_lines)
 
   cat(paste0(all_the_lines, collapse = ""),
     file = script_filename
@@ -303,22 +293,18 @@ Model 6: variances = 'varying'; covariances = 'varying';
   x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
   capture <- capture.output(m <- suppressWarnings(MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename))))
 
-  # Do you need to put the whole warning in like this? Seems like a lot. 
-  if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated") {
+  if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED") == "Warning: The best loglikelihood was not replicated") {
     warning_status <- "Warning: LL not replicated"
   } else {
     warning_status <- ""
   }
-  # Also seems like in the below you could look for patterns. Maybe not though..
-  if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue" |
-    check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue" |
-    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY.  ESTIMATES CANNOT") == "Error: Convergence issue" |
-    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ERROR IN THE") == "Error: Convergence issue") {
+
+  if (check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION") == "Error: Convergence issue" |
+    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY") == "Error: Convergence issue") {
     error_status <- "Error: Convergence issue"
   } else {
     error_status <- ""
   }
-
 
   if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
     message(str_trim(str_c(warning_status, " ", error_status)))
@@ -357,7 +343,6 @@ Model 6: variances = 'varying'; covariances = 'varying';
             cluster_ID_label <- cluster_ID
         }
 
-        # Do you need this at all?
         model_number <- case_when(
             variances == "equal" & covariances == "zero" ~ 1,
             variances == "varying" & covariances == "zero" ~ 2,
@@ -394,16 +379,6 @@ Model 6: variances = 'varying'; covariances = 'varying';
 
   }
 
-  # if ((m$summaries$Observations / m$summaries$Parameters) < 10) {
-  #   mm <- paste0(
-  #     "Only ",
-  #     round(m$summaries$Observations / m$summaries$Parameters, digits = 2),
-  #     " observations per parameter"
-  #   )
-  #   message(mm)
-  #   warning(mm)
-  # }
-
   if (print_input_file == TRUE) {
     print(read_lines(script_filename))
     message("Note: This function currently prints the script output. You can also use the argument remove_tmp_files = FALSE to create the inp file, which you can then view in R Studio by clicking on the file name in the Files pane.")
@@ -414,7 +389,6 @@ Model 6: variances = 'varying'; covariances = 'varying';
     if (is.character(df[[idvar]])) {
       x[[toupper(idvar)]] <- string_id[match(x[[toupper(idvar)]], num_id)]
     }
-    # x <- tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
     if (remove_tmp_files == TRUE) {
       file.remove(data_filename)

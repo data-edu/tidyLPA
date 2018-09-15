@@ -56,31 +56,6 @@ center_scale_function <- function(x, center_raw_data, scale_raw_data) {
   }
 }
 
-# addresses concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation
-# if (getRversion() >= "2.15.1") utils::globalVariables(c("matrix", "structure", "EEE", "EEI", "VVV", "est", "key", "model_names", "Covariance matrix structure", "n_profiles", "param_name", "posterior_prob", "profile", "val", "value", "var_name"))
-
-# I would put this documentation in its own file. It's not really a helper
-# function but rather the documentation for some data.
-
-#' student questionnaire data with four variables from the 2015 PISA for students in the United States
-#'
-#' @source http://www.oecd.org/pisa/data/
-#' @format Data frame with columns
-#' #' \describe{
-#'   \item{broad_interest}{composite measure of students' self reported broad interest}
-#'   \item{enjoyment}{composite measure of students' self reported enjoyment}
-#'   \item{instrumental_mot}{composite measure of students' self reported instrumental motivation}
-#'   \item{self_efficacy}{composite measure of students' self reported self efficacy}
-#'   ...
-#' }
-#' @import tibble
-
-"pisaUSA15"
-
-# .onAttach <- function(libname, pkgname) {
-#   packageStartupMessage("\nPlease report any issues or feature requests at https://github.com/jrosen48/tidyLPA or via email to tidylpa@googlegroups.com.")
-# }
-
 extract_stats <- function(x) {
   x <- x[x != ""]
   data.frame(LL = x[1], seed = x[2], m_iterations = x[3])
@@ -148,7 +123,7 @@ make_class_mplus <- function(var_list, class_number, fix_variances = F) {
   return(class_init)
 }
 
-covariances_mplus <- function(var_list, estimate_covariance = F, 
+covariances_mplus <- function(var_list, estimate_covariance = F,
                               param_counter = NULL) {
   combine2 <- utils::combn(length(var_list), 2)
   variances <- vector(length = ncol(combine2), mode = "list")

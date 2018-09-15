@@ -64,6 +64,8 @@ This package focuses on models that are commonly specified as part of LPA. Becau
 
 Here is a very short example using the built-in data set `pisaUSA15`. 
 
+Note that outliers may wish to be removed first; consider identifying both univariate and multivariate outliers.
+
 First, you can install the package from CRAN as follows:
 
 ```{r, eval = F}
@@ -390,4 +392,4 @@ Pastor, D. A., Barron, K. E., Miller, B. J., & Davis, S. L. (2007). A latent pro
 
 In the future, it is expected that parts of this vignette will be expanded into a peer-reviewed article. For now, to cite tidyLPA in presentations, publications, and other works, please use:
 
-> Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., & Steingut, R. R. (2018). Interface to mclust to easily carry out Latent Profile Analysis [Statistical software for R]. https://github.com/jrosen48/tidyLPA
+> Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., Anderson, D.J., and van Lissa, C. (2018). Interface to mclust to easily carry out Latent Profile Analysis [Statistical software for R]. https://github.com/jrosen48/tidyLPA

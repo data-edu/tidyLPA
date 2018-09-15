@@ -5,11 +5,6 @@
 #' @export
 
 plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
-  # Remove commented message. Will reduce confidence, I think.
-  # message("Note that this (and other functions that use MPlus) is at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
-
-  # remove id variable, which should be the last column unless the user changed
-  # it, but then that wouldn't be the direct output from estimate_profiles_mplus
 
   mplus_data <- mplus_data[, -ncol(mplus_data)]
 
@@ -19,24 +14,24 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
     left_join(z, by = "C") %>%
     mutate(profile = paste0("Profile ", .data$C, " (n = ", .data$n, ")")) %>%
     select(-contains("CPROB"), -.data$C, -.data$n) %>%
-    mutate_at(vars(-.data$profile), 
-              scale, 
-              center = to_center, 
+    mutate_at(vars(-.data$profile),
+              scale,
+              center = to_center,
               scale = to_scale) %>%
     group_by(.data$profile) %>%
     summarize_all(funs(mean(., na.rm = TRUE), sd(., na.rm = TRUE))) %>%
     gather("key", "val", -.data$profile) %>%
     mutate(
-      new_key = ifelse(str_sub(.data$key, start = -4) == "mean", 
+      new_key = ifelse(str_sub(.data$key, start = -4) == "mean",
                        str_sub(.data$key, start = -4),
-                       ifelse(str_sub(.data$key, start = -2) == "sd", 
-                              str_sub(.data$key, start = -2), 
+                       ifelse(str_sub(.data$key, start = -2) == "sd",
+                              str_sub(.data$key, start = -2),
                               NA)
       ),
-      key = ifelse(str_sub(.data$key, start = -4) == "mean", 
+      key = ifelse(str_sub(.data$key, start = -4) == "mean",
                    str_sub(.data$key, end = -6),
-                   ifelse(str_sub(.data$key, start = -2) == "sd", 
-                          str_sub(.data$key, end = -4), 
+                   ifelse(str_sub(.data$key, start = -2) == "sd",
+                          str_sub(.data$key, end = -4),
                           NA))) %>%
     spread(.data$new_key, .data$val) %>%
     mutate(
@@ -47,10 +42,10 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
       ymax = .data$mean + .data$se
     )
 
-  p <- ggplot(d, aes_string(x = "profile", 
-                            y = "mean", 
-                            fill = "key", 
-                            ymin = "ymin", 
+  p <- ggplot(d, aes_string(x = "profile",
+                            y = "mean",
+                            fill = "key",
+                            ymin = "ymin",
                             ymax = "ymax")) +
     geom_col(position = "dodge") +
     geom_errorbar(position = position_dodge()) +
