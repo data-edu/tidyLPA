@@ -4,7 +4,7 @@
 #' @inheritParams plot_profiles
 #' @export
 
-plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
+plot_profiles_mplus <- function(mplus_data, to_center TRUE, to_scale TRUE) {
   mplus_data <- mplus_data[, -ncol(mplus_data)]
 
   z <- count(mplus_data, .data$C)

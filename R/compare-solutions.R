@@ -25,7 +25,7 @@ compare_solutions <- function(df, ...,
                               prior_control = F) {
   d <- select_ancillary_functions(df, ...)
 
-  if (center_raw_data == T | scale_raw_data == T) {
+  if (center_raw_data == TRUE | scale_raw_data == TRUE) {
     d <- mutate_all(d,
       center_scale_function,
       center_raw_data = center_raw_data,

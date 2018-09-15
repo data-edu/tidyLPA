@@ -26,7 +26,7 @@
 #' plot_profiles(m3, plot_what = "mclust")
 #' @export
 
-plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
+plot_profiles <- function(x, to_center = FALSE, to_scale = FALSE, plot_what = "tibble",
                           plot_error_bars = TRUE, plot_rawdata = TRUE,
                           ci = .95) {
   if (plot_what == "tibble") {
@@ -113,7 +113,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
       plotdat <- plotdat / apply(x$data, 2, sd, na.rm = TRUE)
     }
     plotdat <- data.frame(Variable = rownames(plotdat), plotdat)
-    names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
+    names(plotdat)[-1] <- paste0("Value.", seq(n_classes))
     plotdat <- reshape(
       plotdat,
       direction = "long",
@@ -133,23 +133,23 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
         rawdata <- sweep(rawdata, 2, apply(x$data, 2, sd, na.rm = TRUE), "/")
       }
       rawdata <- data.frame(cbind(x$z, rawdata))
-      names(rawdata)[1:n_classes] <-
-        paste0("Probability.", 1:n_classes)
+      names(rawdata)[seq(n_classes)] <-
+        paste0("Probability.", seq(n_classes))
       rawdata <- reshape(
         rawdata,
         direction = "long",
-        varying = 1:n_classes,
+        varying = seq(n_classes),
         timevar = "Class"
       )[, -(length(names(rawdata)[-grep("^Probability", names(rawdata))]) + 3)]
       rawdata$Class <- ordered(rawdata$Class)
-      levels(rawdata$Class) <- 1:n_classes
-      names(rawdata)[1:ncol(x$data)] <-
+      levels(rawdata$Class) <- seq(n_classes)
+      names(rawdata)[seq(ncol(x$data))] <-
         paste0("Value.", gsub("\\.", "_", colnames(x$data)))
       rawdata <-
         reshape(
           rawdata,
           direction = "long",
-          varying = 1:ncol(x$data),
+          varying = seq(ncol(x$data)),
           timevar = "Variable"
         )
       rawdata$Variable <- ordered(rawdata$Variable,
@@ -213,7 +213,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
       if (to_scale) {
         ses <- ses / rep(apply(x$data, 2, sd, na.rm = TRUE), each = 2)
       }
-      names(ses) <- paste0("se.", 1:n_classes)
+      names(ses) <- paste0("se.", seq(n_classes))
       ses$Variable <- unlist(lapply(colnames(x$data), rep, 2))
       ses$boundary <- "lower"
       ses$boundary[seq(2, nrow(ses), by = 2)] <- "upper"
@@ -221,7 +221,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
         reshape(
           ses,
           direction = "long",
-          varying = 1:n_classes,
+          varying = seq(n_classes),
           timevar = "Class"
         )
       ses <-
