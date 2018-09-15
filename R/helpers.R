@@ -105,7 +105,8 @@ write_mplus <- function(d, file_name, na_string = "-999", ...) {
     col.names = FALSE,
     sep = "\t",
     na = as.character(na_string),
-    ...)
+    ...
+  )
 }
 
 make_class_mplus <- function(var_list, class_number, fix_variances = F) {

@@ -5,7 +5,6 @@
 #' @export
 
 plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
-
   mplus_data <- mplus_data[, -ncol(mplus_data)]
 
   z <- count(mplus_data, .data$C)
@@ -15,24 +14,29 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
     mutate(profile = paste0("Profile ", .data$C, " (n = ", .data$n, ")")) %>%
     select(-contains("CPROB"), -.data$C, -.data$n) %>%
     mutate_at(vars(-.data$profile),
-              scale,
-              center = to_center,
-              scale = to_scale) %>%
+      scale,
+      center = to_center,
+      scale = to_scale
+    ) %>%
     group_by(.data$profile) %>%
     summarize_all(funs(mean(., na.rm = TRUE), sd(., na.rm = TRUE))) %>%
     gather("key", "val", -.data$profile) %>%
     mutate(
       new_key = ifelse(str_sub(.data$key, start = -4) == "mean",
-                       str_sub(.data$key, start = -4),
-                       ifelse(str_sub(.data$key, start = -2) == "sd",
-                              str_sub(.data$key, start = -2),
-                              NA)
+        str_sub(.data$key, start = -4),
+        ifelse(str_sub(.data$key, start = -2) == "sd",
+          str_sub(.data$key, start = -2),
+          NA
+        )
       ),
       key = ifelse(str_sub(.data$key, start = -4) == "mean",
-                   str_sub(.data$key, end = -6),
-                   ifelse(str_sub(.data$key, start = -2) == "sd",
-                          str_sub(.data$key, end = -4),
-                          NA))) %>%
+        str_sub(.data$key, end = -6),
+        ifelse(str_sub(.data$key, start = -2) == "sd",
+          str_sub(.data$key, end = -4),
+          NA
+        )
+      )
+    ) %>%
     spread(.data$new_key, .data$val) %>%
     mutate(
       n_string = str_sub(as.character(.data$profile), start = 11),
@@ -42,11 +46,13 @@ plot_profiles_mplus <- function(mplus_data, to_center = T, to_scale = T) {
       ymax = .data$mean + .data$se
     )
 
-  p <- ggplot(d, aes_string(x = "profile",
-                            y = "mean",
-                            fill = "key",
-                            ymin = "ymin",
-                            ymax = "ymax")) +
+  p <- ggplot(d, aes_string(
+    x = "profile",
+    y = "mean",
+    fill = "key",
+    ymin = "ymin",
+    ymax = "ymax"
+  )) +
     geom_col(position = "dodge") +
     geom_errorbar(position = position_dodge()) +
     theme_bw() +

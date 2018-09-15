@@ -32,208 +32,215 @@ compare_solutions_mplus <- function(df, ...,
                                     return_stats_df = TRUE,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
+  if (remove_tmp_files == FALSE) {
+    message("because remove_tmp_files is set to false, some functions may not work as expected")
+  }
 
-    if (remove_tmp_files == FALSE) {
-        message("because remove_tmp_files is set to false, some functions may not work as expected")
+  out_df <- data.frame(matrix(
+    ncol = length(models),
+    nrow = (n_profiles_max - (n_profiles_min - 1))
+  ))
+
+  all_models_names <- list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "equal"), c("equal", "varying"), c("varying", "varying"))
+
+  titles <- c(
+    "Equal variances and covariances fixed to 0",
+    "Varying variances and covariances fixed to 0",
+    "Equal variances and equal covariances",
+    "Varying variances and equal covariances",
+    "Equal variances and varying covariances",
+    "Varying variances and varying covariances"
+  )
+
+  names(out_df) <- titles[all_models_names %in% models]
+
+  out_df <- out_df %>%
+    mutate(n_profiles = n_profiles_min:n_profiles_max) %>%
+    select(.data$n_profiles, everything())
+
+  counter <- 0
+
+  if (save_models == TRUE) {
+    if (!dir.exists("compare_solutions_lpa_output")) {
+      dir.create("compare_solutions_lpa_output")
     }
+  }
 
-    out_df <- data.frame(matrix(
-        ncol = length(models),
-        nrow = (n_profiles_max - (n_profiles_min - 1))
+  for (i in n_profiles_min:n_profiles_max) {
+    for (j in seq(length(models))) {
+      message(str_c("Processing model with n_profiles = ", i, " and model = ", j))
+
+      m <- suppressMessages(estimate_profiles_mplus(
+        df, ...,
+        n_profiles = i,
+        variances = models[[j]][1],
+        covariances = models[[j]][2],
+        cluster_ID = cluster_ID,
+        starts = starts,
+        m_iterations = m_iterations,
+        convergence_criterion = convergence_criterion,
+        st_iterations = st_iterations,
+        return_save_data = F,
+        n_processors = n_processors,
+        include_VLMR = include_VLMR,
+        include_BLRT = include_BLRT,
+        remove_tmp_files = remove_tmp_files
+      ))
+
+      if (save_models == TRUE) {
+        if (!dir.exists(str_c("compare_solutions_lpa_output/m", j, "_p", i))) {
+          dir.create(str_c("compare_solutions_lpa_output/m", j, "_p", i))
+        }
+        capture <- capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic # DA: I'd clean these things up too and not have any comments when you submit
+        write_rds(m_all, str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds")) # I'd *highly* recommend you work on getting all of this code within 80 characters, which is the standard, and helps make it more readable
+      }
+
+      counter <- counter + 1
+
+      if (m[1] == "Error: Convergence issue"
+      | m[1] == "Warning: LL not replicated") { # here's another example where it just spilled over, hence the suggested change
+        message(str_c("Result: ", m))
+        out_df[i - (n_profiles_min - 1), j + 1] <- m # This is the sort of stuff I was referring to with nested for loops. Kinda hard to tell what's actually going on here...
+      } else {
+        n_LL_replicated <- extract_LL_mplus("i.out")
+        count_LL <- count(n_LL_replicated, .data$LL)
+        t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
+        message(paste0("Result: BIC = ", m$summaries$BIC))
+        out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
+
+        # This and BLRT might be another candidate for `switch`
+        if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
+          VLMR_val <- NA
+          VLMR_p <- NA
+        } else {
+          VLMR_val <- m$summaries$T11_VLMR_2xLLDif
+          VLMR_p <- m$summaries$T11_VLMR_PValue
+        }
+
+        if (!("BLRT_2xLLDiff" %in% names(m$summaries))) {
+          BLRT_val <- NA
+          BLRT_p <- NA
+        } else {
+          BLRT_val <- m$summaries$BLRT_2xLLDiff
+          BLRT_p <- m$summaries$BLRT_PValue
+        }
+
+        if (is.null(cluster_ID)) {
+          cluster_ID_label <- NA
+        } else {
+          cluster_ID_label <- cluster_ID
+        }
+
+        model_number <- case_when(
+          models[[j]][1] == "equal" & models[[j]][2] == "zero" ~ 1,
+          models[[j]][1] == "varying" & models[[j]][2] == "zero" ~ 2,
+          models[[j]][1] == "equal" & models[[j]][2] == "equal" ~ 3,
+          models[[j]][1] == "varying" & models[[j]][2] == "equal" ~ 4,
+          models[[j]][1] == "equal" & models[[j]][2] == "varying" ~ 5,
+          models[[j]][1] == "varying" & models[[j]][2] == "varying" ~ 6
+        )
+
+        if (counter == 1) {
+          stats_df <- data.frame(
+            n_profiles = i,
+            model_number = model_number,
+            variances = models[[j]][1],
+            covariances = models[[j]][2],
+            cluster_ID = cluster_ID_label,
+            LL = m$summaries$LL,
+            npar = m$summaries$Parameters,
+            AIC = m$summaries$LL,
+            BIC = m$summaries$BIC,
+            SABIC = m$summaries$aBIC,
+            CAIC = m$summaries$AICC,
+            AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)),
+            Entropy = m$summaries$Entropy,
+            LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
+            cell_size = t,
+            VLMR_val = VLMR_val,
+            VLMR_p = VLMR_p,
+            LMR_val = m$summaries$T11_LMR_Value,
+            LMR_p = m$summaries$T11_LMR_PValue,
+            BLRT_val = BLRT_val,
+            BLRT_p = BLRT_p
+          )
+        } else { # I can't actually even see the difference between these two. Is there a way you could write this without so much redundancy of code? Maybe assemble the full df and then just change the value of one column based on counter?
+          d <- data.frame(
+            n_profiles = i,
+            model_number = model_number,
+            variances = models[[j]][1],
+            covariances = models[[j]][2],
+            LL = m$summaries$LL,
+            npar = m$summaries$Parameters,
+            AIC = m$summaries$LL,
+            BIC = m$summaries$BIC,
+            SABIC = m$summaries$aBIC,
+            CAIC = m$summaries$AICC,
+            AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)), # long again
+            Entropy = m$summaries$Entropy,
+            LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
+            cell_size = t,
+            VLMR_val = VLMR_val,
+            VLMR_p = VLMR_p,
+            LMR_val = m$summaries$T11_LMR_Value,
+            LMR_p = m$summaries$T11_LMR_PValue,
+            BLRT_val = BLRT_val,
+            BLRT_p = BLRT_p
+          )
+
+          stats_df <- suppressWarnings(bind_rows(stats_df, d))
+          stats_df$cell_size <- as.character(stats_df$cell_size)
+        }
+      }
+      # shouldn't the below be wrapped in some sort of if in case the user wants to keep them?
+      file.remove("d.dat")
+      file.remove("i.inp")
+      file.remove("i.out")
+      file.remove("d-mod.dat")
+      file.remove("Mplus Run Models.log")
+    }
+  }
+
+  if (return_stats_df == TRUE & return_table == TRUE) {
+    return(list(
+      as_tibble(out_df),
+      arrange(
+        as_tibble(stats_df),
+        .data$npar,
+        .data$n_profiles
+      )
     ))
+  }
 
-    all_models_names = list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "equal"), c("equal", "varying"), c("varying", "varying"))
+  if (return_stats_df == TRUE) {
+    print(as_tibble(out_df))
+    return(arrange(
+      as_tibble(stats_df),
+      .data$model,
+      .data$n_profiles
+    ))
+  }
 
-    titles <- c(
-        "Equal variances and covariances fixed to 0",
-        "Varying variances and covariances fixed to 0",
-        "Equal variances and equal covariances",
-        "Varying variances and equal covariances",
-        "Equal variances and varying covariances",
-        "Varying variances and varying covariances"
-    )
-
-    names(out_df) <- titles[all_models_names %in% models]
-
-    out_df <- out_df %>%
-        mutate(n_profiles = n_profiles_min:n_profiles_max) %>%
-        select(.data$n_profiles, everything())
-
-    counter <- 0
-
-    if (save_models == TRUE) {
-        if (!dir.exists("compare_solutions_lpa_output")) {
-            dir.create("compare_solutions_lpa_output")
-        }
-    }
-
-    for (i in n_profiles_min:n_profiles_max) {
-        for (j in seq(length(models))) {
-            message(str_c("Processing model with n_profiles = ", i, " and model = ", j))
-
-            m <- suppressMessages(estimate_profiles_mplus(
-                df, ...,
-                n_profiles = i,
-                variances = models[[j]][1],
-                covariances = models[[j]][2],
-                cluster_ID = cluster_ID,
-                starts = starts,
-                m_iterations = m_iterations,
-                convergence_criterion = convergence_criterion,
-                st_iterations = st_iterations,
-                return_save_data = F,
-                n_processors = n_processors,
-                include_VLMR = include_VLMR,
-                include_BLRT = include_BLRT,
-                remove_tmp_files = remove_tmp_files
-            ))
-
-            if (save_models == TRUE) {
-                if (!dir.exists(str_c("compare_solutions_lpa_output/m", j, "_p", i))) {
-                    dir.create(str_c("compare_solutions_lpa_output/m", j, "_p", i))
-                }
-                capture <- capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic # DA: I'd clean these things up too and not have any comments when you submit
-                write_rds(m_all, str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds")) # I'd *highly* recommend you work on getting all of this code within 80 characters, which is the standard, and helps make it more readable
-            }
-
-            counter <- counter + 1
-
-            if (m[1] == "Error: Convergence issue"
-                | m[1] == "Warning: LL not replicated") { # here's another example where it just spilled over, hence the suggested change
-                message(str_c("Result: ", m))
-                out_df[i - (n_profiles_min - 1), j + 1] <- m # This is the sort of stuff I was referring to with nested for loops. Kinda hard to tell what's actually going on here...
-            } else {
-                n_LL_replicated <- extract_LL_mplus("i.out")
-                count_LL <- count(n_LL_replicated, .data$LL)
-                t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
-                message(paste0("Result: BIC = ", m$summaries$BIC))
-                out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
-
-                # This and BLRT might be another candidate for `switch`
-                if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
-                    VLMR_val <- NA
-                    VLMR_p <- NA
-                } else {
-                    VLMR_val <- m$summaries$T11_VLMR_2xLLDif
-                    VLMR_p <- m$summaries$T11_VLMR_PValue
-                }
-
-                if (!("BLRT_2xLLDiff" %in% names(m$summaries))) {
-                    BLRT_val <- NA
-                    BLRT_p <- NA
-                } else {
-                    BLRT_val <- m$summaries$BLRT_2xLLDiff
-                    BLRT_p <- m$summaries$BLRT_PValue
-                }
-
-                if (is.null(cluster_ID)){
-                    cluster_ID_label <- NA
-                } else {
-                    cluster_ID_label <- cluster_ID
-                }
-
-                model_number <- case_when(
-                    models[[j]][1] == "equal" & models[[j]][2] == "zero" ~ 1,
-                    models[[j]][1] == "varying" & models[[j]][2] == "zero" ~ 2,
-                    models[[j]][1] == "equal" & models[[j]][2] == "equal" ~ 3,
-                    models[[j]][1] == "varying" & models[[j]][2] == "equal" ~ 4,
-                    models[[j]][1] == "equal" & models[[j]][2] == "varying" ~ 5,
-                    models[[j]][1] == "varying" & models[[j]][2] == "varying" ~ 6
-                )
-
-                if (counter == 1) {
-                    stats_df <- data.frame(
-                        n_profiles = i,
-                        model_number = model_number,
-                        variances = models[[j]][1],
-                        covariances = models[[j]][2],
-                        cluster_ID = cluster_ID_label,
-                        LL = m$summaries$LL,
-                        npar = m$summaries$Parameters,
-                        AIC = m$summaries$LL,
-                        BIC = m$summaries$BIC,
-                        SABIC = m$summaries$aBIC,
-                        CAIC = m$summaries$AICC,
-                        AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)),
-                        Entropy = m$summaries$Entropy,
-                        LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
-                        cell_size = t,
-                        VLMR_val = VLMR_val,
-                        VLMR_p = VLMR_p,
-                        LMR_val = m$summaries$T11_LMR_Value,
-                        LMR_p = m$summaries$T11_LMR_PValue,
-                        BLRT_val = BLRT_val,
-                        BLRT_p = BLRT_p
-                    )
-                } else { # I can't actually even see the difference between these two. Is there a way you could write this without so much redundancy of code? Maybe assemble the full df and then just change the value of one column based on counter?
-                    d <- data.frame(
-                        n_profiles = i,
-                        model_number = model_number,
-                        variances = models[[j]][1],
-                        covariances = models[[j]][2],
-                        LL = m$summaries$LL,
-                        npar = m$summaries$Parameters,
-                        AIC = m$summaries$LL,
-                        BIC = m$summaries$BIC,
-                        SABIC = m$summaries$aBIC,
-                        CAIC = m$summaries$AICC,
-                        AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)), # long again
-                        Entropy = m$summaries$Entropy,
-                        LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
-                        cell_size = t,
-                        VLMR_val = VLMR_val,
-                        VLMR_p = VLMR_p,
-                        LMR_val = m$summaries$T11_LMR_Value,
-                        LMR_p = m$summaries$T11_LMR_PValue,
-                        BLRT_val = BLRT_val,
-                        BLRT_p = BLRT_p
-                    )
-
-                    stats_df <- suppressWarnings(bind_rows(stats_df, d))
-                    stats_df$cell_size <- as.character(stats_df$cell_size)
-                }
-            }
-            # shouldn't the below be wrapped in some sort of if in case the user wants to keep them?
-            file.remove("d.dat")
-            file.remove("i.inp")
-            file.remove("i.out")
-            file.remove("d-mod.dat")
-            file.remove("Mplus Run Models.log")
-        }
-    }
-
-    if (return_stats_df == TRUE & return_table == TRUE) {
-        return(list(as_tibble(out_df),
-                    arrange(as_tibble(stats_df),
-                            .data$npar,
-                            .data$n_profiles)))
-    }
-
-    if (return_stats_df == TRUE) {
-        print(as_tibble(out_df))
-        return(arrange(as_tibble(stats_df),
-                       .data$model,
-                       .data$n_profiles))
-    }
-
-    if (return_table == TRUE) {
-        print(as_tibble(out_df))
-        invisible(as_tibble(out_df))
-    } else {
-        out_df %>%
-            gather("Model", "BIC", -.data$n_profiles) %>%
-            filter(str_detect(.data$BIC, "\\d+\\.*\\d*")) %>%
-            mutate(
-                BIC = as.numeric(.data$BIC),
-                n_profiles = as.integer(.data$n_profiles),
-                Model = str_extract(.data$Model, "\\d")
-            ) %>%
-            ggplot(aes_string(x = "n_profiles",
-                              y = "BIC",
-                              shape = "Model",
-                              color = "Model",
-                              group = "Model")) +
-            geom_line() +
-            geom_point()
-    }
+  if (return_table == TRUE) {
+    print(as_tibble(out_df))
+    invisible(as_tibble(out_df))
+  } else {
+    out_df %>%
+      gather("Model", "BIC", -.data$n_profiles) %>%
+      filter(str_detect(.data$BIC, "\\d+\\.*\\d*")) %>%
+      mutate(
+        BIC = as.numeric(.data$BIC),
+        n_profiles = as.integer(.data$n_profiles),
+        Model = str_extract(.data$Model, "\\d")
+      ) %>%
+      ggplot(aes_string(
+        x = "n_profiles",
+        y = "BIC",
+        shape = "Model",
+        color = "Model",
+        group = "Model"
+      )) +
+      geom_line() +
+      geom_point()
+  }
 }

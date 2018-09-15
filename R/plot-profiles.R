@@ -40,24 +40,29 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
       x %>%
         select(-.data$posterior_prob) %>%
         mutate_at(vars(-.data$profile),
-                  center_scale_function,
-                  center_raw_data = to_center,
-                  scale_raw_data = to_scale) %>%
+          center_scale_function,
+          center_raw_data = to_center,
+          scale_raw_data = to_scale
+        ) %>%
         group_by(.data$profile) %>%
         summarize_all(funs(mean, sd)) %>%
         gather("key", "val", -.data$profile) %>%
         mutate(
           new_key = ifelse(str_sub(.data$key, start = -4) == "mean",
-                           str_sub(.data$key, start = -4),
-                           ifelse(str_sub(.data$key, start = -2) == "sd",
-                                  str_sub(.data$key, start = -2),
-                                  NA)
+            str_sub(.data$key, start = -4),
+            ifelse(str_sub(.data$key, start = -2) == "sd",
+              str_sub(.data$key, start = -2),
+              NA
+            )
           ),
           key = ifelse(str_sub(.data$key, start = -4) == "mean",
-                       str_sub(.data$key, end = -6),
-                       ifelse(str_sub(.data$key, start = -2) == "sd",
-                              str_sub(.data$key, end = -4),
-                              NA))) %>%
+            str_sub(.data$key, end = -6),
+            ifelse(str_sub(.data$key, start = -2) == "sd",
+              str_sub(.data$key, end = -4),
+              NA
+            )
+          )
+        ) %>%
         spread(.data$new_key, .data$val) %>%
         mutate(
           n_string = str_sub(as.character(.data$profile), start = 11),
@@ -66,11 +71,13 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
           ymin = .data$mean - .data$se,
           ymax = .data$mean + .data$se
         ) %>%
-        ggplot(aes_string(x = "profile",
-                          y = "mean",
-                          fill = "key",
-                          ymin = "ymin",
-                          ymax = "ymax")) +
+        ggplot(aes_string(
+          x = "profile",
+          y = "mean",
+          fill = "key",
+          ymin = "ymin",
+          ymax = "ymax"
+        )) +
         geom_col(position = "dodge") +
         geom_errorbar(position = position_dodge()) +
         scale_x_discrete("") +
@@ -79,16 +86,19 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
       x %>%
         select(-.data$posterior_prob) %>%
         mutate_at(vars(-.data$profile),
-                  scale,
-                  center = to_center,
-                  scale = to_scale) %>%
+          scale,
+          center = to_center,
+          scale = to_scale
+        ) %>%
         mutate(profile = as.factor(.data$profile)) %>%
         group_by(.data$profile) %>%
         summarize_all(mean) %>%
         gather("key", "val", -.data$profile) %>%
-        ggplot(aes_string(x = "profile",
-                          y = "val",
-                          fill = "key")) +
+        ggplot(aes_string(
+          x = "profile",
+          y = "val",
+          fill = "key"
+        )) +
         geom_col(position = "dodge") +
         scale_x_discrete("") +
         theme_bw()
@@ -143,7 +153,8 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
           timevar = "Variable"
         )
       rawdata$Variable <- ordered(rawdata$Variable,
-                                  levels = gsub("\\.", "_", colnames(x$data)))
+        levels = gsub("\\.", "_", colnames(x$data))
+      )
       levels(rawdata$Variable) <- colnames(x$data)
 
       classplot <- classplot + geom_point(
@@ -169,8 +180,9 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
     # Add errorbars
     if (!is.null(ci)) {
       if (any(
-              table(x$classification) / length(x$classification) <
-              .5 * (1 / length(unique(x$classification))))) {
+        table(x$classification) / length(x$classification) <
+          .5 * (1 / length(unique(x$classification)))
+      )) {
         warning(
           "The number of cases per class is relatively low in some classes. Used weighted likelihood bootstrap to obtain se's."
         )
@@ -190,8 +202,10 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
       }
 
       ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
-        apply(class, 2, quantile, probs = c((.5 * (1 - ci)),
-                                            1 - (.5 * (1 - ci))))
+        apply(class, 2, quantile, probs = c(
+          (.5 * (1 - ci)),
+          1 - (.5 * (1 - ci))
+        ))
       }))
       if (to_center) {
         ses <- ses - rep(colMeans(x$data, na.rm = TRUE), each = 2)
@@ -232,8 +246,10 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble",
         )
     }
     classplot + theme_bw() +
-      geom_vline(xintercept = seq(1.5, (n_classes - 1) + .5, 1),
-                 linetype = 2) +
+      geom_vline(
+        xintercept = seq(1.5, (n_classes - 1) + .5, 1),
+        linetype = 2
+      ) +
       scale_x_discrete(expand = c(0, 0))
   }
 }

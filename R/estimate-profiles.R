@@ -34,8 +34,7 @@ estimate_profiles <- function(df,
                               return_orig_df = FALSE,
                               prior_control = FALSE,
                               print_which_stats = "some") {
-
-    model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
+  model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
 Model 1: variances = 'equal'; covariances = 'zero';
 Model 2: variances = 'equal'; covariances = 'equal';
 Model 3: variances = 'equal'; covariances = 'zero';
@@ -44,124 +43,129 @@ Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated witho
 Model 6: variances = 'varying'; covariances = 'varying';
                      ")
 
-    if (!is.null(model)) stop(model_message)
+  if (!is.null(model)) stop(model_message)
 
-    if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
+  if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
-    df <- mutate(df, row_number = 1:nrow(df))
+  df <- mutate(df, row_number = 1:nrow(df))
 
-    d <- select_create_profiles(df, ...)
+  d <- select_create_profiles(df, ...)
 
-    if (center_raw_data == T | scale_raw_data == T) {
-        d <- mutate_at(d,
-                       vars(-row_number),
-                       center_scale_function,
-                       center_raw_data = center_raw_data,
-                       scale_raw_data = scale_raw_data)
-    }
-
-    if (variances == "equal" & covariances == "zero") {
-        model <- "EEI"
-    } else if (variances == "equal" & covariances == "equal") {
-        model <- "EEE"
-    } else if (variances == "varying" & covariances == "zero") {
-        model <- "VVI"
-    } else if (variances == "varying" & covariances == "varying") {
-        model <- "VVV"
-    } else if (model %in% c("E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI",
-                            "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV",
-                            "VVV", "X", "XII", "XXI", "XXX")) {
-        model <- model
-    } else {
-        stop("Model name is not correctly specified; see ?estimate_profiles for details on how to specify the model")
-    }
-
-    model_number <- case_when(
-        variances == "equal" & covariances == "zero" ~ 1,
-        variances == "varying" & covariances == "zero" ~ 2,
-        variances == "equal" & covariances == "equal" ~ 3,
-        variances == "varying" & covariances == "equal" ~ 4,
-        variances == "equal" & covariances == "varying" ~ 5,
-        variances == "varying" & covariances == "varying" ~ 6
+  if (center_raw_data == T | scale_raw_data == T) {
+    d <- mutate_at(d,
+      vars(-row_number),
+      center_scale_function,
+      center_raw_data = center_raw_data,
+      scale_raw_data = scale_raw_data
     )
+  }
 
-    titles <- c(
-        "Equal variances and covariances fixed to 0 (model 1)",
-        "Varying variances and covariances fixed to 0 (model 2)",
-        "Equal variances and equal covariances (model 3)",
-        #"Varying variances and equal covariances (model 4)", # only available in MPlus
-        #"Equal variances and varying covariances (model 5)", # only available in MPlus
-        "Varying variances and varying covariances (model 6)"
+  if (variances == "equal" & covariances == "zero") {
+    model <- "EEI"
+  } else if (variances == "equal" & covariances == "equal") {
+    model <- "EEE"
+  } else if (variances == "varying" & covariances == "zero") {
+    model <- "VVI"
+  } else if (variances == "varying" & covariances == "varying") {
+    model <- "VVV"
+  } else if (model %in% c(
+    "E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI",
+    "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV",
+    "VVV", "X", "XII", "XXI", "XXX"
+  )) {
+    model <- model
+  } else {
+    stop("Model name is not correctly specified; see ?estimate_profiles for details on how to specify the model")
+  }
+
+  model_number <- case_when(
+    variances == "equal" & covariances == "zero" ~ 1,
+    variances == "varying" & covariances == "zero" ~ 2,
+    variances == "equal" & covariances == "equal" ~ 3,
+    variances == "varying" & covariances == "equal" ~ 4,
+    variances == "equal" & covariances == "varying" ~ 5,
+    variances == "varying" & covariances == "varying" ~ 6
+  )
+
+  titles <- c(
+    "Equal variances and covariances fixed to 0 (model 1)",
+    "Varying variances and covariances fixed to 0 (model 2)",
+    "Equal variances and equal covariances (model 3)",
+    # "Varying variances and equal covariances (model 4)", # only available in MPlus
+    # "Equal variances and varying covariances (model 5)", # only available in MPlus
+    "Varying variances and varying covariances (model 6)"
+  )
+
+  title <- titles[model_number]
+
+  d_model <- select(d, -row_number)
+
+  if (prior_control == FALSE) {
+    m <- Mclust(d_model,
+      G = n_profiles,
+      modelNames = model,
+      warn = FALSE,
+      verbose = FALSE
     )
+  } else {
+    m <- Mclust(d_model,
+      G = n_profiles,
+      modelNames = model,
+      warn = FALSE,
+      verbose = FALSE,
+      prior = priorControl()
+    )
+  }
 
-    title <- titles[model_number]
+  if (is.null(m)) stop("Model could not be estimated.")
 
-    d_model <- select(d, -row_number)
+  message("Fit ", titles[model], " model with ", n_profiles, " profiles.")
 
-    if (prior_control == FALSE) {
-        m <- Mclust(d_model,
-                    G = n_profiles,
-                    modelNames = model,
-                    warn = FALSE,
-                    verbose = FALSE)
-    } else {
-        m <- Mclust(d_model,
-                    G = n_profiles,
-                    modelNames = model,
-                    warn = FALSE,
-                    verbose = FALSE,
-                    prior = priorControl())
-    }
+  AIC <- (2 * m$df - 2 * m$loglik)
+  CAIC <- (((log(m$n) + 1) * m$df) - 2 * m$loglik)
+  SABIC <- (m$df * log((m$n + 2) / 24) - 2 * m$loglik)
 
-    if (is.null(m)) stop("Model could not be estimated.")
+  posterior_prob <- 1 - round(m$uncertainty, 5)
 
-    message("Fit ", titles[model], " model with ", n_profiles, " profiles.")
+  if (tolower(print_which_stats) == "some") {
+    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+    message("Entropy is ", round(mean(posterior_prob), 3))
+  } else if (tolower(print_which_stats) == "all") {
+    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
+    message("AIC is ", round(abs(as.vector(AIC)), 3))
+    message("CAIC is ", round(abs(as.vector(CAIC)), 3))
+    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+    message("SABIC is ", round(abs(as.vector(SABIC)), 3))
+    message("ICL is ", round(abs(as.vector(icl(m))), 3))
+    message("Entropy is ", round(mean(posterior_prob), 3))
+  }
 
-    AIC <- (2 * m$df - 2 * m$loglik)
-    CAIC <- (((log(m$n) + 1) * m$df) - 2 * m$loglik)
-    SABIC <- (m$df * log((m$n + 2) / 24) - 2 * m$loglik)
+  dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification)))
 
-    posterior_prob <- 1 - round(m$uncertainty, 5)
+  test <- nrow(count(dff, .data$profile))
 
-    if (tolower(print_which_stats) == "some") {
-        message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-        message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-        message("Entropy is ", round(mean(posterior_prob), 3))
-    } else if (tolower(print_which_stats) == "all") {
-        message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-        message("AIC is ", round(abs(as.vector(AIC)), 3))
-        message("CAIC is ", round(abs(as.vector(CAIC)), 3))
-        message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-        message("SABIC is ", round(abs(as.vector(SABIC)), 3))
-        message("ICL is ", round(abs(as.vector(icl(m))), 3))
-        message("Entropy is ", round(mean(posterior_prob), 3))
-    }
+  if (test < n_profiles) warning("Some profiles are associated with no assignments. Interpret this solution with caution and consider other models.")
 
-    dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification)))
+  if (return_posterior_probs == TRUE) {
+    dff <- bind_cols(dff, posterior_prob = posterior_prob)
+  }
 
-    test <- nrow(count(dff, .data$profile))
+  attributes(dff)$mclust_output <- m
 
-    if (test < n_profiles) warning("Some profiles are associated with no assignments. Interpret this solution with caution and consider other models.")
+  if (return_orig_df == TRUE) {
+    to_join <- select(dff, .data$profile, .data$posterior_prob)
+    dff <- semi_join(df, dff, by = "row_number")
+    dff <- select(dff, -.data$row_number)
+    dff <- bind_cols(dff, to_join)
+  } else {
+    dff <- semi_join(dff, df, by = "row_number")
+    dff <- select(dff, -.data$row_number)
+  }
 
-    if (return_posterior_probs == TRUE) {
-        dff <- bind_cols(dff, posterior_prob = posterior_prob)
-    }
-
-    attributes(dff)$mclust_output <- m
-
-    if (return_orig_df == TRUE) {
-        to_join <- select(dff, .data$profile, .data$posterior_prob)
-        dff <- semi_join(df, dff, by = "row_number")
-        dff <- select(dff, -.data$row_number)
-        dff <- bind_cols(dff, to_join)
-    } else {
-        dff <- semi_join(dff, df, by = "row_number")
-        dff <- select(dff, -.data$row_number)
-    }
-
-    if (to_return == "tibble" | to_return == "data.frame") {
-        return(as_tibble(dff))
-    } else if (to_return == "mclust") {
-        return(attributes(dff)$mclust_output)
-    }
+  if (to_return == "tibble" | to_return == "data.frame") {
+    return(as_tibble(dff))
+  } else if (to_return == "mclust") {
+    return(attributes(dff)$mclust_output)
+  }
 }

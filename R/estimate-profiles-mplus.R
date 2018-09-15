@@ -52,8 +52,7 @@ estimate_profiles_mplus <- function(df,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE,
                                     return_all_stats = FALSE) {
-
-    model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
+  model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
 Model 1: variances = 'equal'; covariances = 'zero';
 Model 2: variances = 'equal'; covariances = 'equal';
 Model 3: variances = 'equal'; covariances = 'zero';
@@ -62,7 +61,7 @@ Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated witho
 Model 6: variances = 'varying'; covariances = 'varying';
                      ")
 
-    if (!is.null(model)) stop(model_message)
+  if (!is.null(model)) stop(model_message)
 
   d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
 
@@ -315,68 +314,66 @@ Model 6: variances = 'varying'; covariances = 'varying';
     message("Entropy is ", round(abs(as.vector(get_fit_stat(m, "Entropy"))), 3))
 
     if (return_all_stats == TRUE) {
+      n_LL_replicated <- extract_LL_mplus("i.out")
+      count_LL <- count(n_LL_replicated, .data$LL)
+      t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
+      message(paste0("Result: BIC = ", m$summaries$BIC))
 
-        n_LL_replicated <- extract_LL_mplus("i.out")
-        count_LL <- count(n_LL_replicated, .data$LL)
-        t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
-        message(paste0("Result: BIC = ", m$summaries$BIC))
+      if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
+        VLMR_val <- NA
+        VLMR_p <- NA
+      } else {
+        VLMR_val <- m$summaries$T11_VLMR_2xLLDif
+        VLMR_p <- m$summaries$T11_VLMR_PValue
+      }
 
-        if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
-            VLMR_val <- NA
-            VLMR_p <- NA
-        } else {
-            VLMR_val <- m$summaries$T11_VLMR_2xLLDif
-            VLMR_p <- m$summaries$T11_VLMR_PValue
-        }
+      if (!("BLRT_2xLLDiff" %in% names(m$summaries))) {
+        BLRT_val <- NA
+        BLRT_p <- NA
+      } else {
+        BLRT_val <- m$summaries$BLRT_2xLLDiff
+        BLRT_p <- m$summaries$BLRT_PValue
+      }
 
-        if (!("BLRT_2xLLDiff" %in% names(m$summaries))) {
-            BLRT_val <- NA
-            BLRT_p <- NA
-        } else {
-            BLRT_val <- m$summaries$BLRT_2xLLDiff
-            BLRT_p <- m$summaries$BLRT_PValue
-        }
+      if (is.null(cluster_ID)) {
+        cluster_ID_label <- NA
+      } else {
+        cluster_ID_label <- cluster_ID
+      }
 
-        if (is.null(cluster_ID)){
-            cluster_ID_label <- NA
-        } else {
-            cluster_ID_label <- cluster_ID
-        }
+      model_number <- case_when(
+        variances == "equal" & covariances == "zero" ~ 1,
+        variances == "varying" & covariances == "zero" ~ 2,
+        variances == "equal" & covariances == "equal" ~ 3,
+        variances == "varying" & covariances == "equal" ~ 4,
+        variances == "equal" & covariances == "varying" ~ 5,
+        variances == "varying" & covariances == "varying" ~ 6
+      )
 
-        model_number <- case_when(
-            variances == "equal" & covariances == "zero" ~ 1,
-            variances == "varying" & covariances == "zero" ~ 2,
-            variances == "equal" & covariances == "equal" ~ 3,
-            variances == "varying" & covariances == "equal" ~ 4,
-            variances == "equal" & covariances == "varying" ~ 5,
-            variances == "varying" & covariances == "varying" ~ 6
-        )
-
-        stats_df <- data.frame(
-                n_profiles = i,
-                model_number = model_number,
-                variances = variances,
-                covariances = covariances,
-                cluster_ID = cluster_ID_label,
-                LL = m$summaries$LL,
-                npar = m$summaries$Parameters,
-                AIC = m$summaries$AIC,
-                BIC = m$summaries$BIC,
-                SABIC = m$summaries$aBIC,
-                CAIC = m$summaries$AICC,
-                AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)),
-                Entropy = m$summaries$Entropy,
-                LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
-                cell_size = t,
-                VLMR_val = VLMR_val,
-                VLMR_p = VLMR_p,
-                LMR_val = m$summaries$T11_LMR_Value,
-                LMR_p = m$summaries$T11_LMR_PValue,
-                BLRT_val = BLRT_val,
-                BLRT_p = BLRT_p
-            )
-        }
-
+      stats_df <- data.frame(
+        n_profiles = i,
+        model_number = model_number,
+        variances = variances,
+        covariances = covariances,
+        cluster_ID = cluster_ID_label,
+        LL = m$summaries$LL,
+        npar = m$summaries$Parameters,
+        AIC = m$summaries$AIC,
+        BIC = m$summaries$BIC,
+        SABIC = m$summaries$aBIC,
+        CAIC = m$summaries$AICC,
+        AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)),
+        Entropy = m$summaries$Entropy,
+        LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
+        cell_size = t,
+        VLMR_val = VLMR_val,
+        VLMR_p = VLMR_p,
+        LMR_val = m$summaries$T11_LMR_Value,
+        LMR_p = m$summaries$T11_LMR_PValue,
+        BLRT_val = BLRT_val,
+        BLRT_p = BLRT_p
+      )
+    }
   }
 
   if (print_input_file == TRUE) {
@@ -409,11 +406,10 @@ Model 6: variances = 'varying'; covariances = 'varying';
     attr(x, "mplus_errors") <- m$errors
 
     if (return_all_stats == TRUE) {
-        return(list(stats_df, x))
+      return(list(stats_df, x))
     } else {
-        return(x)
+      return(x)
     }
-
   } else {
     if (remove_tmp_files == TRUE) {
       file.remove(data_filename)
@@ -422,11 +418,11 @@ Model 6: variances = 'varying'; covariances = 'varying';
       file.remove(savedata_filename)
       file.remove("Mplus Run Models.log")
     }
-      if (return_all_stats == TRUE) {
-          return(list(stats_df, m))
-      } else {
-          return(m)
-      }
+    if (return_all_stats == TRUE) {
+      return(list(stats_df, m))
+    } else {
+      return(m)
+    }
   }
 }
 
