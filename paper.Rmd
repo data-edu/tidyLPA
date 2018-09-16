@@ -13,12 +13,12 @@ authors:
     orcid: "0000-0002-3569-2305"
     affiliation: 'Michigan State University'
   - name: Daniel J. Anderson
-    orcid: ""
+    orcid: "0000-0003-4699-4680"
     affiliation: 'University of Oregon'
   - name: Jennifer A. Schmidt
     orcid: "0000-0003-2853-9801"
     affiliation: 'Michigan State University'
-date: 30 August 2018
+date: 16 September 2018
 bibliography: paper.bib
 output:
      pdf_document: default
