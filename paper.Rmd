@@ -1,5 +1,5 @@
 ---
-title: 'tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-source or Commercial Software'
+title: 'tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software'
 tags:
   - R
   - mixture modeling
