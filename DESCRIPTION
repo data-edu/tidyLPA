@@ -1,7 +1,7 @@
 Type: Package
 Package: tidyLPA
 Title: Easily Carry Out Latent Profile Analysis
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(
     person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com"),
     person(c("Jennifer", "A"), "Schmidt", role = "ctb", email = "jaschmid@msu.edu"),

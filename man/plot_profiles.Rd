@@ -4,8 +4,9 @@
 \alias{plot_profiles}
 \title{Plot variable means and variances by profile}
 \usage{
-plot_profiles(x, to_center = F, to_scale = F, plot_what = "tibble",
-  plot_error_bars = TRUE, plot_rawdata = TRUE, ci = 0.95)
+plot_profiles(x, to_center = FALSE, to_scale = FALSE,
+  plot_what = "tibble", plot_error_bars = TRUE, plot_rawdata = TRUE,
+  ci = 0.95)
 }
 \arguments{
 \item{x}{output from estimate_profiles()}

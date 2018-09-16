@@ -4,7 +4,7 @@
 \alias{plot_profiles_mplus}
 \title{Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)}
 \usage{
-plot_profiles_mplus(mplus_data, to_center = T, to_scale = T)
+plot_profiles_mplus(mplus_data, to_center = TRUE, to_scale = TRUE)
 }
 \arguments{
 \item{mplus_data}{output from estimate_profiles_mplus() with return_savedata = T specified}

@@ -25,7 +25,7 @@ compare_solutions_mplus <- function(df, ...,
                                     m_iterations = 500,
                                     st_iterations = 20,
                                     convergence_criterion = 1E-6,
-                                    remove_tmp_files = TRUE,
+                                    remove_tmp_files = FALSE,
                                     save_models = FALSE,
                                     return_table = TRUE,
                                     n_processors = 1,
@@ -164,7 +164,7 @@ compare_solutions_mplus <- function(df, ...,
             BLRT_val = BLRT_val,
             BLRT_p = BLRT_p
           )
-        } else { # I can't actually even see the difference between these two. Is there a way you could write this without so much redundancy of code? Maybe assemble the full df and then just change the value of one column based on counter?
+        } else {
           d <- data.frame(
             n_profiles = i,
             model_number = model_number,
@@ -192,7 +192,6 @@ compare_solutions_mplus <- function(df, ...,
           stats_df$cell_size <- as.character(stats_df$cell_size)
         }
       }
-      # shouldn't the below be wrapped in some sort of if in case the user wants to keep them?
       file.remove("d.dat")
       file.remove("i.inp")
       file.remove("i.out")
@@ -200,6 +199,12 @@ compare_solutions_mplus <- function(df, ...,
       file.remove("Mplus Run Models.log")
     }
   }
+
+  file.remove("d.dat")
+  file.remove("i.inp")
+  file.remove("i.out")
+  file.remove("d-mod.dat")
+  file.remove("Mplus Run Models.log")
 
   if (return_stats_df == TRUE & return_table == TRUE) {
     return(list(
