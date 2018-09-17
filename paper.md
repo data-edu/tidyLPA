@@ -7,16 +7,16 @@ tags:
   - MPlus
 authors:
   - name: Joshua M. Rosenberg
-    orcid: "0000-0003-2170-0447"
+    orcid: 0000-0003-2170-0447
     affiliation: 1
   - name: Patrick N. Beymer
-    orcid: "0000-0002-3569-2305"
+    orcid: 0000-0002-3569-2305
     affiliation: 2
   - name: Daniel J. Anderson
-    orcid: "0000-0003-4699-4680"
+    orcid: 0000-0003-4699-4680
     affiliation: 3
   - name: Jennifer A. Schmidt
-    orcid: "0000-0003-2853-9801"
+    orcid: 0000-0003-2853-9801
     affiliation: 2
 affiliations:
  - name: University of Tennessee, Knoxville
