@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@
     </tr>
     <tr>
       <th>models</th>
-      <td><p>which models to include; defaults to 1:4 (see https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html)</p></td>
+      <td><p>which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "varying"))</p></td>
     </tr>
     <tr>
       <th>center_raw_data</th>

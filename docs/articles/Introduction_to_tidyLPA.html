@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2018-02-17</h4>
+            <h4 class="date">2018-09-16</h4>
       
       
       <div class="hidden name"><code>Introduction_to_tidyLPA.Rmd</code></div>
@@ -132,6 +132,7 @@
 <h2 class="hasAnchor">
 <a href="#an-example-using-mclust" class="anchor"></a>4. An example using mclust</h2>
 <p>Here is a very short example using the built-in data set <code>pisaUSA15</code>.</p>
+<p>Note that outliers may wish to be removed first; consider identifying both univariate and multivariate outliers.</p>
 <p>First, you can install the package from CRAN as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"tidyLPA"</span>)</code></pre></div>
 <p>You can also install the in-development version of tidyLPA from GitHub with:</p>
@@ -140,8 +141,6 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>Here is the simple example, using just a subset of the built-in <code>pisaUSA15</code> data, data from the 2015 PISA assessment (more details on the data set can be found <a href="https://github.com/jrosen48/pisaUSA15">here</a>). We load tidyLPA and create a subset of the <code>pisaUSA15</code> data for this example.</p>
 <p>We use variables from the PISA assessment for United States students’ broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Please report any issues or feature requests at https://github.com/jrosen48/tidyLPA or via email to tidylpa@googlegroups.com.</span>
 d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]</code></pre></div>
 <p><strong>Comparing profile solutions</strong></p>
 <p>Next, we use the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC) (the ICL is also available, as others will be in future versions; add the argument <code>statistic = "ICL"</code> to plot the ICL values instead of the BIC values). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.</p>
@@ -481,7 +480,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p><strong>How to cite tidyLPA</strong></p>
 <p>In the future, it is expected that parts of this vignette will be expanded into a peer-reviewed article. For now, to cite tidyLPA in presentations, publications, and other works, please use:</p>
 <blockquote>
-<p>Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., &amp; Steingut, R. R. (2018). Interface to mclust to easily carry out Latent Profile Analysis [Statistical software for R]. <a href="https://github.com/jrosen48/tidyLPA" class="uri">https://github.com/jrosen48/tidyLPA</a></p>
+<p>Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., Anderson, D.J., and van Lissa, C. (2018). Interface to mclust to easily carry out Latent Profile Analysis [Statistical software for R]. <a href="https://github.com/jrosen48/tidyLPA" class="uri">https://github.com/jrosen48/tidyLPA</a></p>
 </blockquote>
 </div>
 </div>

@@ -119,7 +119,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
 
   if (is.null(m)) stop("Model could not be estimated.")
 
-  message("Fit ", titles[model], " model with ", n_profiles, " profiles.")
+  message("Fit ", title, " model with ", n_profiles, " profiles.")
 
   AIC <- (2 * m$df - 2 * m$loglik)
   CAIC <- (((log(m$n) + 1) * m$df) - 2 * m$loglik)
