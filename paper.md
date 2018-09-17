@@ -8,16 +8,23 @@ tags:
 authors:
   - name: Joshua M. Rosenberg
     orcid: "0000-0003-2170-0447"
-    affiliation: 'University of Tennessee, Knoxville'
+    affiliation: 1
   - name: Patrick N. Beymer
     orcid: "0000-0002-3569-2305"
-    affiliation: 'Michigan State University'
+    affiliation: 2
   - name: Daniel J. Anderson
     orcid: "0000-0003-4699-4680"
-    affiliation: 'University of Oregon'
+    affiliation: 3
   - name: Jennifer A. Schmidt
     orcid: "0000-0003-2853-9801"
-    affiliation: 'Michigan State University'
+    affiliation: 2
+affiliations:
+ - name: University of Tennessee, Knoxville
+   index: 1
+ - name: Michigan State University
+   index: 2
+ - name: University of Oregon
+   index: 3
 date: 16 September 2018
 bibliography: paper.bib
 ---
