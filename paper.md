@@ -22,6 +22,8 @@ date: 16 September 2018
 bibliography: paper.bib
 ---
 
+# Summary 
+
 Researchers are often interested in identifying homogeneous subgroups within
 heterogeneous samples on the basis of a set of measures, such as profiles of
 individuals' motivation (i.e., their values, competence beliefs, and achievement
