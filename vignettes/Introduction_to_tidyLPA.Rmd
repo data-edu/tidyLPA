@@ -88,6 +88,8 @@ library(tidyLPA)
 d <- pisaUSA15[1:100, ]
 ```
 
+Note that you may wish to identify (and remove) univariate and multivariate outliers. See the functions [here](https://gist.github.com/jrosen48/094eee8627be43b167c7c79388027174) for some exampels. 
+
 **Comparing profile solutions**
 
 Next, we use the `compare_solutions()` function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC) (the ICL is also available, as others will be in future versions; add the argument `statistic = "ICL"` to plot the ICL values instead of the BIC values). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.
