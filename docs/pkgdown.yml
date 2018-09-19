@@ -3,4 +3,5 @@ pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
   Introduction_to_tidyLPA: Introduction_to_tidyLPA.html
+  notes-on-model-selection: notes-on-model-selection.html
 
