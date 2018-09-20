@@ -32,8 +32,9 @@ compare_solutions_mplus <- function(df, ...,
                                     return_stats_df = TRUE,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE) {
-  if (remove_tmp_files == FALSE) {
-    message("because remove_tmp_files is set to false, some functions may not work as expected")
+
+  if (remove_tmp_files == TRUE) {
+    message("because remove_tmp_files is set to TRUE, some functions may not work as expected")
   }
 
   out_df <- data.frame(matrix(
