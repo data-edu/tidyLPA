@@ -69,7 +69,7 @@ compare_solutions_mplus <- function(df, ...,
 
   for (i in n_profiles_min:n_profiles_max) {
     for (j in seq(length(models))) {
-      message(str_c("Processing model with n_profiles = ", i, " and model = ", j))
+      message(str_c("Processing model with n_profiles = ", i, " and variances = ", models[[j]][1], " and covariances = ", models[[j]][2]))
 
       m <- suppressMessages(estimate_profiles_mplus(
         df, ...,
@@ -193,19 +193,19 @@ compare_solutions_mplus <- function(df, ...,
           stats_df$cell_size <- as.character(stats_df$cell_size)
         }
       }
-      file.remove("d.dat")
-      file.remove("i.inp")
-      file.remove("i.out")
-      file.remove("d-mod.dat")
-      file.remove("Mplus Run Models.log")
+      if (file.exists("d.dat")) file.remove("d.dat")
+      if (file.exists("i.inp")) file.remove("i.inp")
+      if (file.exists("i.out")) file.remove("i.inp")
+      if (file.exists("d-mod.dat")) file.remove("d-mod.dat")
+      if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
     }
   }
 
-  file.remove("d.dat")
-  file.remove("i.inp")
-  file.remove("i.out")
-  file.remove("d-mod.dat")
-  file.remove("Mplus Run Models.log")
+  if (file.exists("d.dat")) file.remove("d.dat")
+  if (file.exists("i.inp")) file.remove("i.inp")
+  if (file.exists("i.out")) file.remove("i.inp")
+  if (file.exists("d-mod.dat")) file.remove("d-mod.dat")
+  if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
 
   if (return_stats_df == TRUE & return_table == TRUE) {
     return(list(
