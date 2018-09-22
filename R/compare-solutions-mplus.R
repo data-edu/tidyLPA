@@ -7,6 +7,7 @@
 #' @param save_models whether to save the models as rds files
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to TRUE
+#' @param dir_name character; name for directory .out files are saved to if save_models = TRUE
 #' @inheritParams estimate_profiles_mplus
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @examples
@@ -31,7 +32,8 @@ compare_solutions_mplus <- function(df, ...,
                                     n_processors = 1,
                                     return_stats_df = TRUE,
                                     include_VLMR = TRUE,
-                                    include_BLRT = FALSE) {
+                                    include_BLRT = FALSE,
+                                    dir_name = NULL) {
 
   if (remove_tmp_files == TRUE) {
     message("because remove_tmp_files is set to TRUE, some functions may not work as expected")
@@ -62,9 +64,9 @@ compare_solutions_mplus <- function(df, ...,
   counter <- 0
 
   if (save_models == TRUE) {
-    if (!dir.exists("compare_solutions_lpa_output")) {
-      dir.create("compare_solutions_lpa_output")
-    }
+      if (is.null(dir_name)) dir_name <- round(runif(1), 6)* 1E6
+      dir.create("compare_solutions_mplus_output", showWarnings=FALSE)
+      dir.create(stringr::str_c("compare_solutions_mplus_output/", dir_name), showWarnings=FALSE)
   }
 
   for (i in n_profiles_min:n_profiles_max) {
@@ -89,11 +91,10 @@ compare_solutions_mplus <- function(df, ...,
       ))
 
       if (save_models == TRUE) {
-        if (!dir.exists(str_c("compare_solutions_lpa_output/m", j, "_p", i))) {
-          dir.create(str_c("compare_solutions_lpa_output/m", j, "_p", i))
-        }
-        capture <- capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic # DA: I'd clean these things up too and not have any comments when you submit
-        write_rds(m_all, str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds")) # I'd *highly* recommend you work on getting all of this code within 80 characters, which is the standard, and helps make it more readable
+        capture <- capture.output(m_all <- MplusAutomation::readModels("i.out"))
+        new_dir <- stringr::str_c("compare_solutions_mplus_output/", dir_name, "/m-", j, "_p-", i)
+        dir.create(new_dir, showWarnings=FALSE)
+        file.copy(from = "i.out", to = new_dir)
       }
 
       counter <- counter + 1
@@ -101,7 +102,7 @@ compare_solutions_mplus <- function(df, ...,
       if (m[1] == "Error: Convergence issue"
       | m[1] == "Warning: LL not replicated") { # here's another example where it just spilled over, hence the suggested change
         message(str_c("Result: ", m))
-        out_df[i - (n_profiles_min - 1), j + 1] <- m # This is the sort of stuff I was referring to with nested for loops. Kinda hard to tell what's actually going on here...
+        out_df[i - (n_profiles_min - 1), j + 1] <- m
       } else {
         n_LL_replicated <- extract_LL_mplus("i.out")
         count_LL <- count(n_LL_replicated, .data$LL)
@@ -196,7 +197,7 @@ compare_solutions_mplus <- function(df, ...,
 
       if (file.exists("d.dat")) file.remove("d.dat")
       if (file.exists("i.inp")) file.remove("i.inp")
-      if (file.exists("i.out")) file.remove("i.inp")
+      if (file.exists("i.out")) file.remove("i.out")
       if (file.exists("d-mod.dat")) file.remove("d-mod.dat")
       if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
     }
@@ -204,7 +205,7 @@ compare_solutions_mplus <- function(df, ...,
 
   if (file.exists("d.dat")) file.remove("d.dat")
   if (file.exists("i.inp")) file.remove("i.inp")
-  if (file.exists("i.out")) file.remove("i.inp")
+  if (file.exists("i.out")) file.remove("i.out")
   if (file.exists("d-mod.dat")) file.remove("d-mod.dat")
   if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
 
