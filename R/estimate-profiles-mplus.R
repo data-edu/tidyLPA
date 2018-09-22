@@ -388,11 +388,11 @@ Model 6: variances = 'varying'; covariances = 'varying';
     }
 
     if (remove_tmp_files == TRUE) {
-      file.remove(data_filename)
-      file.remove(script_filename)
-      file.remove(output_filename)
-      file.remove(savedata_filename)
-      file.remove("Mplus Run Models.log")
+        if (file.exists(data_filename)) file.remove(data_filename)
+        if (file.exists(script_filename)) file.remove(script_filename)
+        if (file.exists(output_filename)) file.remove(output_filename)
+        if (file.exists(savedata_filename)) file.remove(savedata_filename)
+        if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
     }
 
     fit_stats <- c("LL", "BIC", "aBIC", "AIC", "Entropy")
@@ -412,11 +412,11 @@ Model 6: variances = 'varying'; covariances = 'varying';
     }
   } else {
     if (remove_tmp_files == TRUE) {
-      file.remove(data_filename)
-      file.remove(script_filename)
-      file.remove(output_filename)
-      file.remove(savedata_filename)
-      file.remove("Mplus Run Models.log")
+        if (file.exists(data_filename)) file.remove(data_filename)
+        if (file.exists(script_filename)) file.remove(script_filename)
+        if (file.exists(output_filename)) file.remove(output_filename)
+        if (file.exists(savedata_filename)) file.remove(savedata_filename)
+        if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
     }
     if (return_all_stats == TRUE) {
       return(list(stats_df, m))

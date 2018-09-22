@@ -11,7 +11,7 @@
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @examples
 #' \dontrun{
-#' compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+#' o <- compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #' n_profiles_max = 3)
 #' }
 #' @export
@@ -109,7 +109,6 @@ compare_solutions_mplus <- function(df, ...,
         message(paste0("Result: BIC = ", m$summaries$BIC))
         out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
 
-        # This and BLRT might be another candidate for `switch`
         if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
           VLMR_val <- NA
           VLMR_p <- NA
@@ -171,6 +170,7 @@ compare_solutions_mplus <- function(df, ...,
             model_number = model_number,
             variances = models[[j]][1],
             covariances = models[[j]][2],
+            cluster_ID = cluster_ID_label,
             LL = m$summaries$LL,
             npar = m$summaries$Parameters,
             AIC = m$summaries$LL,
@@ -193,6 +193,7 @@ compare_solutions_mplus <- function(df, ...,
           stats_df$cell_size <- as.character(stats_df$cell_size)
         }
       }
+
       if (file.exists("d.dat")) file.remove("d.dat")
       if (file.exists("i.inp")) file.remove("i.inp")
       if (file.exists("i.out")) file.remove("i.inp")
