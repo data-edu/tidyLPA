@@ -425,23 +425,3 @@ Model 6: variances = 'varying'; covariances = 'varying';
     }
   }
 }
-
-check_list <- function(x, check) {
-  x[1] == check
-}
-
-check_warnings <- function(x, check) {
-  if (any(map_lgl(x$warnings, check_list, check = check))) {
-    return(str_c("Warning: ", "The best loglikelihood was not replicated"))
-  } else {
-    return("No warning")
-  }
-}
-
-check_errors <- function(x, check) {
-  if (any(map_lgl(x$errors, check_list, check = check))) {
-    return(str_c("Error: ", "Convergence issue"))
-  } else {
-    return("No error")
-  }
-}

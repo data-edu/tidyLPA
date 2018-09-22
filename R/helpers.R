@@ -152,3 +152,23 @@ get_fit_stat <- function(m, stat) {
     NA
   ))
 }
+
+check_list <- function(x, check) {
+    str_detect(x[1], check)
+}
+
+check_warnings <- function(x, check) {
+    if (any(map_lgl(x$warnings, check_list, check = check))) {
+        return(str_c("Warning: ", "The best loglikelihood was not replicated"))
+    } else {
+        return("No warning")
+    }
+}
+
+check_errors <- function(x, check) {
+    if (any(map_lgl(x$errors, check_list, check = check))) {
+        return(str_c("Error: ", "Convergence issue"))
+    } else {
+        return("No error")
+    }
+}
