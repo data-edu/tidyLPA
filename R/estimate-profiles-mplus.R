@@ -54,8 +54,8 @@ estimate_profiles_mplus <- function(df,
                                     return_all_stats = FALSE) {
   model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
 Model 1: variances = 'equal'; covariances = 'zero';
-Model 2: variances = 'equal'; covariances = 'equal';
-Model 3: variances = 'equal'; covariances = 'zero';
+Model 2: variances = 'equal'; covariances = 'zero';
+Model 3: variances = 'equal'; covariances = 'equal';
 Model 4: variances = 'varying'; covariances = 'equal' .(Cannot be estimated without MPlus);
 Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated without MPlus);
 Model 6: variances = 'varying'; covariances = 'varying';
