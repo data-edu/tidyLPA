@@ -86,9 +86,6 @@
     <li>
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
-    <li>
-      <a href="../articles/rsconnect/documents/notes-on-model-selection.html">UNKNOWN TITLE</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -157,7 +154,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/sample'>sample_n</a></span>(<span class='no'>d</span>, <span class='fl'>200</span>)
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample_n</a></span>(<span class='no'>d</span>, <span class='fl'>200</span>)
 <span class='fu'>bootstrap_lrt</span>(<span class='no'>d</span>,
               <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>)
 <span class='co'># }</span></pre>

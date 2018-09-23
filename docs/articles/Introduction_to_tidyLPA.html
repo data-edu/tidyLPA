@@ -54,9 +54,6 @@
 <li>
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
-    <li>
-      <a href="../articles/rsconnect/documents/notes-on-model-selection.html">UNKNOWN TITLE</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -148,7 +145,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p>Note that you may wish to identify (and remove) univariate and multivariate outliers. See the functions <a href="https://gist.github.com/jrosen48/094eee8627be43b167c7c79388027174">here</a> for some exampels.</p>
 <p><strong>Comparing profile solutions</strong></p>
 <p>Next, we use the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC) (the ICL is also available, as others will be in future versions; add the argument <code>statistic = "ICL"</code> to plot the ICL values instead of the BIC values). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.</p>
-<p>To use the function, we provide the name of the <code>data.frame</code>, <code>d</code>, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as <code><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select()</a></code> from the <a href="http://dplyr.tidyverse.org/">dplyr</a> package (and other <a href="http://tidyverse.org/">“tidyverse”</a> packages).</p>
+<p>To use the function, we provide the name of the <code>data.frame</code>, <code>d</code>, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as <code><a href="http://dplyr.tidyverse.org/reference/select.html">select()</a></code> from the <a href="http://dplyr.tidyverse.org/">dplyr</a> package (and other <a href="http://tidyverse.org/">“tidyverse”</a> packages).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(d, broad_interest, enjoyment, self_efficacy)</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <p>While these BIC values are ambiguous for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstrate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function.</p>
