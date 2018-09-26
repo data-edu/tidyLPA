@@ -93,7 +93,7 @@ compare_solutions_mplus <- function(df, ...,
 
       if (save_models == TRUE) {
         capture <- capture.output(m_all <- MplusAutomation::readModels("i.out"))
-        new_dir <- stringr::str_c("compare_solutions_mplus_output-", Sys.Date(), "/n_", i, "-m_", j)
+        new_dir <- stringr::str_c("compare_solutions_mplus_output-", Sys.Date(), "/m-", j, "_p-", i)
         dir.create(new_dir, showWarnings=FALSE)
         file.copy(from = "i.out", to = new_dir)
       }
