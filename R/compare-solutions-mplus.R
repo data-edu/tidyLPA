@@ -64,9 +64,10 @@ compare_solutions_mplus <- function(df, ...,
   counter <- 0
 
   if (save_models == TRUE) {
-      if (is.null(dir_name)) dir_name <- round(runif(1), 6)* 1E6
-      dir.create("compare_solutions_mplus_output", showWarnings=FALSE)
-      dir.create(stringr::str_c("compare_solutions_mplus_output/", dir_name), showWarnings=FALSE)
+      if (dir.exists(stringr::str_c("compare_solutions_mplus_output-", Sys.Date()))) {
+          stop("A directory with this name already exists; change the name on or delete the old directory to avoid over-writing it")
+      }
+      dir.create(stringr::str_c("compare_solutions_mplus_output-", Sys.Date()), showWarnings=FALSE)
   }
 
   for (i in n_profiles_min:n_profiles_max) {
@@ -92,7 +93,7 @@ compare_solutions_mplus <- function(df, ...,
 
       if (save_models == TRUE) {
         capture <- capture.output(m_all <- MplusAutomation::readModels("i.out"))
-        new_dir <- stringr::str_c("compare_solutions_mplus_output/", dir_name, "/m-", j, "_p-", i)
+        new_dir <- stringr::str_c("compare_solutions_mplus_output-", Sys.Date(), "/n_", i, "-m_", j)
         dir.create(new_dir, showWarnings=FALSE)
         file.copy(from = "i.out", to = new_dir)
       }
