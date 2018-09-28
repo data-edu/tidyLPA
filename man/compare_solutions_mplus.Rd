@@ -48,7 +48,7 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 
 \item{include_BLRT}{whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run}
 
-\item{dir_name}{character; name for directory .out files are saved to if save_models = TRUE}
+\item{dir_name}{character; name for directory .out files are saved to if save_models = TRUE; defaults to the present date}
 }
 \value{
 a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned

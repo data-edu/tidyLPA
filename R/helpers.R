@@ -172,3 +172,13 @@ check_errors <- function(x, check) {
         return("No error")
     }
 }
+
+extract_prob_stats <- function(class_num, obj) {
+    vars <- rownames(obj[[class_num]]$classSampCovs)
+    class_means <- obj[[class_num]]$classSampMeans
+    class_sds <- sqrt(diag(obj[[class_num]]$classSampCovs))
+    data_frame(var = vars,
+               class_mean = as.vector(class_means),
+               class_sd = as.vector(class_sds),
+               class = class_num)
+}

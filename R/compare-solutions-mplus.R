@@ -7,7 +7,7 @@
 #' @param save_models whether to save the models as rds files
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to TRUE
-#' @param dir_name character; name for directory .out files are saved to if save_models = TRUE
+#' @param dir_name character; name for directory .out files are saved to if save_models = TRUE; defaults to the present date
 #' @inheritParams estimate_profiles_mplus
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @examples
@@ -39,6 +39,10 @@ compare_solutions_mplus <- function(df, ...,
     message("because remove_tmp_files is set to TRUE, some functions may not work as expected")
   }
 
+  if (!is.null(dir_name)) {
+    dir_name <- Sys.Date()
+  }
+
   out_df <- data.frame(matrix(
     ncol = length(models),
     nrow = (n_profiles_max - (n_profiles_min - 1))
@@ -64,10 +68,10 @@ compare_solutions_mplus <- function(df, ...,
   counter <- 0
 
   if (save_models == TRUE) {
-      if (dir.exists(stringr::str_c("compare_solutions_mplus_output-", Sys.Date()))) {
+      if (dir.exists(stringr::str_c("compare_solutions_mplus_output-", dir_name))) {
           stop("A directory with this name already exists; change the name on or delete the old directory to avoid over-writing it")
       }
-      dir.create(stringr::str_c("compare_solutions_mplus_output-", Sys.Date()), showWarnings=FALSE)
+      dir.create(stringr::str_c("compare_solutions_mplus_output-", dir_name), showWarnings=FALSE)
   }
 
   for (i in n_profiles_min:n_profiles_max) {
@@ -93,7 +97,7 @@ compare_solutions_mplus <- function(df, ...,
 
       if (save_models == TRUE) {
         capture <- capture.output(m_all <- MplusAutomation::readModels("i.out"))
-        new_dir <- stringr::str_c("compare_solutions_mplus_output-", Sys.Date(), "/m-", j, "_p-", i)
+        new_dir <- stringr::str_c("compare_solutions_mplus_output-", dir_name, "/m-", j, "_p-", i)
         dir.create(new_dir, showWarnings=FALSE)
         file.copy(from = "i.out", to = new_dir)
       }
