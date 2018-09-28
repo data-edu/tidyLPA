@@ -1,6 +1,7 @@
 # MIT License
 
-Copyright (c) 2018 Your name goes here
+Copyright (c) 2018 Joshua M. Rosenberg, Patrick N. Beymer, Daniel Anderson,
+and Jennifer A. Schmidt
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
