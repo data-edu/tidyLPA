@@ -15,11 +15,11 @@ plot_profiles_mplus(mplus_data, to_center = TRUE, to_scale = TRUE,
 
 \item{to_scale}{whether to scale the data before plotting}
 
+\item{plot_post_probs}{logical; whether to plot the means and standard errors based on the posterior probabilities (if TRUE) or on the classification/profile (if FALSE); defaults to TRUE}
+
 \item{mplus_out_name}{character string; name of the mplus out file that is read if the posterior probabilities are plotted; defaults to i.out (which is the default name for the file created by other tidyLPA functions)}
 
 \item{standard_error_interval}{number between 0 and 1; defaults to .95}
-
-\item{plot_post_props}{logical; whether to plot the means and standard errors based on the posterior probabilities (if TRUE) or on the classification/profile (if FALSE); defaults to TRUE}
 }
 \description{
 Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)
