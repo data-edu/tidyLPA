@@ -52,6 +52,9 @@ estimate_profiles_mplus <- function(df,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE,
                                     return_all_stats = FALSE) {
+
+  if (mplusAvailable() != 1) stop("It appears that MPlus is not installed; this function requires MPlus to be installed in order to work.")
+
   model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
 Model 1: variances = 'equal'; covariances = 'zero';
 Model 2: variances = 'equal'; covariances = 'zero';

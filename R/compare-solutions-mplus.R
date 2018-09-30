@@ -35,6 +35,8 @@ compare_solutions_mplus <- function(df, ...,
                                     include_BLRT = FALSE,
                                     dir_name = NULL) {
 
+  if (mplusAvailable() != 1) stop("It appears that MPlus is not installed; this function requires MPlus to be installed in order to work.")
+
   if (remove_tmp_files == TRUE) {
     message("because remove_tmp_files is set to TRUE, some functions may not work as expected")
   }
