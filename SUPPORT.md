@@ -1,29 +1,35 @@
 # Getting help with tidyLPA
 
-Thanks for using tidyLPA. Before filing an issue, there are a few places to
-explore and pieces to put together to make the process as smooth as possible.
+Thanks for using tidyLPA. Before filing an issue, there are a few places
+to explore and pieces to put together to make the process as smooth as possible.
 
-Start by making a minimal **repr**oducible **ex**ample using the [reprex](http://reprex.tidyverse.org/) package. 
-If you haven't heard of or used reprex
-before, you're in for a treat! Seriously, reprex will make all of your R-
-question-asking endeavors easier (which is a pretty insane ROI for the five to
+Start by making a minimal **repr**oducible **ex**ample using the 
+[reprex](http://reprex.tidyverse.org/) package. If you haven't heard of or used 
+reprex before, you're in for a treat! Seriously, reprex will make all of your 
+R-question-asking endeavors easier (which is a pretty insane ROI for the five to 
 ten minutes it'll take you to learn what it's all about). For additional reprex
 pointers, check out the [Get help!](https://www.tidyverse.org/help/) section of
 the tidyverse site.
 
-One of the easiest but also most important ways to contribute is to post a
-question or to provide feedback. Both positive *and* negative feedback is
-welcome and helpful. You can get in touch by . . .
+Armed with your reprex, the next step is to figure out [where to ask](https://www.tidyverse.org/help/#where-to-ask). 
 
-* Sending a message via [tidylpa@googlegroups.com]
-(mailto:tidylpa@googlegroups.com) or view the [the tidyLPA group page](https://
-groups.google.com/forum/#!forum/tidylpa) (*preferred*)
-* Filing an issue on GitHub [here](https://github.com/jrosen48/tidyLPA)
+  * If it's a question: start with [community.rstudio.com](https://community.rstudio.com/), 
+    and/or StackOverflow. There are more people there to answer questions.  
+  * If it's a bug: you're in the right place, file an issue.  
+  * If you're not sure: let the community help you figure it out! If your 
+    problem _is_ a bug or a feature request, you can easily return here and 
+    report it. 
 
-Contributions are also welcome via by making pull requests (PR), e.g. through
-[this page on GitHub](https://github.com/jrosen48/tidyLPA/pulls). It may be
-easier if you first file an issue outlining what you will do in the PR. You can
-also reach out via the methods described above.
+Before opening a new issue, be sure to [search issues and pull requests](https://github.com/tidyverse/tidyLPA/issues) to make sure the 
+bug hasn't been reported and/or already fixed in the development version. By 
+default, the search will be pre-populated with `is:issue is:open`. You can 
+[edit the qualifiers](https://help.github.com/articles/searching-issues-and-pull-requests/) 
+(e.g. `is:pr`, `is:closed`) as needed. For example, you'd simply
+remove `is:open` to search _all_ issues in the repo, open or closed.
 
-Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md).
-By participating in this project you agree to abide by its terms.
+
+If you _are_ in the right place, and need to file an issue, please review the 
+["File issues"](https://www.tidyverse.org/contribute/#issues) paragraph from 
+the tidyverse contributing guidelines.
+
+Thanks for your help!

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summary • tidyLPA</title>
+<title>tidyLPA • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Summary" />
+<meta property="og:title" content="tidyLPA" />
 
 
 
@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
       </span>
     </div>
 
@@ -104,55 +104,40 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>Summary</h1>
+      <h1>tidyLPA</h1>
     </div>
 
 
-<hr>
-<p>title: ‘tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software’ tags:</p>
-<ul>
-<li>R</li>
-<li>mixture modeling</li>
-<li>Latent Profile Analysis</li>
-<li>MPlus authors:</li>
-<li>name: Joshua M. Rosenberg orcid: 0000-0003-2170-0447 affiliation: 1</li>
-<li>name: Patrick N. Beymer orcid: 0000-0002-3569-2305 affiliation: 2</li>
-<li>name: Daniel J. Anderson orcid: 0000-0003-4699-4680 affiliation: 3</li>
-<li>name: Jennifer A. Schmidt orcid: 0000-0003-2853-9801 affiliation: 2 affiliations:</li>
-<li>name: University of Tennessee, Knoxville index: 1</li>
-<li>name: Michigan State University index: 2</li>
-<li>name: University of Oregon index: 3 date: 16 September 2018 bibliography: paper.bib —</li>
-</ul>
-<div id="summary" class="section level1">
+<div id="tidylpa" class="section level1">
 
-<p>Researchers are often interested in identifying homogeneous subgroups within heterogeneous samples on the basis of a set of measures, such as profiles of individuals’ motivation (i.e., their values, competence beliefs, and achievement goals). Latent Profile Analysis (LPA) is a statistical method for identifying such groups, or <em>latent profiles</em>, and is a special case of the general mixture model where all measured variables are continuous [@harring_et_al_2016; @pastor_et_al_2007]. The <strong>tidyLPA</strong> package allows users to specify different models that determine whether and how different parameters (i.e., means, variances, and covariances) are estimated, and to specify and compare different solutions based on the number of profiles extracted.</p>
+<p>14 August 2018</p>
+</div>
+<div id="tidylpa-easily-carry-out-latent-profile-analysis" class="section level1">
+<h1 class="hasAnchor">
+<a href="#tidylpa-easily-carry-out-latent-profile-analysis" class="anchor"></a>tidyLPA: Easily carry out latent profile analysis</h1>
+<p>Researchers are often interested in identifying homogeneous subgroups within heterogeneous samples on the basis of a set of measures, such as dimensions of youths’ engagement in educational settings (i.e., cognitively, behaviorally, and affectively). Latent Profile Analysis (LPA) is a statistical method for identifying such groups, or <em>latent profiles</em>, and is a special case of the general mixture model where all measured variables are continuous (Harring and Hodis 2016; Pastor et al. 2007). The <strong>tidyLPA</strong> package allows users to specify different models that determine whether and how different parameters (i.e., means, variances, and covariances) are estimated, and to specify and compare different solutions based on the number of profiles extracted.</p>
 <p>The aim of the <strong>tidyLPA</strong> package is to provide a simple interface for conducting and evaluating LPA models. Given that LPA is only one type of mixture model, we do not expect it to replace the more general functionality of other tools that allow for the estimation of wider range of models. Nevertheless, this package provides convenient methods for conducting LPA using both open-source and commercial software, while aligning with a widely used coding framework (i.e., <em>tidy</em> data, described more below). In doing so, <strong>tidyLPA</strong> allows researchers with and without access to proprietary tools, such as MPlus, to conduct LPA.</p>
+<div id="a-tidy-user-interface" class="section level2">
+<h2 class="hasAnchor">
+<a href="#a-tidy-user-interface" class="anchor"></a>A <em>tidy</em> user-interface</h2>
+<p>The input for <em>tidyLPA</em> assumes a tidy data structure (see Wickham and others 2014), and all output are returned in a tidy from, which aligns with the broad array of tools within the <a href="https://www.tidyverse.org/"><strong>tidyverse</strong></a> collection of R packages. The data can be efficiently used to create plots, explore model results, or used in subsequent analyses. The interface is also designed to work efficiently with the <em>pipe</em> operator, <code>%&gt;%</code>, and <strong>dplyr</strong> helper functions can be used to select variables (e.g., <code>data %&gt;% tidyLPA::estimate_profiles(dplyr::starts_with())</code>). The package is designed and documented to be easy to use, especially for beginners, but with finer-grained options available for estimating models and for evaluating specific output.</p>
 </div>
-<div id="a-tidy-user-interface" class="section level1">
-<h1 class="hasAnchor">
-<a href="#a-tidy-user-interface" class="anchor"></a>A <em>tidy</em> user-interface</h1>
-<p>The input for <em>tidyLPA</em> assumes a tidy data structure [see @wickham14], and all output are returned in a tidy from, which aligns with the broad array of tools within the <a href="https://www.tidyverse.org/"><strong>tidyverse</strong></a> collection of R packages. The data can be efficiently used to create plots, explore model results, or used in subsequent analyses. The interface is also designed to work efficiently with the <em>pipe</em> operator, <code>%&gt;%</code>, and <strong>dplyr</strong> helper functions that can be used to select variables, e.g.:</p>
-<p><code>{code} data %&gt;% tidyLPA::estimate_profiles(dplyr::starts_with())</code></p>
-<p>The package is designed and documented to be easy to use, especially for beginners to LPA, but with fine-grained options available for estimating models and evaluating specific output as part of more complex analyses.</p>
+<div id="functionality-through-both-open-source-and-commercial-software" class="section level2">
+<h2 class="hasAnchor">
+<a href="#functionality-through-both-open-source-and-commercial-software" class="anchor"></a>Functionality through both open-source and commercial software</h2>
+<p>The <em>tidyLPA</em> package provides an interface to two different tools for estimating models, one from the open-source <strong>mclust</strong> R package (Scrucca et al. 2017) and the other the commercial <strong>MPlus</strong> (L. Muthen and Muthen 2017) software (via the <strong>MplusAutomation</strong> R package [hallquist_et_al_2018]). Both the open-source and commercial tools allow for the specification of four model parameterizations, which range from very restricted to means, variances, and covariances being freely-estimated across profiles. The packages are benchmarked to one another; the benchmarks are checked when <strong>tidyLPA</strong> is deployed through automated tests.</p>
+<p>The two primary functions in the package are <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code> and <code><a href="reference/compare_solutions.html">compare_solutions()</a></code>, with the former used to estimate a given model and the latter used evaluate differences in the fit of alternative models and number of profiles extracted. The <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code> function returns the predicted probability of membership in each probability for each case in the dataset, and allows for simple interpretation of the model output, particularly when combined with the <code><a href="reference/plot_profiles.html">plot_profiles()</a></code> function, which displays the mean values (and their standard errors) on each measure for each profile.</p>
+<p>The <code><a href="reference/compare_solutions.html">compare_solutions()</a></code> function fits a wide range of models and returns various fit indices, including likelihood ratio tests and other statistics (e.g., entropy) for each parameterizations. All three functions use <strong>mclust</strong>; corresponding functions with <code>_mplus()</code> appended use the <strong>MPlus</strong> software.</p>
 </div>
-<div id="functionality-through-both-open-source-and-commercial-software" class="section level1">
-<h1 class="hasAnchor">
-<a href="#functionality-through-both-open-source-and-commercial-software" class="anchor"></a>Functionality through both open-source and commercial software</h1>
-<p>The <em>tidyLPA</em> package provides an interface to two different tools for estimating models, one from the open-source <strong>mclust</strong> R package [@scrucca_et_al_2017] and the other the commercial <strong>MPlus</strong> [@muthen_et_al_2017] software (via the <strong>MplusAutomation</strong> R package [hallquist_et_al_2018]). The packages are benchmarked to one another; the benchmarks are checked when <strong>tidyLPA</strong> is deployed through automated tests.</p>
-<p>Both the open-source and commercial tools allow for the specification of four model parameterizations:</p>
-<ul>
-<li>Equal variances and covariances fixed to 0 (Model 1)</li>
-<li>Varying variances and covariances fixed to 0 (Model 2)</li>
-<li>Equal variances and equal covariances (Model 3)</li>
-<li>Varying variances and varying covariances (Model 6)</li>
-</ul>
-<p>Two additional model parameterizations (Models 4 and 5) are only available through MPlus.</p>
-<p>The two primary functions in the package are <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code> and <code><a href="reference/compare_solutions.html">compare_solutions()</a></code>, with the former used to estimate a given model and the latter used evaluate differences in the fit of alternative models and number of profiles extracted. The <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code> function returns the predicted probability of membership in each profile for each case in the dataset, and allows for simple interpretation of the model output, particularly when combined with the <code><a href="reference/plot_profiles.html">plot_profiles()</a></code> function, which displays the mean values (and their standard errors) on each measure for each profile.</p>
-<p>The <code><a href="reference/compare_solutions.html">compare_solutions()</a></code> function fits a wide range of models and returns various fit indices, including likelihood ratio tests and other statistics (e.g., entropy) for each parameterization. All three functions use <strong>mclust</strong>; corresponding functions with <code>_mplus()</code> appended use the <strong>MPlus</strong> software.</p>
 </div>
 <div id="references" class="section level1">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
+<p>Harring, Jeffrey R, and Flaviu A Hodis. 2016. “Mixture Modeling: Applications in Educational Psychology.” <em>Educational Psychologist</em> 51 (3-4). Taylor &amp; Francis: 354–67.</p>
+<p>Muthen, LK, and BO Muthen. 2017. “Mplus User’s Guide (8th Ed.).” <em>Muthen &amp; Muthen</em>.</p>
+<p>Pastor, Dena A, Kenneth E Barron, BJ Miller, and Susan L Davis. 2007. “A Latent Profile Analysis of College Students’ Achievement Goal Orientation.” <em>Contemporary Educational Psychology</em> 32 (1). Elsevier: 8–47.</p>
+<p>Scrucca, Luca, Michael Fop, Thomas Brendan Murphy, and Adrian E. Raftery. 2017. “Mclust 5: Clustering, Classification and Density Estimation Using Gaussian Finite Mixture Models.” <em>The R Journal</em> 8 (1): 205–33. <a href="https://journal.r-project.org/archive/2017/RJ-2017-008/RJ-2017-008.pdf" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-008/RJ-2017-008.pdf</a>.</p>
+<p>Wickham, Hadley, and others. 2014. “Tidy Data.” <em>Journal of Statistical Software</em> 59 (10). Foundation for Open Access Statistics: 1–23.</p>
 </div>
 
 
