@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2018-02-17</h4>
+            <h4 class="date">2018-09-16</h4>
       
       
       <div class="hidden name"><code>Introduction_to_tidyLPA.Rmd</code></div>
@@ -132,6 +132,7 @@
 <h2 class="hasAnchor">
 <a href="#an-example-using-mclust" class="anchor"></a>4. An example using mclust</h2>
 <p>Here is a very short example using the built-in data set <code>pisaUSA15</code>.</p>
+<p>Note that outliers may wish to be removed first; consider identifying both univariate and multivariate outliers.</p>
 <p>First, you can install the package from CRAN as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"tidyLPA"</span>)</code></pre></div>
 <p>You can also install the in-development version of tidyLPA from GitHub with:</p>
@@ -140,9 +141,8 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>Here is the simple example, using just a subset of the built-in <code>pisaUSA15</code> data, data from the 2015 PISA assessment (more details on the data set can be found <a href="https://github.com/jrosen48/pisaUSA15">here</a>). We load tidyLPA and create a subset of the <code>pisaUSA15</code> data for this example.</p>
 <p>We use variables from the PISA assessment for United States students’ broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Please report any issues or feature requests at https://github.com/jrosen48/tidyLPA or via email to tidylpa@googlegroups.com.</span>
 d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]</code></pre></div>
+<p>Note that you may wish to identify (and remove) univariate and multivariate outliers. See the functions <a href="https://gist.github.com/jrosen48/094eee8627be43b167c7c79388027174">here</a> for some exampels.</p>
 <p><strong>Comparing profile solutions</strong></p>
 <p>Next, we use the <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC) (the ICL is also available, as others will be in future versions; add the argument <code>statistic = "ICL"</code> to plot the ICL values instead of the BIC values). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.</p>
 <p>To use the function, we provide the name of the <code>data.frame</code>, <code>d</code>, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as <code><a href="http://dplyr.tidyverse.org/reference/select.html">select()</a></code> from the <a href="http://dplyr.tidyverse.org/">dplyr</a> package (and other <a href="http://tidyverse.org/">“tidyverse”</a> packages).</p>
@@ -156,7 +156,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
                         broad_interest, enjoyment, self_efficacy,
                         <span class="dt">n_profiles =</span> <span class="dv">4</span>)
-<span class="co">#&gt; Fit NA model with 4 profiles.</span>
+<span class="co">#&gt; Fit Equal variances and covariances fixed to 0 (model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
 <span class="co">#&gt; BIC is 624.802</span>
 <span class="co">#&gt; Entropy is 0.952</span></code></pre></div>
@@ -173,7 +173,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                   broad_interest, enjoyment, self_efficacy, 
                   <span class="dt">n_profiles =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(<span class="dt">to_center =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; Fit NA model with 3 profiles.</span>
+<span class="co">#&gt; Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.</span>
 <span class="co">#&gt; LogLik is 283.991</span>
 <span class="co">#&gt; BIC is 631.589</span>
 <span class="co">#&gt; Entropy is 0.914</span></code></pre></div>
@@ -182,7 +182,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
                         broad_interest, enjoyment, self_efficacy, 
                         <span class="dt">n_profiles =</span> <span class="dv">3</span>, <span class="dt">to_return =</span> <span class="st">"mclust"</span>)
-<span class="co">#&gt; Fit NA model with 3 profiles.</span>
+<span class="co">#&gt; Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.</span>
 <span class="co">#&gt; LogLik is 283.991</span>
 <span class="co">#&gt; BIC is 631.589</span>
 <span class="co">#&gt; Entropy is 0.914</span>
@@ -234,7 +234,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <a href="#equal-variances-and-covariances-fixed-to-0-model-1" class="anchor"></a>1. Equal variances, and covariances fixed to 0 (model 1)</h4>
 <p>In this model, which corresponds to the mclust model wit the name “EEI”, the variances are estimated to be equal across profiles, indicated by the absence of a p subscript for any of the diagonal elements of the matrix. The covariances are constrained to be zero, as indicated by the 0’s between every combination of the variables.</p>
 <p>It is specified with <code>variances = "equal"</code> and <code>covariances = "zero"</code>.</p>
-<p>This model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables’ variances are identical for each of the profiles, and the relationships between the variables are not estimated. In this way, less degrees of freedom are taken used to explain the observations that make up the data. However, estimating more parameters–as in the other models–may better explain the data, justifying the addition in complexity that their addition involves (and their reduction in degrees of freedom).</p>
+<p>This model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables’ variances are identical for each of the profiles, and the relationships between the variables are not estimated. In this way, less degrees of freedom are taken used to explain the observations that make up the data. However, estimating more parameters–as in the other models–may better explain the data, justifying the addition in complexity that their addition involves (and their reduction in degrees of freedom). This model is sometimes referred to as a <em>class-invariant</em> parameterization.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; { \sigma  }_{ 2 }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; { \sigma  }_{ 3 }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 \]</span></p>
@@ -244,7 +244,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <a href="#varying-variances-and-covariances-fixed-to-0-model-2" class="anchor"></a>2. Varying variances and covariances fixed to 0 (model 2)</h4>
 <p>This model corresponds to the mclust model “VVI” and allows for the variances to be freely estimated across profiles. The covariances are constrained to zero.</p>
 <p>It is specified with <code>variances = "varying"</code> and <code>covariances = "zero"</code>.</p>
-<p>Thus, it is more flexible (and less parsimonious) than model 1, but in terms of the covariances, is more constrained than model 2.</p>
+<p>Thus, it is more flexible (and less parsimonious) than model 1, but in terms of the covariances, is more constrained than model 2. This model is sometimes referred to as a <em>class-varying diagonal</em> parameterization.</p>
 <p><span class="math display">\[ 
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; { \sigma  }_{ 2p }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; { \sigma  }_{ 3p }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 \]</span></p>
@@ -254,7 +254,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <a href="#equal-variances-and-equal-covariances-model-3" class="anchor"></a>3. Equal variances and equal covariances (model 3)</h4>
 <p>This model corresponds to the mclust model “EEE”. In this model, the variances are still constrained to be the same across the profiles, although now the covariances are estimated (but like the variances, are constrained to be the same across profiles).</p>
 <p>It is specified with <code>variances = "equal"</code> and <code>covariances = "equal"</code>.</p>
-<p>Thus, this model is the first to estimate the covariance (or correlations) of the variables used to create the profiles, thus adding more information that can be used to better understand the characteristics of the profiles (and, potentially, better explain the data).</p>
+<p>Thus, this model is the first to estimate the covariance (or correlations) of the variables used to create the profiles, thus adding more information that can be used to better understand the characteristics of the profiles (and, potentially, better explain the data). This model is sometimes referred to as a <em>class-invariant unrestricted</em> parameterization.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21 } &amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 \]</span></p>
@@ -284,7 +284,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <a href="#varying-variances-and-varying-covariances-model-4" class="anchor"></a>6. Varying variances and varying covariances (model 4)</h4>
 <p>This model corresponds to the mclust model “VVV”. It allows the variances and the covariances to be freely estimated across profiles.</p>
 <p>It is specified with <code>variances = "varying"</code> and <code>covariances = "varying"</code>.</p>
-<p>Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications.</p>
+<p>Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications. This model is sometimes referred to as a <em>class-varying unrestricted</em> parameterization.</p>
 <p><span class="math display">\[
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 \]</span></p>
@@ -296,7 +296,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(d,
                   broad_interest, enjoyment, self_efficacy,
                   <span class="dt">n_profiles =</span> <span class="dv">4</span>)
-<span class="co">#&gt; Fit NA model with 4 profiles.</span>
+<span class="co">#&gt; Fit Equal variances and covariances fixed to 0 (model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
 <span class="co">#&gt; BIC is 624.802</span>
 <span class="co">#&gt; Entropy is 0.952</span>
@@ -322,7 +322,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                                broad_interest, enjoyment, self_efficacy, 
                                <span class="dt">n_profiles =</span> <span class="dv">4</span>, 
                                <span class="dt">to_return =</span> <span class="st">"mclust"</span>)
-<span class="co">#&gt; Fit NA model with 4 profiles.</span>
+<span class="co">#&gt; Fit Equal variances and covariances fixed to 0 (model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 271.511</span>
 <span class="co">#&gt; BIC is 624.802</span>
 <span class="co">#&gt; Entropy is 0.952</span></code></pre></div>
@@ -394,7 +394,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                                       <span class="dt">n_profiles =</span> <span class="dv">4</span>, 
                                       <span class="dt">center_raw_data =</span> <span class="ot">TRUE</span>, 
                                       <span class="dt">scale_raw_data =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; Fit NA model with 4 profiles.</span>
+<span class="co">#&gt; Fit Equal variances and covariances fixed to 0 (model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 356.415</span>
 <span class="co">#&gt; BIC is 794.609</span>
 <span class="co">#&gt; Entropy is 0.951</span></code></pre></div>
@@ -403,7 +403,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
                   broad_interest, enjoyment,
                   <span class="dt">n_profiles =</span> <span class="dv">4</span>, 
                   <span class="dt">return_orig_df =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; Fit NA model with 4 profiles.</span>
+<span class="co">#&gt; Fit Equal variances and covariances fixed to 0 (model 1) model with 4 profiles.</span>
 <span class="co">#&gt; LogLik is 204.658</span>
 <span class="co">#&gt; BIC is 468.378</span>
 <span class="co">#&gt; Entropy is 0.828</span>
@@ -481,7 +481,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 <p><strong>How to cite tidyLPA</strong></p>
 <p>In the future, it is expected that parts of this vignette will be expanded into a peer-reviewed article. For now, to cite tidyLPA in presentations, publications, and other works, please use:</p>
 <blockquote>
-<p>Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., &amp; Steingut, R. R. (2018). Interface to mclust to easily carry out Latent Profile Analysis [Statistical software for R]. <a href="https://github.com/jrosen48/tidyLPA" class="uri">https://github.com/jrosen48/tidyLPA</a></p>
+<p>Rosenberg, J. M., Schmidt, J. A., Beymer, P. N., Anderson, D.J., and van Lissa, C. (2018). Interface to mclust to easily carry out Latent Profile Analysis [Statistical software for R]. <a href="https://github.com/jrosen48/tidyLPA" class="uri">https://github.com/jrosen48/tidyLPA</a></p>
 </blockquote>
 </div>
 </div>

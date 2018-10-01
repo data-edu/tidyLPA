@@ -53,16 +53,18 @@ estimate_profiles_mplus <- function(df,
                                     include_BLRT = FALSE,
                                     return_all_stats = FALSE) {
 
-    model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
+  # if (mplusAvailable() != 1) stop("It appears that MPlus is not installed; this function requires MPlus to be installed in order to work.")
+
+  model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
 Model 1: variances = 'equal'; covariances = 'zero';
-Model 2: variances = 'equal'; covariances = 'equal';
-Model 3: variances = 'equal'; covariances = 'zero';
-Model 4: variances = 'varying'; covariances = 'equal' (Cannot be estimated without MPlus);
+Model 2: variances = 'equal'; covariances = 'zero';
+Model 3: variances = 'equal'; covariances = 'equal';
+Model 4: variances = 'varying'; covariances = 'equal' .(Cannot be estimated without MPlus);
 Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated without MPlus);
 Model 6: variances = 'varying'; covariances = 'varying';
                      ")
 
-    if (!is.null(model)) stop(model_message)
+  if (!is.null(model)) stop(model_message)
 
   d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
 
@@ -88,7 +90,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
   d <- bind_cols(id, d)
 
   if (!is.null(cluster_ID)) {
-    d[[cluster_ID]] <- as.integer(as.factor(d[[cluster_ID]])) # I guess MPlus requires an integer for factors
+    d[[cluster_ID]] <- as.integer(as.factor(d[[cluster_ID]])) # MPlus requires an integer for factors
   }
 
   names(d) <- gsub("\\.", "_", names(d))
@@ -118,14 +120,15 @@ Model 6: variances = 'varying'; covariances = 'varying';
   )
 
   titles <- c(
-    "Equal variances and covariances fixed to 0 (model 1)",
-    "Varying variances and covariances fixed to 0 (model 2)",
-    "Equal variances and equal covariances (model 3)",
-    "Varying variances and equal covariances (model 4)",
-    "Equal variances and varying covariances (model 5)",
-    "Varying variances and varying covariances (model 6)"
+    "Equal variances and covariances fixed to 0",
+    "Varying variances and covariances fixed to 0",
+    "Equal variances and equal covariances",
+    "Varying variances and equal covariances",
+    "Equal variances and varying covariances",
+    "Varying variances and varying covariances"
   )
 
+  # consider changing to use glue()
   TITLE <- paste0("TITLE: ", titles[model])
 
   DATA <- paste0("DATA: File is ", data_filename, ";")
@@ -195,74 +198,74 @@ Model 6: variances = 'varying'; covariances = 'varying';
 
   if (variances == "equal" & covariances == "zero") {
     model_name <- titles[1]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE) # I would spell out all the TRUE/FALSE arguments
     class_collector <- list()
-    for (i in 1:n_profiles) {
+    for (i in seq_len(n_profiles)) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = T),
-        covariances_mplus(var_list, estimate_covariance = F)
+        make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
+        covariances_mplus(var_list, estimate_covariance = FALSE)
       )
     }
   } else if (variances == "varying" & covariances == "zero") {
     model_name <- titles[2]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = F)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = F),
-        covariances_mplus(var_list, estimate_covariance = F)
+        make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
+        covariances_mplus(var_list, estimate_covariance = FALSE)
       )
     }
   } else if (variances == "equal" & covariances == "equal") {
     model_name <- titles[3]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = T),
+        make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
         covariances_mplus(var_list,
-          estimate_covariance = T,
+          estimate_covariance = TRUE,
           param_counter = length(var_list)
         )
       )
     }
   } else if (variances == "varying" & covariances == "equal") {
     model_name <- titles[4]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = F),
+        make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
         covariances_mplus(var_list,
-          estimate_covariance = T,
+          estimate_covariance = TRUE,
           param_counter = 0
         )
       )
     }
   } else if (variances == "equal" & covariances == "varying") {
     model_name <- titles[5]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = T),
-        covariances_mplus(var_list, estimate_covariance = T)
+        make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
+        covariances_mplus(var_list, estimate_covariance = TRUE)
       )
     }
   } else if (variances == "varying" & covariances == "varying") {
     model_name <- titles[6]
-    overall_collector <- covariances_mplus(var_list, estimate_covariance = T)
+    overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
     class_collector <- list()
     for (i in 1:n_profiles) {
       class_collector <- c(
         class_collector,
-        make_class_mplus(var_list, class_number = i, fix_variances = F),
-        covariances_mplus(var_list, estimate_covariance = T)
+        make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
+        covariances_mplus(var_list, estimate_covariance = TRUE)
       )
     }
   }
@@ -281,7 +284,8 @@ Model 6: variances = 'varying'; covariances = 'varying';
     SAVEDATA_line1
   )
 
-  all_the_lines <- gsub("(.{1,90})(\\s|$)", "\\1\n", all_the_lines) # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
+  # from this helpful SO answer: https://stackoverflow.com/questions/2351744/insert-line-breaks-in-long-string-word-wrap
+  all_the_lines <- gsub("(.{1,90})(\\s|$)", "\\1\n", all_the_lines)
 
   cat(paste0(all_the_lines, collapse = ""),
     file = script_filename
@@ -291,21 +295,18 @@ Model 6: variances = 'varying'; covariances = 'varying';
   x <- capture.output(MplusAutomation::runModels(target = paste0(getwd(), "/", script_filename)))
   capture <- capture.output(m <- suppressWarnings(MplusAutomation::readModels(target = paste0(getwd(), "/", output_filename))))
 
-  if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED.  THE") == "Warning: The best loglikelihood was not replicated") {
+  if (check_warnings(m, "WARNING:  THE BEST LOGLIKELIHOOD VALUE WAS NOT REPLICATED") == "Warning: The best loglikelihood was not replicated") {
     warning_status <- "Warning: LL not replicated"
   } else {
     warning_status <- ""
   }
 
-  if (check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN INSUFFICIENT") == "Error: Convergence issue" |
-    check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION.  CHANGE YOUR MODEL") == "Error: Convergence issue" |
-    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY.  ESTIMATES CANNOT") == "Error: Convergence issue" |
-    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ERROR IN THE") == "Error: Convergence issue") {
+  if (check_errors(m, "THE LOGLIKELIHOOD DECREASED IN THE LAST EM ITERATION") == "Error: Convergence issue" |
+    check_errors(m, "THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY") == "Error: Convergence issue") {
     error_status <- "Error: Convergence issue"
   } else {
     error_status <- ""
   }
-
 
   if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
     message(str_trim(str_c(warning_status, " ", error_status)))
@@ -316,79 +317,67 @@ Model 6: variances = 'varying'; covariances = 'varying';
     message("Entropy is ", round(abs(as.vector(get_fit_stat(m, "Entropy"))), 3))
 
     if (return_all_stats == TRUE) {
+      n_LL_replicated <- extract_LL_mplus("i.out")
+      count_LL <- count(n_LL_replicated, .data$LL)
+      t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
+      message(paste0("Result: BIC = ", m$summaries$BIC))
 
-        n_LL_replicated <- extract_LL_mplus("i.out")
-        count_LL <- dplyr::count(n_LL_replicated, .data$LL)
-        t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
-        message(paste0("Result: BIC = ", m$summaries$BIC))
+      if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
+        VLMR_val <- NA
+        VLMR_p <- NA
+      } else {
+        VLMR_val <- m$summaries$T11_VLMR_2xLLDif
+        VLMR_p <- m$summaries$T11_VLMR_PValue
+      }
 
-        if (!("T11_VLMR_2xLLDiff" %in% names(m$summaries))) {
-            VLMR_val <- NA
-            VLMR_p <- NA
-        } else {
-            VLMR_val <- m$summaries$T11_VLMR_2xLLDif
-            VLMR_p <- m$summaries$T11_VLMR_PValue
-        }
+      if (!("BLRT_2xLLDiff" %in% names(m$summaries))) {
+        BLRT_val <- NA
+        BLRT_p <- NA
+      } else {
+        BLRT_val <- m$summaries$BLRT_2xLLDiff
+        BLRT_p <- m$summaries$BLRT_PValue
+      }
 
-        if (!("BLRT_2xLLDiff" %in% names(m$summaries))) {
-            BLRT_val <- NA
-            BLRT_p <- NA
-        } else {
-            BLRT_val <- m$summaries$BLRT_2xLLDiff
-            BLRT_p <- m$summaries$BLRT_PValue
-        }
+      if (is.null(cluster_ID)) {
+        cluster_ID_label <- NA
+      } else {
+        cluster_ID_label <- cluster_ID
+      }
 
-        if (is.null(cluster_ID)){
-            cluster_ID_label <- NA
-        } else {
-            cluster_ID_label <- cluster_ID
-        }
+      model_number <- case_when(
+        variances == "equal" & covariances == "zero" ~ 1,
+        variances == "varying" & covariances == "zero" ~ 2,
+        variances == "equal" & covariances == "equal" ~ 3,
+        variances == "varying" & covariances == "equal" ~ 4,
+        variances == "equal" & covariances == "varying" ~ 5,
+        variances == "varying" & covariances == "varying" ~ 6
+      )
 
-        model_number <- case_when(
-            variances == "equal" & covariances == "zero" ~ 1,
-            variances == "varying" & covariances == "zero" ~ 2,
-            variances == "equal" & covariances == "equal" ~ 3,
-            variances == "varying" & covariances == "equal" ~ 4,
-            variances == "equal" & covariances == "varying" ~ 5,
-            variances == "varying" & covariances == "varying" ~ 6
-        )
-
-        stats_df <- data.frame(
-                n_profiles = i,
-                model_number = model_number,
-                variances = variances,
-                covariances = covariances,
-                cluster_ID = cluster_ID_label,
-                LL = m$summaries$LL,
-                npar = m$summaries$Parameters,
-                AIC = m$summaries$AIC,
-                BIC = m$summaries$BIC,
-                SABIC = m$summaries$aBIC,
-                CAIC = m$summaries$AICC,
-                AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)),
-                Entropy = m$summaries$Entropy,
-                LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
-                cell_size = t,
-                VLMR_val = VLMR_val,
-                VLMR_p = VLMR_p,
-                LMR_val = m$summaries$T11_LMR_Value,
-                LMR_p = m$summaries$T11_LMR_PValue,
-                BLRT_val = BLRT_val,
-                BLRT_p = BLRT_p
-            )
-        }
-
+      stats_df <- data.frame(
+        n_profiles = i,
+        model_number = model_number,
+        variances = variances,
+        covariances = covariances,
+        cluster_ID = cluster_ID_label,
+        LL = m$summaries$LL,
+        npar = m$summaries$Parameters,
+        AIC = m$summaries$AIC,
+        BIC = m$summaries$BIC,
+        SABIC = m$summaries$aBIC,
+        CAIC = m$summaries$AICC,
+        AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)),
+        Entropy = m$summaries$Entropy,
+        LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
+        cell_size = t,
+        VLMR_val = VLMR_val,
+        VLMR_p = VLMR_p,
+        LMR_val = m$summaries$T11_LMR_Value,
+        LMR_p = m$summaries$T11_LMR_PValue,
+        BLRT_val = BLRT_val,
+        BLRT_p = BLRT_p
+      )
+    }
   }
-
-  # if ((m$summaries$Observations / m$summaries$Parameters) < 10) {
-  #   mm <- paste0(
-  #     "Only ",
-  #     round(m$summaries$Observations / m$summaries$Parameters, digits = 2),
-  #     " observations per parameter"
-  #   )
-  #   message(mm)
-  #   warning(mm)
-  # }
 
   if (print_input_file == TRUE) {
     print(read_lines(script_filename))
@@ -400,14 +389,13 @@ Model 6: variances = 'varying'; covariances = 'varying';
     if (is.character(df[[idvar]])) {
       x[[toupper(idvar)]] <- string_id[match(x[[toupper(idvar)]], num_id)]
     }
-    # x <- tbl_df(MplusAutomation::getSavedata_Data(paste0(getwd(), "/", output_filename)))
 
     if (remove_tmp_files == TRUE) {
-      file.remove(data_filename)
-      file.remove(script_filename)
-      file.remove(output_filename)
-      file.remove(savedata_filename)
-      file.remove("Mplus Run Models.log")
+        if (file.exists(data_filename)) file.remove(data_filename)
+        if (file.exists(script_filename)) file.remove(script_filename)
+        if (file.exists(output_filename)) file.remove(output_filename)
+        if (file.exists(savedata_filename)) file.remove(savedata_filename)
+        if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
     }
 
     fit_stats <- c("LL", "BIC", "aBIC", "AIC", "Entropy")
@@ -421,43 +409,22 @@ Model 6: variances = 'varying'; covariances = 'varying';
     attr(x, "mplus_errors") <- m$errors
 
     if (return_all_stats == TRUE) {
-        return(list(stats_df, x))
+      return(list(stats_df, x))
     } else {
-        return(x)
+      return(x)
     }
-
   } else {
     if (remove_tmp_files == TRUE) {
-      file.remove(data_filename)
-      file.remove(script_filename)
-      file.remove(output_filename)
-      file.remove(savedata_filename)
-      file.remove("Mplus Run Models.log")
+        if (file.exists(data_filename)) file.remove(data_filename)
+        if (file.exists(script_filename)) file.remove(script_filename)
+        if (file.exists(output_filename)) file.remove(output_filename)
+        if (file.exists(savedata_filename)) file.remove(savedata_filename)
+        if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
     }
-      if (return_all_stats == TRUE) {
-          return(list(stats_df, m))
-      } else {
-          return(m)
-      }
-  }
-}
-
-check_list <- function(x, check) {
-  x[1] == check
-}
-
-check_warnings <- function(x, check) {
-  if (any(map_lgl(x$warnings, check_list, check = check))) {
-    return(str_c("Warning: ", "The best loglikelihood was not replicated"))
-  } else {
-    return("No warning")
-  }
-}
-
-check_errors <- function(x, check) {
-  if (any(map_lgl(x$errors, check_list, check = check))) {
-    return(str_c("Error: ", "Convergence issue"))
-  } else {
-    return("No error")
+    if (return_all_stats == TRUE) {
+      return(list(stats_df, m))
+    } else {
+      return(m)
+    }
   }
 }

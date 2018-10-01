@@ -25,7 +25,9 @@ select_ancillary_functions_mplus <- function(df, ...) {
     as_tibble() %>%
     select(...)
 }
-
+# are these three any different than `base::scale`? `scale(x, center = FALSE)`,
+# `scale(x, scale = FALSE)`, and `scale(x)`, right? Except I guess they remove
+# missing data...
 scale_vector <- function(x) {
   x / sd(x, na.rm = TRUE)
 }
@@ -54,28 +56,6 @@ center_scale_function <- function(x, center_raw_data, scale_raw_data) {
   }
 }
 
-# addresses concerns (notes) of R CMD check re: the vars that are evaluated using non-standard evaluation
-# if (getRversion() >= "2.15.1") utils::globalVariables(c("matrix", "structure", "EEE", "EEI", "VVV", "est", "key", "model_names", "Covariance matrix structure", "n_profiles", "param_name", "posterior_prob", "profile", "val", "value", "var_name"))
-
-#' student questionnaire data with four variables from the 2015 PISA for students in the United States
-#'
-#' @source http://www.oecd.org/pisa/data/
-#' @format Data frame with columns
-#' #' \describe{
-#'   \item{broad_interest}{composite measure of students' self reported broad interest}
-#'   \item{enjoyment}{composite measure of students' self reported enjoyment}
-#'   \item{instrumental_mot}{composite measure of students' self reported instrumental motivation}
-#'   \item{self_efficacy}{composite measure of students' self reported self efficacy}
-#'   ...
-#' }
-#' @import tibble
-
-"pisaUSA15"
-
-# .onAttach <- function(libname, pkgname) {
-#   packageStartupMessage("\nPlease report any issues or feature requests at https://github.com/jrosen48/tidyLPA or via email to tidylpa@googlegroups.com.")
-# }
-
 extract_stats <- function(x) {
   x <- x[x != ""]
   data.frame(LL = x[1], seed = x[2], m_iterations = x[3])
@@ -96,25 +76,27 @@ extract_stats <- function(x) {
 #' @export
 
 extract_LL_mplus <- function(output_filename = "i.out") {
-  raw_text <- readr::read_lines(output_filename)
-  start <- which(stringr::str_detect(raw_text, "Final stage loglikelihood")) + 2
-  start_vals <- raw_text[stringr::str_detect(raw_text, "starts =")]
-  start_vals <- stringr::str_trim(start_vals)
-  start_vals <- stringr::str_sub(start_vals, end = -2L)
-  start_vals <- stringr::str_split(start_vals, "[^[:digit:]]")
+  raw_text <- read_lines(output_filename)
+  start <- which(str_detect(raw_text, "Final stage loglikelihood")) + 2
+  start_vals <- raw_text[str_detect(raw_text, "starts =")]
+  start_vals <- str_trim(start_vals)
+  start_vals <- str_sub(start_vals, end = -2L)
+  start_vals <- str_split(start_vals, "[^[:digit:]]")
   start_vals <- as.numeric(unlist(start_vals))
   start_vals <- unique(start_vals[!is.na(start_vals)])
   stop <- start + (start_vals[2] - 1)
   subset_text <- raw_text[start:stop]
-  trimmed_text <- stringr::str_trim(subset_text)
-  fin_text <- stringr::str_split(trimmed_text, " ")
-  o <- suppressWarnings(purrr::map_df(fin_text, extract_stats))
+  trimmed_text <- str_trim(subset_text)
+  fin_text <- str_split(trimmed_text, " ")
+  o <- suppressWarnings(map_df(fin_text, extract_stats))
   o$seed <- suppressWarnings(as.numeric(o$seed))
   o <- o[!is.na(o$seed), ]
-  dplyr::tbl_df(o)
+  tbl_df(o)
 }
 
-if (getRversion() >= "2.15.1") globalVariables(c("Value", "se", "Class", "Variable", "."))
+if (getRversion() >= "2.15.1") {
+  globalVariables(c("Value", "se", "Class", "Variable", "."))
+}
 
 write_mplus <- function(d, file_name, na_string = "-999", ...) {
   write.table(d,
@@ -142,7 +124,8 @@ make_class_mplus <- function(var_list, class_number, fix_variances = F) {
   return(class_init)
 }
 
-covariances_mplus <- function(var_list, estimate_covariance = F, param_counter = NULL) {
+covariances_mplus <- function(var_list, estimate_covariance = FALSE,
+                              param_counter = NULL) {
   combine2 <- utils::combn(length(var_list), 2)
   variances <- vector(length = ncol(combine2), mode = "list")
 
@@ -168,4 +151,34 @@ get_fit_stat <- function(m, stat) {
     m$summaries[[stat]],
     NA
   ))
+}
+
+check_list <- function(x, check) {
+    str_detect(x[1], check)
+}
+
+check_warnings <- function(x, check) {
+    if (any(map_lgl(x$warnings, check_list, check = check))) {
+        return(str_c("Warning: ", "The best loglikelihood was not replicated"))
+    } else {
+        return("No warning")
+    }
+}
+
+check_errors <- function(x, check) {
+    if (any(map_lgl(x$errors, check_list, check = check))) {
+        return(str_c("Error: ", "Convergence issue"))
+    } else {
+        return("No error")
+    }
+}
+
+extract_prob_stats <- function(class_num, obj) {
+    vars <- rownames(obj[[class_num]]$classSampCovs)
+    class_means <- obj[[class_num]]$classSampMeans
+    class_sds <- sqrt(diag(obj[[class_num]]$classSampCovs))
+    data_frame(var = vars,
+               class_mean = as.vector(class_means),
+               class_sd = as.vector(class_sds),
+               class = class_num)
 }

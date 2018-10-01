@@ -26,7 +26,9 @@
 #' plot_profiles(m3, plot_what = "mclust")
 #' @export
 
-plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", plot_error_bars = TRUE, plot_rawdata = TRUE, ci = .95) {
+plot_profiles <- function(x, to_center = FALSE, to_scale = FALSE, plot_what = "tibble",
+                          plot_error_bars = TRUE, plot_rawdata = TRUE,
+                          ci = .95) {
   if (plot_what == "tibble") {
     n <- count(x, .data$profile)
     x <- mutate(x, profile = factor(
@@ -37,16 +39,28 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       ci <- qnorm(.5 * (1 - ci))
       x %>%
         select(-.data$posterior_prob) %>%
-        mutate_at(vars(-.data$profile), center_scale_function, center_raw_data = to_center, scale_raw_data = to_scale) %>%
+        mutate_at(vars(-.data$profile),
+          center_scale_function,
+          center_raw_data = to_center,
+          scale_raw_data = to_scale
+        ) %>%
         group_by(.data$profile) %>%
         summarize_all(funs(mean, sd)) %>%
         gather("key", "val", -.data$profile) %>%
         mutate(
-          new_key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, start = -4),
-            ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, start = -2), NA)
+          new_key = ifelse(str_sub(.data$key, start = -4) == "mean",
+            str_sub(.data$key, start = -4),
+            ifelse(str_sub(.data$key, start = -2) == "sd",
+              str_sub(.data$key, start = -2),
+              NA
+            )
           ),
-          key = ifelse(str_sub(.data$key, start = -4) == "mean", str_sub(.data$key, end = -6),
-            ifelse(str_sub(.data$key, start = -2) == "sd", str_sub(.data$key, end = -4), NA)
+          key = ifelse(str_sub(.data$key, start = -4) == "mean",
+            str_sub(.data$key, end = -6),
+            ifelse(str_sub(.data$key, start = -2) == "sd",
+              str_sub(.data$key, end = -4),
+              NA
+            )
           )
         ) %>%
         spread(.data$new_key, .data$val) %>%
@@ -57,27 +71,39 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
           ymin = .data$mean - .data$se,
           ymax = .data$mean + .data$se
         ) %>%
-        ggplot(aes_string(x = "profile", y = "mean", fill = "key", ymin = "ymin", ymax = "ymax")) +
+        ggplot(aes_string(
+          x = "profile",
+          y = "mean",
+          fill = "key",
+          ymin = "ymin",
+          ymax = "ymax"
+        )) +
         geom_col(position = "dodge") +
         geom_errorbar(position = position_dodge()) +
-        # scale_fill_brewer("", type = "qual", palette = 6) +
         scale_x_discrete("") +
         theme_bw()
     } else {
       x %>%
         select(-.data$posterior_prob) %>%
-        mutate_at(vars(-.data$profile), scale, center = to_center, scale = to_scale) %>%
+        mutate_at(vars(-.data$profile),
+          scale,
+          center = to_center,
+          scale = to_scale
+        ) %>%
         mutate(profile = as.factor(.data$profile)) %>%
         group_by(.data$profile) %>%
         summarize_all(mean) %>%
         gather("key", "val", -.data$profile) %>%
-        ggplot(aes_string(x = "profile", y = "val", fill = "key")) +
+        ggplot(aes_string(
+          x = "profile",
+          y = "val",
+          fill = "key"
+        )) +
         geom_col(position = "dodge") +
-        # scale_fill_brewer("", type = "qual", palette = 6) +
         scale_x_discrete("") +
         theme_bw()
     }
-  } else if (plot_what == "mclust") {
+  } else if (plot_what == "mclust") { # Overall this code is not *super* clear, but it's not horrible or anything either
     n_classes <- x$G
     plotdat <- x$parameters$mean
     if (to_center) {
@@ -87,7 +113,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       plotdat <- plotdat / apply(x$data, 2, sd, na.rm = TRUE)
     }
     plotdat <- data.frame(Variable = rownames(plotdat), plotdat)
-    names(plotdat)[-1] <- paste0("Value.", 1:n_classes)
+    names(plotdat)[-1] <- paste0("Value.", seq(n_classes))
     plotdat <- reshape(
       plotdat,
       direction = "long",
@@ -107,31 +133,33 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         rawdata <- sweep(rawdata, 2, apply(x$data, 2, sd, na.rm = TRUE), "/")
       }
       rawdata <- data.frame(cbind(x$z, rawdata))
-      names(rawdata)[1:n_classes] <-
-        paste0("Probability.", 1:n_classes)
+      names(rawdata)[seq(n_classes)] <-
+        paste0("Probability.", seq(n_classes))
       rawdata <- reshape(
         rawdata,
         direction = "long",
-        varying = 1:n_classes,
+        varying = seq(n_classes),
         timevar = "Class"
       )[, -(length(names(rawdata)[-grep("^Probability", names(rawdata))]) + 3)]
       rawdata$Class <- ordered(rawdata$Class)
-      levels(rawdata$Class) <- 1:n_classes
-      names(rawdata)[1:ncol(x$data)] <-
+      levels(rawdata$Class) <- seq(n_classes)
+      names(rawdata)[seq(ncol(x$data))] <-
         paste0("Value.", gsub("\\.", "_", colnames(x$data)))
       rawdata <-
         reshape(
           rawdata,
           direction = "long",
-          varying = 1:ncol(x$data),
+          varying = seq(ncol(x$data)),
           timevar = "Variable"
         )
-      rawdata$Variable <- ordered(rawdata$Variable, levels = gsub("\\.", "_", colnames(x$data)))
+      rawdata$Variable <- ordered(rawdata$Variable,
+        levels = gsub("\\.", "_", colnames(x$data))
+      )
       levels(rawdata$Variable) <- colnames(x$data)
 
       classplot <- classplot + geom_point(
         data = rawdata,
-        position = position_jitterdodge(jitter.width = .10),
+        position = position_jitterdodge(jitter.width = .10), # this should probably be an option
         aes_string(
           x = "Class",
           y = "Value",
@@ -151,9 +179,10 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       )
     # Add errorbars
     if (!is.null(ci)) {
-      if (any(table(x$classification) / length(x$classification) < .5 * (1 / length(unique(
-        x$classification
-      ))))) {
+      if (any(
+        table(x$classification) / length(x$classification) <
+          .5 * (1 / length(unique(x$classification)))
+      )) {
         warning(
           "The number of cases per class is relatively low in some classes. Used weighted likelihood bootstrap to obtain se's."
         )
@@ -173,7 +202,10 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       }
 
       ses <- data.frame(apply(bootstraps$mean, 3, function(class) {
-        apply(class, 2, quantile, probs = c((.5 * (1 - ci)), 1 - (.5 * (1 - ci))))
+        apply(class, 2, quantile, probs = c(
+          (.5 * (1 - ci)),
+          1 - (.5 * (1 - ci))
+        ))
       }))
       if (to_center) {
         ses <- ses - rep(colMeans(x$data, na.rm = TRUE), each = 2)
@@ -181,7 +213,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
       if (to_scale) {
         ses <- ses / rep(apply(x$data, 2, sd, na.rm = TRUE), each = 2)
       }
-      names(ses) <- paste0("se.", 1:n_classes)
+      names(ses) <- paste0("se.", seq(n_classes))
       ses$Variable <- unlist(lapply(colnames(x$data), rep, 2))
       ses$boundary <- "lower"
       ses$boundary[seq(2, nrow(ses), by = 2)] <- "upper"
@@ -189,7 +221,7 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         reshape(
           ses,
           direction = "long",
-          varying = 1:n_classes,
+          varying = seq(n_classes),
           timevar = "Class"
         )
       ses <-
@@ -214,7 +246,10 @@ plot_profiles <- function(x, to_center = F, to_scale = F, plot_what = "tibble", 
         )
     }
     classplot + theme_bw() +
-      geom_vline(xintercept = seq(1.5, (n_classes - 1) + .5, 1), linetype = 2) +
+      geom_vline(
+        xintercept = seq(1.5, (n_classes - 1) + .5, 1),
+        linetype = 2
+      ) +
       scale_x_discrete(expand = c(0, 0))
   }
 }

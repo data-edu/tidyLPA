@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -122,9 +122,10 @@
   <span class='kw'>n_profiles_max</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='fu'>c</span>(<span class='st'>"equal"</span>, <span class='st'>"zero"</span>), <span class='fu'>c</span>(<span class='st'>"varying"</span>,
   <span class='st'>"zero"</span>), <span class='fu'>c</span>(<span class='st'>"equal"</span>, <span class='st'>"equal"</span>), <span class='fu'>c</span>(<span class='st'>"varying"</span>, <span class='st'>"varying"</span>)), <span class='kw'>starts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>100</span>,
   <span class='fl'>10</span>), <span class='kw'>cluster_ID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>st_iterations</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>save_models</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n_processors</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>return_stats_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>include_VLMR</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>include_BLRT</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>remove_tmp_files</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>save_models</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n_processors</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>return_stats_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>include_VLMR</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>include_BLRT</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>dir_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,6 +171,10 @@
       <td><p>convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)</p></td>
     </tr>
     <tr>
+      <th>remove_tmp_files</th>
+      <td><p>whether to remove data, script, and output files; defaults to TRUE</p></td>
+    </tr>
+    <tr>
       <th>save_models</th>
       <td><p>whether to save the models as rds files</p></td>
     </tr>
@@ -193,6 +198,10 @@
       <th>include_BLRT</th>
       <td><p>whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run</p></td>
     </tr>
+    <tr>
+      <th>dir_name</th>
+      <td><p>character; name for directory .out files are saved to if save_models = TRUE</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -206,7 +215,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>compare_solutions_mplus</span>(<span class='no'>iris</span>, <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
+<span class='no'>o</span> <span class='kw'>&lt;-</span> <span class='fu'>compare_solutions_mplus</span>(<span class='no'>iris</span>, <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
 <span class='kw'>n_profiles_max</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 <span class='co'># }</span></pre>
   </div>

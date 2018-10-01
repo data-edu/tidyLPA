@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -118,8 +118,9 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>plot_profiles</span>(<span class='no'>x</span>, <span class='kw'>to_center</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>to_scale</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>,
-  <span class='kw'>plot_error_bars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plot_rawdata</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_profiles</span>(<span class='no'>x</span>, <span class='kw'>to_center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>to_scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>, <span class='kw'>plot_error_bars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plot_rawdata</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,20 +162,18 @@
 When plot_what is set to 'mclust', the errorbars represent non-parametric
 confidence intervals, obtained using bootstrapping (100 samples). Note that
 100 samples might be adequate for plotting, but is low for inference. If the
-number of participants per class is highly unbalanced (specifically, if the
-number of participants assigned to one class is less than
-.5*(1/number of classes), then weighted likelihood bootstrapping is used to
-ensure that each case is represented in the bootstrap samples (see O’Hagan,
-Murphy, Scrucca, and Gormley, 2015).</p>
+number of participants per class is highly unbalanced, then weighted likelihood
+bootstrapping is used to ensure that each case is represented in the bootstrap
+samples (see O'Hagan, Murphy, Scrucca, and Gormley, 2015).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='no'>iris</span>,
     <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
-    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit NA model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>)</div><div class='img'><img src='plot_profiles-1.png' alt='' width='700' height='433' /></div><div class='input'>
+    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>)</div><div class='img'><img src='plot_profiles-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='no'>iris</span>,
     <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
-    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit NA model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>)</div><div class='img'><img src='plot_profiles-2.png' alt='' width='700' height='433' /></div></pre>
+    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>)</div><div class='img'><img src='plot_profiles-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

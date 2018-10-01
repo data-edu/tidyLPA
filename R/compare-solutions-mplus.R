@@ -7,11 +7,12 @@
 #' @param save_models whether to save the models as rds files
 #' @param return_table logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to TRUE
 #' @param return_stats_df whether to return a list of fit statistics for the solutions explored; defaults to TRUE
+#' @param dir_name character; name for directory .out files are saved to if save_models = TRUE; defaults to the present date
 #' @inheritParams estimate_profiles_mplus
 #' @return a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned
 #' @examples
 #' \dontrun{
-#' compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+#' o <- compare_solutions_mplus(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #' n_profiles_max = 3)
 #' }
 #' @export
@@ -25,28 +26,39 @@ compare_solutions_mplus <- function(df, ...,
                                     m_iterations = 500,
                                     st_iterations = 20,
                                     convergence_criterion = 1E-6,
+                                    remove_tmp_files = FALSE,
                                     save_models = FALSE,
                                     return_table = TRUE,
                                     n_processors = 1,
                                     return_stats_df = TRUE,
                                     include_VLMR = TRUE,
-                                    include_BLRT = FALSE) {
-  # message("Note that this and other functions that use MPlus are at the experimental stage! Please provide feedback at https://github.com/jrosen48/tidyLPA")
+                                    include_BLRT = FALSE,
+                                    dir_name = NULL) {
+
+  # if (mplusAvailable() != 1) stop("It appears that MPlus is not installed; this function requires MPlus to be installed in order to work.")
+
+  if (remove_tmp_files == TRUE) {
+    message("because remove_tmp_files is set to TRUE, some functions may not work as expected")
+  }
+
+  if (!is.null(dir_name)) {
+    dir_name <- Sys.Date()
+  }
 
   out_df <- data.frame(matrix(
     ncol = length(models),
     nrow = (n_profiles_max - (n_profiles_min - 1))
   ))
 
-  all_models_names = list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "equal"), c("equal", "varying"), c("varying", "varying"))
-1111
+  all_models_names <- list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "equal"), c("equal", "varying"), c("varying", "varying"))
+
   titles <- c(
-      "Equal variances and covariances fixed to 0 (model 1)",
-      "Varying variances and covariances fixed to 0 (model 2)",
-      "Equal variances and equal covariances (model 3)",
-      "Varying variances and equal covariances (model 4)",
-      "Equal variances and varying covariances (model 5)",
-      "Varying variances and varying covariances (model 6)"
+    "Equal variances and covariances fixed to 0",
+    "Varying variances and covariances fixed to 0",
+    "Equal variances and equal covariances",
+    "Varying variances and equal covariances",
+    "Equal variances and varying covariances",
+    "Varying variances and varying covariances"
   )
 
   names(out_df) <- titles[all_models_names %in% models]
@@ -58,31 +70,17 @@ compare_solutions_mplus <- function(df, ...,
   counter <- 0
 
   if (save_models == TRUE) {
-    if (!dir.exists("compare_solutions_lpa_output")) dir.create("compare_solutions_lpa_output")
+      if (dir.exists(stringr::str_c("compare_solutions_mplus_output-", dir_name))) {
+          stop("A directory with this name already exists; change the name on or delete the old directory to avoid over-writing it")
+      }
+      dir.create(stringr::str_c("compare_solutions_mplus_output-", dir_name), showWarnings=FALSE)
   }
-
-  remove_tmp_files <- FALSE
-
-  # if (save_models == TRUE) {
-  #     remove_tmp_files <- FALSE
-  # } else {
-  #     remove_tmp_files <- TRUE
-  # }
-
-  # case_when(
-  #     variances == "fixed" & covariances == "zero" ~ 1,
-  #     variances == "varying" & covariances == "zero" ~ 2,
-  #     variances == "fixed" & covariances == "fixed" ~ 3,
-  #     variances == "varying" & covariances == "fixed" ~ 4,
-  #     variances == "fixed" & covariances == "varying" ~ 5,
-  #     variances == "varying" & covariances == "varying" ~ 6,
-  # )
 
   for (i in n_profiles_min:n_profiles_max) {
     for (j in seq(length(models))) {
-      message(str_c("Processing model with n_profiles = ", i, " and model = ", j))
+      message(str_c("Processing model with n_profiles = ", i, " and variances = ", models[[j]][1], " and covariances = ", models[[j]][2]))
 
-    m <- suppressMessages(estimate_profiles_mplus(
+      m <- suppressMessages(estimate_profiles_mplus(
         df, ...,
         n_profiles = i,
         variances = models[[j]][1],
@@ -92,7 +90,7 @@ compare_solutions_mplus <- function(df, ...,
         m_iterations = m_iterations,
         convergence_criterion = convergence_criterion,
         st_iterations = st_iterations,
-        return_save_data = F,
+        return_save_data = FALSE,
         n_processors = n_processors,
         include_VLMR = include_VLMR,
         include_BLRT = include_BLRT,
@@ -100,20 +98,21 @@ compare_solutions_mplus <- function(df, ...,
       ))
 
       if (save_models == TRUE) {
-        if (!dir.exists(str_c("compare_solutions_lpa_output/m", j, "_p", i))) dir.create(str_c("compare_solutions_lpa_output/m", j, "_p", i))
-        capture <- capture.output(m_all <- MplusAutomation::readModels("i.out")) # this will need to be changed to be dynamic
-        write_rds(m_all, str_c("compare_solutions_lpa_output/m", j, "_p", i, "/m", j, "_p", i, ".rds"))
+        capture <- capture.output(m_all <- MplusAutomation::readModels("i.out"))
+        new_dir <- stringr::str_c("compare_solutions_mplus_output-", dir_name, "/m-", j, "_p-", i)
+        dir.create(new_dir, showWarnings=FALSE)
+        file.copy(from = "i.out", to = new_dir)
       }
 
       counter <- counter + 1
 
-      # fix (remove) suppressWarnings()
-      if (m[1] == "Error: Convergence issue" | m[1] == "Warning: LL not replicated") {
+      if (m[1] == "Error: Convergence issue"
+      | m[1] == "Warning: LL not replicated") { # here's another example where it just spilled over, hence the suggested change
         message(str_c("Result: ", m))
         out_df[i - (n_profiles_min - 1), j + 1] <- m
       } else {
         n_LL_replicated <- extract_LL_mplus("i.out")
-        count_LL <- dplyr::count(n_LL_replicated, .data$LL)
+        count_LL <- count(n_LL_replicated, .data$LL)
         t <- as.character(str_c(table(m$savedata$C), collapse = ", "))
         message(paste0("Result: BIC = ", m$summaries$BIC))
         out_df[i - (n_profiles_min - 1), j + 1] <- m$summaries$BIC
@@ -134,19 +133,19 @@ compare_solutions_mplus <- function(df, ...,
           BLRT_p <- m$summaries$BLRT_PValue
         }
 
-        if (is.null(cluster_ID)){
-            cluster_ID_label <- NA
+        if (is.null(cluster_ID)) {
+          cluster_ID_label <- NA
         } else {
-            cluster_ID_label <- cluster_ID
+          cluster_ID_label <- cluster_ID
         }
 
         model_number <- case_when(
-            models[[j]][1] == "equal" & models[[j]][2] == "zero" ~ 1,
-            models[[j]][1] == "varying" & models[[j]][2] == "zero" ~ 2,
-            models[[j]][1] == "equal" & models[[j]][2] == "equal" ~ 3,
-            models[[j]][1] == "varying" & models[[j]][2] == "equal" ~ 4,
-            models[[j]][1] == "equal" & models[[j]][2] == "varying" ~ 5,
-            models[[j]][1] == "varying" & models[[j]][2] == "varying" ~ 6
+          models[[j]][1] == "equal" & models[[j]][2] == "zero" ~ 1,
+          models[[j]][1] == "varying" & models[[j]][2] == "zero" ~ 2,
+          models[[j]][1] == "equal" & models[[j]][2] == "equal" ~ 3,
+          models[[j]][1] == "varying" & models[[j]][2] == "equal" ~ 4,
+          models[[j]][1] == "equal" & models[[j]][2] == "varying" ~ 5,
+          models[[j]][1] == "varying" & models[[j]][2] == "varying" ~ 6
         )
 
         if (counter == 1) {
@@ -158,7 +157,7 @@ compare_solutions_mplus <- function(df, ...,
             cluster_ID = cluster_ID_label,
             LL = m$summaries$LL,
             npar = m$summaries$Parameters,
-            AIC = m$summaries$LL,
+            AIC = m$summaries$AIC,
             BIC = m$summaries$BIC,
             SABIC = m$summaries$aBIC,
             CAIC = m$summaries$AICC,
@@ -179,13 +178,14 @@ compare_solutions_mplus <- function(df, ...,
             model_number = model_number,
             variances = models[[j]][1],
             covariances = models[[j]][2],
+            cluster_ID = cluster_ID_label,
             LL = m$summaries$LL,
             npar = m$summaries$Parameters,
-            AIC = m$summaries$LL,
+            AIC = m$summaries$AIC,
             BIC = m$summaries$BIC,
             SABIC = m$summaries$aBIC,
             CAIC = m$summaries$AICC,
-            AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)),
+            AWE = (-2 * m$summaries$LL) + (2 * m$summaries$Parameters * (log(m$summaries$Observations) + 1.5)), # long again
             Entropy = m$summaries$Entropy,
             LL_replicated = str_c(count_LL$n[1], "/", as.character(starts[2])),
             cell_size = t,
@@ -201,21 +201,39 @@ compare_solutions_mplus <- function(df, ...,
           stats_df$cell_size <- as.character(stats_df$cell_size)
         }
       }
-      file.remove("d.dat")
-      file.remove("i.inp")
-      file.remove("i.out")
-      file.remove("d-mod.dat")
-      file.remove("Mplus Run Models.log")
+
+      if (file.exists("d.dat")) file.remove("d.dat")
+      if (file.exists("i.inp")) file.remove("i.inp")
+      if (file.exists("i.out")) file.remove("i.out")
+      if (file.exists("d-mod.dat")) file.remove("d-mod.dat")
+      if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
     }
   }
 
+  if (file.exists("d.dat")) file.remove("d.dat")
+  if (file.exists("i.inp")) file.remove("i.inp")
+  if (file.exists("i.out")) file.remove("i.out")
+  if (file.exists("d-mod.dat")) file.remove("d-mod.dat")
+  if (file.exists("Mplus Run Models.log")) file.remove("Mplus Run Models.log")
+
   if (return_stats_df == TRUE & return_table == TRUE) {
-    return(list(as_tibble(out_df), arrange(as_tibble(stats_df), .data$npar, .data$n_profiles)))
+    return(list(
+      as_tibble(out_df),
+      arrange(
+        as_tibble(stats_df),
+        .data$npar,
+        .data$n_profiles
+      )
+    ))
   }
 
   if (return_stats_df == TRUE) {
     print(as_tibble(out_df))
-    return(arrange(as_tibble(stats_df), .data$model, .data$n_profiles))
+    return(arrange(
+      as_tibble(stats_df),
+      .data$model,
+      .data$n_profiles
+    ))
   }
 
   if (return_table == TRUE) {
@@ -230,7 +248,13 @@ compare_solutions_mplus <- function(df, ...,
         n_profiles = as.integer(.data$n_profiles),
         Model = str_extract(.data$Model, "\\d")
       ) %>%
-      ggplot(aes_string(x = "n_profiles", y = "BIC", shape = "Model", color = "Model", group = "Model")) +
+      ggplot(aes_string(
+        x = "n_profiles",
+        y = "BIC",
+        shape = "Model",
+        color = "Model",
+        group = "Model"
+      )) +
       geom_line() +
       geom_point()
   }
