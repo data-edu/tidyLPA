@@ -74,7 +74,7 @@ The *tidyLPA* package provides an interface to two different
 tools for estimating models, one from the open-source **mclust** R
 package [@scrucca_et_al_2017] and the other the commercial **MPlus**
 [@muthen_et_al_2017] software (via the **MplusAutomation** R package
-[hallquist_et_al_2018]). The packages are benchmarked to one another; the
+[@hallquist_et_al_2018]). The packages are benchmarked to one another; the
 benchmarks are checked when **tidyLPA** is deployed through automated tests.
 
 Both the open-source and commercial tools allow for the specification of four
