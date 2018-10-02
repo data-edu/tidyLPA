@@ -102,6 +102,7 @@ compare_solutions_mplus <- function(df, ...,
         new_dir <- stringr::str_c("compare_solutions_mplus_output-", dir_name, "/m-", j, "_p-", i)
         dir.create(new_dir, showWarnings=FALSE)
         file.copy(from = "i.out", to = new_dir)
+        file.copy(from = "d.dat", to = new_dir)
       }
 
       counter <- counter + 1
