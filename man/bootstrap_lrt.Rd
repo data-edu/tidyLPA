@@ -4,7 +4,7 @@
 \alias{bootstrap_lrt}
 \title{Bootstrap the likelihood-ratio test statistic for mixture components}
 \usage{
-bootstrap_lrt(df, ..., n_profiles, variances = "fixed",
+bootstrap_lrt(df, ..., n_profiles, variances = "equal",
   covariances = "zero")
 }
 \arguments{
