@@ -46,8 +46,8 @@ compare_solutions <- function(df, ...,
   )
 
   titles <- c(
-    "Equal variances and covariances fixed to 0 (model 1)",
-    "Varying variances and covariances fixed to 0 (model 2)",
+    "Equal variances and covariances fixed to zero (model 1)",
+    "Varying variances and covariances fixed to zero (model 2)",
     "Equal variances and equal covariances (model 3)",
     # "Varying variances and equal covariances (model 4)",
     # "Equal variances and varying covariances (model 5)",
@@ -123,6 +123,7 @@ compare_solutions <- function(df, ...,
     geom_point(na.rm = TRUE) +
     ylab(paste0(statistic, " (smaller value is better)")) +
     theme_bw() +
+    ggplot2::scale_color_discrete("", labels = titles)
     xlab("Profiles")
 
   p
