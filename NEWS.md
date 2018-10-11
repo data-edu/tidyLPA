@@ -1,3 +1,8 @@
+# tidyLPA 0.2.1
+
+* minor changes and bug fixes 
+* addition of new reference to JOSS paper
+
 # tidyLPA 0.2.0
 
 ## Major breaking change:
