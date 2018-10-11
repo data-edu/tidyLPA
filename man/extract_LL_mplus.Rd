@@ -10,7 +10,7 @@ extract_LL_mplus(output_filename = "i.out")
 \item{output_filename}{name of output_filename from estimate_profiles_mplus()}
 }
 \value{
-a tibble or a ggplot2 plot of the BIC values for the explored modelswith the log-likelihood, random start seed, and the number of the iteration
+a tibble or a ggplot2 plot of the BIC values for the explored models with the log-likelihood, random start seed, and the number of the iteration
 }
 \description{
 Extract log-likelihoods from models fit with estimate_profiles_mplus()
