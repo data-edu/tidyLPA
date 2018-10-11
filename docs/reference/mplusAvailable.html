@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bootstrap the likelihood-ratio test statistic for mixture components — bootstrap_lrt • tidyLPA</title>
+<title>Check whether Mplus can be found — mplusAvailable • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Bootstrap the likelihood-ratio test statistic for mixture components — bootstrap_lrt" />
+<meta property="og:title" content="Check whether Mplus can be found — mplusAvailable" />
 
-<meta property="og:description" content="Bootstrap the likelihood-ratio test statistic for mixture components" />
+<meta property="og:description" content="This is a simple utility to check whether Mplus can be found.
+Returns 0 if Mplus command can be found by the system.
+If silent = FALSE, prints a message to the user
+to help suggest what to do." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -107,67 +110,76 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bootstrap the likelihood-ratio test statistic for mixture components</h1>
+    <h1>Check whether Mplus can be found</h1>
     
-    <div class="hidden name"><code>bootstrap_lrt.Rd</code></div>
+    <div class="hidden name"><code>mplusAvailable.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Bootstrap the likelihood-ratio test statistic for mixture components</p>
+    <p>This is a simple utility to check whether Mplus can be found.
+Returns 0 if Mplus command can be found by the system.
+If <code>silent = FALSE</code>, prints a message to the user
+to help suggest what to do.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>bootstrap_lrt</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>variances</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
-  <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='st'>"zero"</span>)</pre>
+    <pre class="usage"><span class='fu'>mplusAvailable</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
-      <td><p>data.frame with two or more columns with continuous variables</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>unquoted variable names separated by commas</p></td>
-    </tr>
-    <tr>
-      <th>n_profiles</th>
-      <td><p>the number of profiles (or mixture components) to be estimated</p></td>
-    </tr>
-    <tr>
-      <th>variances</th>
-      <td><p>how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)</p></td>
-    </tr>
-    <tr>
-      <th>covariances</th>
-      <td><p>how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)</p></td>
+      <th>silent</th>
+      <td><p>A logical whether to print a message or not.
+Defaults to <code>TRUE</code> for silent operation.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The status of finding Mplus. Per unix conventions,
+status 0 indicates Mplus was found (0 problems) and
+status 1 indicates that Mplus was not found.</p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.</p>
+    <p>Note: This is copied directly from the MplusAutomation
+repository. This is because it is only available for the
+development version. When it is part of an update, it will
+be imported from MplusAutomation.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pisaUSA15</span>
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/sample.html'>sample_n</a></span>(<span class='no'>d</span>, <span class='fl'>200</span>)
-<span class='fu'>bootstrap_lrt</span>(<span class='no'>d</span>,
-              <span class='no'>broad_interest</span>, <span class='no'>enjoyment</span>, <span class='no'>self_efficacy</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'>
+<span class='fu'>mplusAvailable</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>mplusAvailable</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Mplus is either not installed or could not be found</span>
+#&gt; <span class='message'>Try installing Mplus or if it already is installed,</span>
+#&gt; <span class='message'>making sure it can be found by adding it to your PATH or adding a symlink</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>To see directories on your PATH, From a terminal, run:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>echo $PATH</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>then try something along these lines:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>sudo ln -s /path/to/mplus/on/your/system /directory/on/your/PATH</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
+
+    <h2>Author</h2>
+    
+Joshua Wiley
 
   </div>
 </div>
