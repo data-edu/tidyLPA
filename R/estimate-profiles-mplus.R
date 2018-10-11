@@ -14,7 +14,6 @@
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabilities for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
 #' @param optseed random seed for analysis
 #' @param cluster_ID clustering variable (i.e., if data are from students clustered into distinct classrooms) to be used as cluster variables as part of the type = complex option
-#' @param multi_group_ID factor; group_ID if multi-group analysis is to be carried out; represents the a priori known different groups
 #' @param include_VLMR whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE
 #' @param include_BLRT whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run
 #' @param n_processors = 1
@@ -50,7 +49,6 @@ estimate_profiles_mplus <- function(df,
                                     optseed = NULL,
                                     n_processors = 1,
                                     cluster_ID = NULL,
-                                    multi_group_ID = NULL,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE,
                                     return_all_stats = FALSE) {
@@ -58,17 +56,17 @@ estimate_profiles_mplus <- function(df,
     # if (mplusAvailable() != 1) stop("It appears that MPlus is not installed; this function requires MPlus to be installed in order to work.")
 
     model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
-Model 1: variances = 'equal'; covariances = 'zero';
-Model 2: variances = 'equal'; covariances = 'zero';
-Model 3: variances = 'equal'; covariances = 'equal';
-Model 4: variances = 'varying'; covariances = 'equal' .(Cannot be estimated without MPlus);
-Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated without MPlus);
-Model 6: variances = 'varying'; covariances = 'varying';
-                     ")
+                       Model 1: variances = 'equal'; covariances = 'zero';
+                       Model 2: variances = 'equal'; covariances = 'zero';
+                       Model 3: variances = 'equal'; covariances = 'equal';
+                       Model 4: variances = 'varying'; covariances = 'equal' .(Cannot be estimated without MPlus);
+                       Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated without MPlus);
+                       Model 6: variances = 'varying'; covariances = 'varying';
+                       ")
 
     if (!is.null(model)) stop(model_message)
 
-    d <- select_ancillary_functions_mplus(df, ..., cluster_ID, multi_group_ID)
+    d <- select_ancillary_functions_mplus(df, ..., cluster_ID)
 
     if (is.null(idvar)) {
         id <- data_frame(id = as.numeric(rownames(df)))
@@ -95,11 +93,6 @@ Model 6: variances = 'varying'; covariances = 'varying';
         d[[cluster_ID]] <- as.integer(as.factor(d[[cluster_ID]])) # MPlus requires an integer for factors
     }
 
-    if (!is.null(multi_group_ID)) {
-        d[[multi_group_ID]] <- as.integer(as.factor(d[[multi_group_ID]])) # MPlus requires an integer for factors
-    }
-
-
     names(d) <- gsub("\\.", "_", names(d))
 
     x <- write_mplus(d, data_filename)
@@ -108,10 +101,8 @@ Model 6: variances = 'varying'; covariances = 'varying';
 
     if (is.null(cluster_ID)) {
         unquoted_variable_names <- paste0(names(d)[-1], collapse = " ")
-    } else if (is.null(multi_group_ID)) {
-        unquoted_variable_names <- paste0(names(d)[c(-1, -ncol(d))], collapse = " ")
     } else {
-        unquoted_variable_names <- paste0(names(d)[c(-1, ncol(d), ncol(d) - 1)], collapse = " ")
+        unquoted_variable_names <- paste0(names(d)[c(-1, -ncol(d))], collapse = " ")
     }
 
     var_list <- vector("list", ncol(d))
@@ -145,33 +136,14 @@ Model 6: variances = 'varying'; covariances = 'varying';
     VARIABLE_line0 <- "VARIABLE:"
 
     VARIABLE_line1 <- paste0("Names are ", unquoted_use_variable_names, ";")
-
-    if (is.null(multi_group_ID)) {
-        VARIABLE_line2 <- paste0("Classes = c(", n_profiles, ");")
-    } else {
-        num_classes <- length(unique(d[[multi_group_ID]])) # number of known classes
-
-        VARIABLE_line2 <- paste0("Classes = cg (", num_classes, ") c (", n_profiles, ");")
-    }
-
+    VARIABLE_line2 <- paste0("Classes = c(", n_profiles, ");")
     VARIABLE_line3 <- paste0("IDVARIABLE = ", idvar, ";")
-
     MISSING <- "Missing are all (-999);"
 
     if (!is.null(cluster_ID)) {
         VARIABLE_line4 <- paste0("Cluster = ", cluster_ID, ";")
     } else {
         VARIABLE_line4 <- NULL
-    }
-
-    if (!is.null(multi_group_ID)) {
-        # return(d[[multi_group_ID]])
-        VARIABLE_line5 <- paste0("KNOWNCLASS = cg",
-                                 " (",
-                                 paste0(multi_group_ID, " = ", 1:num_classes, collapse = " "),
-                                 ");")
-    } else {
-        VARIABLE_line5 <- NULL
     }
 
     ANALYSIS_line0 <- "ANALYSIS:"
@@ -206,13 +178,6 @@ Model 6: variances = 'varying'; covariances = 'varying';
     MODEL_overall_line000 <- paste0("! model specified is: ", model)
     MODEL_overall_line00 <- paste0("MODEL:")
     MODEL_overall_line0 <- paste0("%overall%")
-
-    if (!is.null(multi_group_ID)) {
-        MODEL_overall_line_mg <- paste0("c ON cg;")
-    } else {
-        MODEL_overall_line_mg <- NULL
-    }
-
     MODEL_overall_line1 <- paste0("[", unquoted_variable_names, "];")
     MODEL_overall_line2 <- paste0(unquoted_variable_names, ";")
 
@@ -308,9 +273,9 @@ Model 6: variances = 'varying'; covariances = 'varying';
     all_the_lines <- c(
         TITLE,
         DATA,
-        VARIABLE_line0, VARIABLE_line1, VARIABLE_line2, VARIABLE_line3, VARIABLE_line4, VARIABLE_line5,
+        VARIABLE_line0, VARIABLE_line1, VARIABLE_line2, VARIABLE_line3, VARIABLE_line4,
         MISSING,
-        MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line_mg, MODEL_overall_line1, MODEL_overall_line2,
+        MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
         overall_collector,
         class_collector,
         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line1b, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7, ANALYSIS_line8,
