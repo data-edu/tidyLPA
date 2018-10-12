@@ -15,11 +15,23 @@
 #' @param print_which_stats if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed
 #' @inheritParams compare_solutions_mplus
 #' @examples
-#' estimate_profiles(iris,
+#' results <- estimate_profiles(iris,
 #'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #'     n_profiles = 3)
 #' @return a tibble with the data and profile/class assignment and the posterior probability for that profile; the output of this function can be passed to the plot_profiles() function to create a ggplot2 plot of the profiles. If the argument to_return = "mclust" is added to the function call) an mclust model object, which can be inspected or plotted with mclust functions.
 #' @export
+#' df = iris
+#' n_profiles = 3
+#' variances = "equal"
+#' covariances = "zero"
+#' to_return = "tibble"
+#' model = NULL
+#' center_raw_data = FALSE
+#' scale_raw_data = FALSE
+#' return_posterior_probs = TRUE
+#' return_orig_df = FALSE
+#' prior_control = FALSE
+#' print_which_stats = "some"
 
 estimate_profiles <- function(df,
                               ...,
@@ -48,7 +60,8 @@ Model 6: variances = 'varying'; covariances = 'varying';
   if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
 
   df <- mutate(df, row_number = 1:nrow(df))
-
+# Function below drops rows with partial data. Should use FIML or imputation instead.
+  # d <- select_create_profiles(df, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
   d <- select_create_profiles(df, ...)
 
   if (center_raw_data == T | scale_raw_data == T) {
@@ -97,7 +110,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
   )
 
   title <- titles[model_number]
-
+# Row number is now dropped again? Why add it to begin with
   d_model <- select(d, -row_number)
 
   if (prior_control == FALSE) {
@@ -126,10 +139,13 @@ Model 6: variances = 'varying'; covariances = 'varying';
   SABIC <- (m$df * log((m$n + 2) / 24) - 2 * m$loglik)
 
   posterior_prob <- 1 - round(m$uncertainty, 5)
-
+        # Instead of printing stuff from this function, create a .print method for the results of this function
   if (tolower(print_which_stats) == "some") {
+      # URGENT: Why take the absolute values for these? seems problematic
+      # Why convert these atomic vectors to vectors (again)?
     message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
     message("BIC is ", round(abs(as.vector(m$BIC)), 3))
+    # URGENT: This is the wrong computation for Entropy!! Correct formula found here: http://www.statmodel.com/download/UnivariateEntropy.pdf
     message("Entropy is ", round(mean(posterior_prob), 3))
   } else if (tolower(print_which_stats) == "all") {
     message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
@@ -138,8 +154,10 @@ Model 6: variances = 'varying'; covariances = 'varying';
     message("BIC is ", round(abs(as.vector(m$BIC)), 3))
     message("SABIC is ", round(abs(as.vector(SABIC)), 3))
     message("ICL is ", round(abs(as.vector(icl(m))), 3))
+    # URGENT: This is the wrong computation for Entropy!! Correct formula found here: http://www.statmodel.com/download/UnivariateEntropy.pdf
     message("Entropy is ", round(mean(posterior_prob), 3))
   }
+m$uncertainty
 
   dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification)))
 
@@ -148,13 +166,13 @@ Model 6: variances = 'varying'; covariances = 'varying';
   if (test < n_profiles) warning("Some profiles are associated with no assignments. Interpret this solution with caution and consider other models.")
 
   if (return_posterior_probs == TRUE) {
-    dff <- bind_cols(dff, posterior_prob = posterior_prob)
+    colnames(m$z) <- paste0("CPROB", 1:ncol(m$z))
+    dff <- cbind(dff, m$z)
   }
-
-  attributes(dff)$mclust_output <- m
 
   if (return_orig_df == TRUE) {
     to_join <- select(dff, .data$profile, .data$posterior_prob)
+    # Is this merge by row number necessary because we've dropped cases with missing data? If so, using imputation should allow us to simply cbind.
     dff <- semi_join(df, dff, by = "row_number")
     dff <- select(dff, -.data$row_number)
     dff <- bind_cols(dff, to_join)
@@ -162,10 +180,9 @@ Model 6: variances = 'varying'; covariances = 'varying';
     dff <- semi_join(dff, df, by = "row_number")
     dff <- select(dff, -.data$row_number)
   }
+  # A tibble is also still a data.frame, so there's no harm in removing the option in the function call and just allowing the conversion.
+  # We should not pass the ENTIRE mclust output as an attribute to the data.frame. Should go into a list
+  out <- list(df = as.tibble(dff), model = m)
 
-  if (to_return == "tibble" | to_return == "data.frame") {
-    return(as_tibble(dff))
-  } else if (to_return == "mclust") {
-    return(attributes(dff)$mclust_output)
-  }
+  out
 }
