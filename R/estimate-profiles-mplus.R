@@ -1,21 +1,34 @@
 #' Estimate parameters for profiles for a specific solution (requires purchasing and installing MPlus to use)
 #' @details Creates an mplus model (.inp) and associated data file (.dat)
+
+# Can probably be removed: There is no special need for an ID variable; we're not sorting or reshaping
+# the data, so we can simplify the function call. If participants want an ID var they can just merge it
+# with the returned data.frame.
 #' @param idvar optional name of the column to be used as the ID variable (should be supplied as a string). Defaults to \code{NULL}, in which case row numbers will be used. Note the ID can be numeric or string, but must be unique.
+# For simplicity, let's have ONE filename stem, and generate the filenames from that.
 #' @param data_filename name of data file to prepare; defaults to d.dat
 #' @param script_filename name of script to prepare; defaults to i.inp
 #' @param output_filename name of the output; defaults to o.out
 #' @param savedata_filename name of the output for the save data (with the original data conditional probabilities); defaults to o-mod.out
+# We can set this for users as a default. It's hard to grok and usually not essential.
 #' @param starts number of initial stage starts and number of final stage optimizations; defaults to c(20, 4); can be set to be more conservative to c(500, 50)
 #' @param m_iterations number of iterations for the EM algorithm; defaults to 500
 #' @param st_iterations the number of initial stage iterations; defaults to 10; can be set more to be more conservative to 50
 #' @param convergence_criterion convergence criterion for the Quasi-Newton algorithm for continuous outcomes; defaults to 1E-6 (.000001); can be set more conservatively to 1E-7 (.0000001)
+# Useful
 #' @param remove_tmp_files whether to remove data, script, and output files; defaults to TRUE
+# Not useful
 #' @param print_input_file whether to print the input file to the console
+# Replace this with something that matches the behavior of estimate-profiles.R
 #' @param return_save_data whether to return the save data (with the original data and the posterior probabilities for the classes and the class assignment) as a data.frame along with the MPlus output; defaults to TRUE
+# Drop this. No point, it's not a random number based analysis
 #' @param optseed random seed for analysis
+# Does mclust have this?
 #' @param cluster_ID clustering variable (i.e., if data are from students clustered into distinct classrooms) to be used as cluster variables as part of the type = complex option
+# Either make this consistent with mclust, or ALWAYS request it. It's important.
 #' @param include_VLMR whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE
 #' @param include_BLRT whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run
+# Wishlist: Also paralellize mclust. Check if n_processors exceeds number of available cores. Especially with bootstrapping this will become useful.
 #' @param n_processors = 1
 #' @param return_all_stats defaults to FALSE; if TRUE, returns as a one-row data frame all of the statistics returned from compare_solutions_mplus()
 #' @inheritParams estimate_profiles
@@ -105,10 +118,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
     unquoted_variable_names <- paste0(names(d)[c(-1, -ncol(d))], collapse = " ")
   }
 
-  var_list <- vector("list", ncol(d))
-  for (i in seq_along(names(d))) {
-    var_list[[i]] <- names(d)[i]
-  }
+  var_list <- as.list(names(d))
 
   model <- case_when(
     variances == "equal" & covariances == "zero" ~ 1,
