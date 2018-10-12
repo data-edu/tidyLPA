@@ -1,0 +1,19 @@
+citHeader("To cite lubridate in publications use:")
+
+citEntry(entry = "Article",
+         title        = "tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software",
+         author       = personList(as.person("Joshua M. Rosenberg"),
+                                   as.person("Patrick N. Beymer"),
+                                   as.person("Daniel J. Anderson"),
+                                   as.person("Jennifer A. Schmidt")),
+         journal      = "Journal of Open Source Software",
+         year         = "2018",
+         volume       = "3",
+         number       = "30",
+         pages        = "978",
+         url          = "http://joss.theoj.org/papers/10.21105/joss.00978",
+         doi          = "10.21105/joss.00978",
+
+         textVersion  =
+             paste("Rosenberg, J. M., Beymer, P. N., Anderson, D. J., & Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. Journal of Open Source Software, 3(30), 978, https://doi.org/10.21105/joss.00978")
+)

@@ -72,7 +72,7 @@ extract_stats <- function(x) {
 #'                             remove_tmp_files = FALSE)
 #' extract_LL_mplus()
 #' }
-#' @return a tibble or a ggplot2 plot of the BIC values for the explored modelswith the log-likelihood, random start seed, and the number of the iteration
+#' @return a tibble or a ggplot2 plot of the BIC values for the explored models with the log-likelihood, random start seed, and the number of the iteration
 #' @export
 
 extract_LL_mplus <- function(output_filename = "i.out") {
