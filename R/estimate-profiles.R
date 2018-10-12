@@ -140,7 +140,7 @@ Model 6: variances = 'varying'; covariances = 'varying';
 
   posterior_prob <- 1 - round(m$uncertainty, 5)
   post_prob <- m$z
-  Entropy = 1 + (1/(nrow(post_prob)*log(ncol(post_prob))))*(sum(rowSums(post_prob * log(post_prob))))
+  Entropy = 1 + (1/(nrow(post_prob)*log(ncol(post_prob))))*(sum(rowSums(post_prob * log(post_prob+1e-12))))
         # Instead of printing stuff from this function, create a .print method for the results of this function
   if (tolower(print_which_stats) == "some") {
       # URGENT: Why take the absolute values for these? seems problematic
