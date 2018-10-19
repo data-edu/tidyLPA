@@ -189,12 +189,8 @@ plotMixtures.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, rawda
 
 
     # Drop useless stuff
-    df_plot <-
-        subset(
-            df_plot,
-            subset = grepl("(^Means$|^Variances$)", df_plot$Category),
-            select = -match(c("p", "Parameter", "Estimate"), names(df_plot))
-        )
+    df_plot <- df_plot[grepl("(^Means$|^Variances$)", df_plot$Category),
+                       -match(c("p", "Parameter", "Estimate"), names(df_plot))]
 
     # Select only requested variables, or else, all variables
     if (!is.null(variables)) {
@@ -233,6 +229,6 @@ plotMixtures.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, rawda
     }
 
     Args[["x"]] <- list(df_plot = df_plot, df_raw = df_raw)
-    #return(Args$x)
+
     do.call(plotMixtures, Args)
 }

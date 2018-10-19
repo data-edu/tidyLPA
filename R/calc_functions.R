@@ -59,35 +59,23 @@ syntax_class_specific <- function(mn, parameters){
     variances <- c("varying", "equal")[(mn%%2)+1]
     covariances <- c("zero", "equal", "varying")[ceiling((mn/2))]
 
-    model_class_specific <- ifelse(
-        variances == "equal",
-        label_parameters(paste0(paste(
-            parameters, collapse = ";  "
-        ), ";"))
-        ,
-        gsub("\\);", "{C}\\);",
-             label_parameters(paste0(
-                 paste(parameters, collapse = ";  "), ";"
-             )))
+    model_class_specific <- switch(variances,
+        "equal" = label_parameters(paste0(paste(
+            parameters, collapse = ";\n"
+        ), ";")),
+        "varying" = gsub("\\);", "{C}\\);",
+                         label_parameters(paste0(
+                             paste(parameters, collapse = ";  "), ";"
+                         )))
     )
-    if (covariances == "equal") {
-        model_class_specific <-
-            paste(model_class_specific, label_parameters(paste(
-                syntax_cor(parameters, parameters), collapse = "  "
-            )))
-    } else {
-        if (covariances == "varying") {
-            model_class_specific <- paste(model_class_specific,
-                                          gsub("\\);", "{C}\\);",
-                                               label_parameters(
-                                                   paste(syntax_cor(
-                                                       parameters, parameters
-                                                   ), collapse = "  ")
-                                               )))
+    cor_syntax <- paste(syntax_cor(parameters, parameters), collapse = "\n")
+    cor_syntax <- switch(covariances,
+        "equal" = label_parameters(cor_syntax),
+        "varying" = gsub("\\);", "{C}\\);", label_parameters(cor_syntax)),
+        "zero" = gsub(";", "@0;", cor_syntax)
+    )
 
-        }
-    }
-model_class_specific
+paste(model_class_specific, cor_syntax, sep = "\n\n")
 }
 
 # AHP-based model selection -----------------------------------------------

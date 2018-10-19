@@ -24,11 +24,14 @@
 #' }
 #' @return An object of class 'tidyLPA' and 'list'
 #' @importFrom methods hasArg
-estimate_profiles_mplus <-
+#' @import MplusAutomation
+estimate_profiles_mplus2 <-
     function(df, n_profiles, model_numbers, ..., keepfiles = FALSE) {
-        arg_list <- match.call()
-
-        param_names <- names(df)
+        arg_list <- as.list(match.call())
+        model_overall <- ifelse("model_overall" %in% names(arg_list), arg_list[["model_overall"]], "")
+        filename_stem <- NULL
+        if("filename_stem" %in% names(arg_list)) filename_stem <- arg_list[["filename_stem"]]
+        original_names <- param_names <- names(df)
 
         param_names_length <- sapply(param_names, nchar)
         if (any(param_names_length > 8)) {
@@ -135,7 +138,7 @@ estimate_profiles_mplus <-
                         "FILE IS ",
                         paste0(
                             ifelse(
-                                hasArg("filename_stem"),
+                                !is.null(filename_stem),
                                 paste0(filename_stem, "_"),
                                 ""
                             ),
@@ -149,7 +152,7 @@ estimate_profiles_mplus <-
 
                 base_object$TITLE <-
                     trimws(paste(
-                        ifelse(hasArg(filename_stem), filename_stem, ""),
+                        ifelse(!is.null(filename_stem), filename_stem, ""),
                         "model",
                         this_model,
                         "with",
@@ -162,7 +165,7 @@ estimate_profiles_mplus <-
 
 
                 filename = c(inp = ifelse(
-                    hasArg(filename_stem),
+                    !is.null(filename_stem),
                     paste0(
                         paste(
                             filename_stem,
@@ -184,7 +187,7 @@ estimate_profiles_mplus <-
                     mplusModeler(
                         object = base_object,
                         dataout = ifelse(
-                            hasArg(filename_stem),
+                            !is.null(filename_stem),
                             paste0("data_", filename_stem, ".dat"),
                             "data.dat"
                         ),
@@ -207,13 +210,20 @@ estimate_profiles_mplus <-
                 estimates <- estimates(out$model)
                 estimates$Model <- this_model
                 estimates$Classes <- this_class
+                estimates$Parameter <- original_names[match(estimates$Parameter, toupper(param_names))]
                 out$estimates <- estimates
+
                 dff <- out$model$savedata
-                names(dff)[c(1:ncol(df), ncol(dff))] <-
-                    c(param_names, "Class")
+
+                names(dff)[c(match(toupper(param_names), names(dff)), ncol(dff))] <-
+                    c(original_names, "Class")
+
                 dff$model_number <- this_model
                 dff$classes_number <- this_class
-                out$dff <- as.tibble(dff)
+
+                #dff <- reshape(dff, varying = grep("^CPROB\\d+$", names(dff), value = TRUE), timevar = "Class_prob", v.names = "Probability", direction = "long", sep = "")
+                out$dff <- as.tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
+                #out$dff <- as.tibble(dff[, match(c("model_number", "classes_number", param_names, "Class", "Class_prob", "Probability", "id"), names(dff))])
 
                 class(out) <- c("tidyProfile.mplus", "tidyProfile", "list")
                 out
@@ -226,7 +236,7 @@ estimate_profiles_mplus <-
 
         all_files <-
             paste0(
-                ifelse(hasArg(filename_stem), paste0(filename_stem, "_"), ""),
+                ifelse(!is.null(filename_stem), paste0(filename_stem, "_"), ""),
                 paste("model_", run_models$mod, "_class_", run_models$prof, sep = "")
             )
 
@@ -235,7 +245,8 @@ estimate_profiles_mplus <-
                 c(
                     out_list[[1]]$model$input$data$file,
                     paste0(all_files, ".inp"),
-                    paste0(all_files, ".out")
+                    paste0(all_files, ".out"),
+                    paste0(all_files, ".dat")
                 )
             invisible(file.remove(remove_files))
         }

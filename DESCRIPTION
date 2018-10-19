@@ -21,16 +21,17 @@ Depends:
     R (>= 2.10)
 Imports: 
     mclust,
+    MplusAutomation,
     ggplot2,
-    magrittr,
     tibble,
-    methods
+    methods,
+    magrittr
 Suggests: 
     knitr,
-    MplusAutomation,
     parallel,
     missForest,
-    testthat
+    testthat,
+    dplyr
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
