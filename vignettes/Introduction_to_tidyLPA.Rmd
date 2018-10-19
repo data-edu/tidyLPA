@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(dplyr)
 ```
 
 Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles, or groups, of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. 
@@ -97,7 +98,10 @@ Next, we use the `compare_solutions()` function to explore different solutions i
 To use the function, we provide the name of the `data.frame`, `d`, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as `select()` from the [dplyr](http://dplyr.tidyverse.org/) package (and other ["tidyverse"](http://tidyverse.org/) packages).
 
 ```{r, warning = F, message = F}
-compare_solutions(d, broad_interest, enjoyment, self_efficacy)
+d %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    estimate_profiles(1:6) %>%
+    compare_solutions
 ```
 
 While these BIC values are ambiguous for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstrate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the `estimate_profiles()` function. 
@@ -111,43 +115,31 @@ When we run the following line, we see a number of statistics - `LogLik` for the
 Note that these statistics are printed as messages by default but can be suppressed by adding the argument `print_which_stats = "none"` to `estimate_profiles()`; additional fit statistics can be returned by adding the `print_which_stats = "all"` as the argument.
  
 ```{r}
-m3 <- estimate_profiles(d, 
-                        broad_interest, enjoyment, self_efficacy,
+m3 <- estimate_profiles(d[, c("broad_interest", "enjoyment", "self_efficacy")], 
                         n_profiles = 4)
+m3
 ```
 
 We fit the model and saved the output to the object `m3`. Next, we may want to examine the output in terms of the estimated means and variances of the variables for each of the profiles. We can do this with the `plot_profiles()` function:
 
-```{r}
+```{r, eval =F}
 plot_profiles(m3)
 ```
 
+**Deprecated**
 We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation equal t 1, respectively), with the `to_center` and `to_scale` arguments to `plot_profiles()`, i.e.:
-
-```{r}
-plot_profiles(m3, to_center = TRUE, to_scale = TRUE)
-```
 
 A different, identical way to do the above is to use the "pipe" operator (`%>%`)
 
-```{r}
+```{r, eval = F}
 library(dplyr, warn.conflicts = FALSE)
 
-estimate_profiles(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 3) %>% 
-    plot_profiles(to_center = TRUE)
+d %>%
+  select(broad_interest, enjoyment, self_efficacy) %>%
+  estimate_profiles(3) %>% 
+  plot_profiles()
 ```
 
-Finally, we can use the output from **mclust** directly by using adding `to_return = "mclust"` to the `estimate_profiles()` function, plotting the (bootstrapped) standard errors (and, by default--but optionally--the raw data), rather than from the posterior classifications of the observations, as in the plots not using the **mclust** output:
-
-```{r}
-m3 <- estimate_profiles(d, 
-                        broad_interest, enjoyment, self_efficacy, 
-                        n_profiles = 3, to_return = "mclust")
-
-plot_profiles(m3, plot_what = "mclust")
-```
 
 # 5. More information on model specifications
 
@@ -158,9 +150,8 @@ As mentioned earlier, there are a number of different models representing how - 
 
 Here is an example of specifying a model with varying variances and covariances: 
 
-```{r}
-estimate_profiles(d, 
-                  broad_interest, enjoyment, self_efficacy, 
+```{r, eval = F}
+estimate_profiles(d[, c("broad_interest", "enjoyment", "self_efficacy")], 
                   variances = "varying",
                   covariances = "varying",
                   n_profiles = 3)
@@ -248,50 +239,46 @@ $$
 
 There is a lot of output that is possible to obtain from the `estimate_profiles()` function - much more than a tidy data frame, which is the default. The easiest way to access it is by changing what is returned; by default, the function returns a `data.frame` (more precisely, a `tibble`) with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):
 
-```{r}
-estimate_profiles(d,
-                  broad_interest, enjoyment, self_efficacy,
-                  n_profiles = 4)
-```
-
 One way to access the additional output is to use the `attributes()` function on the output:
 
 ```{r}
-attributes(m3)$mclust_output$parameters
+get_estimates(m3)
 ```
 
 Another way is to change the `to_return` argument to "mclust" to instead return the full output from the estimation:
     
 ```{r}
-m3_mclust <- estimate_profiles(d, 
-                               broad_interest, enjoyment, self_efficacy, 
-                               n_profiles = 4, 
-                               to_return = "mclust")
+
 ```
 
 This object can be inspected manually (see `str(m3_clust)`) or through helper functions available in mclust, i.e.:
 
 ```{r}
-m3_mclust$parameters
+
 ```
 
-Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the `center_raw_data` and `scale_raw_data` functions:
+Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the `scale` function:
 
-```{r}
-m3_processed_raw <- estimate_profiles(d, 
-                                      broad_interest, enjoyment, self_efficacy, 
-                                      n_profiles = 4, 
-                                      center_raw_data = TRUE, 
-                                      scale_raw_data = TRUE)
+```{r, eval = F}
+d %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    scale %>%
+    estimate_profiles(4) %>%
+    plot_profiles
+
+d %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    poms %>%
+    estimate_profiles(4) %>%
+    plot_profiles
+
+
 ```
 
 Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the argument `return_orig_df`:
 
 ```{r}
-estimate_profiles(d, 
-                  broad_interest, enjoyment,
-                  n_profiles = 4, 
-                  return_orig_df = TRUE)
+get_data(m3)
 ```
 
 Future versions will include the option to use random starts; by default, mclust uses the results from hierarchical clustering as the starting points for the EM algorithm.
@@ -305,19 +292,17 @@ There is an in-development function to generate the model syntax (and prepare th
 Here is how to compare a number of models using MPlus (it works very similarly to `compare_solutions()`). Note that this and subsequent code using MPlus is not run in the vignette.
 
 ```{r, eval = F}
-compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy)
+
 ```
 
 In order to see a number of fit statistics, you can add the argument `return_stats_df = TRUE`, i.e.: 
 
 ```{r, eval = F}
-compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy,
-                        return_stats_df = TRUE)
 ```
 
 Note that there is an option to use multiple cores (processors) to speed these functions; you can use the `detectCores()` function from the parallel package to determine how many processors you have:
 
-```{r}
+```{r, eval=FALSE}
 if (require('parallel')) {
   parallel::detectCores()
 }

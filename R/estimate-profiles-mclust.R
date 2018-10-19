@@ -1,8 +1,7 @@
-#' Estimate latent profiles using Mplus
+#' Estimate latent profiles using mclust
 #'
-#' Estimates latent profiles (finite mixture models) using the commercial
-#' program Mplus, through the R-interface of
-#' \code{\link[MplusAutomation:mplusModeler]{MplusAutomation}}.
+#' Estimates latent profiles (finite mixture models) using the open source
+#' package \code{\link[mclust:Mclust]{mclust}}.
 #' @param df data.frame with two or more columns with continuous variables
 #' @param n_profiles Numeric vector. The number of profiles (or mixture
 #' components) to be estimated. Each number in the vector corresponds to an
@@ -10,41 +9,43 @@
 #' @param model_numbers Numeric vector. Numbers of the models to be estimated.
 #' See \code{\link{estimate_profiles}} for a description of the models available
 #' in tidyLPA.
-#' @param ... Parameters passed directly to
-#' \code{\link[MplusAutomation]{mplusModeler}}. See the documentation of
-#' \code{\link[MplusAutomation]{mplusModeler}}.
+#' @param ... Parameters passed directly to \code{\link[mclust]{Mclust}}. See
+#' the documentation of \code{\link[mclust]{Mclust}}.
 #' @examples
 #' \dontrun{
 #' iris %>%
 #'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-#'   estimate_profiles_mplus(n_profiles = 3, model_numbers = 1)
+#'   estimate_profiles_mclust(n_profiles = 3, model_numbers = 1)
 #' }
 #' @return An object of class 'tidyLPA' and 'list'
-estimate_profiles_mplus <- function(df, n_profiles, model_numbers, ...){
-
+estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
     arg_list <- match.call()
-    param_names <- names(df)
 
-    param_names_length <- sapply(param_names, nchar)
-    if(any(param_names_length > 8)){
-        warning("Mplus cannot handle variable names longer than 8 characters. The following variable names were truncated:\n  ",
-                paste(param_names[param_names_length > 8], collapse = "\n  "))
-        param_names[param_names_length > 8] <- substring(param_names[param_names_length > 8], 1, 8)
+    no_na_rows <- !apply(df, 1, anyNA)
+    if(any(!no_na_rows)){
+        warning("The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.\n")
     }
-    if(any(grepl("\\.", param_names))){
-        warning("Some variable names contain periods. These were replaced with underscores for variables:\n  ",
-                paste(param_names[grepl("\\.", param_names)], collapse = "\n  "))
-        param_names[grepl("\\.", param_names)] <- gsub("\\.", "_", param_names[grepl("\\.", param_names)])
-    }
-
-    syntax_class_specific(3, param_names)
-
+    full_data <- df[no_na_rows, ]
     run_models <- expand.grid(prof = n_profiles, mod = model_numbers)
 
-    out_list <- mapply(FUN = function(this_class, this_model){
-        out <- list(model =
 
-        )
+    boot_blrt <- lapply(get_modelname(model_numbers), function(mod_name){
+        mclustBootstrapLRT(full_data,
+                           modelName = mod_name,
+                           nboot = ifelse(methods::hasArg("nboot"), arg_list$nboot, 100),
+                           maxG = max(n_profiles),
+                           verbose = FALSE)
+    })
+
+
+    out_list <- mapply(FUN = function(this_class, this_model){
+        out <- list(model = Mclust(full_data,
+               G = this_class,
+               modelNames = get_modelname(this_model),
+               warn = FALSE,
+               verbose = FALSE,
+               ...
+        ))
         out$model$mclustBootstrap <- MclustBootstrap(out$model, nboot = 100, type = "bs", verbose = FALSE)
         out$model$LRTS <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$obs[this_class-1])
         out$model$LRTS_p <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$p.value[this_class-1])
