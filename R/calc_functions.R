@@ -233,7 +233,7 @@ get_title <- function(number){
 
 get_modelname <- function(number){
     if(any(number %in% c(4, 5))) stop("Mclust does not allow for models with ", paste(tolower(get_title(number)), collapse = ", or "),".", call. = FALSE)
-    c("EEI", "EEE", "VVI", "4", "5", "VVV")[number]
+    c("EEI", "VVI", "EEE", "4", "5", "VVV")[number]
 }
 
 get_model_number <- function(variances, covariances){
