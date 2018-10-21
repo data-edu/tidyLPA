@@ -20,7 +20,6 @@
 #'   compare_solutions()
 #' }
 #' @export
-
 compare_solutions <- function(x, statistics = "BIC") {
     deprecated_arguments(c(
         "n_profiles_range" = "compare_solutions no longer conducts the analysis; it merely compares the results of an analysis conducted using 'estimate_profiles' (run: ?estimate_profiles for documentation).",
@@ -59,6 +58,7 @@ compare_solutions <- function(x, statistics = "BIC") {
 #' printed output, or NULL. See \code{\link[base]{print.default}}.
 #' @param ... further arguments to be passed to or from other methods. They are
 #' ignored in this function.
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' if(interactive()){

@@ -11,6 +11,7 @@
 #' in tidyLPA.
 #' @param ... Parameters passed directly to \code{\link[mclust]{Mclust}}. See
 #' the documentation of \code{\link[mclust]{Mclust}}.
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' iris %>%

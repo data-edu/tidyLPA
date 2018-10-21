@@ -31,3 +31,6 @@ cars_results <- readModels(filefilter = "cars")
 as.tidyLPA(cars_results)
 }
 }
+\author{
+Caspar J. van Lissa
+}

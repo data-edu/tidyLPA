@@ -115,6 +115,7 @@ estimate_profiles <- function(df,
 #' @param ... further arguments to be passed to or from other methods. They are
 #' ignored in this function.
 #' @return A tibble.
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -150,6 +151,7 @@ get_estimates.tidyProfile <- function(x, ...) {
 #' @param ... further arguments to be passed to or from other methods. They are
 #' ignored in this function.
 #' @return A tibble.
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -185,6 +187,7 @@ get_fit.tidyProfile <- function(x, ...) {
 #' @param ... further arguments to be passed to or from other methods. They are
 #' ignored in this function.
 #' @return A tibble.
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -248,6 +251,7 @@ get_data.tidyProfile <- function(x, ...) {
 #' printed output, or NULL. See \code{\link[base]{print.default}}.
 #' @param ... further arguments to be passed to or from other methods. They are
 #' ignored in this function.
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -296,6 +300,7 @@ print.tidyLPA <-
 #' printed output, or NULL. See \code{\link[base]{print.default}}.
 #' @param ... further arguments to be passed to or from other methods. They are
 #' ignored in this function.
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' if(interactive()){

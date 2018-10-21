@@ -34,3 +34,6 @@ iris \%>\%
   estimate_profiles_mclust(n_profiles = 3, model_numbers = 1)
 }
 }
+\author{
+Caspar J. van Lissa
+}

@@ -41,3 +41,6 @@ results <- iris \%>\%
   package = "MplusAutomation")
 }
 }
+\author{
+Caspar J. van Lissa
+}

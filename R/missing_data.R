@@ -13,6 +13,7 @@
 #' @param x A data.frame or matrix.
 #' @param method Character. Imputation method to apply, Default: 'imputeData'
 #' @return A data.frame
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' library(ggplot2)

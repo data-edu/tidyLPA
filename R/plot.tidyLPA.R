@@ -6,7 +6,6 @@
 #' @param statistics Character vector, indicating which statistics to plot.
 #' Defaults to "BIC".
 #' @export
-#' @export
 plot.tidyLPA <- function(x,
                          y,
                          ...,

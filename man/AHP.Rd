@@ -48,3 +48,6 @@ iris[,1:4] \%>\%
   AHP()
 }
 }
+\author{
+Caspar J. van Lissa
+}

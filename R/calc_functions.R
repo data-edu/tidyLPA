@@ -129,6 +129,7 @@ priority_vector <- function(m){
 #' recover the correct number of clusters (Akogul & Erisoglu, 2016).
 #' \item Select the model with the highest weighted average priority.
 #' }
+#' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
 #' iris[,1:4] %>%

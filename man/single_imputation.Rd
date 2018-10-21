@@ -101,3 +101,6 @@ plotdat <- data.frame(accuracy = as.vector(tmp),
 ggplot(plotdat, aes(x = accuracy, colour = model))+geom_density()
 }
 }
+\author{
+Caspar J. van Lissa
+}

@@ -32,3 +32,6 @@ if(interactive()){
  }
 }
 }
+\author{
+Caspar J. van Lissa
+}
