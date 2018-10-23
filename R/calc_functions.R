@@ -1,3 +1,8 @@
+check_solutions <- function(fits){
+    if(any(fits$nmin < .1)) warning("Some profiles were assigned less than 10\% of cases. Interpret the following solutions with care, and consider other solutions:\n  ",
+                                    paste("Model", fits$Model[fits$nmin < .1], ", ", fits$Classes[fits$nmin < .1], "classes", collapse = "\n  "))
+}
+
 deprecated_arguments <- function(args, call = NULL){
     if(is.null(call)){
         call <- sys.call(-1)
