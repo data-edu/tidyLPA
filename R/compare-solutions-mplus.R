@@ -71,9 +71,10 @@ compare_solutions_mplus <- function(df, ...,
 
   if (save_models == TRUE) {
       if (dir.exists(stringr::str_c("compare_solutions_mplus_output-", dir_name))) {
-          stop("A directory with this name already exists; change the name on or delete the old directory to avoid over-writing it")
+          stop("A directory with this name already exists; change the name or delete the old directory to avoid over-writing it")
+      } else {
+        dir.create(stringr::str_c("compare_solutions_mplus_output-", dir_name), showWarnings=FALSE)
       }
-      dir.create(stringr::str_c("compare_solutions_mplus_output-", dir_name), showWarnings=FALSE)
   }
 
   for (i in n_profiles_min:n_profiles_max) {
@@ -107,8 +108,9 @@ compare_solutions_mplus <- function(df, ...,
 
       counter <- counter + 1
 
-      if (m[1] == "Error: Convergence issue"
-      | m[1] == "Warning: LL not replicated") { # here's another example where it just spilled over, hence the suggested change
+      if (m[1] == "Error: Convergence issue" |
+          m[1] == "Warning: LL not replicated" |
+          m[1] == "Warning: LL not replicated Error: Convergence issue") {
         message(str_c("Result: ", m))
         out_df[i - (n_profiles_min - 1), j + 1] <- m
       } else {
