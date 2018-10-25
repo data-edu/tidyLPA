@@ -110,7 +110,7 @@ compare_solutions_mplus <- function(df, ...,
 
       if (m[1] == "Error: Convergence issue" |
           m[1] == "Warning: LL not replicated" |
-          m[1] == "Warning: LL not replicated Error: Convergence issue") {
+          m[1] == "Warning: LL not replicated Error: Convergence issue") { # can probably remove this line
         message(str_c("Result: ", m))
         out_df[i - (n_profiles_min - 1), j + 1] <- m
       } else {

@@ -311,7 +311,7 @@ estimate_profiles_mplus <- function(df,
     if (error_status == "Error: Convergence issue" | warning_status == "Warning: LL not replicated") {
         message(str_trim(str_c(warning_status, " ", error_status)))
         return(str_trim(str_c(warning_status, " ", error_status)))
-    } else if (error_status == "Error: Convergence issue" & warning_status == "Warning: LL not replicated") {
+    } else if (error_status == "Warning: LL not replicated Error: Convergence issue") {
         return("Error: Convergence issue")
     } else {
         message("LogLik is ", round(abs(as.vector(get_fit_stat(m, "LL"))), 3))
