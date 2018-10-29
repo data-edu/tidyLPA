@@ -38,8 +38,8 @@ compare_solutions <- function(df, ...,
 
   model <- case_when(
     variances == "equal" & covariances == "zero" ~ "EEI",
-    variances == "varying" & covariances == "zero" ~ "EEE",
-    variances == "equal" & covariances == "equal" ~ "VVI",
+    variances == "varying" & covariances == "zero" ~ "VVI",
+    variances == "equal" & covariances == "equal" ~ "EEE",
     # variances == "varying" & covariances == "equal" ~ 4, # I'd remove
     # variances == "equal" & covariances == "varying" ~ 5,
     variances == "varying" & covariances == "varying" ~ "VVV"
