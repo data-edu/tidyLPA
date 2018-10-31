@@ -203,11 +203,13 @@ estimate_profiles_mplus <- function(df,
 
     if (!is.null(latent_vars)) {
         MODEL_overall_line1 <- paste0("! [", unquoted_variable_names, "];")
-        MODEL_overall_line2 <- paste0(unquoted_variable_names, ";")
+        MODEL_overall_line2 <- paste0("! ", unquoted_variable_names, ";")
 
         lll <- list()
         for (i in 1:length(latent_vars)) {
-            lll[[i]] <- paste0(names(latent_vars)[i], " BY ", paste0(unlist(l[[i]]), collapse = " "), ";")
+            tmp <- l[[i]][1]
+            tmp1 <- paste0(unlist(l[[i]][-1]), collapse = " ")
+            lll[[i]] <- paste0(names(latent_vars)[i], " BY ", tmp[1], "@1 ", tmp1, ";")
         }
         MODEL_overall_line3 <- unlist(lll)
 
