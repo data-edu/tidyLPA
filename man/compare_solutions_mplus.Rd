@@ -11,7 +11,7 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
   convergence_criterion = 1e-06, remove_tmp_files = FALSE,
   save_models = FALSE, return_table = TRUE, n_processors = 1,
   return_stats_df = TRUE, include_VLMR = TRUE, include_BLRT = FALSE,
-  dir_name = NULL)
+  dir_name = NULL, latent_vars = NULL)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -49,6 +49,8 @@ compare_solutions_mplus(df, ..., n_profiles_min = 2,
 \item{include_BLRT}{whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run}
 
 \item{dir_name}{character; name for directory .out files are saved to if save_models = TRUE; defaults to the present date}
+
+\item{latent_vars}{defaults to NULL; specification for the latent varibles as a list, i.e. list(beh = c(1, 2), cog = c(3, 4), aff = (5, 6)), where the integers represent the position of the variables passed to the function and how they correspond to the latent variables, which are named}
 }
 \value{
 a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned

@@ -33,7 +33,8 @@ compare_solutions_mplus <- function(df, ...,
                                     return_stats_df = TRUE,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE,
-                                    dir_name = NULL) {
+                                    dir_name = NULL,
+                                    latent_vars = NULL) {
 
   # if (mplusAvailable() != 1) stop("It appears that MPlus is not installed; this function requires MPlus to be installed in order to work.")
 
@@ -41,7 +42,7 @@ compare_solutions_mplus <- function(df, ...,
     message("because remove_tmp_files is set to TRUE, some functions may not work as expected")
   }
 
-  if (!is.null(dir_name)) {
+  if (is.null(dir_name)) {
     dir_name <- Sys.Date()
   }
 
