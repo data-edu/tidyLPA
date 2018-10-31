@@ -7,7 +7,7 @@
 #' @inheritParams plot_profiles
 #' @export
 
-plot_profiles_mplus <- function(mplus_data, to_center = TRUE, to_scale = TRUE, plot_post_probs = FALSE, mplus_out_name = "i.out", standard_error_interval = .95) {
+plot_profiles_mplus <- function(mplus_data = NULL, to_center = TRUE, to_scale = TRUE, plot_post_probs = FALSE, mplus_out_name = "i.out", standard_error_interval = .95) {
 
     if (!is.null(mplus_out_name)) {
 
