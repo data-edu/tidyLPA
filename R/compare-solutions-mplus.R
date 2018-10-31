@@ -96,7 +96,8 @@ compare_solutions_mplus <- function(df, ...,
         n_processors = n_processors,
         include_VLMR = include_VLMR,
         include_BLRT = include_BLRT,
-        remove_tmp_files = remove_tmp_files
+        remove_tmp_files = remove_tmp_files,
+        latent_vars = latent_vars
       ))
 
       if (save_models == TRUE) {
