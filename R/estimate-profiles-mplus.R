@@ -258,7 +258,7 @@ estimate_profiles_mplus <- function(df,
         }
     } else if (variances == "equal" & covariances == "equal") {
         model_name <- titles[3]
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE, latent_vars = latent_vars)
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE, latent_vars = latent_vars)
         class_collector <- list()
         for (i in 1:n_profiles) {
             class_collector <- c(
