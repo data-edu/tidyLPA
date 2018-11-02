@@ -1,15 +1,32 @@
-#' Plot tidyLPA object
-#'
-#' @param x an object used to select a method.
-#' @param y Ignored.
-#' @param ... further arguments passed to or from other methods.
-#' @param statistics Character vector, indicating which statistics to plot.
-#' Defaults to "BIC".
+#' @method plot tidyLPA
 #' @export
 plot.tidyLPA <- function(x,
                          y,
                          ...,
-                         statistics = "BIC") {
+                         statistics = NULL) {
+    if(is.null(statistics)) statistics <- "BIC"
+    p <- plot_tidyLPA(data.frame(t(sapply(x, `[[`, "fit"))), statistics)
+    suppressMessages(suppressWarnings(print(p)))
+    invisible(p)
+}
+
+
+#' @method plot bestLPA
+#' @export
+plot.bestLPA <- function(x,
+                         y,
+                         ...) {
+    p <- plot_tidyLPA(data.frame(x$fits), x$statistics)
+    suppressMessages(suppressWarnings(print(p)))
+    invisible(p)
+}
+
+
+
+plot_tidyLPA <- function(x,
+                         statistics = NULL) {
+    plotdat <- x
+    if(is.null(statistics)) statistics <- "BIC"
     lowerbetter <- c(
         "LogLik" = " (lower is better)",
         "AIC" = " (lower is better)",
@@ -24,7 +41,6 @@ plot.tidyLPA <- function(x,
                       "Entropy" = " (higher is better")
     neutral <- c("prob_min", "prob_max", "n_min", "n_max")
 
-    plotdat <- data.frame(t(sapply(x, `[[`, "fit")))
     if (any(!statistics %in% c(names(lowerbetter), names(higherbetter), names(neutral)))) {
         stop("Can not plot the following statistics: ",
              paste(statistics, collapse = ", "),
@@ -58,7 +74,7 @@ plot.tidyLPA <- function(x,
             geom_point(na.rm = TRUE) +
             theme_bw() +
             scale_color_discrete("")+
-        facet_wrap(~ Statistic)
+            facet_wrap(~ Statistic)
 
     } else {
         p <- ggplot(
@@ -76,5 +92,5 @@ plot.tidyLPA <- function(x,
             theme_bw() +
             scale_color_discrete("")
     }
-    p
+    return(p)
 }

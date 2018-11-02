@@ -1,5 +1,5 @@
 check_solutions <- function(fits){
-    if(any(fits$nmin < .1)) warning("Some profiles were assigned less than 10\% of cases. Interpret the following solutions with care, and consider other solutions:\n  ",
+    if(any(fits$nmin < .1)) warning("Some profiles were assigned less than 10\\% of cases. Interpret the following solutions with care, and consider other solutions:\n  ",
                                     paste("Model", fits$Model[fits$nmin < .1], ", ", fits$Classes[fits$nmin < .1], "classes", collapse = "\n  "))
 }
 
@@ -19,15 +19,7 @@ deprecated_arguments <- function(args, call = NULL){
     }
 }
 
-check_too_few <- function(fits){
-    too_few <- fits$n_min < .01
-    if(any(too_few)){
-        warning("Some models had few/no cases assigned to one of the profiles assignments (see the 'n_min' column). Interpret these solutions with caution and consider other models:\n\n",
-                paste(
-                    "  Model", fits$Model[which(too_few)], "with", fits$Classes[which(too_few)], "classes\n"
-                ), call. = FALSE)
-    }
-}
+
 
 #' Apply POMS-coding to data
 #'
@@ -178,9 +170,8 @@ estimates.mplus.model <- function(model){
     df$param[covariances] <- paste(df$paramHeader[covariances], df$param[covariances], sep = ".")
     df$paramHeader[covariances] <- "Covariances"
     df$LatentClass <- as.integer(df$LatentClass)
-
     names(df) <- c("Category", "Parameter", "Estimate", "se", "p", "Class")
-    df
+    df[!df$p == 999, ]
 }
 
 
@@ -217,7 +208,7 @@ estimates.Mclust <- function(model){
     df[, 3:4] <- lapply(df[, 3:4], as.numeric)
     df$p_value <- 2*pnorm(abs(df$var)/df$se, lower.tail = FALSE)
     df$Class <- rep(1:n_class, each = nrow(df)/n_class)
-
+    row.names(df) <- NULL
     names(df) <- c("Category", "Parameter", "Estimate", "se", "p", "Class")
     df
 

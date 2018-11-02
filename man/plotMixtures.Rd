@@ -23,8 +23,8 @@ plotMixtures(x, variables = NULL, ci = 0.95, sd = TRUE,
 \item{variables}{A character vectors with the names of the variables to be
 plotted (optional).}
 
-\item{ci}{Numeric. What confidence interval should the errorbars span? Defaults to
-a 95\% confidence interval. Set to NULL to remove errorbars.}
+\item{ci}{Numeric. What confidence interval should the errorbars span?
+Defaults to a 95\% confidence interval. Set to NULL to remove errorbars.}
 
 \item{sd}{Logica. Whether to display a box encompassing +/- 1SD Defaults to
 TRUE.}
@@ -58,10 +58,10 @@ it is most likely to be a member of.
 \examples{
 \dontrun{
 mtcars \%>\%
-    select(wt, qsec, drat) \%>\%
-    poms \%>\%
-    estimate_profiles(1:4) \%>\%
-    plotMixtures
+  select(wt, qsec, drat) \%>\%
+  poms \%>\%
+  estimate_profiles(1:4) \%>\%
+  plotMixtures
 }
 }
 \author{

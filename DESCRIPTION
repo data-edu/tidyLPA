@@ -25,13 +25,12 @@ Imports:
     ggplot2,
     tibble,
     methods,
-    magrittr
+    dplyr
 Suggests: 
     knitr,
     parallel,
     missForest,
-    testthat,
-    dplyr
+    testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true

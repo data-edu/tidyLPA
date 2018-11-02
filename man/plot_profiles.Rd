@@ -13,8 +13,8 @@ plot_profiles(x, variables = NULL, ci = 0.95, sd = TRUE,
 \item{variables}{A character vectors with the names of the variables to be
 plotted (optional).}
 
-\item{ci}{Numeric. What confidence interval should the errorbars span? Defaults to
-a 95\% confidence interval. Set to NULL to remove errorbars.}
+\item{ci}{Numeric. What confidence interval should the errorbars span?
+Defaults to a 95\% confidence interval. Set to NULL to remove errorbars.}
 
 \item{sd}{Logica. Whether to display a box encompassing +/- 1SD Defaults to
 TRUE.}
@@ -34,11 +34,7 @@ reduce overplotting.}
 An object of class 'ggplot'.
 }
 \description{
-\code{plot_mixtures} is an alias for the S3 generic method
-\code{\link{plotMixtures}}.
-}
-\details{
-It creates a profile plot according to best practices, focusing on the
+Creates a profile plot according to best practices, focusing on the
 visualization of classification uncertainty by showing:
 \enumerate{
 \item Bars reflecting a confidence interval for the class centroids
@@ -49,13 +45,19 @@ probability, such that each datapoint is most clearly visible for the class
 it is most likely to be a member of.
 }
 }
+\section{plot_profiles}{
+
+\code{plot_profiles} is an alias for the S3 generic method
+\code{\link{plotMixtures}}.
+}
+
 \examples{
 \dontrun{
 mtcars \%>\%
-    select(wt, qsec, drat) \%>\%
-    poms \%>\%
-    estimate_profiles(1:4) \%>\%
-    plot_profiles
+  select(wt, qsec, drat) \%>\%
+  poms \%>\%
+  estimate_profiles(1:4) \%>\%
+  plotMixtures
 }
 }
 \author{

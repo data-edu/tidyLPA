@@ -101,6 +101,7 @@ To use the function, we provide the name of the `data.frame`, `d`, first, follow
 ```{r, warning = F, message = F}
 d %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation %>%
     estimate_profiles(1:6) %>%
     compare_solutions
 ```

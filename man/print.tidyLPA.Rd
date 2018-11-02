@@ -5,8 +5,8 @@
 \title{Print tidyLPA}
 \usage{
 \method{print}{tidyLPA}(x, stats = c("AIC", "BIC", "Entropy", "prob_min",
-  "prob_max", "n_min", "n_max", "BLRT_p"), digits = getOption("digits"),
-  na.print = "", ...)
+  "prob_max", "n_min", "n_max", "BLRT_p"), digits = 3, na.print = "",
+  ...)
 }
 \arguments{
 \item{x}{An object of class 'tidyLPA'.}

@@ -36,51 +36,57 @@ compare_solutions <- function(x, statistics = "BIC") {
     ))
 
     fits <- get_fit(x)
-    check_too_few(fits)
     if(nrow(fits) == 1) stop("In order to compare_solutions, the tidyLPA object must contain more than one model.")
     fit_indices <- c("LogLik" = 1, "AIC" = -1, "AWE" = -1, "BIC" = -1, "CAIC" = -1, "CLC" = -1, "KIC" = -1, "SABIC" = -1, "ICL" = 1)
     max_these <- matrix(rep(fit_indices, nrow(fits)), nrow = nrow(fits), byrow = TRUE)
     best_model <- apply(max_these * fits[, names(fit_indices)], 2, which.max)
     AHP_best <- AHP(fits)
-    p <- plot.tidyLPA(x, statistic = statistics)
-    print(p)
-    out <- list(fits = fits, best = best_model, AHP = AHP_best, plot = p, statistics = statistics)
+
+
+# Check fits for problems -------------------------------------------------
+
+    warnings <- lapply(x, `[[`, "warnings")
+    low_prob <- fits$prob_min < .001
+    best_model <- apply(max_these * fits[, names(fit_indices)], 2, which.max)
+    if(any(low_prob)){
+        warnings[low_prob] <- lapply(warnings[low_prob], c, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
+    } else {
+        too_few <- fits$n_min < .01
+        if(any(too_few)){
+            warnings[too_few] <- lapply(warnings[too_few], c, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
+        }
+    }
+
+    if(length(unique(fits$Classes)) > 1){
+        if(any(best_model == min(fits$Classes))){
+            warnings[which.min(fits$Classes)] <- lapply(warnings[which.min(fits$Classes)], c, "This solution has the minimum number of classes under consideration, and was considered to be the best solution according to one or more fit indices. Examine your results with care; mixture modeling might be unnecessary.")
+        }
+        if(any(best_model == max(fits$Classes))){
+            warnings[which.max(fits$Classes)] <- lapply(warnings[which.max(fits$Classes)], c, "This solution has the maximum number of classes under consideration, and was considered to be the best solution according to one or more fit indices. Examine your results with care and consider estimating more classes.")
+        }
+    }
+
+    fits$Warnings <- ifelse(sapply(warnings, is.null), NA, "Warnings")
+    if(any(!is.na(fits$Warnings))){
+        warning("One or more analyses resulted in warnings! Examine these analyses carefully.")
+    }
+
+    out <- list(fits = fits, best = best_model, AHP = AHP_best, statistics = statistics, warnings = warnings)
     class(out) <- c("bestLPA", class(out))
     out
 }
 
-#' @title Print bestLPA
-#' @description S3 method 'print' for class 'bestLPA'.
-#' @param x An object of class 'bestLPA'.
-#' @param digits minimal number of significant digits, see
-#' \code{\link[base]{print.default}}.
-#' @param na.print a character string which is used to indicate NA values in
-#' printed output, or NULL. See \code{\link[base]{print.default}}.
-#' @param ... further arguments to be passed to or from other methods. They are
-#' ignored in this function.
-#' @author Caspar J. van Lissa
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#' results <- iris %>%
-#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-#'   estimate_profiles(1:3) %>%
-#'   compare_solutions()
-#' print(results)
-#' }
-#' }
+#' @method print bestLPA
 #' @export
-print.bestLPA <- function(x, digits = getOption("digits"), na.print = "", ...){
+print.bestLPA <- function(x, digits = 3, na.print = "", ...){
     cat("Compare tidyLPA solutions:\n\n")
     stats <- x$statistics
     dat <- as.matrix(x$fits[, c("Model", "Classes", stats)])
     miss_val <- is.na(dat)
-    #dat$Model <- paste("Model ", dat$Model)
-    #sprintf("%-9s", paste0(names(x$fitindices), ":")),
     dat[,3:ncol(dat)] <- sapply(dat[,3:ncol(dat)], formatC, digits = digits, format = "f")
     dat[miss_val] <- ""
     #rownames(dat) <- ""
-    prmatrix(dat, rowlab = rep("", nrow(dat)), quote = FALSE, na = na.print)
+    prmatrix(dat, rowlab = rep("", nrow(dat)), quote = FALSE, na.print = na.print)
 
     for(ft in x$statistics){
         #ft <- x$statistics[1]

@@ -72,7 +72,7 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
         class(out) <- c("tidyProfile.mclust", "tidyProfile", "list")
         out
     }, this_class = run_models$prof, this_model = run_models$mod, SIMPLIFY = FALSE)
-    class(out_list) <- c("tidyLPA", "list")
+
     names(out_list) <- paste("model_", run_models$mod, "_class_", run_models$prof, sep = "")
     out_list
 }

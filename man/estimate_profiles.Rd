@@ -64,8 +64,20 @@ c("zero", "equal")}).
 }
 \examples{
 \dontrun{
+# Example 1:
 iris \%>\%
   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
-  estimate_profiles(3)
+  estimate_profiles(df, 3)
+
+# Example 2:
+iris \%>\%
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
+  estimate_profiles(df, n_profiles = 1:4, models = 1:3)
+
+# Example 3:
+iris \%>\%
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
+  estimate_profiles(df, n_profiles = 1:4, variances = c("equal", "varying"),
+                    covariances = c("zero", "zero"))
 }
 }

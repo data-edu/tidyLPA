@@ -17,6 +17,6 @@
 #' @import ggplot2
 #' @import mclust
 #' @import tibble
-#' @importFrom magrittr "%>%"
+#' @importFrom dplyr "%>%"
 #' @importFrom stats complete.cases sd reshape quantile qnorm pnorm
 NULL

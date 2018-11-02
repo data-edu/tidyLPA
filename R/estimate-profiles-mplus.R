@@ -58,8 +58,8 @@ estimate_profiles_mplus2 <-
             rdata = df,
             usevariables = param_names,
             OUTPUT = "TECH14;"
-        ))#,
-        #list(...))
+        ),
+        list(...))
         if (hasArg("MODEL")) {
             warning(
                 "MODEL argument was dropped: createMixtures constructs its own MODEL argument from model_overall and model_class_specific."
@@ -203,8 +203,6 @@ estimate_profiles_mplus2 <-
                     )
                 ))$results)
 
-
-
                 out$fit <-
                     c(Model = this_model,
                       Classes = this_class,
@@ -212,7 +210,9 @@ estimate_profiles_mplus2 <-
                 estimates <- estimates(out$model)
                 estimates$Model <- this_model
                 estimates$Classes <- this_class
-                estimates$Parameter <- original_names[match(estimates$Parameter, toupper(param_names))]
+                for(which_name in 1:length(param_names)){
+                    estimates$Parameter <- gsub(toupper(param_names[which_name]), original_names[which_name], estimates$Parameter)
+                }
                 out$estimates <- estimates
 
                 dff <- out$model$savedata
@@ -227,6 +227,22 @@ estimate_profiles_mplus2 <-
                 out$dff <- as.tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
                 #out$dff <- as.tibble(dff[, match(c("model_number", "classes_number", param_names, "Class", "Class_prob", "Probability", "id"), names(dff))])
 
+# Check for warnings ------------------------------------------------------
+                warnings <- NULL
+                warnings <- c(warnings, sapply(out$model$warnings, paste, collapse = " "))
+                if(this_model %in% c(1, 2)){
+                    warnings <- warnings[!sapply(warnings, grepl, pattern = "All variables are uncorrelated with all other variables within class.")]
+                }
+
+                if(out$fit[["prob_min"]] < .001){
+                    warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
+                } else {
+                    if(out$fit[["n_min"]] < .01){
+                        warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
+                    }
+                }
+                # The line below needs to be fixed. CHeck what happens when there are no warnings in Mplus
+                #if(out$warnings == "") out$warnings <- NULL
                 class(out) <- c("tidyProfile.mplus", "tidyProfile", "list")
                 out
             },
@@ -253,7 +269,6 @@ estimate_profiles_mplus2 <-
             invisible(file.remove(remove_files))
         }
 
-        class(out_list) <- c("tidyLPA", "list")
         names(out_list) <-
             paste("model_", run_models$mod, "_class_", run_models$prof, sep = "")
         out_list

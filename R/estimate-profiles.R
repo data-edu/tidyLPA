@@ -42,9 +42,21 @@
 #' c("zero", "equal")}).
 #' @examples
 #' \dontrun{
+#' # Example 1:
 #' iris %>%
 #'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-#'   estimate_profiles(3)
+#'   estimate_profiles(df, 3)
+#'
+#' # Example 2:
+#' iris %>%
+#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'   estimate_profiles(df, n_profiles = 1:4, models = 1:3)
+#'
+#' # Example 3:
+#' iris %>%
+#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'   estimate_profiles(df, n_profiles = 1:4, variances = c("equal", "varying"),
+#'                     covariances = c("zero", "zero"))
 #' }
 #' @export
 estimate_profiles <- function(df,
@@ -64,8 +76,21 @@ estimate_profiles <- function(df,
         "prior_control" = "You can pass it directly to mclust() through the '...' argument.",
         "print_which_stats" = "We now return the statistics considered to be best-practice for determining the number of classes.",
         "center_raw_data" = "Before running estimate_profiles, run the function 'scale' on your data (see ?scale). Also look at the function 'poms' (percentage-of-maximum scoring) for a way to put your variables on an easily comparable scale.",
-        "scale_raw_data" = ". Before running estimate_profiles, run the function 'scale' on your data (see ?scale). Also see ?poms (percentage-of-maximum scoring) for a way to put your variables on an easily comparable scale."
+        "scale_raw_data" = "Before running estimate_profiles, run the function 'scale' on your data (see ?scale). Also see ?poms (percentage-of-maximum scoring) for a way to put your variables on an easily comparable scale."
     ))
+
+    check_dots <- match.call(expand.dots = FALSE)$`...`
+    if(any(names(df) %in% unlist(check_dots))){
+        warning("It looks like you are trying to extract some variables from df. This functionality is deprecated. Instead, estimate_profiles() always uses all variables in df. Select your variables prior to analysis, using either:\n  The dplyr function select(df, Your, Selected, Variable, Names), or\n  The base R function df[, c('Your', 'Selected', 'Variable', 'Names')]")
+    }
+
+
+    # Screen df ---------------------------------------------------------------
+
+    var_types <- sapply(df, class)
+    if(any(!var_types %in% c("numeric", "integer"))){
+        stop("estimate_profiles can only handle numeric variables. The variables violating this restriction are: ", paste(names(df)[!var_types %in% c("numeric", "integer")], collapse = ", "))
+    }
 
     # Get model numbers --------------------------------------------------------
     if (all(sapply(c(models, variances, covariances), is.null))) {
@@ -74,11 +99,7 @@ estimate_profiles <- function(df,
         )
     }
     if (!is.null(models)) {
-        if (any(!sapply(c(variances, covariances), is.null))) {
-            warning(
-                "Please specify either the 'models' argument, or the 'variances' and 'covariances' arguments. The 'variances'/'covariances' arguments were ignored."
-            )
-        }
+        message("The 'variances'/'covariances' arguments were ignored in favor of the 'model' argument.")
         model_numbers <- models
     } else {
         if (length(variances) != length(covariances)) {
@@ -102,8 +123,6 @@ estimate_profiles <- function(df,
            "mclust" = estimate_profiles_mclust(df, n_profiles, model_numbers, ...))
 
     #if (is.null(m)) stop("Model could not be estimated.")
-    # Replace this with an analysis of the n_min of the different models
-
     class(out) <- c("tidyLPA", "list")
     out
 }
@@ -271,7 +290,7 @@ print.tidyLPA <-
                        "n_min",
                        "n_max",
                        "BLRT_p"),
-             digits = getOption("digits"),
+             digits = 3,
              na.print = "",
              ...) {
         fits <- get_fit(x)
@@ -288,7 +307,7 @@ print.tidyLPA <-
         prmatrix(dat,
                  rowlab = rep("", nrow(dat)),
                  quote = FALSE,
-                 na = na.print)
+                 na.print = na.print)
     }
 
 #' @title Print tidyProfile
@@ -313,7 +332,7 @@ print.tidyLPA <-
 #' @export
 print.tidyProfile <-
     function(x,
-             digits = getOption("digits"),
+             digits = 3,
              na.print = "",
              ...) {
         dat <- get_fit(x)
