@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -82,12 +82,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
-    </li>
-    <li>
-      <a href="articles/brief-overview.html">Brief overview of tidyLPA</a>
-    </li>
-    <li>
-      <a href="articles/introduction-to-major-changes.html">Vignette Title</a>
     </li>
   </ul>
 </li>
@@ -138,13 +132,13 @@
 <h1 class="hasAnchor">
 <a href="#a-tidy-user-interface" class="anchor"></a>A <em>tidy</em> user-interface</h1>
 <p>The input for <em>tidyLPA</em> assumes a tidy data structure [see @wickham14], and all output are returned in a tidy from, which aligns with the broad array of tools within the <a href="https://www.tidyverse.org/"><strong>tidyverse</strong></a> collection of R packages. The data can be efficiently used to create plots, explore model results, or used in subsequent analyses. The interface is also designed to work efficiently with the <em>pipe</em> operator, <code>%&gt;%</code>, and <strong>dplyr</strong> helper functions that can be used to select variables, e.g.:</p>
-<p><code>data %&gt;% tidyLPA::estimate_profiles(dplyr::starts_with())</code></p>
+<p><code>{code} data %&gt;% tidyLPA::estimate_profiles(dplyr::starts_with())</code></p>
 <p>The package is designed and documented to be easy to use, especially for beginners to LPA, but with fine-grained options available for estimating models and evaluating specific output as part of more complex analyses.</p>
 </div>
 <div id="functionality-through-both-open-source-and-commercial-software" class="section level1">
 <h1 class="hasAnchor">
 <a href="#functionality-through-both-open-source-and-commercial-software" class="anchor"></a>Functionality through both open-source and commercial software</h1>
-<p>The <em>tidyLPA</em> package provides an interface to two different tools for estimating models, one from the open-source <strong>mclust</strong> R package [@scrucca_et_al_2017] and the other the commercial <strong>MPlus</strong> [@muthen_et_al_2017] software (via the <strong>MplusAutomation</strong> R package [@hallquist_et_al_2018]). The packages are benchmarked to one another; the benchmarks are checked when <strong>tidyLPA</strong> is deployed through automated tests.</p>
+<p>The <em>tidyLPA</em> package provides an interface to two different tools for estimating models, one from the open-source <strong>mclust</strong> R package [@scrucca_et_al_2017] and the other the commercial <strong>MPlus</strong> [@muthen_et_al_2017] software (via the <strong>MplusAutomation</strong> R package [hallquist_et_al_2018]). The packages are benchmarked to one another; the benchmarks are checked when <strong>tidyLPA</strong> is deployed through automated tests.</p>
 <p>Both the open-source and commercial tools allow for the specification of four model parameterizations:</p>
 <ul>
 <li>Equal variances and covariances fixed to 0 (Model 1)</li>
@@ -152,7 +146,7 @@
 <li>Equal variances and equal covariances (Model 3)</li>
 <li>Varying variances and varying covariances (Model 6)</li>
 </ul>
-<p>Two additional model parameterizations (Models 4 and 5) are only available through <strong>MPlus</strong>.</p>
+<p>Two additional model parameterizations (Models 4 and 5) are only available through MPlus.</p>
 <p>The two primary functions in the package are <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code> and <code><a href="reference/compare_solutions.html">compare_solutions()</a></code>, with the former used to estimate a given model and the latter used evaluate differences in the fit of alternative models and number of profiles extracted. The <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code> function returns the predicted probability of membership in each profile for each case in the dataset, and allows for simple interpretation of the model output, particularly when combined with the <code><a href="reference/plot_profiles.html">plot_profiles()</a></code> function, which displays the mean values (and their standard errors) on each measure for each profile.</p>
 <p>The <code><a href="reference/compare_solutions.html">compare_solutions()</a></code> function fits a wide range of models and returns various fit indices, including likelihood ratio tests and other statistics (e.g., entropy) for each parameterization. All three functions use <strong>mclust</strong>; corresponding functions with <code>_mplus()</code> appended use the <strong>MPlus</strong> software.</p>
 </div>

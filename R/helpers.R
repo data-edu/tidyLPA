@@ -72,7 +72,7 @@ extract_stats <- function(x) {
 #'                             remove_tmp_files = FALSE)
 #' extract_LL_mplus()
 #' }
-#' @return a tibble or a ggplot2 plot of the BIC values for the explored models with the log-likelihood, random start seed, and the number of the iteration
+#' @return a tibble or a ggplot2 plot of the BIC values for the explored modelswith the log-likelihood, random start seed, and the number of the iteration
 #' @export
 
 extract_LL_mplus <- function(output_filename = "i.out") {
@@ -109,20 +109,10 @@ write_mplus <- function(d, file_name, na_string = "-999", ...) {
   )
 }
 
-make_class_mplus <- function(var_list, class_number, fix_variances = F, latent_vars = NULL) {
+make_class_mplus <- function(var_list, class_number, fix_variances = F) {
   class_init <- vector(length = 3, mode = "list")
   class_init[[1]] <- paste0("%c#", class_number, "%")
-
-  if (!is.null(latent_vars)) {
-    var_list <- names(latent_vars)
-  }
-
-  if (!is.null(latent_vars)) {
-    class_init[[2]] <- paste0("! [", paste(var_list, collapse = " "), "];")
-  } else {
-    class_init[[2]] <- paste0("[", paste(var_list, collapse = " "), "];")
-  }
-
+  class_init[[2]] <- paste0("[", paste(var_list, collapse = " "), "];")
   class_init[[3]] <- paste0(
     paste(var_list, collapse = " "),
     ifelse(fix_variances,
@@ -135,12 +125,7 @@ make_class_mplus <- function(var_list, class_number, fix_variances = F, latent_v
 }
 
 covariances_mplus <- function(var_list, estimate_covariance = FALSE,
-                              param_counter = NULL, latent_vars = NULL) {
-
-  if (!is.null(latent_vars)) {
-    var_list <- names(latent_vars)
-  }
-
+                              param_counter = NULL) {
   combine2 <- utils::combn(length(var_list), 2)
   variances <- vector(length = ncol(combine2), mode = "list")
 
@@ -159,6 +144,7 @@ covariances_mplus <- function(var_list, estimate_covariance = FALSE,
   }
   return(variances)
 }
+
 
 get_fit_stat <- function(m, stat) {
   return(ifelse(stat %in% names(m$summaries),

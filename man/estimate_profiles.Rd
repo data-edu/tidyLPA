@@ -38,7 +38,7 @@ estimate_profiles(df, ..., n_profiles, variances = "equal",
 \item{print_which_stats}{if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed}
 }
 \value{
-a tibble with the data and profile/class assignment and the posterior probability for that profile; the output of this function can be passed to the plot_profiles() function to create a ggplot2 plot of the profiles. If the argument to_return = "mclust" is added to the function call) an mclust model object, which can be inspected or plotted with mclust functions.
+either a tibble or a ggplot2 plot of the BIC values for the explored models
 }
 \description{
 Estimate parameters for profiles for a specific solution

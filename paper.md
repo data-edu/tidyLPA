@@ -62,7 +62,7 @@ in subsequent analyses. The interface is also designed to work efficiently with
 the *pipe* operator, `%>%`, and **dplyr** helper functions that can be used to
 select variables, e.g.:
 
-``` data %>% tidyLPA::estimate_profiles(dplyr::starts_with()) ```
+```{code} data %>% tidyLPA::estimate_profiles(dplyr::starts_with()) ```
 
 The package is designed and documented to be easy to use, especially for
 beginners to LPA, but with fine-grained options available for estimating models
@@ -74,7 +74,7 @@ The *tidyLPA* package provides an interface to two different
 tools for estimating models, one from the open-source **mclust** R
 package [@scrucca_et_al_2017] and the other the commercial **MPlus**
 [@muthen_et_al_2017] software (via the **MplusAutomation** R package
-[@hallquist_et_al_2018]). The packages are benchmarked to one another; the
+[hallquist_et_al_2018]). The packages are benchmarked to one another; the
 benchmarks are checked when **tidyLPA** is deployed through automated tests.
 
 Both the open-source and commercial tools allow for the specification of four
@@ -87,7 +87,7 @@ covariances fixed to 0 (Model 2)
 - Varying variances and varying covariances (Model 6)
 
 Two additional model parameterizations (Models 4 and 5) are only available
-through **MPlus**.
+through MPlus.
 
 The two primary functions in the package are `estimate_profiles()` and
 `compare_solutions()`, with the former used to estimate a given model and the

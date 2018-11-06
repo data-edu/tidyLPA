@@ -1,10 +1,11 @@
-# Note regarding submission 0 days after last submission
+## Note regarding submission 3 days since last update
 
-* I sincerely apologize for an oversight in not submitting the correct version of the package to CRAN - noticing that is the reason for the submission 0 days after the last submission
+* A package this package Imports (MplusAutomation) pushed a breaking update prior to submission of this package that I did not notice when I submitted
+    * This update makes the estimate_profiles_mplus() function  work with the current 0.7-1 version of the MplusAutomation package
 
 ## Test environments
-* local OS X install, R 3.5.1
-* ubuntu 14.04 (on travis-ci), R 3.5.1
+* local OS X install, R 3.4.2
+* ubuntu 12.04 (on travis-ci), R 3.4.2
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -12,3 +13,16 @@
 0 errors | 0 warnings | 1 note
 
 * This is a new release.
+
+## Reverse dependencies
+
+This is a new release, so there are no reverse dependencies.
+
+---
+
+* I have run R CMD check on the NUMBER downstream dependencies.
+  (Summary at ...). 
+  
+* FAILURE SUMMARY
+
+* All revdep maintainers were notified of the release on RELEASE DATE.

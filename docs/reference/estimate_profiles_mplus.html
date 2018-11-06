@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -85,12 +85,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
-    </li>
-    <li>
-      <a href="../articles/brief-overview.html">Brief overview of tidyLPA</a>
-    </li>
-    <li>
-      <a href="../articles/introduction-to-major-changes.html">Vignette Title</a>
     </li>
   </ul>
 </li>
@@ -124,8 +118,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>estimate_profiles_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>latent_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>n_profiles</span>,
-  <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data_filename</span> <span class='kw'>=</span> <span class='st'>"d.dat"</span>, <span class='kw'>script_filename</span> <span class='kw'>=</span> <span class='st'>"i.inp"</span>,
+    <pre class="usage"><span class='fu'>estimate_profiles_mplus</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>data_filename</span> <span class='kw'>=</span> <span class='st'>"d.dat"</span>, <span class='kw'>script_filename</span> <span class='kw'>=</span> <span class='st'>"i.inp"</span>,
   <span class='kw'>output_filename</span> <span class='kw'>=</span> <span class='st'>"i.out"</span>, <span class='kw'>savedata_filename</span> <span class='kw'>=</span> <span class='st'>"d-mod.dat"</span>,
   <span class='kw'>variances</span> <span class='kw'>=</span> <span class='st'>"equal"</span>, <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='st'>"zero"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>starts</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>100</span>, <span class='fl'>10</span>), <span class='kw'>m_iterations</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>st_iterations</span> <span class='kw'>=</span> <span class='fl'>20</span>,
@@ -144,10 +138,6 @@
     <tr>
       <th>...</th>
       <td><p>unquoted variable names separated by commas</p></td>
-    </tr>
-    <tr>
-      <th>latent_vars</th>
-      <td><p>defaults to NULL; specification for the latent varibles as a list, i.e. list(beh = c(1, 2), cog = c(3, 4), aff = (5, 6)), where the integers represent the position of the variables passed to the function and how they correspond to the latent variables, which are named</p></td>
     </tr>
     <tr>
       <th>n_profiles</th>
