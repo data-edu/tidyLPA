@@ -196,3 +196,7 @@ extract_prob_stats <- function(class_num, obj) {
                class_sd = as.vector(class_sds),
                class = class_num)
 }
+
+.onAttach <- function(libname, pkgname) {
+    packageStartupMessage("Note that an update to tidyLPA is forthcoming; see vignette('Forthcoming major changes', 'tidyLPA')")
+}

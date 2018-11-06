@@ -81,7 +81,7 @@
       <h1>Vignette Title</h1>
                         <h4 class="author">Vignette Author</h4>
             
-            <h4 class="date">2018-10-30</h4>
+            <h4 class="date">2018-11-06</h4>
       
       
       <div class="hidden name"><code>introduction-to-major-changes.Rmd</code></div>
@@ -111,14 +111,14 @@
 <h2 class="hasAnchor">
 <a href="#example-analysis" class="anchor"></a>Example analysis:</h2>
 <p>A full analysis might look like this:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">full_df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(Your, Selected, Variable, Names) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dt">n_profiles =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="dt">models =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) -&gt;</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="st">    </span>results</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(results)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(results)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">full_df <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(Your, Selected, Variable, Names) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dt">n_profiles =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="dt">models =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) -&gt;
+<span class="st">    </span>results
+
+<span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(results)
+
+<span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(results)</code></pre></div>
 </div>
 <div id="new-functionality" class="section level2">
 <h2 class="hasAnchor">
