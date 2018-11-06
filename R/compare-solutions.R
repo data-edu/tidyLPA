@@ -38,16 +38,16 @@ compare_solutions <- function(df, ...,
 
   model <- case_when(
     variances == "equal" & covariances == "zero" ~ "EEI",
-    variances == "varying" & covariances == "zero" ~ "EEE",
-    variances == "equal" & covariances == "equal" ~ "VVI",
+    variances == "varying" & covariances == "zero" ~ "VVI",
+    variances == "equal" & covariances == "equal" ~ "EEE",
     # variances == "varying" & covariances == "equal" ~ 4, # I'd remove
     # variances == "equal" & covariances == "varying" ~ 5,
     variances == "varying" & covariances == "varying" ~ "VVV"
   )
 
   titles <- c(
-    "Equal variances and covariances fixed to 0 (model 1)",
-    "Varying variances and covariances fixed to 0 (model 2)",
+    "Equal variances and covariances fixed to zero (model 1)",
+    "Varying variances and covariances fixed to zero (model 2)",
     "Equal variances and equal covariances (model 3)",
     # "Varying variances and equal covariances (model 4)",
     # "Equal variances and varying covariances (model 5)",
@@ -123,6 +123,7 @@ compare_solutions <- function(df, ...,
     geom_point(na.rm = TRUE) +
     ylab(paste0(statistic, " (smaller value is better)")) +
     theme_bw() +
+    ggplot2::scale_color_discrete("", labels = titles)
     xlab("Profiles")
 
   p

@@ -7,7 +7,60 @@
 #' @inheritParams plot_profiles
 #' @export
 
-plot_profiles_mplus <- function(mplus_data, to_center = TRUE, to_scale = TRUE, plot_post_probs = FALSE, mplus_out_name = "i.out", standard_error_interval = .95) {
+plot_profiles_mplus <- function(mplus_data = NULL, to_center = TRUE, to_scale = TRUE, plot_post_probs = FALSE, mplus_out_name = "i.out", standard_error_interval = .95) {
+
+    if (!is.null(mplus_out_name)) {
+
+        m <- MplusAutomation::readModels(mplus_out_name)
+
+        if (m$summaries$NContinuousLatentVars > 0) {
+
+            d <- m %>% pluck("parameters", "unstandardized")
+
+            overall_factor_loadings <- d %>%
+                filter(str_detect(paramHeader, ".BY")) %>%
+                filter(LatentClass == 1) %>%
+                mutate(latent = str_sub(paramHeader, end = -4)) %>%
+                select(latent, observed = param, loading = est)
+
+            means_zero_scalar <- d %>%
+                filter(str_detect(paramHeader, "Means")) %>%
+                filter(est == 0.000) %>%
+                summarize(lc_means_zero = mean(as.integer(LatentClass))) %>%
+                pull()
+
+            d_sub <- filter(d, LatentClass == means_zero_scalar) %>% tbl_df()
+
+            one_class_indicators <- d_sub %>%
+                filter(str_detect(paramHeader, "Intercepts")) %>%
+                rename(observed = param, intercept = est) %>%
+                left_join(overall_factor_loadings) %>%
+                mutate(value = intercept * loading) %>%
+                select(observed, latent, intercept, loading, value, LatentClass)
+
+            one_class_raw_means <- one_class_indicators %>%
+                group_by(latent) %>%
+                summarize(zero_mean_est = mean(value))
+
+            to_plot <- d %>%
+                filter(paramHeader == "Means") %>%
+                filter(param != "C#1") %>%
+                select(latent = param, est, se, LatentClass) %>%
+                left_join(one_class_raw_means, by = "latent") %>%
+                mutate(adjusted_est = est + zero_mean_est) %>%
+                select(latent, est = adjusted_est, se, class = LatentClass)
+
+           p <- ggplot(to_plot, aes(x = class, y = est, fill = latent, group = latent)) +
+                geom_col(position = "dodge") +
+                theme_bw() +
+                scale_x_discrete(NULL) +
+                scale_fill_discrete(NULL) +
+                ylab("Estimate (raw score)")
+
+           return(p)
+
+        }
+    }
 
     if (plot_post_probs == TRUE) {
 

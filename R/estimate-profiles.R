@@ -18,7 +18,7 @@
 #' estimate_profiles(iris,
 #'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
 #'     n_profiles = 3)
-#' @return either a tibble or a ggplot2 plot of the BIC values for the explored models
+#' @return a tibble with the data and profile/class assignment and the posterior probability for that profile; the output of this function can be passed to the plot_profiles() function to create a ggplot2 plot of the profiles. If the argument to_return = "mclust" is added to the function call) an mclust model object, which can be inspected or plotted with mclust functions.
 #' @export
 
 estimate_profiles <- function(df,

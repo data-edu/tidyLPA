@@ -4,8 +4,8 @@
 \alias{plot_profiles_mplus}
 \title{Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)}
 \usage{
-plot_profiles_mplus(mplus_data, to_center = TRUE, to_scale = TRUE,
-  plot_post_probs = FALSE, mplus_out_name = "i.out",
+plot_profiles_mplus(mplus_data = NULL, to_center = TRUE,
+  to_scale = TRUE, plot_post_probs = FALSE, mplus_out_name = "i.out",
   standard_error_interval = 0.95)
 }
 \arguments{

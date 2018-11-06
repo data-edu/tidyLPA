@@ -33,7 +33,8 @@ compare_solutions_mplus <- function(df, ...,
                                     return_stats_df = TRUE,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE,
-                                    dir_name = NULL) {
+                                    dir_name = NULL,
+                                    latent_vars = NULL) {
 
   # if (mplusAvailable() != 1) stop("It appears that MPlus is not installed; this function requires MPlus to be installed in order to work.")
 
@@ -41,7 +42,7 @@ compare_solutions_mplus <- function(df, ...,
     message("because remove_tmp_files is set to TRUE, some functions may not work as expected")
   }
 
-  if (!is.null(dir_name)) {
+  if (is.null(dir_name)) {
     dir_name <- Sys.Date()
   }
 
@@ -71,9 +72,10 @@ compare_solutions_mplus <- function(df, ...,
 
   if (save_models == TRUE) {
       if (dir.exists(stringr::str_c("compare_solutions_mplus_output-", dir_name))) {
-          stop("A directory with this name already exists; change the name on or delete the old directory to avoid over-writing it")
+          stop("A directory with this name already exists; change the name or delete the old directory to avoid over-writing it")
+      } else {
+        dir.create(stringr::str_c("compare_solutions_mplus_output-", dir_name), showWarnings=FALSE)
       }
-      dir.create(stringr::str_c("compare_solutions_mplus_output-", dir_name), showWarnings=FALSE)
   }
 
   for (i in n_profiles_min:n_profiles_max) {
@@ -94,7 +96,8 @@ compare_solutions_mplus <- function(df, ...,
         n_processors = n_processors,
         include_VLMR = include_VLMR,
         include_BLRT = include_BLRT,
-        remove_tmp_files = remove_tmp_files
+        remove_tmp_files = remove_tmp_files,
+        latent_vars = latent_vars
       ))
 
       if (save_models == TRUE) {
@@ -102,12 +105,14 @@ compare_solutions_mplus <- function(df, ...,
         new_dir <- stringr::str_c("compare_solutions_mplus_output-", dir_name, "/m-", j, "_p-", i)
         dir.create(new_dir, showWarnings=FALSE)
         file.copy(from = "i.out", to = new_dir)
+        file.copy(from = "d-mod.dat", to = new_dir)
       }
 
       counter <- counter + 1
 
-      if (m[1] == "Error: Convergence issue"
-      | m[1] == "Warning: LL not replicated") { # here's another example where it just spilled over, hence the suggested change
+      if (m[1] == "Error: Convergence issue" |
+          m[1] == "Warning: LL not replicated" |
+          m[1] == "Warning: LL not replicated Error: Convergence issue") { # can probably remove this line
         message(str_c("Result: ", m))
         out_df[i - (n_profiles_min - 1), j + 1] <- m
       } else {
