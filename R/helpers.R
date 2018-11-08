@@ -198,5 +198,5 @@ extract_prob_stats <- function(class_num, obj) {
 }
 
 .onAttach <- function(libname, pkgname) {
-    packageStartupMessage("Note that an update to tidyLPA is forthcoming; see vignette('Forthcoming major changes', 'tidyLPA')")
+    packageStartupMessage("Note that an update to tidyLPA is forthcoming; see vignette('introduction-to-major-changes') for details!")
 }
