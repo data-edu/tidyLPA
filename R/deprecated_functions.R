@@ -1,3 +1,34 @@
+# bootstrap_lrt -------------------------------------------------
+
+#' Bootstrap the likelihood-ratio test statistic for mixture components
+#'
+#' @details Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.
+#' @param df data.frame with two or more columns with continuous variables
+#' @param ... unquoted variable names separated by commas
+#' @param n_profiles the number of profiles (or mixture components) to be estimated
+#' @param variances how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)
+#' @param covariances how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)
+#' @param model which model to estimate (DEPRECATED; use variances and covariances instead)
+#' @param center_raw_data logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE
+#' @param scale_raw_data logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE
+#' @param to_return character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
+#' @param return_posterior_probs TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE
+#' @param return_orig_df TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)
+#' @param prior_control whether to include a regularizing prior; defaults to false
+#' @param print_which_stats if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed
+#' @templateVar fun bootstrap_lrt
+#' @template template-depr_fun
+NULL
+
+#' @templateVar old bootstrap_lrt
+#' @templateVar new estimate_profiles
+#' @template template-depr_pkg
+#'
+#' @export
+bootstrap_lrt <- function(...) {
+    .Deprecated("estimate_profiles")
+}
+
 # compare_solutions_mplus -------------------------------------------------
 
 

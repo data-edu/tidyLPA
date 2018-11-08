@@ -2,11 +2,14 @@
 % Please edit documentation in R/deprecated_functions.R, R/tidyLPA-deprecated.r
 \name{tidyLPA-deprecated}
 \alias{tidyLPA-deprecated}
+\alias{bootstrap_lrt}
 \alias{compare_solutions_mplus}
 \alias{plot_profiles_mplus}
 \alias{estimate_profiles_mplus}
 \title{Deprecated functions in package \pkg{tidyLPA}.}
 \usage{
+bootstrap_lrt(...)
+
 compare_solutions_mplus(...)
 
 plot_profiles_mplus(...)
@@ -31,6 +34,11 @@ The functions listed below are deprecated and will be defunct in
   functionality are also mentioned. Help pages for deprecated functions are
   available at \code{help("-deprecated")}.
 }
+\section{\code{bootstrap_lrt}}{
+
+For \code{bootstrap_lrt}, use \code{\link{estimate_profiles}}.
+}
+
 \section{\code{compare_solutions_mplus}}{
 
 For \code{compare_solutions_mplus}, use \code{\link{compare_solutions}}.
