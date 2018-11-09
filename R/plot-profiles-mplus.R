@@ -7,11 +7,19 @@
 #' @inheritParams plot_profiles
 #' @examples
 #' \dontrun{
+#'
 #' m <- estimate_profiles_mplus(iris,
 #' Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-#' n_profiles = 2, latent_vars = list(sepal = c(1, 2), petal = c(3, 4)))
+#' n_profiles = 2)
 #'
-#' plot
+#' plot_profiles_mplus(m)
+#'
+#' m <- estimate_profiles_mplus(iris,
+#' Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+#' n_profiles = 2, latent_vars = list(sepal = c(1, 2), petal = c(3, 4)),
+#' remove_tmp_files = FALSE)
+#'
+#' plot_profiles_mplus()
 #' }
 #' @export
 
@@ -37,7 +45,9 @@ plot_profiles_mplus <- function(mplus_data = NULL, to_center = TRUE, to_scale = 
                 summarize(lc_means_zero = mean(as.integer(LatentClass))) %>%
                 pull()
 
-            d_sub <- filter(d, LatentClass == means_zero_scalar) %>% tbl_df()
+            d_sub <- d %>%
+                filter(LatentClass == means_zero_scalar) %>%
+                tbl_df()
 
             one_class_indicators <- d_sub %>%
                 filter(str_detect(paramHeader, "Intercepts")) %>%
@@ -51,6 +61,7 @@ plot_profiles_mplus <- function(mplus_data = NULL, to_center = TRUE, to_scale = 
                 summarize(zero_mean_est = mean(value))
 
             to_plot <- d %>%
+                filter(LatentClass != "Categorical.Latent.Variables") %>%
                 filter(paramHeader == "Means") %>%
                 filter(param != "C#1") %>%
                 select(latent = param, est, se, LatentClass) %>%
