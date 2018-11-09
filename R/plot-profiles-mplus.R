@@ -5,6 +5,14 @@
 #' @param mplus_out_name character string; name of the mplus out file that is read if the posterior probabilities are plotted; defaults to i.out (which is the default name for the file created by other tidyLPA functions)
 #' @param standard_error_interval number between 0 and 1; defaults to .95
 #' @inheritParams plot_profiles
+#' @examples
+#' \dontrun{
+#' m <- estimate_profiles_mplus(iris,
+#' Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+#' n_profiles = 2, latent_vars = list(sepal = c(1, 2), petal = c(3, 4)))
+#'
+#' plot
+#' }
 #' @export
 
 plot_profiles_mplus <- function(mplus_data = NULL, to_center = TRUE, to_scale = TRUE, plot_post_probs = FALSE, mplus_out_name = "i.out", standard_error_interval = .95) {

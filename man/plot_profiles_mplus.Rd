@@ -27,3 +27,20 @@ Plot variable means and their confidence intervals by profile for models estimat
 \details{
 Plot the variable means and variances for data frame output from estimate_profiles_mclust()
 }
+\examples{
+\dontrun{
+
+m <- estimate_profiles_mplus(iris,
+Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+n_profiles = 2)
+
+plot_profiles_mplus(m)
+
+m <- estimate_profiles_mplus(iris,
+Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+n_profiles = 2, latent_vars = list(sepal = c(1, 2), petal = c(3, 4)),
+remove_tmp_files = FALSE)
+
+plot_profiles_mplus()
+}
+}
