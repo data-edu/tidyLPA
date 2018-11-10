@@ -19,64 +19,83 @@
 #' n_profiles = 2, latent_vars = list(sepal = c(1, 2), petal = c(3, 4)),
 #' remove_tmp_files = FALSE)
 #'
-#' plot_profiles_mplus()
+#' plot_profiles_mplus(mplus_out_name = "i.out")
 #' }
 #' @export
 
-plot_profiles_mplus <- function(mplus_data = NULL, to_center = TRUE, to_scale = TRUE, plot_post_probs = FALSE, mplus_out_name = "i.out", standard_error_interval = .95) {
+plot_profiles_mplus <- function(mplus_data = NULL,
+                                to_center = FALSE,
+                                to_scale = FALSE,
+                                plot_post_probs = FALSE,
+                                mplus_out_name = NULL,
+                                standard_error_interval = .95) {
 
     if (!is.null(mplus_out_name)) {
 
-        m <- MplusAutomation::readModels(mplus_out_name)
+        m <- suppressWarnings(MplusAutomation::readModels(mplus_out_name)) # for model reading warnings
 
         if (m$summaries$NContinuousLatentVars > 0) {
 
-            d <- m %>% pluck("parameters", "unstandardized")
+            d <- m %>% purrr::pluck("parameters", "unstandardized")
+            d$param <- ifelse(nchar(d$param) > 8, str_sub(d$param, end = 8), d$param)
+
+            if (to_center == TRUE) {
+                the_means <-  m$sampstat$means %>%
+                    dplyr::as_data_frame() %>%
+                    tidyr::gather(key, intercept_mean) %>%
+                    dplyr::rename(param = key, ) %>%
+                    dplyr::mutate(paramHeader = "Intercepts")
+
+                d <- dplyr::left_join(d, the_means, by = c("paramHeader", "param"))
+                d$est <- ifelse(d$paramHeader == "Intercepts", d$est - d$intercept_mean, d$est)
+            }
 
             overall_factor_loadings <- d %>%
-                filter(str_detect(paramHeader, ".BY")) %>%
-                filter(LatentClass == 1) %>%
-                mutate(latent = str_sub(paramHeader, end = -4)) %>%
-                select(latent, observed = param, loading = est)
+                dplyr::filter(str_detect(paramHeader, ".BY")) %>%
+                dplyr::filter(LatentClass == 1) %>%
+                dplyr::mutate(latent = str_sub(paramHeader, end = -4)) %>%
+                dplyr::select(latent, observed = param, loading = est, se)
 
             means_zero_scalar <- d %>%
-                filter(str_detect(paramHeader, "Means")) %>%
-                filter(est == 0.000) %>%
-                summarize(lc_means_zero = mean(as.integer(LatentClass))) %>%
-                pull()
+                dplyr::filter(str_detect(paramHeader, "Means")) %>%
+                dplyr::filter(est == 0.000) %>%
+                dplyr::summarize(lc_means_zero = mean(as.integer(LatentClass))) %>%
+                dplyr::pull()
 
             d_sub <- d %>%
-                filter(LatentClass == means_zero_scalar) %>%
-                tbl_df()
+                dplyr::filter(LatentClass == means_zero_scalar)
 
             one_class_indicators <- d_sub %>%
-                filter(str_detect(paramHeader, "Intercepts")) %>%
-                rename(observed = param, intercept = est) %>%
-                left_join(overall_factor_loadings) %>%
-                mutate(value = intercept * loading) %>%
-                select(observed, latent, intercept, loading, value, LatentClass)
+                dplyr::filter(str_detect(paramHeader, "Intercepts")) %>%
+                dplyr::rename(observed = param, intercept = est) %>%
+                dplyr::left_join(overall_factor_loadings, by = "observed") %>%
+                dplyr::mutate(value = intercept * loading) %>%
+                dplyr::select(observed, latent, intercept, loading, value, LatentClass)
 
             one_class_raw_means <- one_class_indicators %>%
-                group_by(latent) %>%
-                summarize(zero_mean_est = mean(value))
+                dplyr::group_by(latent) %>%
+                dplyr::summarize(zero_mean_est = mean(value))
 
             to_plot <- d %>%
-                filter(LatentClass != "Categorical.Latent.Variables") %>%
-                filter(paramHeader == "Means") %>%
-                filter(param != "C#1") %>%
-                select(latent = param, est, se, LatentClass) %>%
-                left_join(one_class_raw_means, by = "latent") %>%
-                mutate(adjusted_est = est + zero_mean_est) %>%
-                select(latent, est = adjusted_est, se, class = LatentClass)
+                dplyr::filter(LatentClass != "Categorical.Latent.Variables") %>%
+                dplyr::filter(paramHeader == "Means") %>%
+                dplyr::filter(param != "C#1") %>%
+                dplyr::select(latent = param, est, intercept_se = se, LatentClass) %>%
+                dplyr::left_join(one_class_raw_means, by = "latent") %>%
+                dplyr::mutate(adjusted_est = est + zero_mean_est) %>%
+                dplyr::select(latent, est = adjusted_est, class = LatentClass)
 
-           p <- ggplot(to_plot, aes(x = class, y = est, fill = latent, group = latent)) +
-                geom_col(position = "dodge") +
-                theme_bw() +
-                scale_x_discrete(NULL) +
-                scale_fill_discrete(NULL) +
-                ylab("Estimate (raw score)")
+            p <- ggplot2::ggplot(to_plot, ggplot2::aes(x = .data$class,
+                                                       y = .data$est,
+                                                       fill = .data$latent,
+                                                       group = .data$latent)) +
+                 ggplot2::geom_col(position = "dodge") +
+                 ggplot2::theme_bw() +
+                 ggplot2::scale_x_discrete(NULL) +
+                 ggplot2::scale_fill_discrete(NULL) +
+                 ggplot2::ylab("Estimate (raw score)")
 
-           return(p)
+            return(p)
 
         }
     }
@@ -96,7 +115,7 @@ plot_profiles_mplus <- function(mplus_data = NULL, to_center = TRUE, to_scale = 
                        ymin = .data$class_mean - (1.96 * ((.data$class_sd / sqrt(number_of_rows)))),
                        ymax = .data$class_mean + (1.96 * ((.data$class_sd / sqrt(number_of_rows)))),
                        fill = .data$var
-                       )) +
+            )) +
             geom_col(position = "dodge") +
             geom_errorbar(position = "dodge") +
             theme_bw() +
