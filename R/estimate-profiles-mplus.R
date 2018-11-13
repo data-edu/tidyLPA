@@ -17,6 +17,7 @@
 #' @param include_VLMR whether to include the Vu-Lo-Mendell-Rubin likelihood-ratio test; defaults to TRUE
 #' @param include_BLRT whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run
 #' @param n_processors = 1
+#' @param latent_vars defaults to NULL; specification for the latent varibles as a list, i.e. list(beh = c(1, 2), cog = c(3, 4), aff = (5, 6)), where the integers represent the position of the variables passed to the function and how they correspond to the latent variables, which are named
 #' @param return_all_stats defaults to FALSE; if TRUE, returns as a one-row data frame all of the statistics returned from compare_solutions_mplus()
 #' @inheritParams estimate_profiles
 #' @examples
@@ -30,6 +31,7 @@
 
 estimate_profiles_mplus <- function(df,
                                     ...,
+                                    latent_vars = NULL,
                                     n_profiles,
                                     idvar = NULL,
                                     data_filename = "d.dat",
@@ -110,6 +112,24 @@ estimate_profiles_mplus <- function(df,
         var_list[[i]] <- names(d)[i]
     }
 
+    # For latent variable specification
+
+    f <- function(latent_var, for_latent_vars) {
+        for_latent_vars[latent_var]
+    }
+
+    if (!is.null(latent_vars)) {
+        if (!is.null(cluster_ID)) {
+            for_latent_vars <- var_list[c(-1, -length(var_list))]
+        } else {
+            for_latent_vars <- var_list[c(-1)]
+        }
+        l <- list()
+        for (i in 1:length(latent_vars)) {
+            l[[i]] <- f(latent_vars[[i]], for_latent_vars)
+        }
+    }
+
     model <- case_when(
         variances == "equal" & covariances == "zero" ~ 1,
         variances == "varying" & covariances == "zero" ~ 2,
@@ -178,8 +198,26 @@ estimate_profiles_mplus <- function(df,
     MODEL_overall_line000 <- paste0("! model specified is: ", model)
     MODEL_overall_line00 <- paste0("MODEL:")
     MODEL_overall_line0 <- paste0("%overall%")
-    MODEL_overall_line1 <- paste0("[", unquoted_variable_names, "];")
-    MODEL_overall_line2 <- paste0(unquoted_variable_names, ";")
+
+    # return(l)
+
+    if (!is.null(latent_vars)) {
+        MODEL_overall_line1 <- paste0("! [", unquoted_variable_names, "];")
+        MODEL_overall_line2 <- paste0("! ", unquoted_variable_names, ";")
+
+        lll <- list()
+        for (i in 1:length(latent_vars)) {
+            tmp <- l[[i]][1]
+            tmp1 <- paste0(unlist(l[[i]][-1]), collapse = " ")
+            lll[[i]] <- paste0(names(latent_vars)[i], " BY ", tmp[1], "@1 ", tmp1, ";")
+        }
+        MODEL_overall_line3 <- unlist(lll)
+
+    } else {
+        MODEL_overall_line1 <- paste0("[", unquoted_variable_names, "];")
+        MODEL_overall_line2 <- paste0(unquoted_variable_names, ";")
+        MODEL_overall_line3 <- NULL
+    }
 
     if (include_VLMR == TRUE) {
         OUTPUT_line0 <- "OUTPUT: tech1 tech4 tech7 TECH11 tech14 tech12 tech13 sampstat svalues patterns residual stdyx;"
@@ -198,74 +236,76 @@ estimate_profiles_mplus <- function(df,
 
     if (variances == "equal" & covariances == "zero") {
         model_name <- titles[1]
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE) # I would spell out all the TRUE/FALSE arguments
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE, latent_vars = latent_vars)
         class_collector <- list()
         for (i in seq_len(n_profiles)) {
             class_collector <- c(
                 class_collector,
-                make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
-                covariances_mplus(var_list, estimate_covariance = FALSE)
+                make_class_mplus(var_list, class_number = i, fix_variances = TRUE, latent_vars = latent_vars),
+                covariances_mplus(var_list, estimate_covariance = FALSE, latent_vars = latent_vars)
             )
         }
     } else if (variances == "varying" & covariances == "zero") {
         model_name <- titles[2]
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE)
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = FALSE, latent_vars = latent_vars)
         class_collector <- list()
         for (i in 1:n_profiles) {
             class_collector <- c(
                 class_collector,
-                make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
-                covariances_mplus(var_list, estimate_covariance = FALSE)
+                make_class_mplus(var_list, class_number = i, fix_variances = FALSE, latent_vars = latent_vars),
+                covariances_mplus(var_list, estimate_covariance = FALSE, latent_vars = latent_vars)
             )
         }
     } else if (variances == "equal" & covariances == "equal") {
         model_name <- titles[3]
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE, latent_vars = latent_vars)
         class_collector <- list()
         for (i in 1:n_profiles) {
             class_collector <- c(
                 class_collector,
-                make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
+                make_class_mplus(var_list, class_number = i, fix_variances = TRUE, latent_vars = latent_vars),
                 covariances_mplus(var_list,
                                   estimate_covariance = TRUE,
-                                  param_counter = length(var_list)
+                                  param_counter = length(var_list),
+                                  latent_vars = latent_vars
                 )
             )
         }
     } else if (variances == "varying" & covariances == "equal") {
         model_name <- titles[4]
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE, latent_vars = latent_vars)
         class_collector <- list()
         for (i in 1:n_profiles) {
             class_collector <- c(
                 class_collector,
-                make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
+                make_class_mplus(var_list, class_number = i, fix_variances = FALSE, latent_vars = latent_vars),
                 covariances_mplus(var_list,
                                   estimate_covariance = TRUE,
-                                  param_counter = 0
+                                  param_counter = 0,
+                                  latent_vars = latent_vars
                 )
             )
         }
     } else if (variances == "equal" & covariances == "varying") {
         model_name <- titles[5]
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE,latent_vars = latent_vars)
         class_collector <- list()
         for (i in 1:n_profiles) {
             class_collector <- c(
                 class_collector,
-                make_class_mplus(var_list, class_number = i, fix_variances = TRUE),
-                covariances_mplus(var_list, estimate_covariance = TRUE)
+                make_class_mplus(var_list, class_number = i, fix_variances = TRUE, latent_vars = latent_vars),
+                covariances_mplus(var_list, estimate_covariance = TRUE, latent_vars = latent_vars)
             )
         }
     } else if (variances == "varying" & covariances == "varying") {
         model_name <- titles[6]
-        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE)
+        overall_collector <- covariances_mplus(var_list, estimate_covariance = TRUE, latent_vars = latent_vars)
         class_collector <- list()
         for (i in 1:n_profiles) {
             class_collector <- c(
                 class_collector,
-                make_class_mplus(var_list, class_number = i, fix_variances = FALSE),
-                covariances_mplus(var_list, estimate_covariance = TRUE)
+                make_class_mplus(var_list, class_number = i, fix_variances = FALSE, latent_vars = latent_vars),
+                covariances_mplus(var_list, estimate_covariance = TRUE, latent_vars = latent_vars)
             )
         }
     }
@@ -275,7 +315,7 @@ estimate_profiles_mplus <- function(df,
         DATA,
         VARIABLE_line0, VARIABLE_line1, VARIABLE_line2, VARIABLE_line3, VARIABLE_line4,
         MISSING,
-        MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2,
+        MODEL_overall_line00, MODEL_overall_line0, MODEL_overall_line1, MODEL_overall_line2, MODEL_overall_line3,
         overall_collector,
         class_collector,
         ANALYSIS_line0, ANALYSIS_line1, ANALYSIS_line1b, ANALYSIS_line2, ANALYSIS_line3, ANALYSIS_line4, ANALYSIS_line5, ANALYSIS_line6, ANALYSIS_line7, ANALYSIS_line8,

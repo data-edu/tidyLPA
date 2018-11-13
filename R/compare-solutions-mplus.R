@@ -33,7 +33,8 @@ compare_solutions_mplus <- function(df, ...,
                                     return_stats_df = TRUE,
                                     include_VLMR = TRUE,
                                     include_BLRT = FALSE,
-                                    dir_name = NULL) {
+                                    dir_name = NULL,
+                                    latent_vars = NULL) {
 
   # if (mplusAvailable() != 1) stop("It appears that MPlus is not installed; this function requires MPlus to be installed in order to work.")
 
@@ -41,7 +42,7 @@ compare_solutions_mplus <- function(df, ...,
     message("because remove_tmp_files is set to TRUE, some functions may not work as expected")
   }
 
-  if (!is.null(dir_name)) {
+  if (is.null(dir_name)) {
     dir_name <- Sys.Date()
   }
 
@@ -95,7 +96,8 @@ compare_solutions_mplus <- function(df, ...,
         n_processors = n_processors,
         include_VLMR = include_VLMR,
         include_BLRT = include_BLRT,
-        remove_tmp_files = remove_tmp_files
+        remove_tmp_files = remove_tmp_files,
+        latent_vars = latent_vars
       ))
 
       if (save_models == TRUE) {
@@ -103,7 +105,7 @@ compare_solutions_mplus <- function(df, ...,
         new_dir <- stringr::str_c("compare_solutions_mplus_output-", dir_name, "/m-", j, "_p-", i)
         dir.create(new_dir, showWarnings=FALSE)
         file.copy(from = "i.out", to = new_dir)
-        file.copy(from = "d.dat", to = new_dir)
+        file.copy(from = "d-mod.dat", to = new_dir)
       }
 
       counter <- counter + 1

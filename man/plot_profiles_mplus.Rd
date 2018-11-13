@@ -4,8 +4,8 @@
 \alias{plot_profiles_mplus}
 \title{Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)}
 \usage{
-plot_profiles_mplus(mplus_data, to_center = TRUE, to_scale = TRUE,
-  plot_post_probs = FALSE, mplus_out_name = "i.out",
+plot_profiles_mplus(mplus_data = NULL, to_center = FALSE,
+  to_scale = FALSE, plot_post_probs = FALSE, mplus_out_name = NULL,
   standard_error_interval = 0.95)
 }
 \arguments{
@@ -26,4 +26,21 @@ Plot variable means and their confidence intervals by profile for models estimat
 }
 \details{
 Plot the variable means and variances for data frame output from estimate_profiles_mclust()
+}
+\examples{
+\dontrun{
+
+m <- estimate_profiles_mplus(iris,
+Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+n_profiles = 2)
+
+plot_profiles_mplus(m)
+
+m <- estimate_profiles_mplus(iris,
+Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
+n_profiles = 2, latent_vars = list(sepal = c(1, 2), petal = c(3, 4)),
+remove_tmp_files = FALSE)
+
+plot_profiles_mplus(mplus_out_name = "i.out")
+}
 }

@@ -109,10 +109,20 @@ write_mplus <- function(d, file_name, na_string = "-999", ...) {
   )
 }
 
-make_class_mplus <- function(var_list, class_number, fix_variances = F) {
+make_class_mplus <- function(var_list, class_number, fix_variances = F, latent_vars = NULL) {
   class_init <- vector(length = 3, mode = "list")
   class_init[[1]] <- paste0("%c#", class_number, "%")
-  class_init[[2]] <- paste0("[", paste(var_list, collapse = " "), "];")
+
+  if (!is.null(latent_vars)) {
+    var_list <- names(latent_vars)
+  }
+
+  if (!is.null(latent_vars)) {
+    class_init[[2]] <- paste0("! [", paste(var_list, collapse = " "), "];")
+  } else {
+    class_init[[2]] <- paste0("[", paste(var_list, collapse = " "), "];")
+  }
+
   class_init[[3]] <- paste0(
     paste(var_list, collapse = " "),
     ifelse(fix_variances,
@@ -125,7 +135,12 @@ make_class_mplus <- function(var_list, class_number, fix_variances = F) {
 }
 
 covariances_mplus <- function(var_list, estimate_covariance = FALSE,
-                              param_counter = NULL) {
+                              param_counter = NULL, latent_vars = NULL) {
+
+  if (!is.null(latent_vars)) {
+    var_list <- names(latent_vars)
+  }
+
   combine2 <- utils::combn(length(var_list), 2)
   variances <- vector(length = ncol(combine2), mode = "list")
 
@@ -144,7 +159,6 @@ covariances_mplus <- function(var_list, estimate_covariance = FALSE,
   }
   return(variances)
 }
-
 
 get_fit_stat <- function(m, stat) {
   return(ifelse(stat %in% names(m$summaries),
@@ -181,4 +195,8 @@ extract_prob_stats <- function(class_num, obj) {
                class_mean = as.vector(class_means),
                class_sd = as.vector(class_sds),
                class = class_num)
+}
+
+.onAttach <- function(libname, pkgname) {
+    packageStartupMessage("Note that an update to tidyLPA is forthcoming; see vignette('introduction-to-major-changes') for details!")
 }

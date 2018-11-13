@@ -4,8 +4,8 @@
 \alias{estimate_profiles_mplus}
 \title{Estimate parameters for profiles for a specific solution (requires purchasing and installing MPlus to use)}
 \usage{
-estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
-  data_filename = "d.dat", script_filename = "i.inp",
+estimate_profiles_mplus(df, ..., latent_vars = NULL, n_profiles,
+  idvar = NULL, data_filename = "d.dat", script_filename = "i.inp",
   output_filename = "i.out", savedata_filename = "d-mod.dat",
   variances = "equal", covariances = "zero", model = NULL,
   starts = c(100, 10), m_iterations = 500, st_iterations = 20,
@@ -18,6 +18,8 @@ estimate_profiles_mplus(df, ..., n_profiles, idvar = NULL,
 \item{df}{data.frame with two or more columns with continuous variables}
 
 \item{...}{unquoted variable names separated by commas}
+
+\item{latent_vars}{defaults to NULL; specification for the latent varibles as a list, i.e. list(beh = c(1, 2), cog = c(3, 4), aff = (5, 6)), where the integers represent the position of the variables passed to the function and how they correspond to the latent variables, which are named}
 
 \item{n_profiles}{the number of profiles (or mixture components) to be estimated}
 

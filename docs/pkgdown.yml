@@ -4,4 +4,5 @@ pkgdown_sha: ~
 articles:
   Introduction_to_tidyLPA: Introduction_to_tidyLPA.html
   brief-overview: brief-overview.html
+  introduction-to-major-changes: introduction-to-major-changes.html
 

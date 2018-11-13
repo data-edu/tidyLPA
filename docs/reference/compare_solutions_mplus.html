@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.2</span>
       </span>
     </div>
 
@@ -88,6 +88,9 @@
     </li>
     <li>
       <a href="../articles/brief-overview.html">Brief overview of tidyLPA</a>
+    </li>
+    <li>
+      <a href="../articles/introduction-to-major-changes.html">Vignette Title</a>
     </li>
   </ul>
 </li>
@@ -128,7 +131,7 @@
   <span class='kw'>convergence_criterion</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>remove_tmp_files</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>save_models</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>return_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n_processors</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>return_stats_df</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>include_VLMR</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>include_BLRT</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>dir_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>dir_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>latent_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -204,6 +207,10 @@
     <tr>
       <th>dir_name</th>
       <td><p>character; name for directory .out files are saved to if save_models = TRUE; defaults to the present date</p></td>
+    </tr>
+    <tr>
+      <th>latent_vars</th>
+      <td><p>defaults to NULL; specification for the latent varibles as a list, i.e. list(beh = c(1, 2), cog = c(3, 4), aff = (5, 6)), where the integers represent the position of the variables passed to the function and how they correspond to the latent variables, which are named</p></td>
     </tr>
     </table>
     
