@@ -43,7 +43,7 @@ plot_profiles_mplus <- function(mplus_data = NULL,
                 the_means <-  m$sampstat$means %>%
                     dplyr::as_data_frame() %>%
                     tidyr::gather(key, intercept_mean) %>%
-                    dplyr::rename(param = key, ) %>%
+                    dplyr::rename(param = keyx) %>%
                     dplyr::mutate(paramHeader = "Intercepts")
 
                 d <- dplyr::left_join(d, the_means, by = c("paramHeader", "param"))
@@ -94,6 +94,10 @@ plot_profiles_mplus <- function(mplus_data = NULL,
                  ggplot2::scale_x_discrete(NULL) +
                  ggplot2::scale_fill_discrete(NULL) +
                  ggplot2::ylab("Estimate (raw score)")
+
+            if (to_center == TRUE) {
+                p + ylab("Centered values")
+            }
 
             return(p)
 
