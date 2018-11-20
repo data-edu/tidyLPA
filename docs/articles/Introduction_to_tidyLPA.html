@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3</span>
       </span>
     </div>
 
@@ -58,7 +58,7 @@
       <a href="../articles/brief-overview.html">Brief overview of tidyLPA</a>
     </li>
     <li>
-      <a href="../articles/introduction-to-major-changes.html">Vignette Title</a>
+      <a href="../articles/introduction-to-major-changes.html">Forthcoming major changes</a>
     </li>
   </ul>
 </li>
@@ -147,6 +147,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>Here is the simple example, using just a subset of the built-in <code>pisaUSA15</code> data, data from the 2015 PISA assessment (more details on the data set can be found <a href="https://github.com/jrosen48/pisaUSA15">here</a>). We load tidyLPA and create a subset of the <code>pisaUSA15</code> data for this example.</p>
 <p>We use variables from the PISA assessment for United States students’ broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyLPA)
+<span class="co">#&gt; Note that an update to tidyLPA is forthcoming; see vignette('introduction-to-major-changes') for details!</span>
 d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]</code></pre></div>
 <p>Note that you may wish to identify (and remove) univariate and multivariate outliers. See the functions <a href="https://gist.github.com/jrosen48/094eee8627be43b167c7c79388027174">here</a> for some exampels.</p>
 <p><strong>Comparing profile solutions</strong></p>
@@ -517,7 +518,7 @@ d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="
 
 
       <footer><div class="copyright">
-  <p>Developed by Joshua M Rosenberg.</p>
+  <p>Developed by Joshua M Rosenberg, Caspar van Lissa.</p>
 </div>
 
 <div class="pkgdown">

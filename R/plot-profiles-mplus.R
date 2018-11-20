@@ -42,8 +42,8 @@ plot_profiles_mplus <- function(mplus_data = NULL,
             if (to_center == TRUE) {
                 the_means <-  m$sampstat$means %>%
                     dplyr::as_data_frame() %>%
-                    tidyr::gather(key, intercept_mean) %>%
-                    dplyr::rename(param = keyx) %>%
+                    tidyr::gather("key", "intercept_mean") %>%
+                    dplyr::rename(param = .data$key) %>%
                     dplyr::mutate(paramHeader = "Intercepts")
 
                 d <- dplyr::left_join(d, the_means, by = c("paramHeader", "param"))
@@ -51,39 +51,39 @@ plot_profiles_mplus <- function(mplus_data = NULL,
             }
 
             overall_factor_loadings <- d %>%
-                dplyr::filter(str_detect(paramHeader, ".BY")) %>%
-                dplyr::filter(LatentClass == 1) %>%
-                dplyr::mutate(latent = str_sub(paramHeader, end = -4)) %>%
-                dplyr::select(latent, observed = param, loading = est, se)
+                dplyr::filter(str_detect(.data$paramHeader, ".BY")) %>%
+                dplyr::filter(.data$LatentClass == 1) %>%
+                dplyr::mutate(latent = stringr::str_sub(.data$paramHeader, end = -4)) %>%
+                dplyr::select(.data$latent, observed = .data$param, loading = .data$est, .data$se)
 
             means_zero_scalar <- d %>%
-                dplyr::filter(str_detect(paramHeader, "Means")) %>%
-                dplyr::filter(est == 0.000) %>%
-                dplyr::summarize(lc_means_zero = mean(as.integer(LatentClass))) %>%
+                dplyr::filter(str_detect(.data$paramHeader, "Means")) %>%
+                dplyr::filter(.data$est == 0.000) %>%
+                dplyr::summarize(lc_means_zero = mean(as.integer(.data$LatentClass))) %>%
                 dplyr::pull()
 
             d_sub <- d %>%
-                dplyr::filter(LatentClass == means_zero_scalar)
+                dplyr::filter(.data$LatentClass == .data$means_zero_scalar)
 
             one_class_indicators <- d_sub %>%
-                dplyr::filter(str_detect(paramHeader, "Intercepts")) %>%
-                dplyr::rename(observed = param, intercept = est) %>%
+                dplyr::filter(str_detect(.data$paramHeader, "Intercepts")) %>%
+                dplyr::rename(observed = .data$param, intercept = .data$est) %>%
                 dplyr::left_join(overall_factor_loadings, by = "observed") %>%
-                dplyr::mutate(value = intercept * loading) %>%
-                dplyr::select(observed, latent, intercept, loading, value, LatentClass)
+                dplyr::mutate(value = .data$intercept * .data$loading) %>%
+                dplyr::select(.data$observed, .data$latent, .data$intercept, .data$loading, .data$value, .data$LatentClass)
 
             one_class_raw_means <- one_class_indicators %>%
-                dplyr::group_by(latent) %>%
-                dplyr::summarize(zero_mean_est = mean(value))
+                dplyr::group_by(.data$latent) %>%
+                dplyr::summarize(zero_mean_est = mean(.data$value))
 
             to_plot <- d %>%
-                dplyr::filter(LatentClass != "Categorical.Latent.Variables") %>%
-                dplyr::filter(paramHeader == "Means") %>%
-                dplyr::filter(param != "C#1") %>%
-                dplyr::select(latent = param, est, intercept_se = se, LatentClass) %>%
+                dplyr::filter(.data$LatentClass != "Categorical.Latent.Variables") %>%
+                dplyr::filter(.data$paramHeader == "Means") %>%
+                dplyr::filter(.data$param != "C#1") %>%
+                dplyr::select(latent = .data$param, .data$est, intercept_se = .data$se, .data$LatentClass) %>%
                 dplyr::left_join(one_class_raw_means, by = "latent") %>%
-                dplyr::mutate(adjusted_est = est + zero_mean_est) %>%
-                dplyr::select(latent, est = adjusted_est, class = LatentClass)
+                dplyr::mutate(adjusted_est = .data$est + .data$zero_mean_est) %>%
+                dplyr::select(.data$latent, est = .data$adjusted_est, class = .data$LatentClass)
 
             p <- ggplot2::ggplot(to_plot, ggplot2::aes(x = .data$class,
                                                        y = .data$est,
