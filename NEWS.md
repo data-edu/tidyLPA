@@ -1,3 +1,9 @@
+# tidyLPA 0.2.3
+
+* update to plot_profiles_mplus()
+* add option to specify latent vars
+* add message/vignette for major changes to come
+
 # tidyLPA 0.2.1
 
 * minor changes and bug fixes 
