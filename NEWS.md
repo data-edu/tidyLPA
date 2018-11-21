@@ -4,6 +4,10 @@
 * add option to specify latent vars
 * add message/vignette for major changes to come
 
+# tidyLPA 0.2.2
+
+* patch minor issue with model specification
+
 # tidyLPA 0.2.1
 
 * minor changes and bug fixes 
