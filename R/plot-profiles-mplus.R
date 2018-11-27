@@ -63,7 +63,7 @@ plot_profiles_mplus <- function(mplus_data = NULL,
                 dplyr::pull()
 
             d_sub <- d %>%
-                dplyr::filter(.data$LatentClass == .data$means_zero_scalar)
+                dplyr::filter(.data$LatentClass == means_zero_scalar)
 
             one_class_indicators <- d_sub %>%
                 dplyr::filter(str_detect(.data$paramHeader, "Intercepts")) %>%
