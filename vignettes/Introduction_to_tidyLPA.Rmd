@@ -100,7 +100,9 @@ To use the function, we provide the name of the `data.frame`, `d`, first, follow
 compare_solutions(d, broad_interest, enjoyment, self_efficacy)
 ```
 
-While these BIC values are ambiguous for this data, Model 1 with 4 profiles is associated with the lowest BIC value (for this model. Many of the other models do not demonstrate clear patterns with respect to the number of profiles, and so this particular solution may be inspected in further detail. Here, we use the `estimate_profiles()` function. 
+While these BIC values are ambiguous for this data, consider that one solution exhibited the best fit and the analyst was interested in interrogating it further. 
+
+To do this, we use the `estimate_profiles()` function. 
 
 **Estimating parameters of profiles for a specific solution**
 

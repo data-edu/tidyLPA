@@ -54,7 +54,7 @@ compare_solutions <- function(df, ...,
     "Varying variances and varying covariances (model 6)"
   )
 
-  title <- titles[model]
+  titles_df <- data.frame(Model = model, titles)
 
   if (prior_control == FALSE) {
     if (statistic == "BIC") {
@@ -105,7 +105,8 @@ compare_solutions <- function(df, ...,
     mutate(
       "Model" = as.factor(.data$`Model`),
       val = abs(.data$val)
-    )
+    ) %>%
+    left_join(titles_df, by = "Model")
 
   if (return_table == TRUE) {
     return(to_plot)
@@ -116,14 +117,14 @@ compare_solutions <- function(df, ...,
   p <- ggplot(to_plot, aes_string(
     x = "n_profiles",
     y = "val",
-    color = "`Model`",
-    group = "`Model`"
+    color = "titles",
+    group = "titles"
   )) +
     geom_line(na.rm = TRUE) +
     geom_point(na.rm = TRUE) +
     ylab(paste0(statistic, " (smaller value is better)")) +
     theme_bw() +
-    ggplot2::scale_color_discrete("", labels = titles)
+    ggplot2::scale_color_discrete("") +
     xlab("Profiles")
 
   p
