@@ -2,7 +2,7 @@
 
 * minor bug fixes
 * last update before transitioning to development version presently at https://github.com/cjvanlissa/tidyLPA
-* thank you to Qingyao Z. and @frigoli for correcting an error in the vignette and to others who submitted issues/identified bugs®
+* thank you to Qingyao Z. and @frigoli for correcting an error in the vignette and to others who submitted issues/identified bugs
 
 # tidyLPA 0.2.3
 
