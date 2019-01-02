@@ -2,52 +2,82 @@
 % Please edit documentation in R/estimate-profiles.R
 \name{estimate_profiles}
 \alias{estimate_profiles}
-\title{Estimate parameters for profiles for a specific solution}
+\title{Estimate latent profiles}
 \usage{
-estimate_profiles(df, ..., n_profiles, variances = "equal",
-  covariances = "zero", to_return = "tibble", model = NULL,
-  center_raw_data = FALSE, scale_raw_data = FALSE,
-  return_posterior_probs = TRUE, return_orig_df = FALSE,
-  prior_control = FALSE, print_which_stats = "some")
+estimate_profiles(df, n_profiles, models = NULL, variances = "equal",
+  covariances = "zero", package = "mclust", ...)
 }
 \arguments{
-\item{df}{data.frame with two or more columns with continuous variables}
+\item{df}{data.frame of numeric data; continuous indicators are required for
+mixture modeling.}
 
-\item{...}{unquoted variable names separated by commas}
+\item{n_profiles}{Integer vector of the number of profiles (or mixture
+components) to be estimated.}
 
-\item{n_profiles}{the number of profiles (or mixture components) to be estimated}
+\item{models}{Integer vector. Set to \code{NULL} by default, and models are
+constructed from the \code{variances} and \code{covariances} arguments. See
+\code{Details} for the six models available in tidyLPA.}
 
-\item{variances}{how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)}
+\item{variances}{Character vector. Specifies which variance components to
+estimate. Defaults to "equal" (constrain variances across profiles); the
+other option is "varying" (estimate variances freely across profiles). Each
+element of this vector refers to one of the models you wish to run.}
 
-\item{covariances}{how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)}
+\item{covariances}{Character vector. Specifies which covariance components to
+estimate. Defaults to "zero" (do not estimate covariances; this corresponds
+to an assumption of conditional independence of the indicators); other
+options are "equal" (estimate covariances between items, constrained across
+profiles), and "varying" (free covariances across profiles).}
 
-\item{to_return}{character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned}
+\item{package}{Character. Which package to use; 'mclust' or
+'MplusAutomation' (requires Mplus to be installed). Default: 'mclust'.}
 
-\item{model}{which model to estimate (DEPRECATED; use variances and covariances instead)}
-
-\item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
-
-\item{scale_raw_data}{logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE}
-
-\item{return_posterior_probs}{TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE}
-
-\item{return_orig_df}{TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)}
-
-\item{prior_control}{whether to include a regularizing prior; defaults to false}
-
-\item{print_which_stats}{if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed}
+\item{...}{Additional arguments are passed to the estimating function; i.e.,
+\code{\link[mclust]{Mclust}}, or \code{\link[MplusAutomation]{mplusModeler}}.}
 }
 \value{
-a tibble with the data and profile/class assignment and the posterior probability for that profile; the output of this function can be passed to the plot_profiles() function to create a ggplot2 plot of the profiles. If the argument to_return = "mclust" is added to the function call) an mclust model object, which can be inspected or plotted with mclust functions.
+A list of class 'tidyLPA'.
 }
 \description{
-Estimate parameters for profiles for a specific solution
+Estimates latent profiles (finite mixture models) using the open
+source package \code{\link[mclust:Mclust]{mclust}}, or the commercial program
+Mplus (using the R-interface of
+\code{\link[MplusAutomation:mplusModeler]{MplusAutomation}}).
 }
 \details{
-Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
+Six models are currently available in tidyLPA, corresponding to the
+most common requirements. These are:
+\enumerate{
+\item Equal variances and covariances fixed to 0
+\item Varying variances and covariances fixed to 0
+\item Equal variances and equal covariances
+\item Varying variances and equal covariances
+\item Equal variances and varying covariances
+\item Varying variances and varying covariances
+}
+
+Two interfaces are available to estimate these models; specify their numbers
+in the \code{models} argument (e.g., \code{models = 1}, or
+\code{models = c(1, 2, 3)}), or specify the variances/covariances to be
+estimated (e.g.,: \code{variances = c("equal", "varying"), covariances =
+c("zero", "equal")}).
 }
 \examples{
-estimate_profiles(iris,
-    Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-    n_profiles = 3)
+\dontrun{
+# Example 1:
+iris \%>\%
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
+  estimate_profiles(df, 3)
+
+# Example 2:
+iris \%>\%
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
+  estimate_profiles(df, n_profiles = 1:4, models = 1:3)
+
+# Example 3:
+iris \%>\%
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
+  estimate_profiles(df, n_profiles = 1:4, variances = c("equal", "varying"),
+                    covariances = c("zero", "zero"))
+}
 }

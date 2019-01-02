@@ -2,42 +2,36 @@
 % Please edit documentation in R/compare-solutions.R
 \name{compare_solutions}
 \alias{compare_solutions}
-\title{Explore BIC for various models and numbers of profiles}
+\title{Compare latent profile models}
 \usage{
-compare_solutions(df, ..., n_profiles_range = 1:9,
-  models = list(c("equal", "zero"), c("varying", "zero"), c("equal",
-  "equal"), c("varying", "varying")), center_raw_data = FALSE,
-  scale_raw_data = FALSE, statistic = "BIC", return_table = FALSE,
-  prior_control = F)
+compare_solutions(x, statistics = "BIC")
 }
 \arguments{
-\item{df}{data.frame with two or more columns with continuous variables}
+\item{x}{An object of class 'tidyLPA'.}
 
-\item{...}{unquoted variable names separated by commas}
-
-\item{n_profiles_range}{a vector with the range of the number of mixture components to explore; defaults to 1 through 9 (1:9)}
-
-\item{models}{which models to include as a list of vectors; for each vector, the first value represents how the variances are estimated and the second value represents how the covariances are estimated; defaults to list(c("equal", "zero"), c("varying", "zero"), c("equal", "equal"), c("varying", "varying"))}
-
-\item{center_raw_data}{logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE}
-
-\item{scale_raw_data}{logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE}
-
-\item{statistic}{what statistic to plot; BIC or ICL are presently available as options}
-
-\item{return_table}{logical (TRUE or FALSE) for whether to return a table of the output instead of a plot; defaults to FALSE}
-
-\item{prior_control}{whether to include a regularizing prior; defaults to false}
+\item{statistics}{Character vector. Which statistics to examine for
+determining the optimal model. Defaults to 'BIC'.}
 }
 \value{
-a ggplot2 plot of the BIC values for the explored models
+An object of class 'bestLPA' and 'list', containing a tibble of fits
+'fits', a named vector 'best', indicating which model fit best according to
+each fit index, a numeric vector 'AHP' indicating the best model according to
+the \code{\link{AHP}}, an object 'plot' of class 'ggplot', and a numeric
+vector 'statistics' corresponding to argument of the same name.
 }
 \description{
-Explore BIC for various models and numbers of profiles
-}
-\details{
-Explore the BIC values of a range of models in terms of a) the structure of the residual covariance matrix and b) the number of mixture components (or profiles)
+Takes an object of class 'tidyLPA', containing multiple latent profile models
+with different number of classes or model specifications, and helps select
+the optimal number of classes and model specification.
 }
 \examples{
-compare_solutions(iris, Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+\dontrun{
+results <- iris \%>\%
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
+  estimate_profiles(1:3) \%>\%
+  compare_solutions()
+}
+}
+\author{
+Caspar J. van Lissa
 }

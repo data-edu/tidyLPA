@@ -1,171 +1,347 @@
-#' Estimate parameters for profiles for a specific solution
-#' @details Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix
-#' @param df data.frame with two or more columns with continuous variables
-#' @param ... unquoted variable names separated by commas
-#' @param n_profiles the number of profiles (or mixture components) to be estimated
-#' @param variances how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)
-#' @param covariances how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)
-#' @param model which model to estimate (DEPRECATED; use variances and covariances instead)
-#' @param center_raw_data logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE
-#' @param scale_raw_data logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE
-#' @param to_return character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned
-#' @param return_posterior_probs TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE
-#' @param return_orig_df TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)
-#' @param prior_control whether to include a regularizing prior; defaults to false
-#' @param print_which_stats if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed
-#' @inheritParams compare_solutions_mplus
+#' @title Estimate latent profiles
+#' @description Estimates latent profiles (finite mixture models) using the open
+#' source package \code{\link[mclust:Mclust]{mclust}}, or the commercial program
+#' Mplus (using the R-interface of
+#' \code{\link[MplusAutomation:mplusModeler]{MplusAutomation}}).
+#' @param df data.frame of numeric data; continuous indicators are required for
+#' mixture modeling.
+#' @param n_profiles Integer vector of the number of profiles (or mixture
+#' components) to be estimated.
+#' @param models Integer vector. Set to \code{NULL} by default, and models are
+#' constructed from the \code{variances} and \code{covariances} arguments. See
+#' \code{Details} for the six models available in tidyLPA.
+#' @param variances Character vector. Specifies which variance components to
+#' estimate. Defaults to "equal" (constrain variances across profiles); the
+#' other option is "varying" (estimate variances freely across profiles). Each
+#' element of this vector refers to one of the models you wish to run.
+#' @param covariances Character vector. Specifies which covariance components to
+#' estimate. Defaults to "zero" (do not estimate covariances; this corresponds
+#' to an assumption of conditional independence of the indicators); other
+#' options are "equal" (estimate covariances between items, constrained across
+#' profiles), and "varying" (free covariances across profiles).
+#' @param package Character. Which package to use; 'mclust' or
+#' 'MplusAutomation' (requires Mplus to be installed). Default: 'mclust'.
+#' @param ... Additional arguments are passed to the estimating function; i.e.,
+#' \code{\link[mclust]{Mclust}}, or \code{\link[MplusAutomation]{mplusModeler}}.
+#' @return A list of class 'tidyLPA'.
+#' @details Six models are currently available in tidyLPA, corresponding to the
+#' most common requirements. These are:
+#' \enumerate{
+#' \item Equal variances and covariances fixed to 0
+#' \item Varying variances and covariances fixed to 0
+#' \item Equal variances and equal covariances
+#' \item Varying variances and equal covariances
+#' \item Equal variances and varying covariances
+#' \item Varying variances and varying covariances
+#' }
+#'
+#' Two interfaces are available to estimate these models; specify their numbers
+#' in the \code{models} argument (e.g., \code{models = 1}, or
+#' \code{models = c(1, 2, 3)}), or specify the variances/covariances to be
+#' estimated (e.g.,: \code{variances = c("equal", "varying"), covariances =
+#' c("zero", "equal")}).
 #' @examples
-#' estimate_profiles(iris,
-#'     Sepal.Length, Sepal.Width, Petal.Length, Petal.Width,
-#'     n_profiles = 3)
-#' @return a tibble with the data and profile/class assignment and the posterior probability for that profile; the output of this function can be passed to the plot_profiles() function to create a ggplot2 plot of the profiles. If the argument to_return = "mclust" is added to the function call) an mclust model object, which can be inspected or plotted with mclust functions.
+#' \dontrun{
+#' # Example 1:
+#' iris %>%
+#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'   estimate_profiles(df, 3)
+#'
+#' # Example 2:
+#' iris %>%
+#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'   estimate_profiles(df, n_profiles = 1:4, models = 1:3)
+#'
+#' # Example 3:
+#' iris %>%
+#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'   estimate_profiles(df, n_profiles = 1:4, variances = c("equal", "varying"),
+#'                     covariances = c("zero", "zero"))
+#' }
 #' @export
-
 estimate_profiles <- function(df,
-                              ...,
                               n_profiles,
+                              models = NULL,
                               variances = "equal",
                               covariances = "zero",
-                              to_return = "tibble",
-                              model = NULL,
-                              center_raw_data = FALSE,
-                              scale_raw_data = FALSE,
-                              return_posterior_probs = TRUE,
-                              return_orig_df = FALSE,
-                              prior_control = FALSE,
-                              print_which_stats = "some") {
-  model_message <- c("The model command is deprecated in favor of the arguments for the variances and covariances. The models correspond to the following arguments for the variances and covariances:
-Model 1: variances = 'equal'; covariances = 'zero';
-Model 2: variances = 'equal'; covariances = 'equal';
-Model 3: variances = 'equal'; covariances = 'zero';
-Model 4: variances = 'varying'; covariances = 'equal' (Cannot be estimated without MPlus);
-Model 5: variances = 'equal'; covariances = 'varying' (Cannot be estimated without MPlus);
-Model 6: variances = 'varying'; covariances = 'varying';
-                     ")
+                              package = "mclust",
+                              ...) {
+    # Check deprecated arguments ----------------------------------------------
 
-  if (!is.null(model)) stop(model_message)
+    deprecated_arguments(c(
+        "model" = "Instead, use the argument 'models', or 'variances' and 'covariances'.",
+        "toreturn" = "A tibble is returned by default in the $df element of the returned output.",
+        "return_posterior_probs" = "Posterior probabilities are returned by default because they are important for evaluating number of classes and interpreting the solution.",
+        "return_original_df" = "A df is returned by default because it is useful for plotting.",
+        "prior_control" = "You can pass it directly to mclust() through the '...' argument.",
+        "print_which_stats" = "We now return the statistics considered to be best-practice for determining the number of classes.",
+        "center_raw_data" = "Before running estimate_profiles, run the function 'scale' on your data (see ?scale). Also look at the function 'poms' (percentage-of-maximum scoring) for a way to put your variables on an easily comparable scale.",
+        "scale_raw_data" = "Before running estimate_profiles, run the function 'scale' on your data (see ?scale). Also see ?poms (percentage-of-maximum scoring) for a way to put your variables on an easily comparable scale."
+    ))
 
-  if ("row_number" %in% names(df)) warning("existing variable in df 'row_number' will be overwritten")
+    check_dots <- match.call(expand.dots = FALSE)$`...`
+    if(any(names(df) %in% unlist(check_dots))){
+        warning("It looks like you are trying to extract some variables from df. This functionality is deprecated. Instead, estimate_profiles() always uses all variables in df. Select your variables prior to analysis, using either:\n  The dplyr function select(df, Your, Selected, Variable, Names), or\n  The base R function df[, c('Your', 'Selected', 'Variable', 'Names')]")
+    }
 
-  df <- mutate(df, row_number = 1:nrow(df))
 
-  d <- select_create_profiles(df, ...)
+    # Screen df ---------------------------------------------------------------
 
-  if (center_raw_data == T | scale_raw_data == T) {
-    d <- mutate_at(d,
-      vars(-row_number),
-      center_scale_function,
-      center_raw_data = center_raw_data,
-      scale_raw_data = scale_raw_data
-    )
-  }
+    var_types <- sapply(df, class)
+    if(any(!var_types %in% c("numeric", "integer"))){
+        stop("estimate_profiles can only handle numeric variables. The variables violating this restriction are: ", paste(names(df)[!var_types %in% c("numeric", "integer")], collapse = ", "))
+    }
 
-  if (variances == "equal" & covariances == "zero") {
-    model <- "EEI"
-  } else if (variances == "equal" & covariances == "equal") {
-    model <- "EEE"
-  } else if (variances == "varying" & covariances == "zero") {
-    model <- "VVI"
-  } else if (variances == "varying" & covariances == "varying") {
-    model <- "VVV"
-  } else if (model %in% c(
-    "E", "V", "EII", "VII", "EEI", "VEI", "EVI", "VVI",
-    "EEE", "EVE", "VEE", "VVE", "EEV", "VEV", "EVV",
-    "VVV", "X", "XII", "XXI", "XXX"
-  )) {
-    model <- model
-  } else {
-    stop("Model name is not correctly specified; see ?estimate_profiles for details on how to specify the model")
-  }
+    # Get model numbers --------------------------------------------------------
+    if (all(sapply(c(models, variances, covariances), is.null))) {
+        stop(
+            "Please specify either the 'models' argument, or the 'variances' and 'covariances' arguments."
+        )
+    }
+    if (!is.null(models)) {
+        message("The 'variances'/'covariances' arguments were ignored in favor of the 'model' argument.")
+        model_numbers <- models
+    } else {
+        if (length(variances) != length(covariances)) {
+            stop(
+                "The 'variances' and 'covariances' arguments must be vectors of equal length. Together, they describe the models to be run."
+            )
+        }
+        model_numbers <-
+            unname(
+                mapply(
+                    FUN = get_model_number,
+                    variances = variances,
+                    covariances = covariances
+                )
+            )
+    }
 
-  model_number <- case_when(
-    variances == "equal" & covariances == "zero" ~ 1,
-    variances == "varying" & covariances == "zero" ~ 2,
-    variances == "equal" & covariances == "equal" ~ 3,
-    variances == "varying" & covariances == "equal" ~ 4,
-    variances == "equal" & covariances == "varying" ~ 5,
-    variances == "varying" & covariances == "varying" ~ 6
-  )
 
-  titles <- c(
-    "Equal variances and covariances fixed to 0 (model 1)",
-    "Varying variances and covariances fixed to 0 (model 2)",
-    "Equal variances and equal covariances (model 3)",
-    # "Varying variances and equal covariances (model 4)", # only available in MPlus
-    # "Equal variances and varying covariances (model 5)", # only available in MPlus
-    "Varying variances and varying covariances (model 6)"
-  )
+    out <- switch(package,
+           "MplusAutomation" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...),
+           "mclust" = estimate_profiles_mclust(df, n_profiles, model_numbers, ...))
 
-  title <- titles[model_number]
-
-  d_model <- select(d, -row_number)
-
-  if (prior_control == FALSE) {
-    m <- Mclust(d_model,
-      G = n_profiles,
-      modelNames = model,
-      warn = FALSE,
-      verbose = FALSE
-    )
-  } else {
-    m <- Mclust(d_model,
-      G = n_profiles,
-      modelNames = model,
-      warn = FALSE,
-      verbose = FALSE,
-      prior = priorControl()
-    )
-  }
-
-  if (is.null(m)) stop("Model could not be estimated.")
-
-  message("Fit ", title, " model with ", n_profiles, " profiles.")
-
-  AIC <- (2 * m$df - 2 * m$loglik)
-  CAIC <- (((log(m$n) + 1) * m$df) - 2 * m$loglik)
-  SABIC <- (m$df * log((m$n + 2) / 24) - 2 * m$loglik)
-
-  posterior_prob <- 1 - round(m$uncertainty, 5)
-
-  if (tolower(print_which_stats) == "some") {
-    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-    message("Entropy is ", round(mean(posterior_prob), 3))
-  } else if (tolower(print_which_stats) == "all") {
-    message("LogLik is ", round(abs(as.vector(m$loglik)), 3))
-    message("AIC is ", round(abs(as.vector(AIC)), 3))
-    message("CAIC is ", round(abs(as.vector(CAIC)), 3))
-    message("BIC is ", round(abs(as.vector(m$BIC)), 3))
-    message("SABIC is ", round(abs(as.vector(SABIC)), 3))
-    message("ICL is ", round(abs(as.vector(icl(m))), 3))
-    message("Entropy is ", round(mean(posterior_prob), 3))
-  }
-
-  dff <- as.data.frame(bind_cols(d, profile = as.factor(m$classification)))
-
-  test <- nrow(count(dff, .data$profile))
-
-  if (test < n_profiles) warning("Some profiles are associated with no assignments. Interpret this solution with caution and consider other models.")
-
-  if (return_posterior_probs == TRUE) {
-    dff <- bind_cols(dff, posterior_prob = posterior_prob)
-  }
-
-  attributes(dff)$mclust_output <- m
-
-  if (return_orig_df == TRUE) {
-    to_join <- select(dff, .data$profile, .data$posterior_prob)
-    dff <- semi_join(df, dff, by = "row_number")
-    dff <- select(dff, -.data$row_number)
-    dff <- bind_cols(dff, to_join)
-  } else {
-    dff <- semi_join(dff, df, by = "row_number")
-    dff <- select(dff, -.data$row_number)
-  }
-
-  if (to_return == "tibble" | to_return == "data.frame") {
-    return(as_tibble(dff))
-  } else if (to_return == "mclust") {
-    return(attributes(dff)$mclust_output)
-  }
+    #if (is.null(m)) stop("Model could not be estimated.")
+    class(out) <- c("tidyLPA", "list")
+    out
 }
+
+
+#' @title Get estimates from objects generated by tidyLPA
+#' @description Get estimates from objects generated by tidyLPA.
+#' @param x An object generated by tidyLPA.
+#' @param ... further arguments to be passed to or from other methods. They are
+#' ignored in this function.
+#' @return A tibble.
+#' @author Caspar J. van Lissa
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  results <- iris %>%
+#'    select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'    estimate_profiles(3)
+#'  get_estimates(results)
+#'  get_estimates(results[[1]])
+#'  }
+#' }
+#' @export
+get_estimates <- function(x, ...) {
+    UseMethod("get_estimates", x)
+}
+
+#' @describeIn get_estimates Get estimates for a latent profile analysis with
+#' multiple numbers of classes and models, of class 'tidyLPA'.
+#' @export
+get_estimates.tidyLPA <- function(x, ...) {
+    as.tibble(do.call(rbind, lapply(x, `[[`, "estimates")))
+}
+
+#' @describeIn get_estimates Get estimates for a single latent profile analysis
+#' object, of class 'tidyProfile'.
+#' @export
+get_estimates.tidyProfile <- function(x, ...) {
+    x$estimates
+}
+
+#' @title Get fit indices from objects generated by tidyLPA
+#' @description Get fit indices from objects generated by tidyLPA.
+#' @param x An object generated by tidyLPA.
+#' @param ... further arguments to be passed to or from other methods. They are
+#' ignored in this function.
+#' @return A tibble.
+#' @author Caspar J. van Lissa
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  results <- iris %>%
+#'    select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'    estimate_profiles(3)
+#'  get_fit(results)
+#'  get_fit(results[[1]])
+#'  }
+#' }
+#' @export
+get_fit <- function(x, ...) {
+    UseMethod("get_fit", x)
+}
+
+#' @describeIn get_fit Get fit indices for a latent profile analysis with
+#' multiple numbers of classes and models, of class 'tidyLPA'.
+#' @export
+get_fit.tidyLPA <- function(x, ...) {
+    as.tibble(t(sapply(x, `[[`, "fit")))
+}
+
+#' @describeIn get_fit Get fit indices for a single latent profile analysis
+#' object, of class 'tidyProfile'.
+#' @export
+get_fit.tidyProfile <- function(x, ...) {
+    x$fit
+}
+
+#' @title Get data from objects generated by tidyLPA
+#' @description Get data from objects generated by tidyLPA.
+#' @param x An object generated by tidyLPA.
+#' @param ... further arguments to be passed to or from other methods. They are
+#' ignored in this function.
+#' @return A tibble.
+#' @author Caspar J. van Lissa
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  results <- iris %>%
+#'    select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'    estimate_profiles(3)
+#'  get_data(results)
+#'  get_data(results[[1]])
+#'  }
+#' }
+#' @export
+get_data <- function(x, ...) {
+    UseMethod("get_data", x)
+}
+
+#' @describeIn get_data Get data for a latent profile analysis with multiple
+#' numbers of classes and models, of class 'tidyLPA'.
+#' @export
+get_data.tidyLPA <- function(x, ...) {
+    out <- lapply(x, function(x) {
+        dt <- data.frame(x[["dff"]])
+        prob_names <- grep("^CPROB", names(dt), value = TRUE)
+        if (length(prob_names) > 1) {
+            reshape(
+                dt,
+                varying = c("Probability" = prob_names),
+                direction = "long",
+                v.names = "Probability",
+                timevar = "Class_prob",
+                sep = ""
+            )
+        } else {
+            cbind(
+                dt[, 1:(ncol(dt) - 2)],
+                Class = dt$Class,
+                Class_prob = dt$Class,
+                Probability = dt$CPROB1,
+                id = 1:nrow(dt)
+            )
+        }
+    })
+    as.tibble(do.call(rbind, out))
+}
+
+#' @describeIn get_data Get data for a single latent profile analysis object,
+#' of class 'tidyProfile'.
+#' @export
+get_data.tidyProfile <- function(x, ...) {
+    x[["dff"]]
+}
+
+#' @title Print tidyLPA
+#' @description S3 method 'print' for class 'tidyLPA'.
+#' @param x An object of class 'tidyLPA'.
+#' @param stats Character vector. Statistics to be printed. Default:
+#' c("AIC", "BIC", "Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_p"
+#' ).
+#' @param digits minimal number of significant digits, see
+#' \code{\link[base]{print.default}}.
+#' @param na.print a character string which is used to indicate NA values in
+#' printed output, or NULL. See \code{\link[base]{print.default}}.
+#' @param ... further arguments to be passed to or from other methods. They are
+#' ignored in this function.
+#' @author Caspar J. van Lissa
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  iris %>%
+#'    select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'    estimate_profiles(3)
+#'  }
+#' }
+#' @export
+print.tidyLPA <-
+    function(x,
+             stats = c("AIC",
+                       "BIC",
+                       "Entropy",
+                       "prob_min",
+                       "prob_max",
+                       "n_min",
+                       "n_max",
+                       "BLRT_p"),
+             digits = 3,
+             na.print = "",
+             ...) {
+        fits <- get_fit(x)
+        dat <- as.matrix(fits[, c("Model", "Classes", stats)])
+        miss_val <- is.na(dat)
+        #dat$Model <- paste("Model ", dat$Model)
+        #sprintf("%-9s", paste0(names(x$fitindices), ":")),
+        dat[, 3:ncol(dat)] <-
+            sapply(dat[, 3:ncol(dat)], formatC, digits = digits, format = "f")
+        dat[miss_val] <- ""
+        #rownames(dat) <- ""
+        cat("tidyLPA analysis using", paste0(gsub("^tidyProfile\\.", "", class(x[[1]])[1]), ":"), "\n\n")
+
+        prmatrix(dat,
+                 rowlab = rep("", nrow(dat)),
+                 quote = FALSE,
+                 na.print = na.print)
+    }
+
+#' @title Print tidyProfile
+#' @description S3 method 'print' for class 'tidyProfile'.
+#' @param x An object of class 'tidyProfile'.
+#' @param digits minimal number of significant digits, see
+#' \code{\link[base]{print.default}}.
+#' @param na.print a character string which is used to indicate NA values in
+#' printed output, or NULL. See \code{\link[base]{print.default}}.
+#' @param ... further arguments to be passed to or from other methods. They are
+#' ignored in this function.
+#' @author Caspar J. van Lissa
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  tmp <- iris %>%
+#'    select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'    estimate_profiles(3)
+#'  tmp[[2]]
+#'  }
+#' }
+#' @export
+print.tidyProfile <-
+    function(x,
+             digits = 3,
+             na.print = "",
+             ...) {
+        dat <- get_fit(x)
+        miss_val <- is.na(dat)
+        dat[3:length(dat)] <-
+            formatC(dat[3:length(dat)], digits = digits, format = "f")
+        dat[miss_val] <- ""
+
+        cat("tidyProfile estimated using", paste0(gsub("^tidyProfile\\.", "", class(x[[1]])[1]), ":"), "\n\n")
+        print(dat, quote = FALSE, na = na.print)
+
+    }

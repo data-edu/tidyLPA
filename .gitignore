@@ -5,3 +5,9 @@ notes.md
 .Ruserdata
 inst/doc
 iMplusThreadResults6.out
+binary/
+*.out
+*.inp
+*.dat
+*.txt
+*.log
