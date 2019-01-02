@@ -1,4 +1,5 @@
 # helpers.R
+<<<<<<< HEAD
 
 select_create_profiles <- function(df, ...) {
   if (!is.data.frame(df)) stop("df must be a data.frame (or tibble)")
@@ -200,3 +201,5 @@ extract_prob_stats <- function(class_num, obj) {
 .onAttach <- function(libname, pkgname) {
     packageStartupMessage("Note that an update to tidyLPA is forthcoming; see vignette('introduction-to-major-changes') for details!")
 }
+=======
+>>>>>>> ca12dc048a1f699748149baabb5d1be33e1365bc

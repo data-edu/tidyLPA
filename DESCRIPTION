@@ -21,25 +21,16 @@ BugReports: https://github.com/jrosen48/tidyLPA/issues
 Depends: 
     R (>= 2.10)
 Imports: 
-    dplyr,
-    forcats,
-    ggplot2,
-    magrittr,
     mclust,
-    purrr,
-    readr,
-    rlang,
-    stringr,
-    tibble,
-    tidyr
-Suggests: 
-    covr,
-    devtools,
-    knitr,
     MplusAutomation,
+    ggplot2,
+    tibble,
+    methods,
+    dplyr
+Suggests: 
+    knitr,
     parallel,
-    rmarkdown,
-    roxygen2,
+    missForest,
     testthat
 VignetteBuilder: knitr
 Encoding: UTF-8

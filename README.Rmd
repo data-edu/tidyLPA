@@ -43,30 +43,30 @@ devtools::install_github("jrosen48/tidyLPA")
 
 Here is a brief example using the built-in `pisaUSA15` data set and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See `?estimate_profiles` for more details.
 
+In these examples, we pass the results of one function to the next by *piping* (using the `%>%` operator, loaded from the `dplyr` package). We pass the data to a function that selects relevant variables, and then to `estimate_profiles`:
+
 ```{r, message = F}
 library(tidyLPA)
+library(dplyr, warn.conflicts = FALSE)
 ```
 
 ```{r}
-d <- pisaUSA15[1:100, ]
-
-estimate_profiles(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 3)
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    estimate_profiles(3)
 ```
 
-The version of this function that uses MPlus is simple `estimate_profiles_mplus()` that is called in the same way (though some particular details can be changed with arguments specific to either `estimate_profiles` or to `estimate_profiles_mplus()`).
+A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.
 
-See the output is simply a data frame with the profile (and its posterior probability) and the variables used to create the profiles (this is the "tidy" part, in that the function takes and returns a data frame).
+If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument `package = "MplusAutomation`.
 
-We can plot the profiles with by *piping* (using the `%>%` operator, loaded from the `dplyr` package) the output to `plot_profiles()`.
+We can plot the profiles by piping the output to `plot_profiles()`.
+
 
 ```{r, message = FALSE}
-library(dplyr, warn.conflicts = FALSE)
-
-estimate_profiles(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 3) %>% 
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    estimate_profiles(3) %>% 
     plot_profiles(to_center = TRUE)
 ```
 
@@ -79,7 +79,7 @@ The models are specified by passing arguments to the `variance` and `covariance`
 - `variances`: "equal" and "zero"
 - `covariances`: "varying", "equal", and "zero"
 
-If no values are specified for these, then the equal variances and covariances fixed to 0 model is specified by default.
+If no values are specified for these, then the variances are constrained to be equal across classes, and covariances are fixed to 0 (conditional independence of the indicators).
 
 These arguments allow for four models to be specified:
 
@@ -88,27 +88,31 @@ These arguments allow for four models to be specified:
 * Equal variances and equal covariances (Model 3)
 * Varying variances and varying covariances (Model 6)
 
-Two additional models (Models 4 and 5) can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
+Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
 
 Here is an example of specifying a model with varying variances and covariances (Model 6; not run here): 
 
 ```{r, eval = F}
-estimate_profiles(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  variances = "varying",
-                  covariances = "varying",
-                  n_profiles = 3)
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    estimate_profiles(3, 
+                      variances = "varying",
+                      covariances = "varying")
 ```
 
 ## Comparing a wide range of solutions
 
-The function `compare_solutions()` estimates models with varying numbers of profiles and model specifications:
+The function `compare_solutions()` compares the fit of several estimated models,
+with varying numbers of profiles and model specifications:
 
 ```{r, eval = FALSE}
-compare_solutions(d, broad_interest, enjoyment, self_efficacy)
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    estimate_profiles(1:3, 
+                      variances = c("equal", "varying"),
+                      covariances = c("zero", "varying")) %>%
+    compare_solutions(statistics = c("AIC", "BIC"))
 ```
-
-The version that uses MPlus - `compare_solutions_mplus()` - is called in the same way; like for `estimate_profiles()` and `estimate_profiles_mplus()`, some particular details can be specified with arguments specific to `compare_solutions()` or `compare_solutions_mplus()`.
 
 ## More information
 
