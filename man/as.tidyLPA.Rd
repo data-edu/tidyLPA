@@ -20,6 +20,7 @@ converts it to an object of class \code{tidyLPA}.
 }
 \examples{
 \dontrun{
+library(MplusAutomation)
 createMixtures(classes = 1:4, filename_stem = "cars",
                model_overall = "wt ON drat;",
                model_class_specific = "wt;  qsec;",

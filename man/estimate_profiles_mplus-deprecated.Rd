@@ -4,31 +4,9 @@
 \alias{estimate_profiles_mplus-deprecated}
 \title{Estimate parameters for profiles for a specific solution (requires purchasing and installing MPlus to use)}
 \usage{
-<<<<<<< HEAD:man/estimate_profiles_mplus.Rd
-estimate_profiles_mplus(df, ..., latent_vars = NULL, n_profiles,
-  idvar = NULL, data_filename = "d.dat", script_filename = "i.inp",
-  output_filename = "i.out", savedata_filename = "d-mod.dat",
-  variances = "equal", covariances = "zero", model = NULL,
-  starts = c(100, 10), m_iterations = 500, st_iterations = 20,
-  convergence_criterion = 1e-06, remove_tmp_files = TRUE,
-  print_input_file = FALSE, return_save_data = TRUE, optseed = NULL,
-  n_processors = 1, cluster_ID = NULL, include_VLMR = TRUE,
-  include_BLRT = FALSE, return_all_stats = FALSE)
-}
-\arguments{
-\item{df}{data.frame with two or more columns with continuous variables}
-
-\item{...}{unquoted variable names separated by commas}
-
-\item{latent_vars}{defaults to NULL; specification for the latent varibles as a list, i.e. list(beh = c(1, 2), cog = c(3, 4), aff = (5, 6)), where the integers represent the position of the variables passed to the function and how they correspond to the latent variables, which are named}
-
-\item{n_profiles}{the number of profiles (or mixture components) to be estimated}
-
-=======
 estimate_profiles_mplus(...)
 }
 \arguments{
->>>>>>> ca12dc048a1f699748149baabb5d1be33e1365bc:man/estimate_profiles_mplus-deprecated.Rd
 \item{idvar}{optional name of the column to be used as the ID variable (should be supplied as a string). Defaults to \code{NULL}, in which case row numbers will be used. Note the ID can be numeric or string, but must be unique.}
 
 \item{data_filename}{name of data file to prepare; defaults to d.dat}

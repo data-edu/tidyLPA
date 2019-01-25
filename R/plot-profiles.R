@@ -3,10 +3,10 @@
 plotMixtures <- function(x, variables = NULL, ci = .95, sd = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
     deprecated_arguments(
         c("to_center" = "plotMixtures simply displays the data as analyzed. Center data prior to analysis.",
-        "to_scale" = "plotMixtures simply displays the data as analyzed. Scale data prior to analysis.",
-        "plot_what" = "tidyLPA objects now contain all information required for plotting.",
-        "plot_error_bars" = "Use the 'ci' argument to specify the desired confidence intervall, or set to NULL to omit error bars.",
-        "plot_rawdata" = "Renamed to rawdata."))
+          "to_scale" = "plotMixtures simply displays the data as analyzed. Scale data prior to analysis.",
+          "plot_what" = "tidyLPA objects now contain all information required for plotting.",
+          "plot_error_bars" = "Use the 'ci' argument to specify the desired confidence intervall, or set to NULL to omit error bars.",
+          "plot_rawdata" = "Renamed to rawdata."))
 
     UseMethod("plotMixtures", x)
 }
@@ -180,7 +180,7 @@ plotMixtures.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, rawda
         }
 
         df_raw$Variable <- ordered(df_raw$Variable,
-                                    levels = levels(df_plot$Variable))
+                                   levels = levels(df_plot$Variable))
         names(df_raw)[c(1,2)] <- c("Model", "Classes")
     } else {
         df_raw <- NULL

@@ -1,4 +1,4 @@
-citHeader("To cite lubridate in publications use:")
+citHeader("To cite tidyLPA in publications use:")
 
 citEntry(entry = "Article",
          title        = "tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software",

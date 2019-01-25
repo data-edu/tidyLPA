@@ -1,13 +1,13 @@
 Type: Package
 Package: tidyLPA
 Title: Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software
-Version: 0.2.4
+Version: 1.0.0
 Authors@R: c(
     person(c("Joshua", "M"), "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com"),
+        person(c("Caspar"), "van Lissa", role = "aut", email = "c.j.vanlissa@uu.nl"),
     person(c("Jennifer", "A"), "Schmidt", role = "ctb", email = "jaschmid@msu.edu"),
     person(c("Patrick", "N"), "Beymer", role = "ctb", email = "beymerpa@msu.edu"),
     person(c("Daniel"), "Anderson", role = "ctb", email = "daniela@uoregon.edu"),
-    person(c("Caspar"), "van Lissa", role = "aut", email = "c.j.vanlissa@uu.nl"),
     person(c("Matthew", "J."), "Schell", role = "ctb", email = "schellma@msu.edu")
     )
 Description: An interface to the 'mclust' package to easily carry out latent profile
@@ -31,7 +31,8 @@ Suggests:
     knitr,
     parallel,
     missForest,
-    testthat
+    testthat,
+    rmarkdown
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true

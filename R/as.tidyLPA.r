@@ -8,6 +8,7 @@
 #' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
+#' library(MplusAutomation)
 #' createMixtures(classes = 1:4, filename_stem = "cars",
 #'                model_overall = "wt ON drat;",
 #'                model_class_specific = "wt;  qsec;",
