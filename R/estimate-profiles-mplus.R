@@ -16,17 +16,9 @@
 #' @param keepfiles Logical. Whether to retain the files created by
 #' \code{mplusModeler} (e.g., for future reference, or to manually edit them).
 #' @author Caspar J. van Lissa
-#' @examples
-#' \dontrun{
-#' results <- iris %>%
-#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-#'   estimate_profiles_mplus(n_profiles = 3, model_numbers = 1,
-#'   package = "MplusAutomation")
-#' }
 #' @return An object of class 'tidyLPA' and 'list'
 #' @importFrom methods hasArg
 #' @import MplusAutomation
-
 estimate_profiles_mplus2 <-
     function(df, n_profiles, model_numbers, ..., keepfiles = FALSE) {
         arg_list <- as.list(match.call())
@@ -227,7 +219,7 @@ estimate_profiles_mplus2 <-
                 out$dff <- as.tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
                 #out$dff <- as.tibble(dff[, match(c("model_number", "classes_number", param_names, "Class", "Class_prob", "Probability", "id"), names(dff))])
 
-# Check for warnings ------------------------------------------------------
+                # Check for warnings ------------------------------------------------------
                 warnings <- NULL
                 warnings <- c(warnings, sapply(out$model$warnings, paste, collapse = " "))
                 if(this_model %in% c(1, 2)){

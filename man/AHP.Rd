@@ -41,12 +41,10 @@ recover the correct number of clusters (Akogul & Erisoglu, 2016).
 }
 }
 \examples{
-\dontrun{
 iris[,1:4] \%>\%
   estimate_profiles(1:4) \%>\%
   get_fit() \%>\%
   AHP()
-}
 }
 \author{
 Caspar J. van Lissa

@@ -1,3 +1,6 @@
+^doc$
+^Meta$
+^man-roxygen$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^CONDUCT\.md$
@@ -10,8 +13,6 @@
 ^CONTRIBUTING\.md$
 ^codecov\.yml$
 ^CRAN-RELEASE$
-^introduction-to-tidyLPA.pdf$
-iMplusThreadResults6.out
 ^SUPPORT\.md$
 .bib
 ^paper.md$
@@ -19,3 +20,7 @@ iMplusThreadResults6.out
 ^paper.pdf$
 ^paper.docx$
 ^notes.md$
+^.*\.out$
+^.*\.inp$
+^.*\.dat$
+^.*\.log$

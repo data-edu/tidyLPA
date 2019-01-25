@@ -1,0 +1,89 @@
+---
+title: "Forthcoming major changes"
+author: "Caspar van Lissa"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Forthcoming major changes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# tidyLPA update
+
+tidyLPA has received a major update. Your old function calls might not work as expected anymore. The new version of tidyLPA is based on the following philosophy:
+
+The goal of tidyLPA is to make latent profile analysis easily accessible to a broad audience, by means of a user-friendly interface.
+
+tidyLPA fits easily into a 'tidyverse' workflow.
+
+tidyLPA offers parallel functionality for the open-source package Mclust, and the commercial package Mplus.
+
+The focus on making LPA accessible, and offering a parallel workflow across Mclust and Mplus, has necessitated some simplification of the existing functions. Advanced options are still available, but require slightly more work on the user's part. The upside of this is that, for most users, the tidyLPA workflow and documentation are substantially simplified.
+
+The best way to understand the changes to tidyLPA is by explaining the new workflow.
+
+## New workflow:
+
+* estimate_profiles() now estimates any number of profiles, for any number of models, using any algorithm. It has a simplified user interface. This makes it a more general function, of which the former version (which could only estimate one number of profiles for one model) is a special, restricted case.
+
+* compare_solutions() now compares solutions estimated by estimate_profiles(), suggesting the optimal model and number of classes. This replaces its dual role of estimating AND comparing solutions.
+
+## Example analysis:
+
+A full analysis might look like this:
+
+```{r, eval = FALSE}
+full_df %>%
+    select(Your, Selected, Variable, Names) %>%
+    estimate_profiles(n_profiles = 1:6, models = 1:3) ->
+    results
+
+compare_solutions(results)
+
+plot_profiles(results)
+```
+
+## New functionality:
+
+* `compare_solutions()` gives you the same set of fit indices for Mclust and Mplus. It provides a broader range of fit indices than before
+
+* `compare_solutions()` calls `AHP()``, a function which uses the Automatic Hierarchical Process to determine the optimal number of classes, based on several reputable fit indices
+
+* `plot_profiles()` now incorporates best practices for plotting latent profile analyses: Visualizing cluster centroids, standard errors, cluster variances, and classification uncertainty by means of weighted raw data
+
+* `impute_missing()` offers two easy-to-use single imputation options, for use with the Mclust package (which does not natively handle missing data). Mplus handles partially missing data by default.
+
+## Deprecated functionality:
+
+* `compare_solutions()` no longer estimates profiles. It merely compares solutions estimated by `estimate_profiles()`
+
+* all Mplus-specific functions are deprecated. `estimate_profiles()` offers a unified interface to Mclust and Mplus. These Mplus-specific functions are deprecated:
+
+    * `estimate_profiles_mplus()`
+        * `compare_profiles_mplus()`
+        * `plot_profiles_mplus()`
+
+* estimate_profiles and compare_solutions no longer select variables, passed as unquoted variable names, from 'df'. Instead, they use all variables in df. To select variables prior to analysis, use:
+
+    * The dplyr function select(df, Your, Selected, Variable, Names)
+        * The base R function df[, c("Your", "Selected", "Variable", "Names")]
+
+* estimate_profiles and compare_solutions no longer center and scale the raw data. To center and scale variables prior to analysis, use scale(df, center = TRUE, scale = TRUE)
+
+* estimate_profiles no longer accepts arguments specific to Mplus or Mclust. Instead, you can specify additional arguments directly to the core functions mplusModeler() and Mclust(). See the help file for these functions for more details. Deprecated arguments, whose functionality is supplanted by passing arguments directly to these core functions, are:
+
+For Mclust:
+              
+    * prior_control
+
+For Mplus:
+
+    * starts
+    * m_iterations
+    * st_iterations
+    * convergence_criterion
+    * optseed
+    * cluster_ID
+    * include_VLMR
+    * include_BLRT (but BLRT is returned by default now)

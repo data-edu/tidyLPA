@@ -2,10 +2,21 @@
 % Please edit documentation in R/plot-profiles.R
 \name{plot_profiles}
 \alias{plot_profiles}
+\alias{plot_profiles.default}
+\alias{plot_profiles.tidyLPA}
 \title{Create latent profile plots}
 \usage{
 plot_profiles(x, variables = NULL, ci = 0.95, sd = TRUE,
-  rawdata = TRUE, bw = FALSE, alpha_range = c(0, 0.1), ...)
+  add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0,
+  0.1), ...)
+
+\method{plot_profiles}{default}(x, variables = NULL, ci = 0.95,
+  sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE,
+  alpha_range = c(0, 0.1), ...)
+
+\method{plot_profiles}{tidyLPA}(x, variables = NULL, ci = 0.95,
+  sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE,
+  alpha_range = c(0, 0.1), ...)
 }
 \arguments{
 \item{x}{An object containing the results of a mixture model analysis.}
@@ -16,8 +27,12 @@ plotted (optional).}
 \item{ci}{Numeric. What confidence interval should the errorbars span?
 Defaults to a 95\% confidence interval. Set to NULL to remove errorbars.}
 
-\item{sd}{Logica. Whether to display a box encompassing +/- 1SD Defaults to
+\item{sd}{Logical. Whether to display a box encompassing +/- 1SD Defaults to
 TRUE.}
+
+\item{add_line}{Logical. Whether to display a line, connecting cluster centroids
+belonging to the same latent class. Defaults to TRUE. Note that the
+information conveyed by such a line is limited.}
 
 \item{rawdata}{Should raw data be plotted in the background? Setting this to
 TRUE might result in long plotting times.}
@@ -45,20 +60,20 @@ probability, such that each datapoint is most clearly visible for the class
 it is most likely to be a member of.
 }
 }
-\section{plot_profiles}{
-
-\code{plot_profiles} is an alias for the S3 generic method
-\code{\link{plotMixtures}}.
-}
-
 \examples{
-\dontrun{
+# Example 1
 mtcars \%>\%
-  select(wt, qsec, drat) \%>\%
+  subset(select = c("wt", "qsec", "drat")) \%>\%
   poms \%>\%
   estimate_profiles(1:4) \%>\%
-  plotMixtures
-}
+  plot_profiles(add_line = F)
+
+# Example 2
+iris \%>\%
+  subset(select = c("Sepal.Length", "Sepal.Width",
+    "Petal.Length", "Petal.Width")) \%>\%
+  estimate_profiles(n_profiles = 1:4, models = 1:3) \%>\%
+  plot_profiles
 }
 \author{
 Caspar J. van Lissa

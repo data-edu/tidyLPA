@@ -15,8 +15,11 @@
 #' plotted (optional).
 #' @param ci Numeric. What confidence interval should the errorbars span?
 #' Defaults to a 95\% confidence interval. Set to NULL to remove errorbars.
-#' @param sd Logica. Whether to display a box encompassing +/- 1SD Defaults to
+#' @param sd Logical. Whether to display a box encompassing +/- 1SD Defaults to
 #' TRUE.
+#' @param add_line Logical. Whether to display a line, connecting cluster centroids
+#' belonging to the same latent class. Defaults to TRUE. Note that the
+#' information conveyed by such a line is limited.
 #' @param rawdata Should raw data be plotted in the background? Setting this to
 #' TRUE might result in long plotting times.
 #' @param bw Logical. Should the plot be black and white (for print), or color?
@@ -28,10 +31,16 @@
 #' @author Caspar J. van Lissa
 #' @keywords plot mixture
 #' @examples
-#' \dontrun{
+#' # Example 1
 #' mtcars %>%
-#'   select(wt, qsec, drat) %>%
+#'   subset(select = c("wt", "qsec", "drat")) %>%
 #'   poms %>%
 #'   estimate_profiles(1:4) %>%
-#'   plotMixtures
-#' }
+#'   plot_profiles(add_line = F)
+#'
+#' # Example 2
+#' iris %>%
+#'   subset(select = c("Sepal.Length", "Sepal.Width",
+#'     "Petal.Length", "Petal.Width")) %>%
+#'   estimate_profiles(n_profiles = 1:4, models = 1:3) %>%
+#'   plot_profiles

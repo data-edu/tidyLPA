@@ -8,6 +8,7 @@
 #' @author Caspar J. van Lissa
 #' @examples
 #' \dontrun{
+#' library(MplusAutomation)
 #' createMixtures(classes = 1:4, filename_stem = "cars",
 #'                model_overall = "wt ON drat;",
 #'                model_class_specific = "wt;  qsec;",
@@ -16,10 +17,13 @@
 #'                OUTPUT = "standardized")
 #' runModels(replaceOutfile = "modifiedDate")
 #' cars_results <- readModels(filefilter = "cars")
-#' as.tidyLPA(cars_results)
+#' results_tidyLPA <- as.tidyLPA(cars_results)
+#' results_tidyLPA
+#' plot(results_tidyLPA)
+#' plot_profiles(results_tidyLPA) # Throws error; missing column 'Classes'
 #' }
 #' @rdname as.tidyLPA
-#' @export
+#' @keywords internal
 
 as.tidyLPA <- function(modelList) {
     # Check if mplusModel is of class mplus.model
@@ -44,7 +48,7 @@ as.tidyLPA <- function(modelList) {
         })
     if (!any(mixtures))
         stop(
-            "plotMixtures requires a list of mixture models, or one mixture model, as its first argument."
+            "plot_profiles requires a list of mixture models, or one mixture model, as its first argument."
         )
     if (any(!mixtures))
         warning(

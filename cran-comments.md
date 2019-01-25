@@ -1,6 +1,4 @@
-# Note regarding submission 0 days after last submission
-
-* I sincerely apologize for an oversight in not submitting the correct version of the package to CRAN - noticing that is the reason for the submission 0 days after the last submission
+# CRAN comments
 
 ## Test environments
 * local OS X install, R 3.5.1

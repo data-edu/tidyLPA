@@ -124,6 +124,8 @@ More information
 
 To learn more:
 
+- Read the paper on tidyLPA in the [*Journal of Open Source Software*](http://joss.theoj.org/papers/10.21105/joss.00978) by Rosenberg, Beymer, Anderson, and Schmidt (2018)
+
 -   Browse the tidyLPA [website](https://jrosen48.github.io/tidyLPA/) (especially check out the Reference page to see more about other functions)
 
 -   *Read the Introduction to tidyLPA* [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html), which has much more information on the models that can be specified with tidyLPA and on additional functionality

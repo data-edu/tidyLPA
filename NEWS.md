@@ -1,3 +1,19 @@
+# tidyLPA 0.2.4
+
+* minor bug fixes
+* last update before transitioning to development version presently at https://github.com/cjvanlissa/tidyLPA
+* thank you to Qingyao Z. and @frigoli for correcting an error in the vignette and to others who submitted issues/identified bugs
+
+# tidyLPA 0.2.3
+
+* update to plot_profiles_mplus()
+* add option to specify latent vars
+* add message/vignette for major changes to come
+
+# tidyLPA 0.2.2
+
+* patch minor issue with model specification
+
 # tidyLPA 0.2.1
 
 * minor changes and bug fixes 
