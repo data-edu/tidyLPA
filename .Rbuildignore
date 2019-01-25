@@ -20,3 +20,7 @@
 ^paper.pdf$
 ^paper.docx$
 ^notes.md$
+^.*\.out$
+^.*\.inp$
+^.*\.dat$
+^.*\.log$

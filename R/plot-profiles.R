@@ -1,28 +1,21 @@
 #' @template template-plot-profiles
+#' @rdname plot_profiles
 #' @export
-plotMixtures <- function(x, variables = NULL, ci = .95, sd = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
+plot_profiles <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
     deprecated_arguments(
-        c("to_center" = "plotMixtures simply displays the data as analyzed. Center data prior to analysis.",
-          "to_scale" = "plotMixtures simply displays the data as analyzed. Scale data prior to analysis.",
+        c("to_center" = "plot_profiles simply displays the data as analyzed. Center data prior to analysis.",
+          "to_scale" = "plot_profiles simply displays the data as analyzed. Scale data prior to analysis.",
           "plot_what" = "tidyLPA objects now contain all information required for plotting.",
           "plot_error_bars" = "Use the 'ci' argument to specify the desired confidence intervall, or set to NULL to omit error bars.",
           "plot_rawdata" = "Renamed to rawdata."))
 
-    UseMethod("plotMixtures", x)
+    UseMethod("plot_profiles", x)
 }
 
-#' @template template-plot-profiles
-#' @section plot_profiles:
-#' \code{plot_profiles} is an alias for the S3 generic method
-#' \code{\link{plotMixtures}}.
 #' @rdname plot_profiles
-#' @export
-plot_profiles <- plotMixtures
-
-#' @rdname plotMixtures
 #' @import ggplot2
 #' @export
-plotMixtures.default <- function(x, variables = NULL, ci = .95, sd = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
+plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
     df_plot <- x[["df_plot"]]
     df_raw <- x[["df_raw"]]
 
@@ -66,9 +59,10 @@ plotMixtures.default <- function(x, variables = NULL, ci = .95, sd = TRUE, rawda
             ) +
             scale_alpha_continuous(range = alpha_range, guide = FALSE)
     }
-    classplot <- classplot + geom_point(data = df_plot) +
-        geom_line(data = df_plot) +
-        theme_bw()
+    classplot <- classplot + geom_point(data = df_plot) + theme_bw()
+
+    if(add_line) classplot <- classplot + geom_line(data = df_plot)
+
     # Add errorbars
     if (!is.null(ci)) {
         ci <- qnorm(.5 * (1 - ci))
@@ -99,6 +93,7 @@ plotMixtures.default <- function(x, variables = NULL, ci = .95, sd = TRUE, rawda
                         ymax = "sd_ymax",
                         linetype = "Class"
                     ),
+                    colour = "black",
                     fill=ggplot2::alpha("grey", 0),
                     inherit.aes=FALSE
                 )
@@ -119,24 +114,25 @@ plotMixtures.default <- function(x, variables = NULL, ci = .95, sd = TRUE, rawda
         }
 
     }
+
     if (length(unique(df_plot$Classes)) > 1) {
         if(length(unique(df_plot$Model)) > 1){
-            classplot <- classplot + facet_wrap(Model ~ Classes)
+            classplot <- classplot + facet_grid(Model ~ Classes, labeller = label_both)
         } else {
-            classplot <- classplot + facet_wrap(~ Classes)
+            classplot <- classplot + facet_wrap(~ Classes, labeller = label_both)
         }
     } else {
         if(length(unique(df_plot$Model)) > 1){
-            classplot <- classplot + facet_wrap(~ Model)
+            classplot <- classplot + facet_wrap(~ Model, labeller = label_both)
         }
     }
     suppressWarnings(print(classplot))
     return(invisible(classplot))
 }
 
-#' @rdname plotMixtures
+#' @rdname plot_profiles
 #' @export
-plotMixtures.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
+plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
     Args <- as.list(match.call()[-1])
 
     df_plot <- get_estimates(x)
@@ -188,5 +184,5 @@ plotMixtures.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, rawda
 
     Args[["x"]] <- list(df_plot = df_plot, df_raw = df_raw)
 
-    do.call(plotMixtures, Args)
+    do.call(plot_profiles, Args)
 }

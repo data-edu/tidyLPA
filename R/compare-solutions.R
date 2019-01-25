@@ -13,12 +13,11 @@
 #' vector 'statistics' corresponding to argument of the same name.
 #' @author Caspar J. van Lissa
 #' @examples
-#' \dontrun{
 #' results <- iris %>%
-#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'   subset(select = c("Sepal.Length", "Sepal.Width",
+#'     "Petal.Length", "Petal.Width")) %>%
 #'   estimate_profiles(1:3) %>%
 #'   compare_solutions()
-#' }
 #' @export
 compare_solutions <- function(x, statistics = "BIC") {
     deprecated_arguments(c(
@@ -68,7 +67,7 @@ compare_solutions <- function(x, statistics = "BIC") {
 
     fits$Warnings <- ifelse(sapply(warnings, is.null), NA, "Warnings")
     if(any(!is.na(fits$Warnings))){
-        warning("One or more analyses resulted in warnings! Examine these analyses carefully.")
+        warning("\nOne or more analyses resulted in warnings! Examine these analyses carefully.")
     }
 
     out <- list(fits = fits, best = best_model, AHP = AHP_best, statistics = statistics, warnings = warnings)

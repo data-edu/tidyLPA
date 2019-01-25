@@ -5,7 +5,6 @@ notes.md
 .Rhistory
 .RData
 .Ruserdata
-inst/doc
 iMplusThreadResults6.out
 binary/
 *.out

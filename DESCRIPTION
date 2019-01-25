@@ -10,6 +10,7 @@ Authors@R: c(
     person(c("Daniel"), "Anderson", role = "ctb", email = "daniela@uoregon.edu"),
     person(c("Matthew", "J."), "Schell", role = "ctb", email = "schellma@msu.edu")
     )
+Maintainer: Joshua M Rosenberg <jmichaelrosenberg@gmail.com>
 Description: An interface to the 'mclust' package to easily carry out latent profile
     analysis ("LPA"). Provides functionality to estimate commonly-specified models.
     Follows a tidy approach, in that output is in the form of a data frame that can
@@ -32,7 +33,8 @@ Suggests:
     parallel,
     missForest,
     testthat,
-    rmarkdown
+    rmarkdown,
+    mix
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
