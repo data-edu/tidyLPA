@@ -128,12 +128,10 @@ priority_vector <- function(m){
 #' }
 #' @author Caspar J. van Lissa
 #' @examples
-#' \dontrun{
 #' iris[,1:4] %>%
 #'   estimate_profiles(1:4) %>%
 #'   get_fit() %>%
 #'   AHP()
-#' }
 #' @export
 AHP <- function(fitindices, relative_importance = c(AIC = 0.2323, AWE = 0.1129, BIC = 0.2525, CLC = 0.0922, KIC = 0.3101)){
     # Standardize

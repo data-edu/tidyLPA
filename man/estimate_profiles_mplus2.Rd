@@ -33,14 +33,6 @@ Estimates latent profiles (finite mixture models) using the commercial
 program Mplus, through the R-interface of
 \code{\link[MplusAutomation:mplusModeler]{MplusAutomation}}.
 }
-\examples{
-\dontrun{
-results <- iris \%>\%
-  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
-  estimate_profiles_mplus(n_profiles = 3, model_numbers = 1,
-  package = "MplusAutomation")
-}
-}
 \author{
 Caspar J. van Lissa
 }

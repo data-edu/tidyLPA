@@ -12,12 +12,6 @@
 #' @param ... Parameters passed directly to \code{\link[mclust]{Mclust}}. See
 #' the documentation of \code{\link[mclust]{Mclust}}.
 #' @author Caspar J. van Lissa
-#' @examples
-#' \dontrun{
-#' iris %>%
-#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-#'   estimate_profiles_mclust(n_profiles = 3, model_numbers = 1)
-#' }
 #' @return An object of class 'tidyLPA' and 'list'
 estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
     arg_list <- match.call()

@@ -65,6 +65,7 @@ library(dplyr, warn.conflicts = FALSE)
 ```{r}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation %>%
     estimate_profiles(3)
 ```
 
@@ -78,8 +79,10 @@ We can plot the profiles by piping the output to `plot_profiles()`.
 ```{r, message = FALSE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation %>%
+    scale %>%
     estimate_profiles(3) %>% 
-    plot_profiles(to_center = TRUE)
+    plot_profiles
 ```
 
 ## Model specification
@@ -107,6 +110,7 @@ Here is an example of specifying a model with varying variances and covariances 
 ```{r, eval = F}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation %>%
     estimate_profiles(3, 
                       variances = "varying",
                       covariances = "varying")
@@ -120,6 +124,7 @@ with varying numbers of profiles and model specifications:
 ```{r, eval = FALSE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation %>%
     estimate_profiles(1:3, 
                       variances = c("equal", "varying"),
                       covariances = c("zero", "varying")) %>%

@@ -43,7 +43,7 @@ class <- sample.int(k, n, replace = TRUE)
 dat <- matrix(rnorm(n*V, mean = (rep(class, each = V)-1)*dm), nrow  = n,
               ncol = V, byrow = TRUE)
 results <- estimate_profiles(data.frame(dat), 1:5)
-plotMixtures(results)
+plot_profiles(results)
 compare_solutions(results)
 
 # Simulation for parametric data (i.e., all assumptions of latent profile

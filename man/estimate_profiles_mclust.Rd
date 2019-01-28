@@ -27,13 +27,6 @@ An object of class 'tidyLPA' and 'list'
 Estimates latent profiles (finite mixture models) using the open source
 package \code{\link[mclust:Mclust]{mclust}}.
 }
-\examples{
-\dontrun{
-iris \%>\%
-  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
-  estimate_profiles_mclust(n_profiles = 3, model_numbers = 1)
-}
-}
 \author{
 Caspar J. van Lissa
 }
