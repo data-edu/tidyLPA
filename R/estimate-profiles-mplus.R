@@ -26,23 +26,22 @@ estimate_profiles_mplus2 <-
         filename_stem <- NULL
         if("filename_stem" %in% names(arg_list)) filename_stem <- arg_list[["filename_stem"]]
         original_names <- param_names <- names(df)
-
+        param_warning <- ""
         param_names_length <- sapply(param_names, nchar)
         if (any(param_names_length > 8)) {
-            warning(
-                "Mplus cannot handle variable names longer than 8 characters. The following variable names were truncated:\n  ",
-                paste(param_names[param_names_length > 8], collapse = "\n  ")
-            )
+            param_warning <- "\nMplus cannot handle variable names longer than 8 characters. Some variable names were truncated.\n"
             param_names[param_names_length > 8] <-
                 substring(param_names[param_names_length > 8], 1, 8)
         }
         if (any(grepl("\\.", param_names))) {
-            warning(
-                "Some variable names contain periods. These were replaced with underscores for variables:\n  ",
-                paste(param_names[grepl("\\.", param_names)], collapse = "\n  ")
-            )
+            param_warning <- paste0(param_warning, "Some variable names contained periods. These were replaced with underscores.\n")
             param_names[grepl("\\.", param_names)] <-
                 gsub("\\.", "_", param_names[grepl("\\.", param_names)])
+        }
+        if(!length(unique(param_names)) == length(param_names)){
+            dups <- duplicated(param_names) | duplicated(param_names, fromLast = TRUE)
+            stop(param_warning, "\nThe resulting variable names were not unique. Please rename your variables prior to running the analysis, to prevent duplicates. The duplicated variable names are:\n\n",
+                 gsub(", ", "", toString(t(cbind(paste0(c("Original:", names(df)[dups]), "\t"), paste0(c("Renamed:", param_names[dups]), "\n"))))))
         }
         names(df) <- param_names
 
@@ -82,7 +81,7 @@ estimate_profiles_mplus2 <-
 
 
         # Create mplusObject template
-        base_object <- do.call(mplusObject, Args)
+        base_object <- invisible(suppressMessages(do.call(mplusObject, Args)))
 
         run_models <-
             expand.grid(prof = n_profiles, mod = model_numbers)
@@ -177,7 +176,7 @@ estimate_profiles_mplus2 <-
                     )
                 ))
 
-                out <- list(model = invisible(suppressMessages(
+                out <- list(model = quiet(suppressMessages(
                     mplusModeler(
                         object = base_object,
                         dataout = ifelse(
