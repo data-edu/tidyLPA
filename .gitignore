@@ -1,9 +1,10 @@
+Meta
+doc
 notes.md
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-inst/doc
 iMplusThreadResults6.out
 binary/
 *.out

@@ -13,12 +13,11 @@
 #' vector 'statistics' corresponding to argument of the same name.
 #' @author Caspar J. van Lissa
 #' @examples
-#' \dontrun{
 #' results <- iris %>%
-#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
+#'   subset(select = c("Sepal.Length", "Sepal.Width",
+#'     "Petal.Length", "Petal.Width")) %>%
 #'   estimate_profiles(1:3) %>%
 #'   compare_solutions()
-#' }
 #' @export
 compare_solutions <- function(x, statistics = "BIC") {
     deprecated_arguments(c(
@@ -45,49 +44,11 @@ compare_solutions <- function(x, statistics = "BIC") {
 
 # Check fits for problems -------------------------------------------------
 
-<<<<<<< HEAD
-  model <- case_when(
-    variances == "equal" & covariances == "zero" ~ "EEI",
-    variances == "varying" & covariances == "zero" ~ "VVI",
-    variances == "equal" & covariances == "equal" ~ "EEE",
-    # variances == "varying" & covariances == "equal" ~ 4, # I'd remove
-    # variances == "equal" & covariances == "varying" ~ 5,
-    variances == "varying" & covariances == "varying" ~ "VVV"
-  )
-
-  titles <- c(
-    "Equal variances and covariances fixed to zero (model 1)",
-    "Varying variances and covariances fixed to zero (model 2)",
-    "Equal variances and equal covariances (model 3)",
-    # "Varying variances and equal covariances (model 4)",
-    # "Equal variances and varying covariances (model 5)",
-    "Varying variances and varying covariances (model 6)"
-  )
-
-  titles_df <- data.frame(Model = model, titles)
-
-  if (prior_control == FALSE) {
-    if (statistic == "BIC") {
-      x <- suppressWarnings(mclustBIC(d,
-        G = n_profiles_range,
-        modelNames = model,
-        warn = TRUE,
-        verbose = FALSE
-      ))
-    } else if (statistic == "ICL") {
-      x <- suppressWarnings(mclustICL(d,
-        G = n_profiles_range,
-        modelNames = model,
-        warn = TRUE,
-        verbose = FALSE
-      ))
-=======
     warnings <- lapply(x, `[[`, "warnings")
     low_prob <- fits$prob_min < .001
     best_model <- apply(max_these * fits[, names(fit_indices)], 2, which.max)
     if(any(low_prob)){
         warnings[low_prob] <- lapply(warnings[low_prob], c, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
->>>>>>> ca12dc048a1f699748149baabb5d1be33e1365bc
     } else {
         too_few <- fits$n_min < .01
         if(any(too_few)){
@@ -95,15 +56,6 @@ compare_solutions <- function(x, statistics = "BIC") {
         }
     }
 
-<<<<<<< HEAD
-  to_plot <- y %>%
-    gather("Model", "val", -.data$n_profiles) %>%
-    mutate(
-      "Model" = as.factor(.data$`Model`),
-      val = abs(.data$val)
-    ) %>%
-    left_join(titles_df, by = "Model")
-=======
     if(length(unique(fits$Classes)) > 1){
         if(any(best_model == min(fits$Classes))){
             warnings[which.min(fits$Classes)] <- lapply(warnings[which.min(fits$Classes)], c, "This solution has the minimum number of classes under consideration, and was considered to be the best solution according to one or more fit indices. Examine your results with care; mixture modeling might be unnecessary.")
@@ -112,11 +64,10 @@ compare_solutions <- function(x, statistics = "BIC") {
             warnings[which.max(fits$Classes)] <- lapply(warnings[which.max(fits$Classes)], c, "This solution has the maximum number of classes under consideration, and was considered to be the best solution according to one or more fit indices. Examine your results with care and consider estimating more classes.")
         }
     }
->>>>>>> ca12dc048a1f699748149baabb5d1be33e1365bc
 
     fits$Warnings <- ifelse(sapply(warnings, is.null), NA, "Warnings")
     if(any(!is.na(fits$Warnings))){
-        warning("One or more analyses resulted in warnings! Examine these analyses carefully.")
+        warning("\nOne or more analyses resulted in warnings! Examine these analyses carefully.")
     }
 
     out <- list(fits = fits, best = best_model, AHP = AHP_best, statistics = statistics, warnings = warnings)
@@ -124,20 +75,6 @@ compare_solutions <- function(x, statistics = "BIC") {
     out
 }
 
-<<<<<<< HEAD
-  p <- ggplot(to_plot, aes_string(
-    x = "n_profiles",
-    y = "val",
-    color = "titles",
-    group = "titles"
-  )) +
-    geom_line(na.rm = TRUE) +
-    geom_point(na.rm = TRUE) +
-    ylab(paste0(statistic, " (smaller value is better)")) +
-    theme_bw() +
-    ggplot2::scale_color_discrete("") +
-    xlab("Profiles")
-=======
 #' @method print bestLPA
 #' @export
 print.bestLPA <- function(x, digits = 3, na.print = "", ...){
@@ -149,7 +86,6 @@ print.bestLPA <- function(x, digits = 3, na.print = "", ...){
     dat[miss_val] <- ""
     #rownames(dat) <- ""
     prmatrix(dat, rowlab = rep("", nrow(dat)), quote = FALSE, na.print = na.print)
->>>>>>> ca12dc048a1f699748149baabb5d1be33e1365bc
 
     for(ft in x$statistics){
         #ft <- x$statistics[1]

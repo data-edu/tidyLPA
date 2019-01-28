@@ -4,18 +4,7 @@
 \alias{compare_solutions_mplus-deprecated}
 \title{Explore fit statistics various models and numbers of profiles using MPlus (requires purchasing and installing MPlus to use)}
 \usage{
-<<<<<<< HEAD:man/compare_solutions_mplus.Rd
-compare_solutions_mplus(df, ..., n_profiles_min = 2,
-  n_profiles_max = 10, models = list(c("equal", "zero"), c("varying",
-  "zero"), c("equal", "equal"), c("varying", "varying")), starts = c(100,
-  10), cluster_ID = NULL, m_iterations = 500, st_iterations = 20,
-  convergence_criterion = 1e-06, remove_tmp_files = FALSE,
-  save_models = FALSE, return_table = TRUE, n_processors = 1,
-  return_stats_df = TRUE, include_VLMR = TRUE, include_BLRT = FALSE,
-  dir_name = NULL, latent_vars = NULL)
-=======
 compare_solutions_mplus(...)
->>>>>>> ca12dc048a1f699748149baabb5d1be33e1365bc:man/compare_solutions_mplus-deprecated.Rd
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -70,15 +59,9 @@ compare_solutions_mplus(...)
 
 \item{include_BLRT}{whether to include the bootstrapped LRT; defaults to FALSE because of the time this takes to run}
 
-<<<<<<< HEAD:man/compare_solutions_mplus.Rd
-\item{dir_name}{character; name for directory .out files are saved to if save_models = TRUE; defaults to the present date}
-
-\item{latent_vars}{defaults to NULL; specification for the latent varibles as a list, i.e. list(beh = c(1, 2), cog = c(3, 4), aff = (5, 6)), where the integers represent the position of the variables passed to the function and how they correspond to the latent variables, which are named}
-=======
 \item{n_processors}{= 1}
 
 \item{return_all_stats}{defaults to FALSE; if TRUE, returns as a one-row data frame all of the statistics returned from compare_solutions_mplus()}
->>>>>>> ca12dc048a1f699748149baabb5d1be33e1365bc:man/compare_solutions_mplus-deprecated.Rd
 }
 \value{
 a list with a data.frame with the BIC values and a list with all of the model output; if save_models is the name of an rds file (i.e., "out.rds"), then the model output will be written with that filename and only the data.frame will be returned

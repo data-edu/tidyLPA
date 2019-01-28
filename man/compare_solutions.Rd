@@ -25,12 +25,11 @@ with different number of classes or model specifications, and helps select
 the optimal number of classes and model specification.
 }
 \examples{
-\dontrun{
 results <- iris \%>\%
-  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) \%>\%
+  subset(select = c("Sepal.Length", "Sepal.Width",
+    "Petal.Length", "Petal.Width")) \%>\%
   estimate_profiles(1:3) \%>\%
   compare_solutions()
-}
 }
 \author{
 Caspar J. van Lissa

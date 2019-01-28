@@ -41,23 +41,24 @@
 #' estimated (e.g.,: \code{variances = c("equal", "varying"), covariances =
 #' c("zero", "equal")}).
 #' @examples
-#' \dontrun{
 #' # Example 1:
 #' iris %>%
-#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-#'   estimate_profiles(df, 3)
+#'   subset(select = c("Sepal.Length", "Sepal.Width",
+#'     "Petal.Length", "Petal.Width")) %>%
+#'   estimate_profiles(3)
 #'
 #' # Example 2:
 #' iris %>%
-#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-#'   estimate_profiles(df, n_profiles = 1:4, models = 1:3)
+#'   subset(select = c("Sepal.Length", "Sepal.Width",
+#'     "Petal.Length", "Petal.Width")) %>%
+#'   estimate_profiles(n_profiles = 1:4, models = 1:3)
 #'
 #' # Example 3:
 #' iris %>%
-#'   select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-#'   estimate_profiles(df, n_profiles = 1:4, variances = c("equal", "varying"),
+#'   subset(select = c("Sepal.Length", "Sepal.Width",
+#'     "Petal.Length", "Petal.Width")) %>%
+#'   estimate_profiles(n_profiles = 1:4, variances = c("equal", "varying"),
 #'                     covariances = c("zero", "zero"))
-#' }
 #' @export
 estimate_profiles <- function(df,
                               n_profiles,
@@ -84,6 +85,11 @@ estimate_profiles <- function(df,
         warning("It looks like you are trying to extract some variables from df. This functionality is deprecated. Instead, estimate_profiles() always uses all variables in df. Select your variables prior to analysis, using either:\n  The dplyr function select(df, Your, Selected, Variable, Names), or\n  The base R function df[, c('Your', 'Selected', 'Variable', 'Names')]")
     }
 
+    # Screen for legal input --------------------------------------------------
+    package <- package[1]
+    if(!inherits(package, "character")) stop("Argument package must be a character string.")
+    if(!package %in% c("mclust", "MplusAutomation")) stop("Argument package must be one of 'mclust' or 'MplusAutomation'.")
+    if(inherits(df, c("matrix", "numeric"))) df <- data.frame(df)
 
     # Screen df ---------------------------------------------------------------
 
@@ -98,8 +104,9 @@ estimate_profiles <- function(df,
             "Please specify either the 'models' argument, or the 'variances' and 'covariances' arguments."
         )
     }
+
     if (!is.null(models)) {
-        message("The 'variances'/'covariances' arguments were ignored in favor of the 'model' argument.")
+        message("The 'variances'/'covariances' arguments were ignored in favor of the 'models' argument.")
         model_numbers <- models
     } else {
         if (length(variances) != length(covariances)) {

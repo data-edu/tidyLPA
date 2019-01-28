@@ -20,6 +20,7 @@ converts it to an object of class \code{tidyLPA}.
 }
 \examples{
 \dontrun{
+library(MplusAutomation)
 createMixtures(classes = 1:4, filename_stem = "cars",
                model_overall = "wt ON drat;",
                model_class_specific = "wt;  qsec;",
@@ -28,9 +29,13 @@ createMixtures(classes = 1:4, filename_stem = "cars",
                OUTPUT = "standardized")
 runModels(replaceOutfile = "modifiedDate")
 cars_results <- readModels(filefilter = "cars")
-as.tidyLPA(cars_results)
+results_tidyLPA <- as.tidyLPA(cars_results)
+results_tidyLPA
+plot(results_tidyLPA)
+plot_profiles(results_tidyLPA) # Throws error; missing column 'Classes'
 }
 }
 \author{
 Caspar J. van Lissa
 }
+\keyword{internal}
