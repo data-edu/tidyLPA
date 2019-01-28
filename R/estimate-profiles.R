@@ -89,8 +89,7 @@ estimate_profiles <- function(df,
     package <- package[1]
     if(!inherits(package, "character")) stop("Argument package must be a character string.")
     if(!package %in% c("mclust", "MplusAutomation")) stop("Argument package must be one of 'mclust' or 'MplusAutomation'.")
-
-    if(inherits(df, "matrix")) df <- data.frame(df)
+    if(inherits(df, c("matrix", "numeric"))) df <- data.frame(df)
 
     # Screen df ---------------------------------------------------------------
 
