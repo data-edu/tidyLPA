@@ -124,6 +124,11 @@ estimate_profiles <- function(df,
             )
     }
 
+    # If data.frame has only one column, covariances must be zero
+    if(ncol(df) == 1){
+        if(any(model_numbers > 2)) warning("Argument 'df' has only one column, so covariances were set to zero.")
+        model_numbers <- 2 - (model_numbers %% 2) # Set to 1 or 2
+    }
 
     out <- switch(package,
            "MplusAutomation" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...),

@@ -182,15 +182,25 @@ estimates.Mclust <- function(model){
 
     var <- model$parameters$variance$sigma
     means <- model$parameters$mean
-    var_row <- paste(t(apply(var, 1, rownames)))
-    var_col <- paste(apply(var, 1, rownames))
-    covariances <- var_row != var_col
-    var <- apply(var, 3, rbind)
-    n_class <- ncol(var)
-    var_col[covariances] <- paste(var_row[covariances], "WITH", var_col[covariances], sep = ".")
-    var_row[covariances] <- "Covariances"
-    var_row[!covariances] <- "Variances"
 
+    if(!is.null(dim(means))){
+        var_row <- paste(t(apply(var, 1, rownames))) # Get the rownames of var
+        var_col <- paste(apply(var, 1, rownames)) # Colnames are transposed rownames
+        covariances <- var_row != var_col
+        var_col[covariances] <- paste(var_row[covariances], "WITH", var_col[covariances], sep = ".")
+        var_row[covariances] <- "Covariances"
+        var_row[!covariances] <- "Variances"
+        var <- apply(var, 3, rbind)
+    } else {
+        if(!length(var) == length(means)){
+            var <- rep(var, length(means))
+        }
+        var <- as.matrix(t(var))
+        var_row <- "Variances"
+        var_col <- colnames(model$data)[1]
+        means <- as.matrix(t(means))
+    }
+    n_class <- ncol(var)
     var <- rbind(means, var)
     var_row <- c(rep("Means", nrow(means)), var_row)
     var_col <- c(rownames(means), var_col)
@@ -227,7 +237,7 @@ get_title <- function(number){
 }
 
 get_modelname <- function(number){
-    if(any(number %in% c(4, 5))) stop("Mclust does not allow for models with ", paste(tolower(get_title(number)), collapse = ", or "),".", call. = FALSE)
+    if(any(number %in% c(4, 5))) stop("Mclust does not allow for models with ", paste(tolower(get_title(number[which(number %in% c(4, 5))])), collapse = ", or "),".", call. = FALSE)
     c("EEI", "VVI", "EEE", "4", "5", "VVV")[number]
 }
 
