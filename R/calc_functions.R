@@ -338,9 +338,9 @@ icl.mplus.model <- function(object, ...)
     z <- object$savedata[, grep("^CPROB", names(object$savedata))]
     if(!is.null(dim(z))){
         C <- z == apply(z, 1, max)
-        object$summaries$BIC + 2*sum(C * log(apply(z, 1, function(x){x[which.max(x)]})+1e-12))
+        (-1*object$summaries$BIC) + 2*sum(C * log(apply(z, 1, function(x){x[which.max(x)]})+1e-12))
     } else {
-        object$summaries$BIC + 2*sum(z * log(z))
+        (-1*object$summaries$BIC) + 2*sum(z * log(z))
     }
 }
 
