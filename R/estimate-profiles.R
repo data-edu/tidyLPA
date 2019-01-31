@@ -67,6 +67,52 @@ estimate_profiles <- function(df,
                               covariances = "zero",
                               package = "mclust",
                               ...) {
+    UseMethod("estimate_profiles", df)
+}
+
+#' @export
+estimate_profiles.data.frame <- function(df,
+                                         n_profiles,
+                                         models = NULL,
+                                         variances = "equal",
+                                         covariances = "zero",
+                                         package = "mclust",
+                                         ...) {
+    NextMethod("estimate_profiles", df)
+}
+
+#' @export
+estimate_profiles.matrix <- function(df,
+                                      n_profiles,
+                                      models = NULL,
+                                      variances = "equal",
+                                      covariances = "zero",
+                                      package = "mclust",
+                                      ...) {
+    df <- data.frame(df)
+    NextMethod("estimate_profiles", df)
+}
+
+#' @export
+estimate_profiles.numeric <- function(df,
+                                                                  n_profiles,
+                                                                  models = NULL,
+                                                                  variances = "equal",
+                                                                  covariances = "zero",
+                                                                  package = "mclust",
+                                                                  ...) {
+    df <- data.frame(df)
+    NextMethod("estimate_profiles", df)
+}
+
+#' @export
+estimate_profiles.default <- function(df,
+                                      n_profiles,
+                                      models = NULL,
+                                      variances = "equal",
+                                      covariances = "zero",
+                                      package = "mclust",
+                                      ...) {
     # Check deprecated arguments ----------------------------------------------
 
     deprecated_arguments(c(
@@ -89,7 +135,6 @@ estimate_profiles <- function(df,
     package <- package[1]
     if(!inherits(package, "character")) stop("Argument package must be a character string.")
     if(!package %in% c("mclust", "MplusAutomation")) stop("Argument package must be one of 'mclust' or 'MplusAutomation'.")
-    if(inherits(df, c("matrix", "numeric"))) df <- data.frame(df)
 
     # Screen df ---------------------------------------------------------------
 
@@ -166,7 +211,7 @@ get_estimates <- function(x, ...) {
 #' multiple numbers of classes and models, of class 'tidyLPA'.
 #' @export
 get_estimates.tidyLPA <- function(x, ...) {
-    as.tibble(do.call(rbind, lapply(x, `[[`, "estimates")))
+    as_tibble(do.call(rbind, lapply(x, `[[`, "estimates")))
 }
 
 #' @describeIn get_estimates Get estimates for a single latent profile analysis
@@ -202,7 +247,7 @@ get_fit <- function(x, ...) {
 #' multiple numbers of classes and models, of class 'tidyLPA'.
 #' @export
 get_fit.tidyLPA <- function(x, ...) {
-    as.tibble(t(sapply(x, `[[`, "fit")))
+    as_tibble(t(sapply(x, `[[`, "fit")))
 }
 
 #' @describeIn get_fit Get fit indices for a single latent profile analysis
@@ -260,7 +305,7 @@ get_data.tidyLPA <- function(x, ...) {
             )
         }
     })
-    as.tibble(do.call(rbind, out))
+    as_tibble(do.call(rbind, out))
 }
 
 #' @describeIn get_data Get data for a single latent profile analysis object,

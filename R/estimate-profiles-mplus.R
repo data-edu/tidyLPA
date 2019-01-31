@@ -216,9 +216,7 @@ estimate_profiles_mplus2 <-
                 dff$model_number <- this_model
                 dff$classes_number <- this_class
 
-                #dff <- reshape(dff, varying = grep("^CPROB\\d+$", names(dff), value = TRUE), timevar = "Class_prob", v.names = "Probability", direction = "long", sep = "")
-                out$dff <- as.tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
-                #out$dff <- as.tibble(dff[, match(c("model_number", "classes_number", param_names, "Class", "Class_prob", "Probability", "id"), names(dff))])
+                out$dff <- as_tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
 
                 # Check for warnings ------------------------------------------------------
                 warnings <- NULL
