@@ -67,6 +67,11 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
         out$dff$model_number <- this_model
         out$dff$classes_number <- this_class
         out$dff <- out$dff[, c((ncol(out$dff)-1), ncol(out$dff), 1:(ncol(out$dff)-2))]
+        # Set warnings
+        warnings <- NULL
+        if(out$fit[["prob_min"]]< .001) warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
+        if(out$fit[["n_min"]] < .01) warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
+        out$warnings <- warnings
         class(out) <- c("tidyProfile.mclust", "tidyProfile", "list")
         out
     }, this_class = run_models$prof, this_model = run_models$mod, SIMPLIFY = FALSE)

@@ -179,6 +179,14 @@ estimate_profiles.default <- function(df,
            "MplusAutomation" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...),
            "mclust" = estimate_profiles_mclust(df, n_profiles, model_numbers, ...))
 
+    # Check warnings here
+    warnings <- sapply(out, function(x){!is.null(x[["warnings"]])})
+    if(any(warnings)){
+        warning("\nOne or more analyses resulted in warnings! Examine these analyses carefully: ",
+                paste(names(out)[warnings], collapse = ", "),
+                call. = FALSE)
+    }
+
     #if (is.null(m)) stop("Model could not be estimated.")
     class(out) <- c("tidyLPA", "list")
     out

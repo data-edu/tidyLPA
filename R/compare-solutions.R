@@ -41,36 +41,30 @@ compare_solutions <- function(x, statistics = "BIC") {
     best_model <- apply(max_these * fits[, names(fit_indices)], 2, which.max)
     AHP_best <- AHP(fits)
 
-
 # Check fits for problems -------------------------------------------------
 
-    warnings <- lapply(x, `[[`, "warnings")
-    low_prob <- fits$prob_min < .001
-    best_model <- apply(max_these * fits[, names(fit_indices)], 2, which.max)
-    if(any(low_prob)){
-        warnings[low_prob] <- lapply(warnings[low_prob], c, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
-    } else {
-        too_few <- fits$n_min < .01
-        if(any(too_few)){
-            warnings[too_few] <- lapply(warnings[too_few], c, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
-        }
+    warnings <- sapply(x, function(x){!is.null(x[["warnings"]])})
+    if(any(warnings)){
+        fits$Warnings <- ifelse(warnings, "Warning", NA)
+        warning("\nOne or more analyses resulted in warnings! Examine these analyses carefully: ",
+                paste(names(x)[which(warnings)], collapse = ", "),
+                call. = FALSE)
     }
+
+    best_model <- apply(max_these * fits[, names(fit_indices)], 2, which.max)
+
+# Check for problems with comparing solutions -----------------------------
 
     if(length(unique(fits$Classes)) > 1){
         if(any(best_model == min(fits$Classes))){
-            warnings[which.min(fits$Classes)] <- lapply(warnings[which.min(fits$Classes)], c, "This solution has the minimum number of classes under consideration, and was considered to be the best solution according to one or more fit indices. Examine your results with care; mixture modeling might be unnecessary.")
+            warning("The solution with the minimum number of classes under consideration was considered to be the best solution according to one or more fit indices. Examine your results with care; mixture modeling might be unnecessary.", call. = FALSE)
         }
         if(any(best_model == max(fits$Classes))){
-            warnings[which.max(fits$Classes)] <- lapply(warnings[which.max(fits$Classes)], c, "This solution has the maximum number of classes under consideration, and was considered to be the best solution according to one or more fit indices. Examine your results with care and consider estimating more classes.")
+            warning("The solution with the maximum number of classes under consideration was considered to be the best solution according to one or more fit indices. Examine your results with care and consider estimating more classes.", call. = FALSE)
         }
     }
 
-    fits$Warnings <- ifelse(sapply(warnings, is.null), NA, "Warnings")
-    if(any(!is.na(fits$Warnings))){
-        warning("\nOne or more analyses resulted in warnings! Examine these analyses carefully.")
-    }
-
-    out <- list(fits = fits, best = best_model, AHP = AHP_best, statistics = statistics, warnings = warnings)
+    out <- list(fits = fits, best = best_model, AHP = AHP_best, statistics = statistics)
     class(out) <- c("bestLPA", class(out))
     out
 }
@@ -80,7 +74,12 @@ compare_solutions <- function(x, statistics = "BIC") {
 print.bestLPA <- function(x, digits = 3, na.print = "", ...){
     cat("Compare tidyLPA solutions:\n\n")
     stats <- x$statistics
-    dat <- as.matrix(x$fits[, c("Model", "Classes", stats)])
+    if("Warnings" %in% names(x$fits)){
+        fit_cols <- c("Model", "Classes", stats, "Warnings")
+    } else {
+        fit_cols <- c("Model", "Classes", stats)
+    }
+    dat <- as.matrix(x$fits[, fit_cols])
     miss_val <- is.na(dat)
     dat[,3:ncol(dat)] <- sapply(dat[,3:ncol(dat)], formatC, digits = digits, format = "f")
     dat[miss_val] <- ""
@@ -91,6 +90,6 @@ print.bestLPA <- function(x, digits = 3, na.print = "", ...){
         #ft <- x$statistics[1]
         cat("\nBest model according to", ft, "is Model", dat[, "Model"][x$best[ft]], "with", dat[, "Classes"][x$best[ft]], "classes.")
     }
-    cat("\n\nAn analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul & Erisoglu, 2017), suggests the best solution is Model", dat[, "Model"][x$AHP], "with", dat[, "Classes"][x$AHP], "classes.")
+    cat("\n\nAn analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul & Erisoglu, 2017), suggests the best solution is Model", dat[, "Model"][x$AHP], "with", dat[, "Classes"][x$AHP], "classes.\n")
 }
 
