@@ -30,11 +30,9 @@ This introduction to tidyLPA vignette is an overview of LPA and the tidyLPA pack
 1. An example
 1. More information on model specification
 1. Other options
-1. An interface to MPlus (in-development)
-1. Other features
 1. Conclusion
 
-## 1. Background on Latent Profile Analysis (LPA)
+# Background on Latent Profile Analysis (LPA)
 
 Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. Note that LPA works best with continuous variables (and, in some cases, ordinal variables), but is not appropriate for dichotomous (binary) variables.
 
@@ -42,7 +40,7 @@ Many analysts have carried out LPA using a latent variable modeling approach. Fr
 
 Different *models* (or how or whether parameters are estimated) can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow. 
 
-## 2. Description of the goals of tidyLPA
+# Description of the goals of tidyLPA
 
 The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used [mclust](https://www.stat.washington.edu/mclust/) package for Gaussian Mixture Modeling. This means that tidyLPA does not contain code to carry out LPA directly, but rather provides "wrappers" to mclust functions that make them easier to use. The primary contributions of tidyLPA are to:
 
@@ -52,7 +50,7 @@ The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, 
     - uses the "pipe" operator, `%>%` to compose functions
     - being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)
 
-## 3. Software approach to carrying out LPA: Interface to mclust (and to MPlus)
+## Software approach to carrying out LPA: Interface to mclust (and to MPlus)
 
 In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the [R version of OpenMx](https://openmx.ssri.psu.edu/) can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use. 
 
@@ -62,110 +60,120 @@ In addition to following the same general approach, using tools that are designe
 
 This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This [R Markdown output](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html) contains information on how mclust and Mplus compare. The R Markdown to generate the output is also available [here](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd), and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Note that most of the output is identical, thoughthere are some differences in the hundreths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
 
-## 4. An example using mclust
+# Example
 
-Here is a very short example using the built-in data set `pisaUSA15`. 
+## Installation
 
-Note that outliers may wish to be removed first; consider identifying both univariate and multivariate outliers.
-
-First, you can install the package from CRAN as follows:
+You can install tidyLPA from CRAN with:
 
 ```{r, eval = F}
 install.packages("tidyLPA")
 ```
 
-You can also install the in-development version of tidyLPA from GitHub with:
+You can also install the development version of tidyLPA from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
-devtools::install_github("jrosen48/tidyLPA")
+devtools::install_github("data-edu/tidyLPA")
 ```
 
-Here is the simple example, using just a subset of the built-in `pisaUSA15` data, data from the 2015 PISA assessment (more details on the data set can be found [here](https://github.com/jrosen48/pisaUSA15)). We load tidyLPA and create a subset of the `pisaUSA15` data for this example. 
+## Mclust
 
-We use variables from the PISA assessment for United States students' broad interest, enjoyment, and self_efficacy (each which is a composite of other measured, self-report variables).
+Here is a brief example using the built-in `pisaUSA15` data set and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See `?estimate_profiles` for more details.
 
-```{r}
+In these examples, we pass the results of one function to the next by *piping* (using the `%>%` operator, loaded from the `dplyr` package). We pass the data to a function that selects relevant variables, and then to `estimate_profiles`:
+
+```{r, message = F}
 library(tidyLPA)
-d <- pisaUSA15[1:100, ]
+library(tidyverse)
 ```
 
-Note that you may wish to identify (and remove) univariate and multivariate outliers. See the functions [here](https://gist.github.com/jrosen48/094eee8627be43b167c7c79388027174) for some exampels. 
-
-**Comparing profile solutions**
-
-Next, we use the `compare_solutions()` function to explore different solutions in terms of information criteria, specifically the Bayesian Information Criteria (BIC) (the ICL is also available, as others will be in future versions; add the argument `statistic = "ICL"` to plot the ICL values instead of the BIC values). The BIC is based on the log-likelihood value for the model, but it accounts for the complexity of the model in terms of its degrees of freedom, penalizing more complex models with higher BICs. The goal of this step is to determine whether certain models and certain numbers of profiles are associated with lower BIC values, which then suggest further, detailed analysis in the next step.
-
-To use the function, we provide the name of the `data.frame`, `d`, first, followed by the names of the variables to be used to create the profiles next, separated by commas. This syntax is familiar to those who have used functions such as `select()` from the [dplyr](http://dplyr.tidyverse.org/) package (and other ["tidyverse"](http://tidyverse.org/) packages).
-
-```{r, warning = F, message = F}
-d %>%
-    select(broad_interest, enjoyment, self_efficacy) %>%
-    single_imputation %>%
-    estimate_profiles(1:6) %>%
-    compare_solutions
-```
-
-While these BIC values are ambiguous for this data, consider that one solution exhibited the best fit and the analyst was interested in interrogating it further. 
-
-To do this, we use the `estimate_profiles()` function. 
-
-**Estimating parameters of profiles for a specific solution**
-
-Here, we are estimating the parameters (depending on the model specified, means, variances, and covariances) that characterize the profiles. Like the `compare_solutions()`, the first argument to `estimate_profiles()` is the `data.frame`, `d`, followed by the names of the variables to be used to create the profiles separated by commas.
-
-When we run the following line, we see a number of statistics - `LogLik` for the log-likelihood, information criteria, as well as the entropy. For the log-likelihood and information criteria statistics, lower values are generally indicative of a preferred solution; for the entropy statistic, higher values are generally indicative of a preferred solution. [Pastor, Barron, Miller, and Davis (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) provide an accessible introduction to interpreting these values. 
-
-Note that these statistics are printed as messages by default but can be suppressed by adding the argument `print_which_stats = "none"` to `estimate_profiles()`; additional fit statistics can be returned by adding the `print_which_stats = "all"` as the argument.
- 
 ```{r}
-m3 <- estimate_profiles(d[, c("broad_interest", "enjoyment", "self_efficacy")], 
-                        n_profiles = 4)
-m3
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(3)
 ```
 
-We fit the model and saved the output to the object `m3`. Next, we may want to examine the output in terms of the estimated means and variances of the variables for each of the profiles. We can do this with the `plot_profiles()` function:
+## Mplus
 
-```{r, eval =F}
-plot_profiles(m3)
+We can use Mplus simply by changing the package argument for `estimate_profiles()`:
+
+```{r}
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(3, package = "MplusAutomation")
 ```
 
-**Deprecated**
-We can also center or standardize the variables (to have grand mean equal to 0 and standard deviation equal t 1, respectively), with the `to_center` and `to_scale` arguments to `plot_profiles()`, i.e.:
+A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.
 
-A different, identical way to do the above is to use the "pipe" operator (`%>%`)
+If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument `package = "MplusAutomation`.
 
-```{r, eval = F}
-library(dplyr, warn.conflicts = FALSE)
+We can plot the profiles by piping the output to `plot_profiles()`.
 
-d %>%
-  select(broad_interest, enjoyment, self_efficacy) %>%
-  estimate_profiles(3) %>% 
-  plot_profiles()
+```{r}
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    scale() %>%
+    estimate_profiles(3, package = "MplusAutomation") %>% 
+    plot_profiles()
 ```
 
+## Comparing a wide range of solutions
 
-# 5. More information on model specifications
+The function `compare_solutions()` compares the fit of several estimated models,
+with varying numbers of profiles and model specifications:
 
-As mentioned earlier, there are a number of different models representing how - or whether - different parameters are estimated. These are passed to the `variance` and `covariance` arguments. The possible values for these arguments are:
+```{r, eval = FALSE}
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(1:3, 
+                      variances = c("equal", "varying"),
+                      covariances = c("zero", "varying")) %>%
+    compare_solutions(statistics = c("AIC", "BIC"))
+```
+
+# More information on model specifications
+
+## Model specification
+
+In addition to the number of profiles (specified with the `n_profiles` argument), the model can be specified in terms of whether and how the variable variances and covariances are estimated.
+
+The models are specified by passing arguments to the `variance` and `covariance` arguments. The possible values for these arguments are:
 
 - `variances`: "equal" and "zero"
 - `covariances`: "varying", "equal", and "zero"
 
-Here is an example of specifying a model with varying variances and covariances: 
+If no values are specified for these, then the variances are constrained to be equal across classes, and covariances are fixed to 0 (conditional independence of the indicators).
+
+These arguments allow for four models to be specified:
+
+* Equal variances and covariances fixed to 0 (Model 1)
+* Varying variances and covariances fixed to 0 (Model 2)
+* Equal variances and equal covariances (Model 3)
+* Varying variances and varying covariances (Model 6)
+
+Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the [vignette](https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
+
+Here is an example of specifying a model with varying variances and covariances (Model 6; not run here): 
 
 ```{r, eval = F}
-estimate_profiles(d[, c("broad_interest", "enjoyment", "self_efficacy")], 
-                  variances = "varying",
-                  covariances = "varying",
-                  n_profiles = 3)
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(3, 
+                      variances = "varying",
+                      covariances = "varying")
 ```
 
 In general, the approach to choosing the model is similar to choosing the number of profiles, requiring **deciding on the basis of evidence from multiple sources**, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by [Pastor and colleagues (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. 
 
 Note that *p* represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.
 
-#### 1. Equal variances, and covariances fixed to 0 (model 1)
+### 1. Equal variances, and covariances fixed to 0 (model 1)
 
 In this model, which corresponds to the mclust model wit the name "EEI", the variances are estimated to be equal across profiles, indicated by the absence of a p subscript for any of the diagonal elements of the matrix. The covariances are constrained to be zero, as indicated by the 0's between every combination of the variables. 
 
@@ -177,7 +185,7 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2 }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3 }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
 $$
 
-#### 2. Varying variances and covariances fixed to 0 (model 2)
+### 2. Varying variances and covariances fixed to 0 (model 2)
 
 This model corresponds to the mclust model "VVI" and allows for the variances to be freely estimated across profiles. The covariances are constrained to zero. 
 
@@ -190,7 +198,7 @@ $$
 $$
 
 
-#### 3. Equal variances and equal covariances (model 3)
+### 3. Equal variances and equal covariances (model 3)
 
 This model corresponds to the mclust model "EEE". In this model, the variances are still constrained to be the same across the profiles, although now the covariances are estimated (but like the variances, are constrained to be the same across profiles). 
 
@@ -203,7 +211,7 @@ $$
 $$
 
 
-#### 4. Varying means, varying variances, and equal covariances (model 4)
+### 4. Varying means, varying variances, and equal covariances (model 4)
 
 This model, which specifies for the variances to be freely estimated across the profiles and for the covariances to be estimated to be equal across profiles, extends model 3. 
 
@@ -215,7 +223,7 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 
-#### 5. Varying means, equal variances, and varying covariances (model 5)
+### 5. Varying means, equal variances, and varying covariances (model 5)
 
 This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. 
 
@@ -227,7 +235,7 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
 $$
 
-#### 6. Varying variances and varying covariances (model 4)
+### 6. Varying variances and varying covariances (model 4)
 
 This model corresponds to the mclust model "VVV". It allows the variances and the covariances to be freely estimated across profiles. 
 
@@ -239,26 +247,12 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 
-## 6. Other options
+# Other options
 
-There is a lot of output that is possible to obtain from the `estimate_profiles()` function - much more than a tidy data frame, which is the default. The easiest way to access it is by changing what is returned; by default, the function returns a `data.frame` (more precisely, a `tibble`) with the variables used to create the profiles and the profile with the highest posterior probability (and the posterior probability for the profile):
-
-One way to access the additional output is to use the `attributes()` function on the output:
+There is a lot of output that is possible to obtain from the `estimate_profiles()` function - much more than a tidy data frame, which is the default. The easiest way to access it is by using the `get_estimates()` function.
 
 ```{r}
 get_estimates(m3)
-```
-
-Another way is to change the `to_return` argument to "mclust" to instead return the full output from the estimation:
-    
-```{r}
-
-```
-
-This object can be inspected manually (see `str(m3_clust)`) or through helper functions available in mclust, i.e.:
-
-```{r}
-
 ```
 
 Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the `scale` function:
@@ -266,100 +260,24 @@ Other options include how the raw data is processed. We can center or scale the 
 ```{r, eval = F}
 d %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
-    scale %>%
+    scale() %>%
     estimate_profiles(4) %>%
-    plot_profiles
+    plot_profiles()
 
 d %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
-    poms %>%
+    poms() %>%
     estimate_profiles(4) %>%
-    plot_profiles
-
-
+    plot_profiles()
 ```
 
-Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the argument `return_orig_df`:
+Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function `get_data()`
 
 ```{r}
 get_data(m3)
 ```
 
-Future versions will include the option to use random starts; by default, mclust uses the results from hierarchical clustering as the starting points for the EM algorithm.
-
-## 7. An interface to MPlus (in-development)
-
-`tidyLPA` has been bench marked to MPlus, at least for a simple data set (the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set)) and with three of the more common model specifications. You can find the results of that bench marking, which showed the results to be (nearly) identical, [here](https://jrosen48.github.io/blog/comparing-mplus-and-mclust-output/). 
-
-There is an in-development function to generate the model syntax (and prepare the data) and run the same models through the Mplus software. **Note that you must have purchased and installed MPlus for these functions to work**. Note that these functions are still in-development; the MPlus model syntax is dynamically generated for each model specified and then run through MPlus using the [MplusAutomation package](https://cran.r-project.org/package=MplusAutomation). These can be helpful for comparing the results between mclust and MPlus and for using output of the MPlus analyses in subsequent analyses, which can be difficult when using MPlus in a stand-alone matter.
-
-Here is how to compare a number of models using MPlus (it works very similarly to `compare_solutions()`). Note that this and subsequent code using MPlus is not run in the vignette.
-
-```{r, eval = F}
-
-```
-
-In order to see a number of fit statistics, you can add the argument `return_stats_df = TRUE`, i.e.: 
-
-```{r, eval = F}
-```
-
-Note that there is an option to use multiple cores (processors) to speed these functions; you can use the `detectCores()` function from the parallel package to determine how many processors you have:
-
-```{r, eval=FALSE}
-if (require('parallel')) {
-  parallel::detectCores()
-}
-```
-
-Then, you can set the `n_processors` argument (for all of the functions that use MPlus) to that number, i.e.:
-
-```{r, eval = F}
-compare_solutions_mplus(d, broad_interest, enjoyment, self_efficacy, n_processors = 4)
-```
-
-Here is how to estimate profiles for a single solution. This function is very similar to `estimate_profiles()`. Note that in addition to returning the profile assignment (`C`), the profile with the highest posterior probability, it also returns the posterior probabilities for the other profiles:
-
-```{r, eval = F}
-m1 <- estimate_profiles_mplus(d, 
-                              broad_interest, enjoyment, self_efficacy, 
-                              n_profiles = 3)
-```
-
-There are many options to control the estimation (i.e., changing the number of starts); see the help for this function (`?estimate_profiles_mplus()`) for information about the arguments that can be used.
-
-We can plot the profile solution using `plot_profiles_mplus()`; the same arguments to center and scale the data can be used:
-
-```{r, eval = F}
-plot_profiles_mplus(m1, to_center = TRUE, to_scale = TRUE)
-```
-
-These functions will be further developed in subsequent versions.
-
-## 8. Other functions
-
-There are a few other features of tidyLPA that will be described further in subsequent versions. Two that are available now that are briefly described are the use of a bootstrapped likelihood-ratio test and a prior. Both are presently only available for the mclust functions (i.e., it is not yet available through tidyLPA for the functions that use MPlus)
-
-**Bootstrapped likelihood-ratio test (LRT)**
-
-To determine the number of profiles for a specified model (i.e., models `1`-`4` described above, we can carry out a bootstrapped likelihood-ratio test. Note that the code is shown but run because it can take substantial time, even for a small data set. 
-
-```{r, eval = F}
-bootstrap_lrt(d, broad_interest, enjoyment, self_efficacy)
-```
-
-**Use of a prior**
-
-Models fit with mclust can be estimated with a prior. This can be helpful for estimating models that might otherwise not be able to be estimated. Learn more in Fraley and Raftery (2007) [here](https://link.springer.com/article/10.1007%2Fs00357-007-0004-5?LI=true).
-
-```{r, eval = F}
-estimate_profiles(d,
-                  broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 4,
-                  prior_control = TRUE)
-```
-
-## 9. Conclusion
+## Conclusion
 
 tidyLPA is actively being developed and this vignette will change as the package continues to be developed and used. The latest version of tidyLPA is available [here](https://github.com/jrosen48/tidyLPA) on GitHub. More information is also available on the tidyLPA website [here](https://jrosen48.github.io/tidyLPA/)
 
@@ -382,3 +300,6 @@ Pastor, D. A., Barron, K. E., Miller, B. J., & Davis, S. L. (2007). A latent pro
 **How to cite tidyLPA**
 
 > Rosenberg, J. M., Beymer, P. N., Anderson, D. J., & Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. *Journal of Open Source Software, 3*(30), 978, https://doi.org/10.21105/joss.00978
+
+You can also cite the most latest version with the following citation:
+
