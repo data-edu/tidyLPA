@@ -63,9 +63,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       633.175 669.647 0.653   0.809    0.864    0.210 0.470
+#>  1     3       636.697 673.169 0.798   0.900    0.963    0.030 0.650
 #>  BLRT_p
-#>  0.119
+#>  0.010
 ```
 
 ### Mplus
@@ -80,7 +80,7 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       639.952 676.424 0.775   0.832    0.931    0.030 0.650
+#>  1     3       630.562 667.034 0.779   0.841    0.927    0.030 0.580
 #>  BLRT_p
 #>  0.013
 ```
@@ -96,7 +96,7 @@ pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     scale() %>%
-    estimate_profiles(3, package = "MplusAutomation") %>% 
+    estimate_profiles(3) %>% 
     plot_profiles()
 ```
 
