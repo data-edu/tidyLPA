@@ -86,7 +86,7 @@ consistency_test <- function(m){
         RI <- mean(replicate(100, {
             (max(Re(eigen(matrix(stats::runif(r*dim(m)[2]), ncol = r))$values))-r)/(r-1)
         }))
-        CR = CI/RI
+        CR <- CI/RI
         if(CR < .1){
             return(TRUE)
         } else {
