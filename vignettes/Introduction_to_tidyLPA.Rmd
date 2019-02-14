@@ -279,13 +279,13 @@ get_data(m3)
 
 ## Conclusion
 
-tidyLPA is actively being developed and this vignette will change as the package continues to be developed and used. The latest version of tidyLPA is available [here](https://github.com/jrosen48/tidyLPA) on GitHub. More information is also available on the tidyLPA website [here](https://jrosen48.github.io/tidyLPA/)
+tidyLPA is actively being developed and this vignette will change as the package continues to be developed and used. The latest version of tidyLPA is available [here](https://github.com/data-edu/tidyLPA) on GitHub. More information is also available on the tidyLPA website [here](https://data-edu.github.io/tidyLPA/)
 
 **Notes**
 
 This is related to [prcr](https://github.com/jrosen48/prcr), for use of two-step cluster analysis to carry out person-oriented analyses.
 
-To contribute, file issues via GitHub [here](https://github.com/jrosen48/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [Twitter](https://twitter.com/jrosenberg6432).
+To contribute, file issues via GitHub [here](https://github.com/data-edu/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [Twitter](https://twitter.com/jrosenberg6432).
 
 **References**
 
