@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>tidyLPA: Functionality to carry out Latent Profile Analysis in R — tidyLPA • tidyLPA</title>
+<title>Deprecated functions in package <span class="pkg">tidyLPA</span>. — tidyLPA-deprecated • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,21 @@
 
 
 
-<meta property="og:title" content="tidyLPA: Functionality to carry out Latent Profile Analysis in R — tidyLPA" />
+<meta property="og:title" content="Deprecated functions in package <span class="pkg">tidyLPA</span>. — tidyLPA-deprecated" />
 
-<meta property="og:description" content="Latent Profile Analysis (LPA) is a statistical modeling approach for
-estimating distinct profiles, or groups, of variables. In the social
-sciences and in educational research, these profiles could represent, for
-example, how different youth experience dimensions of being engaged (i.e.,
-cognitively, behaviorally, and affectively) at the same time." />
+<meta property="og:description" content="tidyLPA has a new workflow:
+estimate_profiles runs a complete analysis, across all
+models and numbers of latent classes you are interested in. The results of
+this analysis are returned as an object of class 'tidyLPA'
+Pass this object to compare_solutions to find the optimal
+model and number of profiles
+Pass this object to plot_profiles to plot the solutions
+There are no more specialized functions for Mplus; just specify
+package = &quot;MplusAutomation&quot; when calling estimate_profiles.
+The functions listed below are deprecated and will be defunct in
+  the near future. When possible, alternative functions with similar
+  functionality are also mentioned. Help pages for deprecated functions are
+  available at help(&quot;-deprecated&quot;)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,29 +124,56 @@ cognitively, behaviorally, and affectively) at the same time." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>tidyLPA: Functionality to carry out Latent Profile Analysis in R</h1>
+    <h1>Deprecated functions in package <span class="pkg">tidyLPA</span>.</h1>
     
-    <div class="hidden name"><code>tidyLPA.Rd</code></div>
+    <div class="hidden name"><code>tidyLPA-deprecated.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Latent Profile Analysis (LPA) is a statistical modeling approach for
-estimating distinct profiles, or groups, of variables. In the social
-sciences and in educational research, these profiles could represent, for
-example, how different youth experience dimensions of being engaged (i.e.,
-cognitively, behaviorally, and affectively) at the same time.</p>
+    <p>tidyLPA has a new workflow:</p><ol>
+<li><p><code><a href='estimate_profiles.html'>estimate_profiles</a></code> runs a complete analysis, across all
+models and numbers of latent classes you are interested in. The results of
+this analysis are returned as an object of class 'tidyLPA'</p></li>
+<li><p>Pass this object to <code><a href='compare_solutions.html'>compare_solutions</a></code> to find the optimal
+model and number of profiles</p></li>
+<li><p>Pass this object to plot_profiles to plot the solutions</p></li>
+</ol><p>There are no more specialized functions for Mplus; just specify
+<code>package = "MplusAutomation"</code> when calling <code>estimate_profiles</code>.</p>
+<p>The functions listed below are deprecated and will be defunct in
+  the near future. When possible, alternative functions with similar
+  functionality are also mentioned. Help pages for deprecated functions are
+  available at <code><a href='https://www.rdocumentation.org/packages/utils/topics/help'>help("-deprecated")</a></code>.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <pre class="usage"><span class='fu'>bootstrap_lrt</span>(<span class='no'>...</span>)
 
-    <p>tidyLPA provides the functionality to carry out LPA in R. In particular,
-tidyLPA provides functionality to specify different models that determine
-whether and how different parameters (i.e., means, variances, and
-covariances) are estimated and to specify (and compare solutions for) the
-number of profiles to estimate.</p>
+<span class='fu'>compare_solutions_mplus</span>(<span class='no'>...</span>)
+
+<span class='fu'>plot_profiles_mplus</span>(<span class='no'>...</span>)
+
+<span class='fu'>estimate_profiles_mplus</span>(<span class='no'>...</span>)</pre>
+        
+    <h2 class="hasAnchor" id="bootstrap-lrt"><a class="anchor" href="#bootstrap-lrt"></a><code>bootstrap_lrt</code></h2>
+
+    
+    <p>For <code>bootstrap_lrt</code>, use <code><a href='estimate_profiles.html'>estimate_profiles</a></code>.</p>
+    
+    <h2 class="hasAnchor" id="compare-solutions-mplus"><a class="anchor" href="#compare-solutions-mplus"></a><code>compare_solutions_mplus</code></h2>
+
+    
+    <p>For <code>compare_solutions_mplus</code>, use <code><a href='compare_solutions.html'>compare_solutions</a></code>.</p>
+    
+    <h2 class="hasAnchor" id="plot-profiles-mplus"><a class="anchor" href="#plot-profiles-mplus"></a><code>plot_profiles_mplus</code></h2>
+
+    
+    <p>For <code>plot_profiles_mplus</code>, use <code><a href='plot_profiles.html'>plot_profiles</a></code>.</p>
+    
+    <h2 class="hasAnchor" id="estimate-profiles-mplus"><a class="anchor" href="#estimate-profiles-mplus"></a><code>estimate_profiles_mplus</code></h2>
+
+    
+    <p>For <code>estimate_profiles_mplus</code>, use <code><a href='estimate_profiles.html'>estimate_profiles</a></code>.</p>
     
 
   </div>
@@ -146,7 +181,13 @@ number of profiles to estimate.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#details">Details</a></li>
+      <li><a href="#bootstrap-lrt"><code>bootstrap_lrt</code></a></li>
+
+      <li><a href="#compare-solutions-mplus"><code>compare_solutions_mplus</code></a></li>
+
+      <li><a href="#plot-profiles-mplus"><code>plot_profiles_mplus</code></a></li>
+
+      <li><a href="#estimate-profiles-mplus"><code>estimate_profiles_mplus</code></a></li>
           </ul>
 
   </div>

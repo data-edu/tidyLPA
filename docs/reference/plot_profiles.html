@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot variable means and variances by profile — plot_profiles • tidyLPA</title>
+<title>Create latent profile plots — plot_profiles • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,17 @@
 
 
 
-<meta property="og:title" content="Plot variable means and variances by profile — plot_profiles" />
+<meta property="og:title" content="Create latent profile plots — plot_profiles" />
 
-<meta property="og:description" content="Plot variable means and variances by profile" />
+<meta property="og:description" content="Creates a profile plot according to best practices, focusing on the
+visualization of classification uncertainty by showing:
+Bars reflecting a confidence interval for the class centroids
+Boxes reflecting the standard deviations within each class; a box
+encompasses +/- 64% of the observations in a normal distribution
+Raw data, whose transparancy is weighted by the posterior class
+probability, such that each datapoint is most clearly visible for the class
+it is most likely to be a member of.
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -89,9 +97,6 @@
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
     <li>
-      <a href="../articles/brief-overview.html">Brief overview of tidyLPA</a>
-    </li>
-    <li>
       <a href="../articles/introduction-to-major-changes.html">Forthcoming major changes</a>
     </li>
   </ul>
@@ -115,84 +120,119 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot variable means and variances by profile</h1>
+    <h1>Create latent profile plots</h1>
     
     <div class="hidden name"><code>plot_profiles.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Plot variable means and variances by profile</p>
+    <p>Creates a profile plot according to best practices, focusing on the
+visualization of classification uncertainty by showing:</p><ol>
+<li><p>Bars reflecting a confidence interval for the class centroids</p></li>
+<li><p>Boxes reflecting the standard deviations within each class; a box
+encompasses +/- 64% of the observations in a normal distribution</p></li>
+<li><p>Raw data, whose transparancy is weighted by the posterior class
+probability, such that each datapoint is most clearly visible for the class
+it is most likely to be a member of.</p></li>
+</ol>
     
     </div>
 
-    <pre class="usage"><span class='fu'>plot_profiles</span>(<span class='no'>x</span>, <span class='kw'>to_center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>to_scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>, <span class='kw'>plot_error_bars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plot_rawdata</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_profiles</span>(<span class='no'>x</span>, <span class='kw'>variables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>add_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>rawdata</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>alpha_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>,
+  <span class='fl'>0.1</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>plot_profiles</span>(<span class='no'>x</span>, <span class='kw'>variables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>add_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>rawdata</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>alpha_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.1</span>), <span class='no'>...</span>)
+
+<span class='co'># S3 method for tidyLPA</span>
+<span class='fu'>plot_profiles</span>(<span class='no'>x</span>, <span class='kw'>variables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>add_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>rawdata</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>alpha_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.1</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>output from estimate_profiles()</p></td>
+      <td><p>An object containing the results of a mixture model analysis.</p></td>
     </tr>
     <tr>
-      <th>to_center</th>
-      <td><p>whether to center the data before plotting</p></td>
-    </tr>
-    <tr>
-      <th>to_scale</th>
-      <td><p>whether to scale the data before plotting</p></td>
-    </tr>
-    <tr>
-      <th>plot_what</th>
-      <td><p>whether to plot tibble or mclust output from estimate_profiles(); defaults to tibble</p></td>
-    </tr>
-    <tr>
-      <th>plot_error_bars</th>
-      <td><p>whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)</p></td>
-    </tr>
-    <tr>
-      <th>plot_rawdata</th>
-      <td><p>whether to plot raw data; defaults to TRUE</p></td>
+      <th>variables</th>
+      <td><p>A character vectors with the names of the variables to be
+plotted (optional).</p></td>
     </tr>
     <tr>
       <th>ci</th>
-      <td><p>confidence interval to plot (defaults to 0.95)</p></td>
+      <td><p>Numeric. What confidence interval should the errorbars span?
+Defaults to a 95% confidence interval. Set to NULL to remove errorbars.</p></td>
+    </tr>
+    <tr>
+      <th>sd</th>
+      <td><p>Logical. Whether to display a box encompassing +/- 1SD Defaults to
+TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>add_line</th>
+      <td><p>Logical. Whether to display a line, connecting cluster centroids
+belonging to the same latent class. Defaults to TRUE. Note that the
+information conveyed by such a line is limited.</p></td>
+    </tr>
+    <tr>
+      <th>rawdata</th>
+      <td><p>Should raw data be plotted in the background? Setting this to
+TRUE might result in long plotting times.</p></td>
+    </tr>
+    <tr>
+      <th>bw</th>
+      <td><p>Logical. Should the plot be black and white (for print), or color?</p></td>
+    </tr>
+    <tr>
+      <th>alpha_range</th>
+      <td><p>The minimum and maximum values of alpha (transparancy) for
+the raw data. Minimum should be 0; lower maximum values of alpha can help
+reduce overplotting.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed to and from other functions.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Plot the variable means and variances for data frame output from estimate_profiles()</p>
-<p>Plot the variable means and variances for data frame output from estimate_profiles().
-When plot_what is set to 'mclust', the errorbars represent non-parametric
-confidence intervals, obtained using bootstrapping (100 samples). Note that
-100 samples might be adequate for plotting, but is low for inference. If the
-number of participants per class is highly unbalanced, then weighted likelihood
-bootstrapping is used to ensure that each case is represented in the bootstrap
-samples (see O'Hagan, Murphy, Scrucca, and Gormley, 2015).</p>
+    <p>An object of class 'ggplot'.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='no'>iris</span>,
-    <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
-    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>)</div><div class='img'><img src='plot_profiles-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='no'>iris</span>,
-    <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
-    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>)</div><div class='output co'>#&gt; <span class='message'>Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='input'><span class='fu'>plot_profiles</span>(<span class='no'>m3</span>, <span class='kw'>plot_what</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>)</div><div class='img'><img src='plot_profiles-2.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='co'># Example 1</span>
+<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"qsec"</span>, <span class='st'>"drat"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='no'>poms</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>plot_profiles</span>(<span class='kw'>add_line</span> <span class='kw'>=</span> <span class='no'>F</span>)</div><div class='img'><img src='plot_profiles-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Example 2</span>
+<span class='no'>iris</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
+    <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
+  <span class='no'>plot_profiles</span></div><div class='output co'>#&gt; <span class='message'>The 'variances'/'covariances' arguments were ignored in favor of the 'models' argument.</span></div><div class='img'><img src='plot_profiles-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
+      <li><a href="#value">Value</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Caspar J. van Lissa</p>
   </div>
 </div>
 

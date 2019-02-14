@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
 [![Build Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
 
-## Update: Major (exciting - but breaking!) changes are introduced in the development (0.3.0) version of tidyLPA
+## tidyLPA
 
 Please note that in the development (the version on GitHub here; 1.0.0) version of **tidyLPA** introduces major (exciting - but breaking!) version. Please do not hesitate to reach out with any questions or issues that you encounter. 
 

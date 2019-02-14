@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -58,9 +58,6 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
-    </li>
-    <li>
-      <a href="articles/brief-overview.html">Brief overview of tidyLPA</a>
     </li>
     <li>
       <a href="articles/introduction-to-major-changes.html">Forthcoming major changes</a>
@@ -88,6 +85,14 @@
     
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<div id="tidylpa" class="section level2">
+<h2 class="hasAnchor">
+<a href="#tidylpa" class="anchor"></a>tidyLPA</h2>
+<p>Please note that in the development (the version on GitHub here; 1.0.0) version of <strong>tidyLPA</strong> introduces major (exciting - but breaking!) version. Please do not hesitate to reach out with any questions or issues that you encounter.</p>
+<p>You can read about some of the major changes <a href="https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html">here</a>.</p>
+<p>Note that the version presently on CRAN (0.2.4) does not represent the new changes yet, though these changes will be made soon. Thus the old version can be downloaded from CRAN or can be downloaded with the following function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"data-edu/tidyLPA"</span>, <span class="dt">ref =</span> <span class="st">"ab36357"</span>)</code></pre></div>
+</div>
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
@@ -101,46 +106,57 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"tidyLPA"</span>)</code></pre></div>
 <p>You can also install the development version of tidyLPA from GitHub with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"jrosen48/tidyLPA"</span>)</code></pre></div>
+devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"data-edu/tidyLPA"</span>)</code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
+<div id="mclust" class="section level3">
+<h3 class="hasAnchor">
+<a href="#mclust" class="anchor"></a>Mclust</h3>
 <p>Here is a brief example using the built-in <code>pisaUSA15</code> data set and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See <code><a href="reference/estimate_profiles.html">?estimate_profiles</a></code> for more details.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ]
-
-<span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  <span class="dt">n_profiles =</span> <span class="dv">3</span>)
-<span class="co">#&gt; Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.</span>
-<span class="co">#&gt; LogLik is 283.991</span>
-<span class="co">#&gt; BIC is 631.589</span>
-<span class="co">#&gt; Entropy is 0.914</span>
-<span class="co">#&gt; # A tibble: 94 x 5</span>
-<span class="co">#&gt;    broad_interest enjoyment self_efficacy profile posterior_prob</span>
-<span class="co">#&gt;             &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt;            &lt;dbl&gt;</span>
-<span class="co">#&gt;  1            3.8       4            1    1                1.000</span>
-<span class="co">#&gt;  2            3         3            2.75 3                0.917</span>
-<span class="co">#&gt;  3            1.8       2.8          3.38 3                0.997</span>
-<span class="co">#&gt;  4            1.4       1            2.75 2                0.899</span>
-<span class="co">#&gt;  5            1.8       2.2          2    3                0.997</span>
-<span class="co">#&gt;  6            1.6       1.6          1.88 3                0.997</span>
-<span class="co">#&gt;  7            3         3.8          2.25 1                0.927</span>
-<span class="co">#&gt;  8            2.6       2.2          2    3                0.990</span>
-<span class="co">#&gt;  9            1         2.8          2.62 3                0.998</span>
-<span class="co">#&gt; 10            2.2       2            1.75 3                0.996</span>
-<span class="co">#&gt; # ... with 84 more rows</span></code></pre></div>
-<p>The version of this function that uses MPlus is simple <code><a href="reference/estimate_profiles_mplus.html">estimate_profiles_mplus()</a></code> that is called in the same way (though some particular details can be changed with arguments specific to either <code>estimate_profiles</code> or to <code><a href="reference/estimate_profiles_mplus.html">estimate_profiles_mplus()</a></code>).</p>
-<p>See the output is simply a data frame with the profile (and its posterior probability) and the variables used to create the profiles (this is the “tidy” part, in that the function takes and returns a data frame).</p>
-<p>We can plot the profiles with by <em>piping</em> (using the <code>%&gt;%</code> operator, loaded from the <code>dplyr</code> package) the output to <code><a href="reference/plot_profiles.html">plot_profiles()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr, <span class="dt">warn.conflicts =</span> <span class="ot">FALSE</span>)
-
-<span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  <span class="dt">n_profiles =</span> <span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="reference/plot_profiles.html">plot_profiles</a></span>(<span class="dt">to_center =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="700"></p>
+<p>In these examples, we pass the results of one function to the next by <em>piping</em> (using the <code>%&gt;%</code> operator, loaded from the <code>dplyr</code> package). We pass the data to a function that selects relevant variables, and then to <code>estimate_profiles</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)
+<span class="co">#&gt; Warning: package 'tibble' was built under R version 3.5.2</span>
+<span class="co">#&gt; Warning: package 'purrr' was built under R version 3.5.2</span>
+<span class="co">#&gt; Warning: package 'stringr' was built under R version 3.5.2</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)
+<span class="co">#&gt; tidyLPA analysis using mclust: </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
+<span class="co">#&gt;  1     3       638.178 674.650 0.761   0.862    0.933    0.030 0.510</span>
+<span class="co">#&gt;  BLRT_p</span>
+<span class="co">#&gt;  0.050</span></code></pre></div>
+</div>
+<div id="mplus" class="section level3">
+<h3 class="hasAnchor">
+<a href="#mplus" class="anchor"></a>Mplus</h3>
+<p>We can use Mplus simply by changing the package argument for <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)
+<span class="co">#&gt; tidyLPA analysis using mplus: </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
+<span class="co">#&gt;  1     3       637.756 674.228 0.826   0.852    0.959    0.030 0.690</span>
+<span class="co">#&gt;  BLRT_p</span>
+<span class="co">#&gt;  0.000</span></code></pre></div>
+<p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
+<p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
+<p>We can plot the profiles by piping the output to <code><a href="reference/plot_profiles.html">plot_profiles()</a></code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="reference/plot_profiles.html">plot_profiles</a></span>()</code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="700"></p>
+</div>
 </div>
 <div id="model-specification" class="section level2">
 <h2 class="hasAnchor">
@@ -153,7 +169,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <li>
 <code>covariances</code>: “varying”, “equal”, and “zero”</li>
 </ul>
-<p>If no values are specified for these, then the equal variances and covariances fixed to 0 model is specified by default.</p>
+<p>If no values are specified for these, then the variances are constrained to be equal across classes, and covariances are fixed to 0 (conditional independence of the indicators).</p>
 <p>These arguments allow for four models to be specified:</p>
 <ul>
 <li>Equal variances and covariances fixed to 0 (Model 1)</li>
@@ -161,29 +177,46 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <li>Equal variances and equal covariances (Model 3)</li>
 <li>Varying variances and varying covariances (Model 6)</li>
 </ul>
-<p>Two additional models (Models 4 and 5) can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
+<p>Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the <a href="https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
 <p>Here is an example of specifying a model with varying variances and covariances (Model 6; not run here):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  <span class="dt">variances =</span> <span class="st">"varying"</span>,
-                  <span class="dt">covariances =</span> <span class="st">"varying"</span>,
-                  <span class="dt">n_profiles =</span> <span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, 
+                      <span class="dt">variances =</span> <span class="st">"varying"</span>,
+                      <span class="dt">covariances =</span> <span class="st">"varying"</span>)</code></pre></div>
 </div>
 <div id="comparing-a-wide-range-of-solutions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparing-a-wide-range-of-solutions" class="anchor"></a>Comparing a wide range of solutions</h2>
-<p>The function <code><a href="reference/compare_solutions.html">compare_solutions()</a></code> estimates models with varying numbers of profiles and model specifications:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/compare_solutions.html">compare_solutions</a></span>(d, broad_interest, enjoyment, self_efficacy)</code></pre></div>
-<p>The version that uses MPlus - <code><a href="reference/compare_solutions_mplus.html">compare_solutions_mplus()</a></code> - is called in the same way; like for <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code> and <code><a href="reference/estimate_profiles_mplus.html">estimate_profiles_mplus()</a></code>, some particular details can be specified with arguments specific to <code><a href="reference/compare_solutions.html">compare_solutions()</a></code> or <code><a href="reference/compare_solutions_mplus.html">compare_solutions_mplus()</a></code>.</p>
+<p>The function <code><a href="reference/compare_solutions.html">compare_solutions()</a></code> compares the fit of several estimated models, with varying numbers of profiles and model specifications:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, 
+                      <span class="dt">variances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),
+                      <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</code></pre></div>
 </div>
 <div id="more-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#more-information" class="anchor"></a>More information</h2>
 <p>To learn more:</p>
 <ul>
-<li><p>Browse the tidyLPA <a href="https://jrosen48.github.io/tidyLPA/">website</a> (especially check out the Reference page to see more about other functions)</p></li>
-<li><p><em>Read the Introduction to tidyLPA</em> <a href="https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>, which has much more information on the models that can be specified with tidyLPA and on additional functionality</p></li>
+<li><p>Browse the tidyLPA <a href="https://data-edu.github.io/tidyLPA/">website</a> (especially check out the Reference page to see more about other functions)</p></li>
+<li><p><em>Read the Introduction to tidyLPA</em> <a href="https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>, which has much more information on the models that can be specified with tidyLPA and on additional functionality</p></li>
 </ul>
+</div>
+<div id="citing-tidylpa" class="section level2">
+<h2 class="hasAnchor">
+<a href="#citing-tidylpa" class="anchor"></a>Citing tidyLPA</h2>
+<blockquote>
+<p>Rosenberg, J. M., Beymer, P. N., Anderson, D. J., &amp; Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. <em>Journal of Open Source Software, 3</em>(30), 978, <a href="https://doi.org/10.21105/joss.00978" class="uri">https://doi.org/10.21105/joss.00978</a></p>
+</blockquote>
+<p>You can also cite the most latest version with the following citation:</p>
+<blockquote>
+<p>Rosenberg, J. M., van Lissa, C. J., Beymer, P. N., Anderson, D. J., Schell, M. J. &amp; Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. <a href="https://data-edu.github.io/tidyLPA/" class="uri">https://data-edu.github.io/tidyLPA/</a></p>
+</blockquote>
 </div>
 <div id="contributing-and-contact-information" class="section level2">
 <h2 class="hasAnchor">
@@ -191,10 +224,10 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <p>One of the easiest but also most important ways to contribute is to post a question or to provide feedback. Both positive <em>and</em> negative feedback is welcome and helpful. You can get in touch by . . .</p>
 <ul>
 <li>Sending a message via <a href="mailto:tidylpa@googlegroups.com">tidylpa@googlegroups.com</a> or view the <a href="https://groups.google.com/forum/#!forum/tidylpa">the tidyLPA group page</a> (<em>preferred</em>)</li>
-<li>Filing an issue on GitHub <a href="https://github.com/jrosen48/tidyLPA">here</a>
+<li>Filing an issue on GitHub <a href="https://github.com/data-edu/tidyLPA">here</a>
 </li>
 </ul>
-<p>Contributions are also welcome via by making pull requests (PR), e.g. through <a href="https://github.com/jrosen48/tidyLPA/pulls">this page on GitHub</a>. It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.</p>
+<p>Contributions are also welcome via by making pull requests (PR), e.g. through <a href="https://github.com/data-edu/tidyLPA/pulls">this page on GitHub</a>. It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.</p>
 <p>Please note that this project is released with a <a href="CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
   </div>
@@ -212,8 +245,9 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li>
+<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
 </ul>
 </div>
 <div class="citation">
@@ -234,11 +268,11 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
       <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/jrosen48/tidyLPA"><img src="https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master" alt="Build Status"></a></li>
 <li><a href="https://cran.r-project.org/package=tidyLPA"><img src="https://www.r-pkg.org/badges/version/tidyLPA" alt="CRAN status"></a></li>
 <li><a href="https://cran.r-project.org/package=tidyLPA"><img src="https://cranlogs.r-pkg.org/badges/tidyLPA"></a></li>
 <li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
 <li><a href="https://doi.org/10.21105/joss.00978"><img src="http://joss.theoj.org/papers/10.21105/joss.00978/status.svg" alt="DOI"></a></li>
+<li><a href="https://travis-ci.org/data-edu/tidyLPA"><img src="https://travis-ci.org/data-edu/tidyLPA.svg?branch=master" alt="Build Status"></a></li>
 </ul>
 </div>
 </div>

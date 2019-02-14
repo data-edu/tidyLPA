@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -56,9 +56,6 @@
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
     <li>
-      <a href="../articles/brief-overview.html">Brief overview of tidyLPA</a>
-    </li>
-    <li>
       <a href="../articles/introduction-to-major-changes.html">Forthcoming major changes</a>
     </li>
   </ul>
@@ -82,7 +79,7 @@
       <h1>Forthcoming major changes</h1>
                         <h4 class="author">Caspar van Lissa</h4>
             
-            <h4 class="date">2018-12-22</h4>
+            <h4 class="date">2019-02-13</h4>
       
       
       <div class="hidden name"><code>introduction-to-major-changes.Rmd</code></div>
@@ -94,42 +91,82 @@
 <div id="tidylpa-update" class="section level1">
 <h1 class="hasAnchor">
 <a href="#tidylpa-update" class="anchor"></a>tidyLPA update</h1>
-<p>tidyLPA has received a major update. Your old function calls might not work as expected anymore. The new version of tidyLPA is based on the following philosophy:</p>
-<p>The goal of tidyLPA is to make latent profile analysis easily accessible to a broad audience, by means of a user-friendly interface.</p>
-<p>tidyLPA fits easily into a ‘tidyverse’ workflow.</p>
-<p>tidyLPA offers parallel functionality for the open-source package Mclust, and the commercial package Mplus.</p>
-<p>The focus on making LPA accessible, and offering a parallel workflow across Mclust and Mplus, has necessitated some simplification of the existing functions. Advanced options are still available, but require slightly more work on the user’s part. The upside of this is that, for most users, the tidyLPA workflow and documentation are substantially simplified.</p>
-<p>The best way to understand the changes to tidyLPA is by explaining the new workflow.</p>
-<div id="new-workflow" class="section level2">
+<div id="rationale-for-the-update" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-workflow" class="anchor"></a>New workflow:</h2>
-<ul>
-<li><p>estimate_profiles() now estimates any number of profiles, for any number of models, using any algorithm. It has a simplified user interface. This makes it a more general function, of which the former version (which could only estimate one number of profiles for one model) is a special, restricted case.</p></li>
-<li><p>compare_solutions() now compares solutions estimated by estimate_profiles(), suggesting the optimal model and number of classes. This replaces its dual role of estimating AND comparing solutions.</p></li>
-</ul>
+<a href="#rationale-for-the-update" class="anchor"></a>Rationale for the update</h2>
+<p><strong>tidyLPA</strong> has received a major update. Your old function calls might not work as expected anymore. The new version of tidyLPA aims to make Latent Profile Analysis (LPA) even more accessible to a broad audience, by means of a user-friendly interface, and to fit more seemlessly into a ‘tidyverse’ workflow.</p>
+<p>As before, <strong>tidyLPA</strong> offers a parallel workflow for the open-source package Mclust, and the commercial package <em>Mplus</em>.</p>
+<p>These changes necessitated some simplification of the existing functions. Advanced options are still available, but require slightly more work on the user’s part. The upside of this is that, for most users, the tidyLPA workflow and documentation are substantially simplified.</p>
 </div>
-<div id="example-analysis" class="section level2">
+<div id="major-changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example-analysis" class="anchor"></a>Example analysis:</h2>
-<p>A full analysis might look like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">full_df <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(Your, Selected, Variable, Names) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dt">n_profiles =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="dt">models =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) -&gt;
-<span class="st">    </span>results
-
-<span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(results)
-
-<span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>(results)</code></pre></div>
-</div>
-<div id="new-functionality" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functionality" class="anchor"></a>New functionality:</h2>
+<a href="#major-changes" class="anchor"></a>Major changes</h2>
+<p>There have been major changes to the two primary functions, <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> and <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code></p>
 <ul>
-<li><p><code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> gives you the same set of fit indices for Mclust and Mplus. It provides a broader range of fit indices than before</p></li>
-<li><p><code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> calls `AHP()``, a function which uses the Automatic Hierarchical Process to determine the optimal number of classes, based on several reputable fit indices</p></li>
+<li><p><code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> now estimates any number of profiles, for any number of models, using any algorithm. It has a simplified user interface. This makes it a more general function, of which the former version (which could only estimate one number of profiles for one model) is a special, restricted case.</p></li>
+<li><p><code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> now compares solutions estimated by estimate_profiles(), suggesting the optimal model and number of classes. This replaces its dual role of estimating AND comparing solutions. <code>*</code>compare_solutions()<code>gives you the same set of fit indices for Mclust and Mplus. It provides a broader range of fit indices than before *</code>compare_solutions()<code>calls</code>AHP()``, a function which uses the Automatic Hierarchical Process to determine the optimal number of classes, based on several reputable fit indices</p></li>
 <li><p><code><a href="../reference/plot_profiles.html">plot_profiles()</a></code> now incorporates best practices for plotting latent profile analyses: Visualizing cluster centroids, standard errors, cluster variances, and classification uncertainty by means of weighted raw data</p></li>
 <li><p><code>impute_missing()</code> offers two easy-to-use single imputation options, for use with the Mclust package (which does not natively handle missing data). Mplus handles partially missing data by default.</p></li>
 </ul>
+<p>The best way to understand these changes to <strong>tidyLPA</strong>, though, is by explaining the new workflow.</p>
+</div>
+<div id="example-analysis-using-estimate_profiles" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example-analysis-using-estimate_profiles" class="anchor"></a>Example analysis using estimate_profiles()</h2>
+<p>A full analysis might look like the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</code></pre></div>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.1.0     ✔ purrr   0.3.0
+## ✔ tibble  2.0.1     ✔ dplyr   0.7.8
+## ✔ tidyr   0.8.2     ✔ stringr 1.4.0
+## ✔ readr   1.3.1     ✔ forcats 0.3.0</code></pre>
+<pre><code>## Warning: package 'tibble' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'purrr' was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package 'stringr' was built under R version 3.5.2</code></pre>
+<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)</code></pre></div>
+<pre><code>## tidyLPA has received a major update, with a much easier workflow and improved functionality. However, you might have to update old syntax to account for the new workflow. See vignette('introduction-to-major-changes') for details!
+## 
+## Mplus is not installed. Use only package = 'mclust' when calling estimate_profiles().</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</code></pre></div>
+<pre><code>## tidyLPA analysis using mclust: 
+## 
+##  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
+##  1     3       626.862 663.334 0.808   0.909    0.966    0.030 0.640
+##  BLRT_p
+##  0.010</code></pre>
+<p>You can use Mplus simply by changing the package argument for <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)</code></pre></div>
+<p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
+<p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
+<p>We can plot the profiles by piping the output to <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</code></pre></div>
+<p><img src="introduction-to-major-changes_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+</div>
+<div id="example-analysis-using-compare_solutions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example-analysis-using-compare_solutions" class="anchor"></a>Example analysis using compare_solutions()</h2>
+<p>The function <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> compares the fit of several estimated models, with varying numbers of profiles and model specifications:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, 
+                      <span class="dt">variances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),
+                      <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</code></pre></div>
 </div>
 <div id="deprecated-functionality" class="section level2">
 <h2 class="hasAnchor">
@@ -140,10 +177,10 @@
 <p>all Mplus-specific functions are deprecated. <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> offers a unified interface to Mclust and Mplus. These Mplus-specific functions are deprecated:</p>
 <ul>
 <li>
-<code><a href="../reference/estimate_profiles_mplus.html">estimate_profiles_mplus()</a></code>
+<code><a href="../reference/tidyLPA-deprecated.html">estimate_profiles_mplus()</a></code>
 <ul>
 <li><code>compare_profiles_mplus()</code></li>
-<li><code><a href="../reference/plot_profiles_mplus.html">plot_profiles_mplus()</a></code></li>
+<li><code><a href="../reference/tidyLPA-deprecated.html">plot_profiles_mplus()</a></code></li>
 </ul>
 </li>
 </ul>
@@ -159,7 +196,7 @@
 </ul>
 </li>
 <li><p>estimate_profiles and compare_solutions no longer center and scale the raw data. To center and scale variables prior to analysis, use scale(df, center = TRUE, scale = TRUE)</p></li>
-<li><p>estimate_profiles no longer accepts arguments specific to Mplus or Mclust. Instead, you can specify additional arguments directly to the core functions mplusModeler() and Mclust(). See the help file for these functions for more details. Deprecated arguments, whose functionality is supplanted by passing arguments directly to these core functions, are:</p></li>
+<li><p>estimate_profiles no longer accepts arguments specific to Mplus or Mclust. Instead, you can specify additional arguments directly to the core functions <code>mplusModeler()</code> and <code>Mclust()</code>. See the help file for these functions for more details. Deprecated arguments, whose functionality is supplanted by passing arguments directly to these core functions, are:</p></li>
 </ul>
 <p>For Mclust:</p>
 <pre><code>* prior_control</code></pre>
@@ -183,9 +220,10 @@
       <ul class="nav nav-pills nav-stacked">
 <li>
 <a href="#tidylpa-update">tidyLPA update</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#new-workflow">New workflow:</a></li>
-      <li><a href="#example-analysis">Example analysis:</a></li>
-      <li><a href="#new-functionality">New functionality:</a></li>
+<li><a href="#rationale-for-the-update">Rationale for the update</a></li>
+      <li><a href="#major-changes">Major changes</a></li>
+      <li><a href="#example-analysis-using-estimate_profiles">Example analysis using estimate_profiles()</a></li>
+      <li><a href="#example-analysis-using-compare_solutions">Example analysis using compare_solutions()</a></li>
       <li><a href="#deprecated-functionality">Deprecated functionality:</a></li>
       </ul>
 </li>

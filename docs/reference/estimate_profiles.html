@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Estimate parameters for profiles for a specific solution — estimate_profiles • tidyLPA</title>
+<title>Estimate latent profiles — estimate_profiles • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Estimate parameters for profiles for a specific solution — estimate_profiles" />
+<meta property="og:title" content="Estimate latent profiles — estimate_profiles" />
 
-<meta property="og:description" content="Estimate parameters for profiles for a specific solution" />
+<meta property="og:description" content="Estimates latent profiles (finite mixture models) using the open
+source package mclust, or the commercial program
+Mplus (using the R-interface of
+MplusAutomation)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +66,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -89,9 +92,6 @@
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
     <li>
-      <a href="../articles/brief-overview.html">Brief overview of tidyLPA</a>
-    </li>
-    <li>
       <a href="../articles/introduction-to-major-changes.html">Forthcoming major changes</a>
     </li>
   </ul>
@@ -115,106 +115,135 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Estimate parameters for profiles for a specific solution</h1>
+    <h1>Estimate latent profiles</h1>
     
     <div class="hidden name"><code>estimate_profiles.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Estimate parameters for profiles for a specific solution</p>
+    <p>Estimates latent profiles (finite mixture models) using the open
+source package <code><a href='https://www.rdocumentation.org/packages/mclust/topics/Mclust'>mclust</a></code>, or the commercial program
+Mplus (using the R-interface of
+<code><a href='https://www.rdocumentation.org/packages/MplusAutomation/topics/mplusModeler'>MplusAutomation</a></code>).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>estimate_profiles</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='no'>n_profiles</span>, <span class='kw'>variances</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
-  <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='st'>"zero"</span>, <span class='kw'>to_return</span> <span class='kw'>=</span> <span class='st'>"tibble"</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>center_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale_raw_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>return_posterior_probs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>return_orig_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>prior_control</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>print_which_stats</span> <span class='kw'>=</span> <span class='st'>"some"</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_profiles</span>(<span class='no'>df</span>, <span class='no'>n_profiles</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>variances</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
+  <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='st'>"zero"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>df</th>
-      <td><p>data.frame with two or more columns with continuous variables</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>unquoted variable names separated by commas</p></td>
+      <td><p>data.frame of numeric data; continuous indicators are required for
+mixture modeling.</p></td>
     </tr>
     <tr>
       <th>n_profiles</th>
-      <td><p>the number of profiles (or mixture components) to be estimated</p></td>
+      <td><p>Integer vector of the number of profiles (or mixture
+components) to be estimated.</p></td>
+    </tr>
+    <tr>
+      <th>models</th>
+      <td><p>Integer vector. Set to <code>NULL</code> by default, and models are
+constructed from the <code>variances</code> and <code>covariances</code> arguments. See
+<code>Details</code> for the six models available in tidyLPA.</p></td>
     </tr>
     <tr>
       <th>variances</th>
-      <td><p>how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)</p></td>
+      <td><p>Character vector. Specifies which variance components to
+estimate. Defaults to "equal" (constrain variances across profiles); the
+other option is "varying" (estimate variances freely across profiles). Each
+element of this vector refers to one of the models you wish to run.</p></td>
     </tr>
     <tr>
       <th>covariances</th>
-      <td><p>how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)</p></td>
+      <td><p>Character vector. Specifies which covariance components to
+estimate. Defaults to "zero" (do not estimate covariances; this corresponds
+to an assumption of conditional independence of the indicators); other
+options are "equal" (estimate covariances between items, constrained across
+profiles), and "varying" (free covariances across profiles).</p></td>
     </tr>
     <tr>
-      <th>to_return</th>
-      <td><p>character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned</p></td>
+      <th>package</th>
+      <td><p>Character. Which package to use; 'mclust' or
+'MplusAutomation' (requires Mplus to be installed). Default: 'mclust'.</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p>which model to estimate (DEPRECATED; use variances and covariances instead)</p></td>
-    </tr>
-    <tr>
-      <th>center_raw_data</th>
-      <td><p>logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE</p></td>
-    </tr>
-    <tr>
-      <th>scale_raw_data</th>
-      <td><p>logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE</p></td>
-    </tr>
-    <tr>
-      <th>return_posterior_probs</th>
-      <td><p>TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE</p></td>
-    </tr>
-    <tr>
-      <th>return_orig_df</th>
-      <td><p>TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)</p></td>
-    </tr>
-    <tr>
-      <th>prior_control</th>
-      <td><p>whether to include a regularizing prior; defaults to false</p></td>
-    </tr>
-    <tr>
-      <th>print_which_stats</th>
-      <td><p>if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed</p></td>
+      <th>...</th>
+      <td><p>Additional arguments are passed to the estimating function; i.e.,
+<code><a href='https://www.rdocumentation.org/packages/mclust/topics/Mclust'>Mclust</a></code>, or <code><a href='https://www.rdocumentation.org/packages/MplusAutomation/topics/mplusModeler'>mplusModeler</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a tibble with the data and profile/class assignment and the posterior probability for that profile; the output of this function can be passed to the plot_profiles() function to create a ggplot2 plot of the profiles. If the argument to_return = "mclust" is added to the function call) an mclust model object, which can be inspected or plotted with mclust functions.</p>
+    <p>A list of class 'tidyLPA'.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Creates profiles (or estimates of the mixture components) for a specific mclust model in terms of the specific number of mixture components and the structure of the residual covariance matrix</p>
+    <p>Six models are currently available in tidyLPA, corresponding to the
+most common requirements. These are:</p><ol>
+<li><p>Equal variances and covariances fixed to 0</p></li>
+<li><p>Varying variances and covariances fixed to 0</p></li>
+<li><p>Equal variances and equal covariances</p></li>
+<li><p>Varying variances and equal covariances</p></li>
+<li><p>Equal variances and varying covariances</p></li>
+<li><p>Varying variances and varying covariances</p></li>
+</ol>
+    <p>Two interfaces are available to estimate these models; specify their numbers
+in the <code>models</code> argument (e.g., <code>models = 1</code>, or
+<code>models = c(1, 2, 3)</code>), or specify the variances/covariances to be
+estimated (e.g.,: <code>variances = c("equal", "varying"), covariances =
+c("zero", "equal")</code>).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>estimate_profiles</span>(<span class='no'>iris</span>,
-    <span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>,
-    <span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.</span></div><div class='output co'>#&gt; <span class='message'>LogLik is 361.429</span></div><div class='output co'>#&gt; <span class='message'>BIC is 813.05</span></div><div class='output co'>#&gt; <span class='message'>Entropy is 0.979</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 150 x 6</span><span>
-#&gt;    Sepal.Length Sepal.Width Petal.Length Petal.Width profile posterior_prob
-#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>          5.1         3.5          1.4         0.2 1                    1
-#&gt; </span><span style='color: #555555;'> 2</span><span>          4.9         3            1.4         0.2 1                    1
-#&gt; </span><span style='color: #555555;'> 3</span><span>          4.7         3.2          1.3         0.2 1                    1
-#&gt; </span><span style='color: #555555;'> 4</span><span>          4.6         3.1          1.5         0.2 1                    1
-#&gt; </span><span style='color: #555555;'> 5</span><span>          5           3.6          1.4         0.2 1                    1
-#&gt; </span><span style='color: #555555;'> 6</span><span>          5.4         3.9          1.7         0.4 1                    1
-#&gt; </span><span style='color: #555555;'> 7</span><span>          4.6         3.4          1.4         0.3 1                    1
-#&gt; </span><span style='color: #555555;'> 8</span><span>          5           3.4          1.5         0.2 1                    1
-#&gt; </span><span style='color: #555555;'> 9</span><span>          4.4         2.9          1.4         0.2 1                    1
-#&gt; </span><span style='color: #555555;'>10</span><span>          4.9         3.1          1.5         0.1 1                    1
-#&gt; </span><span style='color: #555555;'># ... with 140 more rows</span><span></div></span></pre>
+    <pre class="examples"><div class='input'><span class='co'># Example 1:</span>
+<span class='no'>iris</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
+    <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>estimate_profiles</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
+#&gt; 
+#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max BLRT_p
+#&gt;  1     3       758.859 813.050 0.956   0.963    1.000    0.300 0.367 0.010 </div><div class='input'>
+<span class='co'># Example 2:</span>
+<span class='no'>iris</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
+    <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>estimate_profiles</span>(<span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>The 'variances'/'covariances' arguments were ignored in favor of the 'models' argument.</span></div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
+#&gt; 
+#&gt;  Model Classes AIC      BIC      Entropy prob_min prob_max n_min n_max BLRT_p
+#&gt;  1     1       1498.035 1522.120 1.000   1.000    1.000    1.000 1.000       
+#&gt;  1     2       1003.830 1042.968 0.991   0.997    1.000    0.333 0.667 0.010 
+#&gt;  1     3       758.859  813.050  0.956   0.963    1.000    0.300 0.367 0.010 
+#&gt;  1     4       758.159  827.404  0.886   0.837    0.996    0.093 0.427 0.119 
+#&gt;  2     1       1498.035 1522.120 1.000   1.000    1.000    1.000 1.000       
+#&gt;  2     2       806.371  857.551  1.000   1.000    1.000    0.333 0.667 0.010 
+#&gt;  2     3       666.362  744.638  0.947   0.966    1.000    0.247 0.420 0.010 
+#&gt;  2     4       645.648  751.020  0.932   0.908    0.981    0.107 0.420 0.010 
+#&gt;  3     1       787.829  829.978  1.000   1.000    1.000    1.000 1.000       
+#&gt;  3     2       630.895  688.097  1.000   1.000    1.000    0.333 0.667 0.010 
+#&gt;  3     3       560.709  632.965  0.961   0.974    1.000    0.327 0.340 0.010 
+#&gt;  3     4       558.717  646.026  0.924   0.888    0.983    0.040 0.340 0.099 </div><div class='input'>
+<span class='co'># Example 3:</span>
+<span class='no'>iris</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
+    <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>estimate_profiles</span>(<span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>variances</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"equal"</span>, <span class='st'>"varying"</span>),
+                    <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"zero"</span>, <span class='st'>"zero"</span>))</div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
+#&gt; 
+#&gt;  Model Classes AIC      BIC      Entropy prob_min prob_max n_min n_max BLRT_p
+#&gt;  1     1       1498.035 1522.120 1.000   1.000    1.000    1.000 1.000       
+#&gt;  1     2       1003.830 1042.968 0.991   0.997    1.000    0.333 0.667 0.010 
+#&gt;  1     3       758.859  813.050  0.956   0.963    1.000    0.300 0.367 0.010 
+#&gt;  1     4       758.159  827.404  0.886   0.837    0.996    0.093 0.427 0.099 
+#&gt;  2     1       1498.035 1522.120 1.000   1.000    1.000    1.000 1.000       
+#&gt;  2     2       806.371  857.551  1.000   1.000    1.000    0.333 0.667 0.010 
+#&gt;  2     3       666.362  744.638  0.947   0.966    1.000    0.247 0.420 0.010 
+#&gt;  2     4       645.648  751.020  0.932   0.908    0.981    0.107 0.420 0.020 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

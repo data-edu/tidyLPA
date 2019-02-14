@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compare latent profile models — compare_solutions • tidyLPA</title>
+<title>Create density plots for mixture models — plot_density • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,12 @@
 
 
 
-<meta property="og:title" content="Compare latent profile models — compare_solutions" />
+<meta property="og:title" content="Create density plots for mixture models — plot_density" />
 
-<meta property="og:description" content="Takes an object of class 'tidyLPA', containing multiple latent profile models
-with different number of classes or model specifications, and helps select
-the optimal number of classes and model specification." />
+<meta property="og:description" content="Creates a faceted plot of density plots for an object of class 'tidyLPA'. For
+each variable, a Total density plot will be shown, along with separate
+density plots for each latent class, where cases are weighted by the
+posterior probability of being assigned to that class." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,50 +115,84 @@ the optimal number of classes and model specification." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compare latent profile models</h1>
+    <h1>Create density plots for mixture models</h1>
     
-    <div class="hidden name"><code>compare_solutions.Rd</code></div>
+    <div class="hidden name"><code>plot_density.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Takes an object of class 'tidyLPA', containing multiple latent profile models
-with different number of classes or model specifications, and helps select
-the optimal number of classes and model specification.</p>
+    <p>Creates a faceted plot of density plots for an object of class 'tidyLPA'. For
+each variable, a Total density plot will be shown, along with separate
+density plots for each latent class, where cases are weighted by the
+posterior probability of being assigned to that class.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>compare_solutions</span>(<span class='no'>x</span>, <span class='kw'>statistics</span> <span class='kw'>=</span> <span class='st'>"BIC"</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_density</span>(<span class='no'>x</span>, <span class='kw'>variables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>conditional</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>facet_labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>An object of class 'tidyLPA'.</p></td>
+      <td><p>Object to plot.</p></td>
     </tr>
     <tr>
-      <th>statistics</th>
-      <td><p>Character vector. Which statistics to examine for
-determining the optimal model. Defaults to 'BIC'.</p></td>
+      <th>variables</th>
+      <td><p>Which variables to plot. If NULL, plots all variables that
+are present in all Mplus models.</p></td>
+    </tr>
+    <tr>
+      <th>bw</th>
+      <td><p>Logical. Whether to make a black and white plot (for print) or a
+color plot. Defaults to FALSE, because these density plots are hard to read
+in black and white.</p></td>
+    </tr>
+    <tr>
+      <th>conditional</th>
+      <td><p>Logical. Whether to show a conditional density plot
+(surface area is divided amongst the latent classes), or a classic density
+plot (surface area of the total density plot is equal to one, and is
+subdivided amongst the classes).</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>Numeric (0-1). Only used when bw and conditional are FALSE. Sets
+the transparency of geom_density, so that classes with a small number of
+cases remain visible.</p></td>
+    </tr>
+    <tr>
+      <th>facet_labels</th>
+      <td><p>Named character vector, the names of which should
+correspond to the facet labels one wishes to rename, and the values of which
+provide new names for these facets. For example, to rename variables, in the
+example with the 'iris' data below, one could specify:
+<code>facet_labels = c("Pet_leng" = "Petal length")</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class 'bestLPA' and 'list', containing a tibble of fits
-'fits', a named vector 'best', indicating which model fit best according to
-each fit index, a numeric vector 'AHP' indicating the best model according to
-the <code><a href='AHP.html'>AHP</a></code>, an object 'plot' of class 'ggplot', and a numeric
-vector 'statistics' corresponding to argument of the same name.</p>
+    <p>An object of class 'ggplot'.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
     <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>compare_solutions</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: The solution with the maximum number of classes under consideration was considered to be the best solution according to one or more fit indices. Examine your results with care and consider estimating more classes.</span></div></pre>
+  <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='fl'>1</span>:<span class='fl'>3</span>)
+<span class='co'># }</span><span class='co'># NOT RUN {</span>
+<span class='fu'>plot_density</span>(<span class='no'>results</span>, <span class='kw'>variables</span> <span class='kw'>=</span> <span class='st'>"Petal.Length"</span>)
+<span class='co'># }</span><span class='co'># NOT RUN {</span>
+<span class='fu'>plot_density</span>(<span class='no'>results</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><span class='co'># NOT RUN {</span>
+<span class='fu'>plot_density</span>(<span class='no'>results</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>conditional</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><span class='co'># NOT RUN {</span>
+<span class='fu'>plot_density</span>(<span class='no'>results</span><span class='kw'>[[</span><span class='fl'>2</span>]], <span class='kw'>variables</span> <span class='kw'>=</span> <span class='st'>"Petal.Length"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

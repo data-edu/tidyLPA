@@ -2,8 +2,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 [![CRAN status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA) [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978) [![Build Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
 
-Update: Major (exciting - but breaking!) changes are introduced in the development (0.3.0) version of tidyLPA
--------------------------------------------------------------------------------------------------------------
+tidyLPA
+-------
 
 Please note that in the development (the version on GitHub here; 1.0.0) version of **tidyLPA** introduces major (exciting - but breaking!) version. Please do not hesitate to reach out with any questions or issues that you encounter.
 
@@ -63,9 +63,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       641.359 677.832 0.747   0.847    0.899    0.150 0.580
+#>  1     3       633.175 669.647 0.653   0.809    0.864    0.210 0.470
 #>  BLRT_p
-#>  0.050
+#>  0.119
 ```
 
 ### Mplus
@@ -80,9 +80,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       644.236 680.708 0.777   0.839    0.937    0.040 0.590
+#>  1     3       639.952 676.424 0.775   0.832    0.931    0.030 0.650
 #>  BLRT_p
-#>  0.667
+#>  0.013
 ```
 
 A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.

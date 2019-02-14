@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>tidyLPA: Functionality to carry out Latent Profile Analysis in R — tidyLPA • tidyLPA</title>
+<title>Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use) — plot_profiles_mplus-deprecated • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,9 @@
 
 
 
-<meta property="og:title" content="tidyLPA: Functionality to carry out Latent Profile Analysis in R — tidyLPA" />
+<meta property="og:title" content="Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use) — plot_profiles_mplus-deprecated" />
 
-<meta property="og:description" content="Latent Profile Analysis (LPA) is a statistical modeling approach for
-estimating distinct profiles, or groups, of variables. In the social
-sciences and in educational research, these profiles could represent, for
-example, how different youth experience dimensions of being engaged (i.e.,
-cognitively, behaviorally, and affectively) at the same time." />
+<meta property="og:description" content="Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,37 +112,86 @@ cognitively, behaviorally, and affectively) at the same time." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>tidyLPA: Functionality to carry out Latent Profile Analysis in R</h1>
+    <h1>Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)</h1>
     
-    <div class="hidden name"><code>tidyLPA.Rd</code></div>
+    <div class="hidden name"><code>plot_profiles_mplus-deprecated.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Latent Profile Analysis (LPA) is a statistical modeling approach for
-estimating distinct profiles, or groups, of variables. In the social
-sciences and in educational research, these profiles could represent, for
-example, how different youth experience dimensions of being engaged (i.e.,
-cognitively, behaviorally, and affectively) at the same time.</p>
+    <p>Plot variable means and their confidence intervals by profile for models estimated with MPlus (requires purchasing and installing MPlus to use)</p>
     
     </div>
 
-        
+    <pre class="usage"><span class='fu'><a href='tidyLPA-deprecated.html'>plot_profiles_mplus</a></span>(<span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>output from estimate_profiles()</p></td>
+    </tr>
+    <tr>
+      <th>mplus_data</th>
+      <td><p>output from estimate_profiles_mplus() with return_savedata = T specified</p></td>
+    </tr>
+    <tr>
+      <th>plot_post_probs</th>
+      <td><p>logical; whether to plot the means and standard errors based on the posterior probabilities (if TRUE) or on the classification/profile (if FALSE); defaults to TRUE</p></td>
+    </tr>
+    <tr>
+      <th>mplus_out_name</th>
+      <td><p>character string; name of the mplus out file that is read if the posterior probabilities are plotted; defaults to i.out (which is the default name for the file created by other tidyLPA functions)</p></td>
+    </tr>
+    <tr>
+      <th>standard_error_interval</th>
+      <td><p>number between 0 and 1; defaults to .95</p></td>
+    </tr>
+    <tr>
+      <th>to_center</th>
+      <td><p>whether to center the data before plotting</p></td>
+    </tr>
+    <tr>
+      <th>to_scale</th>
+      <td><p>whether to scale the data before plotting</p></td>
+    </tr>
+    <tr>
+      <th>plot_what</th>
+      <td><p>whether to plot tibble or mclust output from estimate_profiles(); defaults to tibble</p></td>
+    </tr>
+    <tr>
+      <th>plot_error_bars</th>
+      <td><p>whether to plot error bars (representing the 95 percent confidence interval for the mean of each variable)</p></td>
+    </tr>
+    <tr>
+      <th>plot_rawdata</th>
+      <td><p>whether to plot raw data; defaults to TRUE</p></td>
+    </tr>
+    <tr>
+      <th>ci</th>
+      <td><p>confidence interval to plot (defaults to 0.95)</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>tidyLPA provides the functionality to carry out LPA in R. In particular,
-tidyLPA provides functionality to specify different models that determine
-whether and how different parameters (i.e., means, variances, and
-covariances) are estimated and to specify (and compare solutions for) the
-number of profiles to estimate.</p>
+    <p>Plot the variable means and variances for data frame output from estimate_profiles_mclust()</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='tidyLPA-deprecated.html'>tidyLPA-deprecated</a></code></p></div>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>
