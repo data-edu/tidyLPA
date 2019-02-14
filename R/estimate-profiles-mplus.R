@@ -82,7 +82,9 @@ estimate_profiles_mplus2 <-
 
         # Create mplusObject template
         base_object <- invisible(suppressMessages(do.call(mplusObject, Args)))
-
+        if(ncol(df) == 1){
+            base_object$VARIABLE <- paste0("NAMES = ", names(df), ";\n")
+        }
         run_models <-
             expand.grid(prof = n_profiles, mod = model_numbers)
 
@@ -214,26 +216,22 @@ estimate_profiles_mplus2 <-
                 dff$model_number <- this_model
                 dff$classes_number <- this_class
 
-                #dff <- reshape(dff, varying = grep("^CPROB\\d+$", names(dff), value = TRUE), timevar = "Class_prob", v.names = "Probability", direction = "long", sep = "")
-                out$dff <- as.tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
-                #out$dff <- as.tibble(dff[, match(c("model_number", "classes_number", param_names, "Class", "Class_prob", "Probability", "id"), names(dff))])
+                out$dff <- as_tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
 
                 # Check for warnings ------------------------------------------------------
                 warnings <- NULL
+                if(out$fit[["prob_min"]]< .001) warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
+                if(out$fit[["n_min"]] < .01) warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
+
                 warnings <- c(warnings, sapply(out$model$warnings, paste, collapse = " "))
+                if(this_class == 1){
+                    warnings <- warnings[!sapply(warnings, grepl, pattern = "TECH14 option is not available for TYPE=MIXTURE with only one class.")]
+
+                }
                 if(this_model %in% c(1, 2)){
                     warnings <- warnings[!sapply(warnings, grepl, pattern = "All variables are uncorrelated with all other variables within class.")]
                 }
-
-                if(out$fit[["prob_min"]] < .001){
-                    warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
-                } else {
-                    if(out$fit[["n_min"]] < .01){
-                        warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
-                    }
-                }
-                # The line below needs to be fixed. CHeck what happens when there are no warnings in Mplus
-                #if(out$warnings == "") out$warnings <- NULL
+                if(length(warnings)) out$warnings <- warnings
                 class(out) <- c("tidyProfile.mplus", "tidyProfile", "list")
                 out
             },
