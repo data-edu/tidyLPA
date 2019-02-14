@@ -64,7 +64,7 @@ If you have Mplus installed, you can call the version of this function that uses
 
 We can plot the profiles by piping the output to `plot_profiles()`.
 
-```{r}
+```{r, eval = FALSE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
