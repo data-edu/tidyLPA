@@ -20,11 +20,15 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
     if(any(!no_na_rows)){
         warning("The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.\n")
     }
-    full_data <- df[no_na_rows, ]
+    full_data <- df[no_na_rows, , drop = FALSE]
+    boot_model_names <- get_modelname(model_numbers)
+    if(ncol(full_data) == 1){
+        boot_model_names <- substr(boot_model_names, 1, 1)
+    }
     run_models <- expand.grid(prof = n_profiles, mod = model_numbers)
 
 
-    boot_blrt <- lapply(get_modelname(model_numbers), function(mod_name){
+    boot_blrt <- lapply(boot_model_names, function(mod_name){
         mclustBootstrapLRT(full_data,
                            modelName = mod_name,
                            nboot = ifelse(methods::hasArg("nboot"), arg_list$nboot, 100),
@@ -36,7 +40,7 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
     out_list <- mapply(FUN = function(this_class, this_model){
         out <- list(model = Mclust(full_data,
                G = this_class,
-               modelNames = get_modelname(this_model),
+               modelNames = ifelse(ncol(full_data) == 1, substr(get_modelname(this_model), 1, 1), get_modelname(this_model)),
                warn = FALSE,
                verbose = FALSE,
                ...
@@ -59,10 +63,15 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
         dff <- matrix(NA, dim(df)[1], dim(outdat)[2])
         dff[no_na_rows, ] <- outdat
         colnames(dff) <- c(paste0("CPROB", 1:ncol(out$model$z)), "Class")
-        out$dff <- as.tibble(cbind(df, dff))
+        out$dff <- as_tibble(cbind(df, dff))
         out$dff$model_number <- this_model
         out$dff$classes_number <- this_class
         out$dff <- out$dff[, c((ncol(out$dff)-1), ncol(out$dff), 1:(ncol(out$dff)-2))]
+        # Set warnings
+        warnings <- NULL
+        if(out$fit[["prob_min"]]< .001) warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
+        if(out$fit[["n_min"]] < .01) warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
+        out$warnings <- warnings
         class(out) <- c("tidyProfile.mclust", "tidyProfile", "list")
         out
     }, this_class = run_models$prof, this_model = run_models$mod, SIMPLIFY = FALSE)

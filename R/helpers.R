@@ -26,3 +26,10 @@
 #' iris %>%
 #'   subset(select = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"))
 NULL
+
+
+quiet <- function(x) {
+    sink(tempfile())
+    on.exit(sink())
+    invisible(force(x))
+}

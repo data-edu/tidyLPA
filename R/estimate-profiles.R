@@ -67,6 +67,52 @@ estimate_profiles <- function(df,
                               covariances = "zero",
                               package = "mclust",
                               ...) {
+    UseMethod("estimate_profiles", df)
+}
+
+#' @export
+estimate_profiles.data.frame <- function(df,
+                                         n_profiles,
+                                         models = NULL,
+                                         variances = "equal",
+                                         covariances = "zero",
+                                         package = "mclust",
+                                         ...) {
+    NextMethod("estimate_profiles", df)
+}
+
+#' @export
+estimate_profiles.matrix <- function(df,
+                                      n_profiles,
+                                      models = NULL,
+                                      variances = "equal",
+                                      covariances = "zero",
+                                      package = "mclust",
+                                      ...) {
+    df <- data.frame(df)
+    NextMethod("estimate_profiles", df)
+}
+
+#' @export
+estimate_profiles.numeric <- function(df,
+                                                                  n_profiles,
+                                                                  models = NULL,
+                                                                  variances = "equal",
+                                                                  covariances = "zero",
+                                                                  package = "mclust",
+                                                                  ...) {
+    df <- data.frame(df)
+    NextMethod("estimate_profiles", df)
+}
+
+#' @export
+estimate_profiles.default <- function(df,
+                                      n_profiles,
+                                      models = NULL,
+                                      variances = "equal",
+                                      covariances = "zero",
+                                      package = "mclust",
+                                      ...) {
     # Check deprecated arguments ----------------------------------------------
 
     deprecated_arguments(c(
@@ -123,10 +169,23 @@ estimate_profiles <- function(df,
             )
     }
 
+    # If data.frame has only one column, covariances must be zero
+    if(ncol(df) == 1){
+        if(any(model_numbers > 2)) warning("Argument 'df' has only one column, so covariances were set to zero.")
+        model_numbers <- 2 - (model_numbers %% 2) # Set to 1 or 2
+    }
 
     out <- switch(package,
            "MplusAutomation" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...),
            "mclust" = estimate_profiles_mclust(df, n_profiles, model_numbers, ...))
+
+    # Check warnings here
+    warnings <- sapply(out, function(x){!is.null(x[["warnings"]])})
+    if(any(warnings)){
+        warning("\nOne or more analyses resulted in warnings! Examine these analyses carefully: ",
+                paste(names(out)[warnings], collapse = ", "),
+                call. = FALSE)
+    }
 
     #if (is.null(m)) stop("Model could not be estimated.")
     class(out) <- c("tidyLPA", "list")
@@ -160,7 +219,7 @@ get_estimates <- function(x, ...) {
 #' multiple numbers of classes and models, of class 'tidyLPA'.
 #' @export
 get_estimates.tidyLPA <- function(x, ...) {
-    as.tibble(do.call(rbind, lapply(x, `[[`, "estimates")))
+    as_tibble(do.call(rbind, lapply(x, `[[`, "estimates")))
 }
 
 #' @describeIn get_estimates Get estimates for a single latent profile analysis
@@ -196,7 +255,7 @@ get_fit <- function(x, ...) {
 #' multiple numbers of classes and models, of class 'tidyLPA'.
 #' @export
 get_fit.tidyLPA <- function(x, ...) {
-    as.tibble(t(sapply(x, `[[`, "fit")))
+    as_tibble(t(sapply(x, `[[`, "fit")))
 }
 
 #' @describeIn get_fit Get fit indices for a single latent profile analysis
@@ -254,7 +313,7 @@ get_data.tidyLPA <- function(x, ...) {
             )
         }
     })
-    as.tibble(do.call(rbind, out))
+    as_tibble(do.call(rbind, out))
 }
 
 #' @describeIn get_data Get data for a single latent profile analysis object,
