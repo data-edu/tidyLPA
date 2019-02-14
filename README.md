@@ -1,6 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA) [![CRAN status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA) [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
+[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
+
+Update: Major (exciting - but breaking!) changes are introduced in the development (0.3.0) version of tidyLPA
+-------------------------------------------------------------------------------------------------------------
+
+Please note that in the development (the version on GitHub here; 1.0.0) version of **tidyLPA** introduces major (exciting - but breaking!) version. Please do not hesitate to reach out with any questions or issues that you encounter.
+
+You can read about some of the major changes [here](https://jrosen48.github.io/tidyLPA/articles/introduction-to-major-changes.html).
+
+Note that the version presently on CRAN (0.2.4) does not represent the new changes yet, though these changes will be made soon. Thus the old version can be downloaded from CRAN or can be downloaded with the following function:
+
+``` r
+devtools::install_github("jrosen48/tidyLPA", ref = "ab36357")
+```
 
 Background
 ----------
@@ -28,54 +41,66 @@ devtools::install_github("jrosen48/tidyLPA")
 Example
 -------
 
+### Mclust
+
 Here is a brief example using the built-in `pisaUSA15` data set and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See `?estimate_profiles` for more details.
+
+In these examples, we pass the results of one function to the next by *piping* (using the `%>%` operator, loaded from the `dplyr` package). We pass the data to a function that selects relevant variables, and then to `estimate_profiles`:
 
 ``` r
 library(tidyLPA)
+library(tidyverse)
+#> Warning: package 'tibble' was built under R version 3.5.2
+#> Warning: package 'purrr' was built under R version 3.5.2
+#> Warning: package 'stringr' was built under R version 3.5.2
 ```
 
 ``` r
-d <- pisaUSA15[1:100, ]
-
-estimate_profiles(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 3)
-#> Fit Equal variances and covariances fixed to 0 (model 1) model with 3 profiles.
-#> LogLik is 283.991
-#> BIC is 631.589
-#> Entropy is 0.914
-#> # A tibble: 94 x 5
-#>    broad_interest enjoyment self_efficacy profile posterior_prob
-#>             <dbl>     <dbl>         <dbl> <fct>            <dbl>
-#>  1            3.8       4            1    1                1.000
-#>  2            3         3            2.75 3                0.917
-#>  3            1.8       2.8          3.38 3                0.997
-#>  4            1.4       1            2.75 2                0.899
-#>  5            1.8       2.2          2    3                0.997
-#>  6            1.6       1.6          1.88 3                0.997
-#>  7            3         3.8          2.25 1                0.927
-#>  8            2.6       2.2          2    3                0.990
-#>  9            1         2.8          2.62 3                0.998
-#> 10            2.2       2            1.75 3                0.996
-#> # ... with 84 more rows
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(3)
+#> tidyLPA analysis using mclust: 
+#> 
+#>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
+#>  1     3       639.310 675.783 0.791   0.901    0.956    0.030 0.630
+#>  BLRT_p
+#>  0.020
 ```
 
-The version of this function that uses MPlus is simple `estimate_profiles_mplus()` that is called in the same way (though some particular details can be changed with arguments specific to either `estimate_profiles` or to `estimate_profiles_mplus()`).
+### Mplus
 
-See the output is simply a data frame with the profile (and its posterior probability) and the variables used to create the profiles (this is the "tidy" part, in that the function takes and returns a data frame).
-
-We can plot the profiles with by *piping* (using the `%>%` operator, loaded from the `dplyr` package) the output to `plot_profiles()`.
+We can use Mplus simply by changing the package argument for `estimate_profiles()`:
 
 ``` r
-library(dplyr, warn.conflicts = FALSE)
-
-estimate_profiles(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  n_profiles = 3) %>% 
-    plot_profiles(to_center = TRUE)
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(3, package = "MplusAutomation")
+#> tidyLPA analysis using mplus: 
+#> 
+#>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
+#>  1     3       642.354 678.826 0.812   0.874    0.944    0.030 0.650
+#>  BLRT_p
+#>  0.000
 ```
 
-![](man/figures/README-unnamed-chunk-5-1.png)
+A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.
+
+If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument `package = "MplusAutomation`.
+
+We can plot the profiles by piping the output to `plot_profiles()`.
+
+``` r
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    scale() %>%
+    estimate_profiles(3, package = "MplusAutomation") %>% 
+    plot_profiles()
+```
+
+![](man/figures/README-unnamed-chunk-7-1.png)
 
 Model specification
 -------------------
@@ -87,7 +112,7 @@ The models are specified by passing arguments to the `variance` and `covariance`
 -   `variances`: "equal" and "zero"
 -   `covariances`: "varying", "equal", and "zero"
 
-If no values are specified for these, then the equal variances and covariances fixed to 0 model is specified by default.
+If no values are specified for these, then the variances are constrained to be equal across classes, and covariances are fixed to 0 (conditional independence of the indicators).
 
 These arguments allow for four models to be specified:
 
@@ -96,35 +121,38 @@ These arguments allow for four models to be specified:
 -   Equal variances and equal covariances (Model 3)
 -   Varying variances and varying covariances (Model 6)
 
-Two additional models (Models 4 and 5) can be fit using functions that provide an interface to the MPlus software. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
+Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
 
 Here is an example of specifying a model with varying variances and covariances (Model 6; not run here):
 
 ``` r
-estimate_profiles(d, 
-                  broad_interest, enjoyment, self_efficacy, 
-                  variances = "varying",
-                  covariances = "varying",
-                  n_profiles = 3)
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(3, 
+                      variances = "varying",
+                      covariances = "varying")
 ```
 
 Comparing a wide range of solutions
 -----------------------------------
 
-The function `compare_solutions()` estimates models with varying numbers of profiles and model specifications:
+The function `compare_solutions()` compares the fit of several estimated models, with varying numbers of profiles and model specifications:
 
 ``` r
-compare_solutions(d, broad_interest, enjoyment, self_efficacy)
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(1:3, 
+                      variances = c("equal", "varying"),
+                      covariances = c("zero", "varying")) %>%
+    compare_solutions(statistics = c("AIC", "BIC"))
 ```
-
-The version that uses MPlus - `compare_solutions_mplus()` - is called in the same way; like for `estimate_profiles()` and `estimate_profiles_mplus()`, some particular details can be specified with arguments specific to `compare_solutions()` or `compare_solutions_mplus()`.
 
 More information
 ----------------
 
 To learn more:
-
-- Read the paper on tidyLPA in the [*Journal of Open Source Software*](http://joss.theoj.org/papers/10.21105/joss.00978) by Rosenberg, Beymer, Anderson, and Schmidt (2018)
 
 -   Browse the tidyLPA [website](https://jrosen48.github.io/tidyLPA/) (especially check out the Reference page to see more about other functions)
 
