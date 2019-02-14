@@ -303,3 +303,4 @@ Pastor, D. A., Barron, K. E., Miller, B. J., & Davis, S. L. (2007). A latent pro
 
 You can also cite the most latest version with the following citation:
 
+> Rosenberg, J. M., van Lissa, C. J.,  Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. https://data-edu.github.io/tidyLPA/

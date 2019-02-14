@@ -150,6 +150,14 @@ To learn more:
 
 * *Read the Introduction to tidyLPA* [vignette](https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html), which has much more information on the models that can be specified with tidyLPA and on additional functionality
 
+## Citing tidyLPA
+
+> Rosenberg, J. M., Beymer, P. N., Anderson, D. J., & Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. *Journal of Open Source Software, 3*(30), 978, https://doi.org/10.21105/joss.00978
+
+You can also cite the most latest version with the following citation:
+
+> Rosenberg, J. M., van Lissa, C. J.,  Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. https://data-edu.github.io/tidyLPA/
+
 ## Contributing and Contact Information
 
 One of the easiest but also most important ways to contribute is to post a question or to provide feedback. Both positive *and* negative feedback is welcome and helpful. You can get in touch by . . . 
