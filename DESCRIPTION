@@ -33,6 +33,7 @@ Suggests:
     parallel,
     missForest,
     testthat,
+    tidyverse,
     rmarkdown,
     mix
 VignetteBuilder: knitr
