@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>tidyLPA: Functionality to carry out Latent Profile Analysis in R — tidyLPA • tidyLPA</title>
+<title>Bootstrap the likelihood-ratio test statistic for mixture components — bootstrap_lrt-deprecated • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,9 @@
 
 
 
-<meta property="og:title" content="tidyLPA: Functionality to carry out Latent Profile Analysis in R — tidyLPA" />
+<meta property="og:title" content="Bootstrap the likelihood-ratio test statistic for mixture components — bootstrap_lrt-deprecated" />
 
-<meta property="og:description" content="Latent Profile Analysis (LPA) is a statistical modeling approach for
-estimating distinct profiles, or groups, of variables. In the social
-sciences and in educational research, these profiles could represent, for
-example, how different youth experience dimensions of being engaged (i.e.,
-cognitively, behaviorally, and affectively) at the same time." />
+<meta property="og:description" content="Bootstrap the likelihood-ratio test statistic for mixture components" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,37 +112,94 @@ cognitively, behaviorally, and affectively) at the same time." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>tidyLPA: Functionality to carry out Latent Profile Analysis in R</h1>
+    <h1>Bootstrap the likelihood-ratio test statistic for mixture components</h1>
     
-    <div class="hidden name"><code>tidyLPA.Rd</code></div>
+    <div class="hidden name"><code>bootstrap_lrt-deprecated.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Latent Profile Analysis (LPA) is a statistical modeling approach for
-estimating distinct profiles, or groups, of variables. In the social
-sciences and in educational research, these profiles could represent, for
-example, how different youth experience dimensions of being engaged (i.e.,
-cognitively, behaviorally, and affectively) at the same time.</p>
+    <p>Bootstrap the likelihood-ratio test statistic for mixture components</p>
     
     </div>
 
-        
+    <pre class="usage"><span class='fu'><a href='tidyLPA-deprecated.html'>bootstrap_lrt</a></span>(<span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>df</th>
+      <td><p>data.frame with two or more columns with continuous variables</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>unquoted variable names separated by commas</p></td>
+    </tr>
+    <tr>
+      <th>n_profiles</th>
+      <td><p>the number of profiles (or mixture components) to be estimated</p></td>
+    </tr>
+    <tr>
+      <th>variances</th>
+      <td><p>how the variable variances are estimated; defaults to "equal" (to be constant across profiles); other option is "varying" (to be varying across profiles)</p></td>
+    </tr>
+    <tr>
+      <th>covariances</th>
+      <td><p>how the variable covariances are estimated; defaults to "zero" (to not be estimated, i.e. for the covariance matrix to be diagonal); other options are "varying" (to be varying across profiles) and "equal" (to be constant across profiles)</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p>which model to estimate (DEPRECATED; use variances and covariances instead)</p></td>
+    </tr>
+    <tr>
+      <th>center_raw_data</th>
+      <td><p>logical for whether to center (M = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>scale_raw_data</th>
+      <td><p>logical for whether to scale (SD = 1) the raw data (before clustering); defaults to FALSE</p></td>
+    </tr>
+    <tr>
+      <th>to_return</th>
+      <td><p>character string for either "tibble" (or "data.frame") or "mclust" if "tibble" is selected, then data with a column for profiles is returned; if "mclust" is selected, then output of class mclust is returned</p></td>
+    </tr>
+    <tr>
+      <th>return_posterior_probs</th>
+      <td><p>TRUE or FALSE (only applicable if to_return == "tibble"); whether to include posterior probabilities in addition to the posterior profile classification; defaults to TRUE</p></td>
+    </tr>
+    <tr>
+      <th>return_orig_df</th>
+      <td><p>TRUE or FALSE (if TRUE, then the entire data.frame is returned; if FALSE, then only the variables used in the model are returned)</p></td>
+    </tr>
+    <tr>
+      <th>prior_control</th>
+      <td><p>whether to include a regularizing prior; defaults to false</p></td>
+    </tr>
+    <tr>
+      <th>print_which_stats</th>
+      <td><p>if set to "some", prints (as a message) the log-likelihood, BIC, and entropy; if set to "all", prints (as a message) all information criteria and other statistics about the model; if set to any other values, then nothing is printed</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>tidyLPA provides the functionality to carry out LPA in R. In particular,
-tidyLPA provides functionality to specify different models that determine
-whether and how different parameters (i.e., means, variances, and
-covariances) are estimated and to specify (and compare solutions for) the
-number of profiles to estimate.</p>
+    <p>Bootstrap the p-values for the likelihood-ratio test statistic for the number of mixture components for an mclust model.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='tidyLPA-deprecated.html'>tidyLPA-deprecated</a></code></p></div>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

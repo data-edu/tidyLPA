@@ -1,3 +1,6 @@
+^ampps-paper\.tex$
+^ampps-paper\.pdf$
+^ampps-paper\.Rmd$
 ^doc$
 ^Meta$
 ^man-roxygen$

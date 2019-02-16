@@ -111,8 +111,8 @@ as.tidyLPA <- function(modelList) {
         }))))
 
     out_list <- lapply(modelList, function(x) {
-        this_class = nrow(x$class_counts$modelEstimated)
-        this_model = NA
+        this_class <- nrow(x$class_counts$modelEstimated)
+        this_model <- NA
 
         out <- list(model = x)
         out$fit <-

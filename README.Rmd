@@ -12,22 +12,22 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![Build Status](https://travis-ci.org/jrosen48/tidyLPA.svg?branch=master)](https://travis-ci.org/jrosen48/tidyLPA)
 [![CRAN status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
 [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
-   
-## Update: Major (exciting - but breaking!) changes are introduced in the development (0.3.0) version of tidyLPA
+[![Build Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
+
+## tidyLPA
 
 Please note that in the development (the version on GitHub here; 1.0.0) version of **tidyLPA** introduces major (exciting - but breaking!) version. Please do not hesitate to reach out with any questions or issues that you encounter. 
 
-You can read about some of the major changes [here](https://jrosen48.github.io/tidyLPA/articles/introduction-to-major-changes.html).
+You can read about some of the major changes [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
 
 Note that the version presently on CRAN (0.2.4) does not represent the new changes yet, though these changes will be made soon. Thus the old version can be downloaded from CRAN or can be downloaded with the following function:
 
 ```{r, eval = FALSE}
-devtools::install_github("jrosen48/tidyLPA", ref = "ab36357")
+devtools::install_github("data-edu/tidyLPA", ref = "ab36357")
 ```
 
 ## Background
@@ -48,7 +48,7 @@ You can also install the development version of tidyLPA from GitHub with:
 
 ```{r gh-installation, eval = FALSE}
 install.packages("devtools")
-devtools::install_github("jrosen48/tidyLPA")
+devtools::install_github("data-edu/tidyLPA")
 ```
 
 ## Example
@@ -61,6 +61,7 @@ In these examples, we pass the results of one function to the next by *piping* (
 
 ```{r, message = F}
 library(tidyLPA)
+library(tidyverse)
 ```
 
 ```{r}
@@ -92,7 +93,7 @@ pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     scale() %>%
-    estimate_profiles(3, package = "MplusAutomation") %>% 
+    estimate_profiles(3) %>% 
     plot_profiles()
 ```
 
@@ -114,7 +115,7 @@ These arguments allow for four models to be specified:
 * Equal variances and equal covariances (Model 3)
 * Varying variances and varying covariances (Model 6)
 
-Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
+Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the [vignette](https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
 
 Here is an example of specifying a model with varying variances and covariances (Model 6; not run here): 
 
@@ -146,17 +147,25 @@ pisaUSA15[1:100, ] %>%
 
 To learn more:
 
-* Browse the tidyLPA [website](https://jrosen48.github.io/tidyLPA/) (especially check out the Reference page to see more about other functions)
+* Browse the tidyLPA [website](https://data-edu.github.io/tidyLPA/) (especially check out the Reference page to see more about other functions)
 
-* *Read the Introduction to tidyLPA* [vignette](https://jrosen48.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html), which has much more information on the models that can be specified with tidyLPA and on additional functionality
+* *Read the Introduction to tidyLPA* [vignette](https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html), which has much more information on the models that can be specified with tidyLPA and on additional functionality
+
+## Citing tidyLPA
+
+> Rosenberg, J. M., Beymer, P. N., Anderson, D. J., & Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. *Journal of Open Source Software, 3*(30), 978, https://doi.org/10.21105/joss.00978
+
+You can also cite the most latest version with the following citation:
+
+> Rosenberg, J. M., van Lissa, C. J.,  Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. https://data-edu.github.io/tidyLPA/
 
 ## Contributing and Contact Information
 
 One of the easiest but also most important ways to contribute is to post a question or to provide feedback. Both positive *and* negative feedback is welcome and helpful. You can get in touch by . . . 
 
 * Sending a message via [tidylpa@googlegroups.com](mailto:tidylpa@googlegroups.com) or view the [the tidyLPA group page](https://groups.google.com/forum/#!forum/tidylpa) (*preferred*)
-* Filing an issue on GitHub [here](https://github.com/jrosen48/tidyLPA)
+* Filing an issue on GitHub [here](https://github.com/data-edu/tidyLPA)
 
-Contributions are also welcome via by making pull requests (PR), e.g. through [this page on GitHub](https://github.com/jrosen48/tidyLPA/pulls). It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.
+Contributions are also welcome via by making pull requests (PR), e.g. through [this page on GitHub](https://github.com/data-edu/tidyLPA/pulls). It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
