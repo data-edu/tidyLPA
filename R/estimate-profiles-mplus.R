@@ -159,7 +159,7 @@ estimate_profiles_mplus2 <-
                 # Run analysis ------------------------------------------------------------
 
 
-                filename = c(inp <- ifelse(
+                filename = c(inp = ifelse(
                     !is.null(filename_stem),
                     paste0(
                         paste(
