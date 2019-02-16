@@ -45,7 +45,7 @@ authornote: |
 abstract: |
   
 keywords          : "Latent Profile Analysis, mixture models, finite mixture models, tutorial, R, MPlus, mclust"
-wordcount         : "X"
+wordcount         : "4,882 (need to shorten to ~ 3,000)" 
 
 bibliography      : ["r-references.bib"]
 
