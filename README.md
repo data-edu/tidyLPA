@@ -50,9 +50,6 @@ In these examples, we pass the results of one function to the next by *piping* (
 ``` r
 library(tidyLPA)
 library(tidyverse)
-#> Warning: package 'tibble' was built under R version 3.5.2
-#> Warning: package 'purrr' was built under R version 3.5.2
-#> Warning: package 'stringr' was built under R version 3.5.2
 ```
 
 ``` r
@@ -63,7 +60,7 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       636.697 673.169 0.798   0.900    0.963    0.030 0.650
+#>  1     3       629.499 665.971 0.814   0.883    0.972    0.030 0.650
 #>  BLRT_p
 #>  0.010
 ```
@@ -80,9 +77,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       630.562 667.034 0.779   0.841    0.927    0.030 0.580
+#>  1     3       622.016 658.488 0.805   0.846    0.942    0.030 0.630
 #>  BLRT_p
-#>  0.013
+#>  0.000
 ```
 
 A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.
