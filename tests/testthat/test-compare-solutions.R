@@ -1,4 +1,5 @@
 context("test-compare_solutions.R")
+library(dplyr)
 
 x <- estimate_profiles(iris[, 1:4], 1:3)
 
