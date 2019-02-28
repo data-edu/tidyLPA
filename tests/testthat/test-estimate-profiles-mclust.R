@@ -1,7 +1,5 @@
 context("test-estimate_profiles-mclust.R")
 
-library(dplyr)
-
 m_mclust <- estimate_profiles(iris[, 1:4], n_profiles = 3,  models = c(1:3,6))
 
 m_cars_mclust <- estimate_profiles(mtcars[, "mpg"], n_profiles = 2, models = 2)
@@ -29,27 +27,8 @@ test_that("LogLik values are as expected for model type 6",
                        tolerance = .001)
 )
 
-m_iris_mclust_3_profiles <- iris %>%
-    select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>%
-    estimate_profiles(3)
-
-test_that("estimate_profiles works with iris data and mclust",
-          expect_s3_class(m_iris_mclust_3_profiles, "tidyLPA")
-)
-
-m_pisa_mclust_3_profiles <- pisaUSA15[1:100, ] %>%
-    select(broad_interest, enjoyment, self_efficacy) %>%
-    estimate_profiles(3)
+m_pisa_mclust_3_profiles <- estimate_profiles(pisaUSA15[1:100, ], n_profiles = 3)
 
 test_that("estimate_profiles works with build-in PISA data and mclust",
           expect_s3_class(m_pisa_mclust_3_profiles, "tidyLPA")
-)
-
-m_pisa_mclust_3_profiles_imputation <- pisaUSA15[1:100, ] %>%
-    select(broad_interest, enjoyment, self_efficacy) %>%
-    single_imputation() %>%
-    estimate_profiles(3)
-
-test_that("estimate_profiles works when using single imputation and mclust",
-          expect_s3_class(m_pisa_mclust_3_profiles_imputation, "tidyLPA")
 )
