@@ -1,3 +1,7 @@
+# tidyLPA 1.0.0
+
+* major, breaking changes detailed in the vignette [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html)
+
 # tidyLPA 0.2.4
 
 * minor bug fixes
