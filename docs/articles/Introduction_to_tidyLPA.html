@@ -56,7 +56,7 @@
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
     <li>
-      <a href="../articles/introduction-to-major-changes.html">Forthcoming major changes</a>
+      <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
     </li>
   </ul>
 </li>
@@ -156,10 +156,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <p>Here is a brief example using the built-in <code>pisaUSA15</code> data set and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See <code><a href="../reference/estimate_profiles.html">?estimate_profiles</a></code> for more details.</p>
 <p>In these examples, we pass the results of one function to the next by <em>piping</em> (using the <code>%&gt;%</code> operator, loaded from the <code>dplyr</code> package). We pass the data to a function that selects relevant variables, and then to <code>estimate_profiles</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)
-<span class="co">#&gt; Warning: package 'tibble' was built under R version 3.5.2</span>
-<span class="co">#&gt; Warning: package 'purrr' was built under R version 3.5.2</span>
-<span class="co">#&gt; Warning: package 'stringr' was built under R version 3.5.2</span></code></pre></div>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
@@ -167,9 +164,9 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt; tidyLPA analysis using mclust: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
-<span class="co">#&gt;  1     3       634.844 671.317 0.801   0.906    0.961    0.030 0.660</span>
+<span class="co">#&gt;  1     3       632.674 669.147 0.787   0.897    0.972    0.030 0.680</span>
 <span class="co">#&gt;  BLRT_p</span>
-<span class="co">#&gt;  0.030</span></code></pre></div>
+<span class="co">#&gt;  0.020</span></code></pre></div>
 </div>
 <div id="mplus" class="section level2">
 <h2 class="hasAnchor">
@@ -181,13 +178,14 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)</code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
 <p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
-<p>We can plot the profiles by piping the output to <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code> (not run).</p>
+<p>We can plot the profiles by piping the output to <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</code></pre></div>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 <div id="comparing-a-wide-range-of-solutions" class="section level2">
 <h2 class="hasAnchor">
@@ -199,7 +197,21 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, 
                       <span class="dt">variances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),
                       <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</code></pre></div>
+<span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))
+<span class="co">#&gt; Compare tidyLPA solutions:</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Model Classes AIC     BIC    </span>
+<span class="co">#&gt;  1     1       670.014 685.645</span>
+<span class="co">#&gt;  1     2       640.363 666.415</span>
+<span class="co">#&gt;  1     3       627.777 664.250</span>
+<span class="co">#&gt;  6     1       621.510 644.956</span>
+<span class="co">#&gt;  6     2       631.518 681.017</span>
+<span class="co">#&gt;  6     3       618.854 694.404</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Best model according to AIC is Model 6 with 3 classes.</span>
+<span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; An analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul &amp; Erisoglu, 2017), suggests the best solution is Model 6 with 1 classes.</span></code></pre></div>
 </div>
 </div>
 <div id="more-information-on-model-specifications" class="section level1">
@@ -300,8 +312,35 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <h1 class="hasAnchor">
 <a href="#other-options" class="anchor"></a>Other options</h1>
 <p>There is a lot of output that is possible to obtain from the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function - much more than a tidy data frame, which is the default. The easiest way to access it is by using the <code><a href="../reference/get_estimates.html">get_estimates()</a></code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_estimates.html">get_estimates</a></span>(m3)</code></pre></div>
-<p>Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the <code>scale</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)
+
+<span class="kw"><a href="../reference/get_estimates.html">get_estimates</a></span>(m3)
+<span class="co">#&gt; # A tibble: 18 x 8</span>
+<span class="co">#&gt;    Category  Parameter      Estimate     se         p Class Model Classes</span>
+<span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 Means     broad_interest    3.06  0.190  1.44e- 58     1     1       3</span>
+<span class="co">#&gt;  2 Means     enjoyment         3.46  0.175  7.48e- 87     1     1       3</span>
+<span class="co">#&gt;  3 Means     self_efficacy     1.64  0.180  9.50e- 20     1     1       3</span>
+<span class="co">#&gt;  4 Variances broad_interest    0.465 0.109  2.09e-  5     1     1       3</span>
+<span class="co">#&gt;  5 Variances enjoyment         0.225 0.0493 5.12e-  6     1     1       3</span>
+<span class="co">#&gt;  6 Variances self_efficacy     0.247 0.0467 1.26e-  7     1     1       3</span>
+<span class="co">#&gt;  7 Means     broad_interest    1.08  0.252  1.95e-  5     2     1       3</span>
+<span class="co">#&gt;  8 Means     enjoyment         1.24  0.281  1.07e-  5     2     1       3</span>
+<span class="co">#&gt;  9 Means     self_efficacy     3.48  0.322  3.06e- 27     2     1       3</span>
+<span class="co">#&gt; 10 Variances broad_interest    0.465 0.109  2.09e-  5     2     1       3</span>
+<span class="co">#&gt; 11 Variances enjoyment         0.225 0.0493 5.12e-  6     2     1       3</span>
+<span class="co">#&gt; 12 Variances self_efficacy     0.247 0.0467 1.26e-  7     2     1       3</span>
+<span class="co">#&gt; 13 Means     broad_interest    2.19  0.172  3.22e- 37     3     1       3</span>
+<span class="co">#&gt; 14 Means     enjoyment         2.46  0.136  1.45e- 73     3     1       3</span>
+<span class="co">#&gt; 15 Means     self_efficacy     2.30  0.0806 1.06e-178     3     1       3</span>
+<span class="co">#&gt; 16 Variances broad_interest    0.465 0.109  2.09e-  5     3     1       3</span>
+<span class="co">#&gt; 17 Variances enjoyment         0.225 0.0493 5.12e-  6     3     1       3</span>
+<span class="co">#&gt; 18 Variances self_efficacy     0.247 0.0467 1.26e-  7     3     1       3</span></code></pre></div>
+<p>Other options include how the raw data is processed.</p>
+<p>We can center or scale the data before estimating the profiles with the <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span>
@@ -314,7 +353,22 @@ d <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">4</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</code></pre></div>
 <p>Since we often wish to use the estimated profiles in subsequent analyses, we may want the original <code>data.frame</code>, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this <code>data.frame</code>, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function <code><a href="../reference/get_data.html">get_data()</a></code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_data.html">get_data</a></span>(m3)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_data.html">get_data</a></span>(m3)
+<span class="co">#&gt; # A tibble: 300 x 9</span>
+<span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span>
+<span class="co">#&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1            1              3            3.8       4            1        1</span>
+<span class="co">#&gt;  2            1              3            3         3            2.75     3</span>
+<span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span>
+<span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span>
+<span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span>
+<span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span>
+<span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span>
+<span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span>
+<span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span>
+<span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span>
+<span class="co">#&gt; # … with 290 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span>
+<span class="co">#&gt; #   Probability &lt;dbl&gt;, id &lt;int&gt;</span></code></pre></div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>

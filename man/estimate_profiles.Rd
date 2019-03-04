@@ -66,19 +66,19 @@ c("zero", "equal")}).
 # Example 1:
 iris \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width",
-    "Petal.Length", "Petal.Width")) \%>\%
+    "Petal.Length")) \%>\%
   estimate_profiles(3)
 
 # Example 2:
 iris \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width",
-    "Petal.Length", "Petal.Width")) \%>\%
+    "Petal.Length")) \%>\%
   estimate_profiles(n_profiles = 1:4, models = 1:3)
 
 # Example 3:
 iris \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width",
-    "Petal.Length", "Petal.Width")) \%>\%
+    "Petal.Length")) \%>\%
   estimate_profiles(n_profiles = 1:4, variances = c("equal", "varying"),
                     covariances = c("zero", "zero"))
 }

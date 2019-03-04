@@ -250,7 +250,12 @@ $$
 
 There is a lot of output that is possible to obtain from the `estimate_profiles()` function - much more than a tidy data frame, which is the default. The easiest way to access it is by using the `get_estimates()` function.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
+m3 <- pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(3)
+
 get_estimates(m3)
 ```
 
