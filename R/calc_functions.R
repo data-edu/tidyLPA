@@ -329,7 +329,6 @@ calc_fitindices <- function(model, fitindices){
     fits
 }
 
-
 # ICL method for mplus.model ----------------------------------------------
 
 icl.mplus.model <- function(object, ...)
@@ -343,7 +342,6 @@ icl.mplus.model <- function(object, ...)
         (-1*object$summaries$BIC) + 2*sum(z * log(z))
     }
 }
-
 
 #LMR and ALMR indistinguishable from each other: https://www.tandfonline.com/doi/full/10.1080/10705511.2016.1169188?scroll=top&needAccess=true
 

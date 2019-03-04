@@ -141,7 +141,6 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
     df_plot$Class <- ordered(df_plot$Class)
     df_plot$Variable <- ordered(df_plot$Parameter, levels = unique(df_plot$Parameter))
 
-
     # Drop useless stuff
     df_plot <- df_plot[grepl("(^Means$|^Variances$)", df_plot$Category),
                        -match(c("p", "Parameter", "Estimate"), names(df_plot))]
