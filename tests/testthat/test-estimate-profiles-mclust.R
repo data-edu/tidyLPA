@@ -1,7 +1,6 @@
 context("test-estimate_profiles-mclust.R")
 
 m_mclust <- estimate_profiles(iris[, 1:4], n_profiles = 3,  models = c(1:3,6))
-
 m_cars_mclust <- estimate_profiles(mtcars[, "mpg"], n_profiles = 2, models = 2)
 
 test_that("estimate_profiles_mclust handles single-column data",
