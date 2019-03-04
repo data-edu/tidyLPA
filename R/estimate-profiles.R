@@ -134,7 +134,7 @@ estimate_profiles.default <- function(df,
     # Screen for legal input --------------------------------------------------
     package <- package[1]
     if(!inherits(package, "character")) stop("Argument package must be a character string.")
-    if(!package %in% c("mclust", "MplusAutomation")) stop("Argument package must be one of 'mclust' or 'MplusAutomation'.")
+    if(!package %in% c("mclust", "MplusAutomation", "mplus", "Mplus", "MPlus")) stop("Argument package must be one of 'mclust' or 'MplusAutomation'.")
 
     # Screen df ---------------------------------------------------------------
 
@@ -177,7 +177,10 @@ estimate_profiles.default <- function(df,
 
     out <- switch(package,
            "MplusAutomation" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...),
-           "mclust" = estimate_profiles_mclust(df, n_profiles, model_numbers, ...))
+           "mclust" = estimate_profiles_mclust(df, n_profiles, model_numbers, ...),
+           "mplus" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...),
+           "Mplus" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...),
+           "MPlus" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...))
 
     # Check warnings here
     warnings <- sapply(out, function(x){!is.null(x[["warnings"]])})
