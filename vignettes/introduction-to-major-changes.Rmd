@@ -1,5 +1,5 @@
 ---
-title: "Forthcoming major changes"
+title: "Major changes for version 1.0.0"
 author: "Caspar van Lissa"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

@@ -66,7 +66,7 @@ This package focuses on models that are commonly specified as part of LPA. Becau
 
 You can install tidyLPA from CRAN with:
 
-```{r, eval = F}
+```{r, eval = FALSE}
 install.packages("tidyLPA")
 ```
 
@@ -110,23 +110,22 @@ A simple summary of the analysis is printed to the console (and its posterior pr
 
 If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument `package = "MplusAutomation`.
 
-We can plot the profiles by piping the output to `plot_profiles()` (not run).
+We can plot the profiles by piping the output to `plot_profiles()`:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     scale() %>%
-    estimate_profiles(3, package = "MplusAutomation") %>% 
+    estimate_profiles(3) %>% 
     plot_profiles()
 ```
 
 ## Comparing a wide range of solutions
 
-The function `compare_solutions()` compares the fit of several estimated models,
-with varying numbers of profiles and model specifications:
+The function `compare_solutions()` compares the fit of several estimated models, with varying numbers of profiles and model specifications:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
@@ -255,7 +254,9 @@ There is a lot of output that is possible to obtain from the `estimate_profiles(
 get_estimates(m3)
 ```
 
-Other options include how the raw data is processed. We can center or scale the data before estimating the profiles with the `scale` function:
+Other options include how the raw data is processed. 
+
+We can center or scale the data before estimating the profiles with the `scale()` or `poms()` functions:
 
 ```{r, eval = FALSE}
 d %>%
@@ -273,7 +274,7 @@ d %>%
 
 Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function `get_data()`
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 get_data(m3)
 ```
 
