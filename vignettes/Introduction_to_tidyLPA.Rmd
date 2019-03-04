@@ -161,7 +161,6 @@ Here is an example of specifying a model with varying variances and covariances 
 ```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
-    single_imputation() %>%
     estimate_profiles(3, 
                       variances = "varying",
                       covariances = "varying")
@@ -252,7 +251,6 @@ There is a lot of output that is possible to obtain from the `estimate_profiles(
 ```{r, eval = TRUE}
 m3 <- pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
-    single_imputation() %>%
     estimate_profiles(3)
 
 get_estimates(m3)
@@ -263,13 +261,13 @@ Other options include how the raw data is processed.
 We can center or scale the data before estimating the profiles with the `scale()` or `poms()` functions:
 
 ```{r, eval = TRUE}
-d %>%
+pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     scale() %>%
     estimate_profiles(4) %>%
     plot_profiles()
 
-d %>%
+pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     poms() %>%
     estimate_profiles(4) %>%
