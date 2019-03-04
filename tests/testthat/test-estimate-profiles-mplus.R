@@ -1,7 +1,5 @@
 context("test-estimate_profiles-mplus.R")
 
-library(dplyr)
-
 test_that("estimate_profiles_mplus handles single-column data", {
           m_mplus <- estimate_profiles(iris[, 1:4], n_profiles = 3,  models = c(1:3,6), package = "MplusAutomation")
           m_cars_mplus <- estimate_profiles(mtcars[, "mpg"], n_profiles = 2, models = 2, package = "MplusAutomation")
