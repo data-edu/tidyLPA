@@ -15,7 +15,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-library(dplyr)
 ```
 
 Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles, or groups, of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. 
@@ -157,9 +156,9 @@ These arguments allow for four models to be specified:
 
 Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the [vignette](https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
 
-Here is an example of specifying a model with varying variances and covariances (Model 6; not run here): 
+Here is an example of specifying a model with varying variances and covariances (Model 6):
 
-```{r, eval = F}
+```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
@@ -263,7 +262,7 @@ Other options include how the raw data is processed.
 
 We can center or scale the data before estimating the profiles with the `scale()` or `poms()` functions:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 d %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     scale() %>%
