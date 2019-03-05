@@ -4,7 +4,8 @@ m_mclust <- estimate_profiles(iris[, 1:4], n_profiles = 3,  models = c(1:3,6))
 m_cars_mclust <- estimate_profiles(mtcars[, "mpg"], n_profiles = 2, models = 2)
 
 test_that("estimate_profiles_mclust handles single-column data",
-          expect_equal(m_cars_mclust$model_2_class_2$estimates$Estimate, c(18.481, 18.337, 31.759, 2.429), tolerance = .05))
+          expect_equal(m_cars_mclust$model_2_class_2$estimates$Estimate, c(18.481, 18.337, 31.759, 2.429),
+                       tolerance = .05))
 
 test_that("LogLik values are as expected for model type 1",
           expect_equal(m_mclust$model_1_class_3$model$loglik, -361.4295,

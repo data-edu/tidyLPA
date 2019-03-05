@@ -1,10 +1,9 @@
 context("test-estimate_profiles-mplus.R")
 
 test_that("estimate_profiles_mplus handles single-column data", {
-    m_mplus <- estimate_profiles(iris[, 1:4], n_profiles = 3,  models = c(1:3,6), package = "MplusAutomation")
-    m_cars_mplus <- estimate_profiles(mtcars[, "mpg"], n_profiles = 2, models = 2, package = "MplusAutomation")
     skip_on_cran()
     skip_on_travis()
+    m_cars_mplus <- estimate_profiles(mtcars[, "mpg"], n_profiles = 2, models = 2, package = "MplusAutomation")
     expect_equal(m_cars_mplus$model_2_class_2$estimates$Estimate, c(18.481, 18.337, 31.759, 2.429), tolerance = .05)
 })
 
@@ -61,6 +60,8 @@ test_that("LogLik values are as expected for model type 3", {
 })
 
 test_that("LogLik values are as expected for model type 6", {
+    skip_on_cran()
+    skip_on_travis()
     m_mplus <- estimate_profiles(iris[, 1:4], n_profiles = 3,  models = c(1:3,6), package = "MplusAutomation")
     expect_equal(m_mplus$model_6_class_3$model$summaries$LL, -180.1858,
                  tolerance = .001)
