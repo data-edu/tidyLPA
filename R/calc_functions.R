@@ -283,6 +283,7 @@ label_parameters <- function(syntax){
 
 # Information criteria ----------------------------------------------------
 
+
 calc_fitindices <- function(model, fitindices){
     # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
     if(inherits(model, "Mclust")){
@@ -292,9 +293,7 @@ calc_fitindices <- function(model, fitindices){
         post_prob <- model$z
         class <- model$classification
         fits <- c(ifelse(ncol(post_prob) == 1, 1, 1 + (1/(nrow(post_prob)*log(ncol(post_prob))))*(sum(rowSums(post_prob * log(post_prob+1e-12))))),
-                 range(
-                     sapply(unique(class), function(x){mean(post_prob[class == x, x])})
-                     ),
+                 range(diag(classification_probs_mostlikely(post_prob, class))),
                  range(prop.table(table(model$classification))),
                  model$LRTS,
                  model$LRTS_p
@@ -327,6 +326,21 @@ calc_fitindices <- function(model, fitindices){
     )
     names(fits) <- c("LogLik", "AIC", "AWE", "BIC", "CAIC", "CLC", "KIC", "SABIC", "ICL", "Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")
     fits
+}
+
+
+avgprobs_mostlikely <- function(post_prob, class){
+    t(sapply(unique(class), function(i){colMeans(post_prob[class == i, ])}))
+}
+
+classification_probs_mostlikely <- function(post_prob, class){
+    avg_probs <- avgprobs_mostlikely(post_prob, class)
+    C <- length(unique(class))
+    N <- table(class)
+    tab <- mapply(function(this_row, this_col){
+        (avg_probs[this_row, this_col]*N[this_row])/(sum(avg_probs[ , this_col] * N))
+    }, this_row = rep(1:C, 2), this_col = rep(1:C, each = 2))
+    matrix(tab, 2, 2, byrow = TRUE)
 }
 
 # ICL method for mplus.model ----------------------------------------------
