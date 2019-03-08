@@ -4,16 +4,16 @@ author: "Joshua M. Rosenberg"
 date: '2018-09-16'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to tidyLPA}
+%\VignetteIndexEntry{Introduction to tidyLPA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   % \VignetteDepends{dplyr}
----
-
-```{r, echo = FALSE}
+  ---
+  
+  ```{r, echo = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+collapse = TRUE,
+comment = "#>"
 )
 ```
 
@@ -45,9 +45,9 @@ The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, 
 
 1. Provide functionality to specify models that are common to LPA
 2. Make it easier to use the output in subsequent analysis through a ["tidy" interface](https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html), in that:
-    - input and output are both a `data.frame` (specifically its modified version, a `tibble`) that can be used to create plots or can be used in subsequent analyses
-    - uses the "pipe" operator, `%>%` to compose functions
-    - being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)
+- input and output are both a `data.frame` (specifically its modified version, a `tibble`) that can be used to create plots or can be used in subsequent analyses
+- uses the "pipe" operator, `%>%` to compose functions
+- being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)
 
 ## Software approach to carrying out LPA: Interface to mclust (and to MPlus)
 
@@ -127,6 +127,7 @@ The function `compare_solutions()` compares the fit of several estimated models,
 ```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
     estimate_profiles(1:3, 
                       variances = c("equal", "varying"),
                       covariances = c("zero", "varying")) %>%
