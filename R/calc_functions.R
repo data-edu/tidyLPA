@@ -330,10 +330,12 @@ calc_fitindices <- function(model, fitindices){
 
 
 avgprobs_mostlikely <- function(post_prob, class){
-    t(sapply(unique(class), function(i){colMeans(post_prob[class == i, ])}))
+    if(is.null(dim(post_prob))) return(1)
+    t(sapply(unique(class), function(i){colMeans(post_prob[class == i, , drop = FALSE])}))
 }
 
 classification_probs_mostlikely <- function(post_prob, class){
+    if(is.null(dim(post_prob))) return(1)
     avg_probs <- avgprobs_mostlikely(post_prob, class)
     C <- length(unique(class))
     N <- table(class)
