@@ -18,17 +18,10 @@ knitr::opts_chunk$set(
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
 [![Build Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
 
-## tidyLPA
+## Note
 
-Please note that in the development (the version on GitHub here; 1.0.0) version of **tidyLPA** introduces major (exciting - but breaking!) version. Please do not hesitate to reach out with any questions or issues that you encounter. 
+tidyLPA has undergone some major changes. You can read about them [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
 
-You can read about some of the major changes [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
-
-Note that the version presently on CRAN (0.2.4) does not represent the new changes yet, though these changes will be made soon. Thus the old version can be downloaded from CRAN or can be downloaded with the following function:
-
-```{r, eval = FALSE}
-devtools::install_github("data-edu/tidyLPA", ref = "ab36357")
-```
 
 ## Background
 
@@ -51,7 +44,7 @@ install.packages("devtools")
 devtools::install_github("data-edu/tidyLPA")
 ```
 
-## Example
+## Examples
 
 ### Mclust
 
@@ -160,6 +153,14 @@ To learn more:
 You can also cite the most latest version with the following citation:
 
 > Rosenberg, J. M., van Lissa, C. J.,  Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. https://data-edu.github.io/tidyLPA/
+
+## Accessing the previous version
+
+The last version of tidyLPA can no longer be downloaded from CRAN but can be downloaded with the following question
+
+```{r, eval = FALSE}
+devtools::install_github("data-edu/tidyLPA", ref = "ab36357")
+```
 
 ## Contributing and Contact Information
 

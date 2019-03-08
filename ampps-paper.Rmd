@@ -75,12 +75,18 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 <!-- tidyLPA Tutorial for AMPPS -->
 <!-- https://www.psychologicalscience.org/publications/ampps/ampps-submission-guidelines#NEMP -->
 <!-- Tutorials -->
-<!-- Tutorials provide hands-on, practical guidance for researchers. Any topic that could enhance research practices or methods might be suitable for a Tutorial, provided that the material covered in the Tutorial would be relevant to and useful for the journal’s broad readership; Tutorials of more narrow interest or of relevance to only one subfield or literature typically are not appropriate for AMPPS. AMPPS welcomes Tutorials that focus on helping researchers learn to use statistical tools, improve their statistical practices and intuitions, better their data-management and lab practices, enhance the reliability and reproducibility of their research, engage in transparent and open practices, and so on. Tutorials often include dynamic, interactive content and should provide concrete guidance rather than solely abstract principles. Some Tutorials will be solicited by the editorial team, and the team welcomes suggestions and proposals for Tutorials. -->
+<!-- Tutorials provide hands-on, practical guidance for researchers. Any topic that could enhance research practices or methods might be suitable for a Tutorial, provided that the material covered in the Tutorial would be relevant to and useful for the journal’s broad readership; Tutorials of more narrow interest or of relevance to only one subfield or literature typically are not appropriate for AMPPS. 
+
+AMPPS welcomes Tutorials that focus on helping researchers learn to use statistical tools, improve their statistical practices and intuitions, better their data-management and lab practices, enhance the reliability and reproducibility of their research, engage in transparent and open practices, and so on. Tutorials often include dynamic, interactive content and should provide concrete guidance rather than solely abstract principles. Some Tutorials will be solicited by the editorial team, and the team welcomes suggestions and proposals for Tutorials. -->
 <!-- Most Tutorials should be brief (< 3,000 words), but they may be longer if necessary to explain the content fully and make it accessible to and usable by readers. -->
 <!-- The introduction to a Tutorial typically should be no more than one to two paragraphs long (< 500 words) and should not include an extensive literature review. The introduction should explain the motivation for the Tutorial and highlight how learning the contents will benefit readers. -->
 <!-- Tutorials should have a brief summary of their contents, rather than a General Discussion section. -->
 <!-- Tutorials should be accompanied by publicly available code and all resources necessary for researchers (and reviewers) to follow the text. -->
 <!-- Tutorials can include a list of additional resources (e.g., citations and links) for readers who would like to learn more. -->
+
+# Introduction
+
+
 
 # Background
 
