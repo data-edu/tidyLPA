@@ -1,19 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![CRAN status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA) [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978) [![Build Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
+[![CRAN status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA) [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#stable) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978) [![Build Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
 
-tidyLPA
--------
+Note
+----
 
-Please note that in the development (the version on GitHub here; 1.0.0) version of **tidyLPA** introduces major (exciting - but breaking!) version. Please do not hesitate to reach out with any questions or issues that you encounter.
-
-You can read about some of the major changes [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
-
-Note that the version presently on CRAN (0.2.4) does not represent the new changes yet, though these changes will be made soon. Thus the old version can be downloaded from CRAN or can be downloaded with the following function:
-
-``` r
-devtools::install_github("data-edu/tidyLPA", ref = "ab36357")
-```
+tidyLPA has undergone some major changes. You can read about them here [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
 
 Background
 ----------
@@ -38,8 +30,8 @@ install.packages("devtools")
 devtools::install_github("data-edu/tidyLPA")
 ```
 
-Example
--------
+Examples
+--------
 
 ### Mclust
 
@@ -57,12 +49,14 @@ pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     estimate_profiles(3)
+#> Warning: 
+#> One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       634.977 671.449 0.792   0.888    0.939    0.030 0.640
+#>  1     3       632.145 668.617 0.788   0.000    0.983    0.060 0.630
 #>  BLRT_p
-#>  0.040
+#>  0.010
 ```
 
 ### Mplus
@@ -77,14 +71,16 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       640.124 676.596 0.774   0.796    0.952    0.030 0.660
+#>  1     3       633.324 669.796 0.781   0.822    0.944    0.030 0.630
 #>  BLRT_p
-#>  0.020
+#>  0.000
 ```
 
 A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.
 
 If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument `package = "MplusAutomation`.
+
+### Plotting the profiles
 
 We can plot the profiles by piping the output to `plot_profiles()`.
 
@@ -97,7 +93,7 @@ pisaUSA15[1:100, ] %>%
     plot_profiles()
 ```
 
-![](man/figures/README-unnamed-chunk-7-1.png)
+![](man/figures/README-unnamed-chunk-6-1.png)
 
 Model specification
 -------------------
@@ -163,6 +159,15 @@ Citing tidyLPA
 You can also cite the most latest version with the following citation:
 
 > Rosenberg, J. M., van Lissa, C. J., Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software \[R package\]. <https://data-edu.github.io/tidyLPA/>
+
+Accessing the previous version
+------------------------------
+
+The last version of tidyLPA can no longer be downloaded from CRAN but can be downloaded with the following question
+
+``` r
+devtools::install_github("data-edu/tidyLPA", ref = "ab36357")
+```
 
 Contributing and Contact Information
 ------------------------------------
