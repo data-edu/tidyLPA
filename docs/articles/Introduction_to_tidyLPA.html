@@ -179,14 +179,12 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)
-<span class="co">#&gt; Warning: </span>
-<span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3</span>
 <span class="co">#&gt; tidyLPA analysis using mclust: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
-<span class="co">#&gt;  1     3       625.172 661.645 0.825   0.000    0.993    0.030 0.670</span>
+<span class="co">#&gt;  1     3       634.799 671.271 0.780   0.019    0.862    0.190 0.580</span>
 <span class="co">#&gt;  BLRT_p</span>
-<span class="co">#&gt;  0.010</span></code></pre></div>
+<span class="co">#&gt;  0.030</span></code></pre></div>
 </div>
 <div id="mplus" class="section level2">
 <h2 class="hasAnchor">
@@ -221,21 +219,21 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
                       <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))
 <span class="co">#&gt; Warning: </span>
-<span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3, model_6_class_3</span>
+<span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3</span>
 
 <span class="co">#&gt; Warning: </span>
-<span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3, model_6_class_3</span>
+<span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3</span>
 <span class="co">#&gt; Compare tidyLPA solutions:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC      BIC      Warnings</span>
-<span class="co">#&gt;  1     1       684.3244 699.9554         </span>
-<span class="co">#&gt;  1     2       649.6824 675.7341         </span>
-<span class="co">#&gt;  1     3       639.0339 675.5062 Warning </span>
-<span class="co">#&gt;  6     1       631.7613 655.2078         </span>
-<span class="co">#&gt;  6     2       636.3383 685.8366         </span>
-<span class="co">#&gt;  6     3       622.8551 698.4051 Warning </span>
+<span class="co">#&gt;  1     1       678.0290 693.6600         </span>
+<span class="co">#&gt;  1     2       642.2340 668.2857         </span>
+<span class="co">#&gt;  1     3       635.4461 671.9185 Warning </span>
+<span class="co">#&gt;  6     1       626.1151 649.5617         </span>
+<span class="co">#&gt;  6     2       623.6534 673.1516         </span>
+<span class="co">#&gt;  6     3       645.3019 720.8518         </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Best model according to AIC is Model 6 with 3 classes.</span>
+<span class="co">#&gt; Best model according to AIC is Model 6 with 2 classes.</span>
 <span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; An analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul &amp; Erisoglu, 2017), suggests the best solution is Model 6 with 1 classes.</span></code></pre></div>
@@ -278,7 +276,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
 <span class="co">#&gt;  6     3       583.133 656.889 0.860   0.000    0.969    0.160 0.617</span>
 <span class="co">#&gt;  BLRT_p</span>
-<span class="co">#&gt;  0.059</span></code></pre></div>
+<span class="co">#&gt;  0.079</span></code></pre></div>
 <p>In general, the approach to choosing the model is similar to choosing the number of profiles, requiring <strong>deciding on the basis of evidence from multiple sources</strong>, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by <a href="http://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor and colleagues (2007)</a> has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated.</p>
 <p>Note that <em>p</em> represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.</p>
 <div id="equal-variances-and-covariances-fixed-to-0-model-1" class="section level3">
@@ -358,24 +356,24 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt; # A tibble: 18 x 8</span>
 <span class="co">#&gt;    Category  Parameter      Estimate     se         p Class Model Classes</span>
 <span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Means     broad_interest    3.09  0.174  1.55e- 70     1     1       3</span>
-<span class="co">#&gt;  2 Means     enjoyment         3.51  0.154  4.78e-115     1     1       3</span>
-<span class="co">#&gt;  3 Means     self_efficacy     1.58  0.155  1.90e- 24     1     1       3</span>
-<span class="co">#&gt;  4 Variances broad_interest    0.489 0.0996 9.13e-  7     1     1       3</span>
-<span class="co">#&gt;  5 Variances enjoyment         0.230 0.0465 7.03e-  7     1     1       3</span>
-<span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0420 5.17e-  9     1     1       3</span>
-<span class="co">#&gt;  7 Means     broad_interest    1.14  0.362  1.63e-  3     2     1       3</span>
-<span class="co">#&gt;  8 Means     enjoyment         1.14  0.272  2.70e-  5     2     1       3</span>
-<span class="co">#&gt;  9 Means     self_efficacy     3.39  0.497  8.38e- 12     2     1       3</span>
-<span class="co">#&gt; 10 Variances broad_interest    0.489 0.0996 9.13e-  7     2     1       3</span>
-<span class="co">#&gt; 11 Variances enjoyment         0.230 0.0465 7.03e-  7     2     1       3</span>
-<span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0420 5.17e-  9     2     1       3</span>
-<span class="co">#&gt; 13 Means     broad_interest    2.27  0.200  9.89e- 30     3     1       3</span>
-<span class="co">#&gt; 14 Means     enjoyment         2.49  0.148  1.01e- 63     3     1       3</span>
-<span class="co">#&gt; 15 Means     self_efficacy     2.26  0.0803 4.70e-174     3     1       3</span>
-<span class="co">#&gt; 16 Variances broad_interest    0.489 0.0996 9.13e-  7     3     1       3</span>
-<span class="co">#&gt; 17 Variances enjoyment         0.230 0.0465 7.03e-  7     3     1       3</span>
-<span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0420 5.17e-  9     3     1       3</span></code></pre></div>
+<span class="co">#&gt;  1 Means     broad_interest    3.09  0.215  7.78e- 47     1     1       3</span>
+<span class="co">#&gt;  2 Means     enjoyment         3.51  0.180  4.38e- 85     1     1       3</span>
+<span class="co">#&gt;  3 Means     self_efficacy     1.58  0.167  3.14e- 21     1     1       3</span>
+<span class="co">#&gt;  4 Variances broad_interest    0.489 0.105  3.25e-  6     1     1       3</span>
+<span class="co">#&gt;  5 Variances enjoyment         0.230 0.0524 1.09e-  5     1     1       3</span>
+<span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0392 3.85e- 10     1     1       3</span>
+<span class="co">#&gt;  7 Means     broad_interest    1.14  0.326  4.59e-  4     2     1       3</span>
+<span class="co">#&gt;  8 Means     enjoyment         1.14  0.311  2.41e-  4     2     1       3</span>
+<span class="co">#&gt;  9 Means     self_efficacy     3.39  0.614  3.27e-  8     2     1       3</span>
+<span class="co">#&gt; 10 Variances broad_interest    0.489 0.105  3.25e-  6     2     1       3</span>
+<span class="co">#&gt; 11 Variances enjoyment         0.230 0.0524 1.09e-  5     2     1       3</span>
+<span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0392 3.85e- 10     2     1       3</span>
+<span class="co">#&gt; 13 Means     broad_interest    2.27  0.214  2.83e- 26     3     1       3</span>
+<span class="co">#&gt; 14 Means     enjoyment         2.49  0.183  6.36e- 42     3     1       3</span>
+<span class="co">#&gt; 15 Means     self_efficacy     2.26  0.0958 6.26e-123     3     1       3</span>
+<span class="co">#&gt; 16 Variances broad_interest    0.489 0.105  3.25e-  6     3     1       3</span>
+<span class="co">#&gt; 17 Variances enjoyment         0.230 0.0524 1.09e-  5     3     1       3</span>
+<span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0392 3.85e- 10     3     1       3</span></code></pre></div>
 <p>Other options include how the raw data is processed.</p>
 <p>We can center or scale the data before estimating the profiles with the <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
