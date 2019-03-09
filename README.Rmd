@@ -154,14 +154,6 @@ You can also cite the most latest version with the following citation:
 
 > Rosenberg, J. M., van Lissa, C. J.,  Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. https://data-edu.github.io/tidyLPA/
 
-## Accessing the previous version
-
-The last version of tidyLPA can no longer be downloaded from CRAN but can be downloaded with the following question
-
-```{r, eval = FALSE}
-devtools::install_github("data-edu/tidyLPA", ref = "ab36357")
-```
-
 ## Contributing and Contact Information
 
 One of the easiest but also most important ways to contribute is to post a question or to provide feedback. Both positive *and* negative feedback is welcome and helpful. You can get in touch by . . . 

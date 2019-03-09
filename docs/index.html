@@ -60,7 +60,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/Introduction_to_tidyLPA.html">UNKNOWN TITLE</a>
+      <a href="articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
     <li>
       <a href="articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -125,7 +125,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt; tidyLPA analysis using mclust: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
-<span class="co">#&gt;  1     3       636.023 672.495 0.640   0.087    0.852    0.260 0.430</span>
+<span class="co">#&gt;  1     3       627.210 663.682 0.648   0.071    0.822    0.220 0.470</span>
 <span class="co">#&gt;  BLRT_p</span>
 <span class="co">#&gt;  0.069</span></code></pre></div>
 </div>
@@ -140,9 +140,9 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt; tidyLPA analysis using mplus: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
-<span class="co">#&gt;  1     3       640.766 677.238 0.778   0.832    0.933    0.040 0.620</span>
+<span class="co">#&gt;  1     3       637.208 673.680 0.799   0.831    0.949    0.030 0.670</span>
 <span class="co">#&gt;  BLRT_p</span>
-<span class="co">#&gt;  0.667</span></code></pre></div>
+<span class="co">#&gt;  0.013</span></code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
 <p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
 </div>
@@ -220,12 +220,6 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <blockquote>
 <p>Rosenberg, J. M., van Lissa, C. J., Beymer, P. N., Anderson, D. J., Schell, M. J. &amp; Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. <a href="https://data-edu.github.io/tidyLPA/" class="uri">https://data-edu.github.io/tidyLPA/</a></p>
 </blockquote>
-</div>
-<div id="accessing-the-previous-version" class="section level2">
-<h2 class="hasAnchor">
-<a href="#accessing-the-previous-version" class="anchor"></a>Accessing the previous version</h2>
-<p>The last version of tidyLPA can no longer be downloaded from CRAN but can be downloaded with the following question</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"data-edu/tidyLPA"</span>, <span class="dt">ref =</span> <span class="st">"ab36357"</span>)</code></pre></div>
 </div>
 <div id="contributing-and-contact-information" class="section level2">
 <h2 class="hasAnchor">

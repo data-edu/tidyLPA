@@ -1,16 +1,16 @@
 ---
 title: "Introduction to tidyLPA"
 author: "Joshua M. Rosenberg"
-date: '2018-09-16'
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteIndexEntry{Introduction to tidyLPA}
+  %\VignetteIndexEntry{Introduction to tidyLPA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   % \VignetteDepends{dplyr}
-  ---
+---
   
-  ```{r, echo = FALSE}
+```{r, echo = FALSE}
 knitr::opts_chunk$set(
 collapse = TRUE,
 comment = "#>"

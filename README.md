@@ -49,12 +49,10 @@ pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     estimate_profiles(3)
-#> Warning: 
-#> One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       632.145 668.617 0.788   0.000    0.983    0.060 0.630
+#>  1     3       630.631 667.104 0.799   0.902    0.967    0.030 0.680
 #>  BLRT_p
 #>  0.010
 ```
@@ -71,7 +69,7 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       633.324 669.796 0.781   0.822    0.944    0.030 0.630
+#>  1     3       639.254 675.726 0.887   0.916    0.967    0.130 0.660
 #>  BLRT_p
 #>  0.000
 ```
@@ -159,15 +157,6 @@ Citing tidyLPA
 You can also cite the most latest version with the following citation:
 
 > Rosenberg, J. M., van Lissa, C. J., Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software \[R package\]. <https://data-edu.github.io/tidyLPA/>
-
-Accessing the previous version
-------------------------------
-
-The last version of tidyLPA can no longer be downloaded from CRAN but can be downloaded with the following question
-
-``` r
-devtools::install_github("data-edu/tidyLPA", ref = "ab36357")
-```
 
 Contributing and Contact Information
 ------------------------------------
