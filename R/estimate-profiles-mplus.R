@@ -196,34 +196,50 @@ estimate_profiles_mplus2 <-
                     )
                 ))$results)
 
-                out$fit <-
-                    c(Model = this_model,
-                      Classes = this_class,
-                      calc_fitindices(out$model))
-                estimates <- estimates(out$model)
-                estimates$Model <- this_model
-                estimates$Classes <- this_class
-                for(which_name in 1:length(param_names)){
-                    estimates$Parameter <- gsub(toupper(param_names[which_name]), original_names[which_name], estimates$Parameter)
-                }
-                out$estimates <- estimates
-
-                dff <- out$model$savedata
-
-                names(dff)[c(match(toupper(param_names), names(dff)), ncol(dff))] <-
-                    c(original_names, "Class")
-
-                dff$model_number <- this_model
-                dff$classes_number <- this_class
-
-                out$dff <- as_tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
-
-                # Check for warnings ------------------------------------------------------
                 warnings <- NULL
-                if(out$fit[["prob_min"]]< .001) warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
-                if(out$fit[["n_min"]] < .01) warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
+                if(!is.null(out$model$summaries$LL)){
+                    out$fit <-
+                        c(Model = this_model,
+                          Classes = this_class,
+                          calc_fitindices(out$model))
+                    estimates <- estimates(out$model)
+                    if(!is.null(estimates)){
+                        estimates$Model <- this_model
+                        estimates$Classes <- this_class
+                        for(which_name in 1:length(param_names)){
+                            estimates$Parameter <- gsub(toupper(param_names[which_name]), original_names[which_name], estimates$Parameter)
+                        }
+                    }
+                    out$estimates <- estimates
 
-                warnings <- c(warnings, sapply(out$model$warnings, paste, collapse = " "))
+                    dff <- out$model$savedata
+                    if(!is.null(dff)){
+                        names(dff)[c(match(toupper(param_names), names(dff)), ncol(dff))] <-
+                            c(original_names, "Class")
+
+                        dff$model_number <- this_model
+                        dff$classes_number <- this_class
+
+                        out$dff <- as_tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
+                    }
+
+                    # Check for warnings ------------------------------------------------------
+
+                    if(!is.na(out$fit[["prob_min"]])){
+                        if(out$fit[["prob_min"]]< .001) warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
+                    }
+                    if(!is.na(out$fit[["n_min"]])){
+                        if(out$fit[["n_min"]] < .01) warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
+                    }
+                } else {
+                    out$fit <-
+                        c(Model = this_model,
+                          Classes = this_class,
+                          "LogLik" = NA, "AIC" = NA, "AWE" = NA, "BIC" = NA, "CAIC" = NA, "CLC" = NA, "KIC" = NA, "SABIC" = NA, "ICL" = NA, "Entropy" = NA, "prob_min" = NA, "prob_max" = NA, "n_min" = NA, "n_max" = NA, "BLRT_val" = NA, "BLRT_p" = NA)
+                    out$estimates <- NULL
+                }
+
+                warnings <- unlist(c(warnings, sapply(out$model$warnings, paste, collapse = " "), sapply(out$model$errors, paste, collapse = " ")))
                 if(this_class == 1){
                     warnings <- warnings[!sapply(warnings, grepl, pattern = "TECH14 option is not available for TYPE=MIXTURE with only one class.")]
 
@@ -246,7 +262,6 @@ estimate_profiles_mplus2 <-
                 ifelse(!is.null(filename_stem), paste0(filename_stem, "_"), ""),
                 paste("model_", run_models$mod, "_class_", run_models$prof, sep = "")
             )
-
         if (!keepfiles) {
             remove_files <-
                 c(
@@ -255,7 +270,10 @@ estimate_profiles_mplus2 <-
                     paste0(all_files, ".out"),
                     paste0(all_files, ".dat")
                 )
-            invisible(file.remove(remove_files))
+            remove_files <- remove_files[which(remove_files %in% list.files())]
+            if(length(remove_files) > 0){
+                invisible(file.remove(remove_files))
+            }
         }
 
         names(out_list) <-

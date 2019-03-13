@@ -164,6 +164,7 @@ estimates.mplus.model <- function(model){
     df <- subset(model$parameters[["unstandardized"]], grepl("(^Means$|^Intercepts$|^Variances$|\\.WITH$)", model$parameters[["unstandardized"]]$paramHeader)
                  &
                      model$parameters[["unstandardized"]]$param %in% toupper(strsplit(model$input$variable$names, " ")[[1]]), select = -5)
+    if(is.null(df)){return(NULL)}
     covariances <- grepl(".WITH$", df$paramHeader)
     df$param[covariances] <- paste(df$paramHeader[covariances], df$param[covariances], sep = ".")
     df$paramHeader[covariances] <- "Covariances"
