@@ -167,4 +167,4 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## Acknowledgments
 
-This material is based upon work supported by the National Science Foundation under Grant No: DRL#1661064. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not reflect the views of the National Science Foundation.
+This material is based upon work supported by the National Science Foundation under *Grant No.: DRL#1661064*. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not reflect the views of the National Science Foundation.
