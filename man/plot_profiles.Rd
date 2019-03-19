@@ -62,18 +62,16 @@ it is most likely to be a member of.
 }
 \examples{
 # Example 1
+
+# Example 2
+
+\donttest{
 mtcars \%>\%
   subset(select = c("wt", "qsec", "drat")) \%>\%
   poms \%>\%
   estimate_profiles(1:4) \%>\%
   plot_profiles(add_line = F)
-
-# Example 2
-iris \%>\%
-  subset(select = c("Sepal.Length", "Sepal.Width",
-    "Petal.Length", "Petal.Width")) \%>\%
-  estimate_profiles(n_profiles = 1:4, models = 1:3) \%>\%
-  plot_profiles
+}
 }
 \author{
 Caspar J. van Lissa
