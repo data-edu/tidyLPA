@@ -42,10 +42,10 @@
 #' c("zero", "equal")}).
 #' @examples
 #'
-#' iris_subset <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
+#' iris_sample <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
 #'
 #' # Example 1:
-#' iris_subset %>%
+#' iris_sample %>%
 #'   subset(select = c("Sepal.Length", "Sepal.Width",
 #'     "Petal.Length")) %>%
 #'   estimate_profiles(3)

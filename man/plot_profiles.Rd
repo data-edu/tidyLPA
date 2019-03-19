@@ -62,9 +62,9 @@ it is most likely to be a member of.
 }
 \examples{
 # Example 1
-iris_subset <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
+iris_sample <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
 
-iris \%>\%
+iris_sample \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width")) \%>\%
   estimate_profiles(n_profiles = 1:4, models = 1:3) \%>\%
   plot_profiles
