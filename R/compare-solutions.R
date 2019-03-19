@@ -13,6 +13,7 @@
 #' vector 'statistics' corresponding to argument of the same name.
 #' @author Caspar J. van Lissa
 #' @examples
+#' iris_subset <- sample(nrow(iris), 20) # so examples execute quickly
 #' results <- iris %>%
 #'   subset(select = c("Sepal.Length", "Sepal.Width",
 #'     "Petal.Length", "Petal.Width")) %>%
