@@ -65,8 +65,7 @@ it is most likely to be a member of.
 iris_subset <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
 
 iris \%>\%
-  subset(select = c("Sepal.Length", "Sepal.Width",
-    "Petal.Length", "Petal.Width")) \%>\%
+  subset(select = c("Sepal.Length", "Sepal.Width")) \%>\%
   estimate_profiles(n_profiles = 1:4, models = 1:3) \%>\%
   plot_profiles
 
