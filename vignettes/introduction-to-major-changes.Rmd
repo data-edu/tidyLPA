@@ -40,8 +40,8 @@ The best way to understand these changes to **tidyLPA**, though, is by explainin
 A full analysis might look like the following:
 
 ```{r}
-library(tidyverse)
 library(tidyLPA)
+library(dplyr)
 
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
