@@ -71,7 +71,7 @@ install.packages("tidyLPA")
 
 You can also install the development version of tidyLPA from GitHub with:
 
-```{r gh-installation, eval = FALSE}
+```{r, gh-installation, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("data-edu/tidyLPA")
 ```

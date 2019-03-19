@@ -32,12 +32,12 @@
 #' @keywords plot mixture
 #' @examples
 #' # Example 1
-#' iris_subset <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
-#'
-#' iris %>%
-#'   subset(select = c("Sepal.Length", "Sepal.Width")) %>%
-#'   estimate_profiles(n_profiles = 1:4, models = 1:3) %>%
-#'   plot_profiles
+# iris_sample <- iris[c(1:10, 51:60, 101:110), ] # to make example run more quickly
+#
+# iris_sample %>%
+#   subset(select = c("Sepal.Length", "Sepal.Width")) %>%
+#   estimate_profiles(n_profiles = 1:2, models = 1:2) %>%
+#   plot_profiles()
 #'
 #' # Example 2
 #'
