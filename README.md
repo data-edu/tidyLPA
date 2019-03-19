@@ -49,12 +49,14 @@ pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     estimate_profiles(3)
+#> Warning: 
+#> One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       630.631 667.104 0.799   0.902    0.967    0.030 0.680
+#>  1     3       637.635 674.107 0.755   0.000    0.987    0.040 0.600
 #>  BLRT_p
-#>  0.010
+#>  0.030
 ```
 
 ### Mplus
@@ -69,9 +71,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       639.254 675.726 0.887   0.916    0.967    0.130 0.660
+#>  1     3       638.390 674.862 0.792   0.823    0.950    0.030 0.650
 #>  BLRT_p
-#>  0.000
+#>  0.013
 ```
 
 A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.
@@ -89,6 +91,8 @@ pisaUSA15[1:100, ] %>%
     scale() %>%
     estimate_profiles(3) %>% 
     plot_profiles()
+#> Warning: 
+#> One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3
 ```
 
 ![](man/figures/README-unnamed-chunk-6-1.png)
@@ -169,3 +173,8 @@ One of the easiest but also most important ways to contribute is to post a quest
 Contributions are also welcome via by making pull requests (PR), e.g. through [this page on GitHub](https://github.com/data-edu/tidyLPA/pulls). It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+Acknowledgments
+---------------
+
+This material is based upon work supported by the National Science Foundation under Grant No: DRL\#1661064. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not reflect the views of the National Science Foundation.
