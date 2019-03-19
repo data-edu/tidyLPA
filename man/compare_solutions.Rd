@@ -25,6 +25,7 @@ with different number of classes or model specifications, and helps select
 the optimal number of classes and model specification.
 }
 \examples{
+iris_subset <- sample(nrow(iris), 20) # so examples execute quickly
 results <- iris \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width",
     "Petal.Length", "Petal.Width")) \%>\%

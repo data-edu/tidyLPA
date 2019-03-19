@@ -63,12 +63,16 @@ estimated (e.g.,: \code{variances = c("equal", "varying"), covariances =
 c("zero", "equal")}).
 }
 \examples{
+
+iris_subset <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
+
 # Example 1:
-iris \%>\%
+iris_subset \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width",
     "Petal.Length")) \%>\%
   estimate_profiles(3)
 
+\donttest{
 # Example 2:
 iris \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width",
@@ -76,9 +80,11 @@ iris \%>\%
   estimate_profiles(n_profiles = 1:4, models = 1:3)
 
 # Example 3:
-iris \%>\%
+iris_subset \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width",
     "Petal.Length")) \%>\%
   estimate_profiles(n_profiles = 1:4, variances = c("equal", "varying"),
                     covariances = c("zero", "zero"))
+}
+
 }
