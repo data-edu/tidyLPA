@@ -120,11 +120,22 @@ pisaUSA15[1:100, ] %>%
     plot_profiles()
 ```
 
+Note that we can plot an array of solutions by passing a vector (for `n_profiles` or `models`) to `estimate_profiles()` before we plot the profiles:
+
+```{r, eval = TRUE}
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    scale() %>%
+    estimate_profiles(n_profiles = 2:4) %>% 
+    plot_profiles()
+```
+
 ## Comparing a wide range of solutions
 
 The function `compare_solutions()` compares the fit of several estimated models, with varying numbers of profiles and model specifications:
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
@@ -307,3 +318,7 @@ Pastor, D. A., Barron, K. E., Miller, B. J., & Davis, S. L. (2007). A latent pro
 You can also cite the most latest version with the following citation:
 
 > Rosenberg, J. M., van Lissa, C. J.,  Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. https://data-edu.github.io/tidyLPA/
+
+## Acknowledgments
+
+This material is based upon work supported by the National Science Foundation under *Grant No.: DRL#1661064*. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not reflect the views of the National Science Foundation.

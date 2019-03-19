@@ -6,7 +6,6 @@ test_that("plot_profiles works", {
 })
 
 pisa_profiles_plot_mclust <- pisaUSA15[1:100, ] %>%
-    select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     scale() %>%
     estimate_profiles(3) %>%

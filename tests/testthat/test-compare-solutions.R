@@ -1,5 +1,4 @@
 context("test-compare_solutions.R")
-library(dplyr)
 
 x <- estimate_profiles(iris[, 1:4], 1:3)
 
@@ -9,7 +8,6 @@ test_that("compare_solutions works with iris data when we use compare_solutions(
 })
 
 pisaUSA_compare <-pisaUSA15[1:100, ] %>%
-    select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     estimate_profiles(1:3,
                       variances = c("equal", "varying"),
