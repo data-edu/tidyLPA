@@ -41,7 +41,7 @@ In these examples, we pass the results of one function to the next by *piping* (
 
 ``` r
 library(tidyLPA)
-library(tidyverse)
+library(dplyr)
 ```
 
 ``` r
@@ -54,9 +54,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       637.635 674.107 0.755   0.000    0.987    0.040 0.600
+#>  1     3       635.569 672.041 0.650   0.000    0.889    0.220 0.480
 #>  BLRT_p
-#>  0.030
+#>  0.050
 ```
 
 ### Mplus
@@ -71,9 +71,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       638.390 674.862 0.792   0.823    0.950    0.030 0.650
+#>  1     3       634.952 671.424 0.782   0.869    0.913    0.030 0.560
 #>  BLRT_p
-#>  0.013
+#>  0.667
 ```
 
 A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.
@@ -177,4 +177,4 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 Acknowledgments
 ---------------
 
-This material is based upon work supported by the National Science Foundation under Grant No: DRL\#1661064. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not reflect the views of the National Science Foundation.
+This material is based upon work supported by the National Science Foundation under *Grant No.: DRL\#1661064*. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not reflect the views of the National Science Foundation.
