@@ -94,7 +94,7 @@ it is most likely to be a member of.
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+      <a href="../articles/Introduction_to_tidyLPA.html">UNKNOWN TITLE</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -208,20 +208,16 @@ reduce overplotting.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Example 1</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'># Example 1
+
+# Example 2
+
+</div><div class='input'><span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"qsec"</span>, <span class='st'>"drat"</span>)) <span class='kw'>%&gt;%</span>
   <span class='no'>poms</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>plot_profiles</span>(<span class='kw'>add_line</span> <span class='kw'>=</span> <span class='no'>F</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
-#&gt; <span class='warning'>One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_4</span></div><div class='img'><img src='plot_profiles-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Example 2</span>
-<span class='no'>iris</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
-    <span class='st'>"Petal.Length"</span>, <span class='st'>"Petal.Width"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-  <span class='no'>plot_profiles</span></div><div class='output co'>#&gt; <span class='message'>The 'variances'/'covariances' arguments were ignored in favor of the 'models' argument.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
-#&gt; <span class='warning'>One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3, model_1_class_4, model_2_class_3, model_2_class_4, model_3_class_3, model_3_class_4</span></div><div class='img'><img src='plot_profiles-2.png' alt='' width='700' height='433' /></div></pre>
+#&gt; <span class='warning'>One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_4</span></div><div class='img'><img src='plot_profiles-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
