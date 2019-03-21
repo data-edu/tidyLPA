@@ -137,11 +137,10 @@ The function `compare_solutions()` compares the fit of several estimated models,
 
 ```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
-    select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     estimate_profiles(1:3, 
                       variances = c("equal", "varying"),
-                      covariances = c("zero", "varying")) %>%
+                      covariances = c("zero", "varying")) %>% 
     compare_solutions(statistics = c("AIC", "BIC"))
 ```
 
