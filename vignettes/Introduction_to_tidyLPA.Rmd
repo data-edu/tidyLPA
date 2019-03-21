@@ -135,7 +135,7 @@ pisaUSA15[1:100, ] %>%
 
 The function `compare_solutions()` compares the fit of several estimated models, with varying numbers of profiles and model specifications:
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 pisaUSA15[1:100, ] %>%
     single_imputation() %>%
     estimate_profiles(1:3, 
