@@ -1,9 +1,5 @@
 # CRAN comments
 
-## Note to CRAN maintainers in response to feedback
-I edited my (MIT) LICENSE file to only include the first two lines
-
-
 ## Test environments
 * local OS X install, R 3.5.1
 * ubuntu 14.04 (on travis-ci), R 3.5.1
