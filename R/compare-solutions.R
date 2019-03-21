@@ -36,11 +36,13 @@ compare_solutions <- function(x, statistics = "BIC") {
     ))
 
     fits <- get_fit(x)
-    if(nrow(fits) == 1) stop("In order to compare_solutions, the tidyLPA object must contain more than one model.")
+    error_models <- is.na(fits$LogLik)
+    if(sum(!error_models) < 2) stop("In order to compare_solutions, the tidyLPA object must contain more than one model.")
     fit_indices <- c("LogLik" = 1, "AIC" = -1, "AWE" = -1, "BIC" = -1, "CAIC" = -1, "CLC" = -1, "KIC" = -1, "SABIC" = -1, "ICL" = 1)
     max_these <- matrix(rep(fit_indices, nrow(fits)), nrow = nrow(fits), byrow = TRUE)
     best_model <- apply(max_these * fits[, names(fit_indices)], 2, which.max)
-    AHP_best <- AHP(fits)
+
+    AHP_best <- c(1:nrow(fits))[!error_models][AHP(fits[!error_models, ])]
 
 # Check fits for problems -------------------------------------------------
 
@@ -58,7 +60,7 @@ compare_solutions <- function(x, statistics = "BIC") {
 
     if(length(unique(fits$Classes)) > 1){
         if(any(best_model == min(fits$Classes))){
-            warning("The solution with the minimum number of classes under consideration was considered to be the best solution according to one or more fit indices. Examine your results with care; mixture modeling might be unnecessary.", call. = FALSE)
+            warning("The solution with the minimum number of classes under consideration was considered to be the best solution according to one or more fit indices. Examine your results with care", ifelse(min(fits$Classes == 1), "; mixture modeling might be unnecessary.", "; consider adding a smaller number of classes."), call. = FALSE)
         }
         if(any(best_model == max(fits$Classes))){
             warning("The solution with the maximum number of classes under consideration was considered to be the best solution according to one or more fit indices. Examine your results with care and consider estimating more classes.", call. = FALSE)

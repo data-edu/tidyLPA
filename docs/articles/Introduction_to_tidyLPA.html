@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Introduction to tidyLPA • tidyLPA</title>
+<title> • tidyLPA</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to tidyLPA">
+<script src="../pkgdown.js"></script><meta property="og:title" content="">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -53,7 +53,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+      <a href="../articles/Introduction_to_tidyLPA.html">UNKNOWN TITLE</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -76,10 +76,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Introduction to tidyLPA</h1>
-                        <h4 class="author">Joshua M. Rosenberg</h4>
+      <h1></h1>
             
-            <h4 class="date">2019-03-09</h4>
       
       
       <div class="hidden name"><code>Introduction_to_tidyLPA.Rmd</code></div>
@@ -88,6 +86,35 @@
 
     
     
+<table class="table"><tbody>
+<tr class="odd">
+<td>title: “Introduction to tidyLPA”</td>
+</tr>
+<tr class="even">
+<td>author: “Joshua M. Rosenberg”</td>
+</tr>
+<tr class="odd">
+<td>date: “2019-03-21”</td>
+</tr>
+<tr class="even">
+<td>output: rmarkdown::html_vignette</td>
+</tr>
+<tr class="odd">
+<td>vignette: &gt;</td>
+</tr>
+<tr class="even">
+<td>%</td>
+</tr>
+<tr class="odd">
+<td>%</td>
+</tr>
+<tr class="even">
+<td>%</td>
+</tr>
+<tr class="odd">
+<td>% </td>
+</tr>
+</tbody></table>
 <p>Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles, or groups, of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time.</p>
 <p>tidyLPA provides the functionality to carry out LPA in R. In particular, tidyLPA provides functionality to specify different models that determine whether and how different parameters (i.e., means, variances, and covariances) are estimated and to specify (and compare solutions for) the number of profiles to estimate.</p>
 <p>This introduction to tidyLPA vignette is an overview of LPA and the tidyLPA package. This vignette covers the following topics:</p>
@@ -100,16 +127,11 @@
 <li>Other options</li>
 <li>Conclusion</li>
 </ol>
-<div id="background-on-latent-profile-analysis-lpa" class="section level1">
-<h1 class="hasAnchor">
-<a href="#background-on-latent-profile-analysis-lpa" class="anchor"></a>Background on Latent Profile Analysis (LPA)</h1>
+<p># Background on Latent Profile Analysis (LPA)</p>
 <p>Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. Note that LPA works best with continuous variables (and, in some cases, ordinal variables), but is not appropriate for dichotomous (binary) variables.</p>
 <p>Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see <a href="https://www.statmodel.com/examples/mixture.shtml">here</a>) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters.</p>
 <p>Different <em>models</em> (or how or whether parameters are estimated) can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow.</p>
-</div>
-<div id="description-of-the-goals-of-tidylpa" class="section level1">
-<h1 class="hasAnchor">
-<a href="#description-of-the-goals-of-tidylpa" class="anchor"></a>Description of the goals of tidyLPA</h1>
+<p># Description of the goals of tidyLPA</p>
 <p>The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used <a href="https://www.stat.washington.edu/mclust/">mclust</a> package for Gaussian Mixture Modeling. This means that tidyLPA does not contain code to carry out LPA directly, but rather provides “wrappers” to mclust functions that make them easier to use. The primary contributions of tidyLPA are to:</p>
 <ol style="list-style-type: decimal">
 <li>Provide functionality to specify models that are common to LPA</li>
@@ -120,95 +142,98 @@
 <li>uses the “pipe” operator, <code>%&gt;%</code> to compose functions</li>
 <li>being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)</li>
 </ul>
-<div id="software-approach-to-carrying-out-lpa-interface-to-mclust-and-to-mplus" class="section level2">
-<h2 class="hasAnchor">
-<a href="#software-approach-to-carrying-out-lpa-interface-to-mclust-and-to-mplus" class="anchor"></a>Software approach to carrying out LPA: Interface to mclust (and to MPlus)</h2>
+<p>## Software approach to carrying out LPA: Interface to mclust (and to MPlus)</p>
 <p>In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the <a href="https://openmx.ssri.psu.edu/">R version of OpenMx</a> can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use.</p>
 <p>Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term “mixture component” has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified.</p>
 <p>In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see <a href="https://cran.r-project.org/package=Rmixmod">RMixMod</a>, which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod, mclust, and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., “spherical, equal volume”), rather than in terms of whether and how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.</p>
 <p>This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This <a href="https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html">R Markdown output</a> contains information on how mclust and Mplus compare. The R Markdown to generate the output is also available <a href="https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd">here</a>, and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Note that most of the output is identical, thoughthere are some differences in the hundreths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used.</p>
-</div>
-</div>
-<div id="example" class="section level1">
-<h1 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h1>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<p># Example</p>
+<p>## Installation</p>
 <p>You can install tidyLPA from CRAN with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"tidyLPA"</span>)</code></pre></div>
+<p><code>r   install.packages("tidyLPA")</code></p>
 <p>You can also install the development version of tidyLPA from GitHub with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)
 devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"data-edu/tidyLPA"</span>)</code></pre></div>
-</div>
 <div id="mclust" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mclust" class="anchor"></a>Mclust</h2>
 <p>Here is a brief example using the built-in <code>pisaUSA15</code> data set and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See <code><a href="../reference/estimate_profiles.html">?estimate_profiles</a></code> for more details.</p>
 <p>In these examples, we pass the results of one function to the next by <em>piping</em> (using the <code>%&gt;%</code> operator, loaded from the <code>dplyr</code> package). We pass the data to a function that selects relevant variables, and then to <code>estimate_profiles</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</code></pre></div>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)
 <span class="co">#&gt; tidyLPA analysis using mclust: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
-<span class="co">#&gt;  1     3       631.633 668.105 0.759   0.042    0.893    0.230 0.540</span>
+<span class="co">#&gt;  1     3       637.341 673.813 0.669   0.080    0.845    0.230 0.420</span>
 <span class="co">#&gt;  BLRT_p</span>
-<span class="co">#&gt;  0.030</span></code></pre></div>
+<span class="co">#&gt;  0.129</span></code></pre></div>
 </div>
 <div id="mplus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mplus" class="anchor"></a>Mplus</h2>
 <p>We can use Mplus simply by changing the package argument for <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> (not run):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)</code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
 <p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
 <p>We can plot the profiles by piping the output to <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p>Note that we can plot an array of solutions by passing a vector (for <code>n_profiles</code> or <code>models</code>) to <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> before we plot the profiles:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dt">n_profiles =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()
+<span class="co">#&gt; Warning: </span>
+<span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3</span></code></pre></div>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div id="comparing-a-wide-range-of-solutions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparing-a-wide-range-of-solutions" class="anchor"></a>Comparing a wide range of solutions</h2>
 <p>The function <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> compares the fit of several estimated models, with varying numbers of profiles and model specifications:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, 
                       <span class="dt">variances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),
-                      <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span>
+                      <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))
 <span class="co">#&gt; Warning: </span>
 <span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3</span>
 
 <span class="co">#&gt; Warning: </span>
 <span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3</span>
+<span class="co">#&gt; Warning: The solution with the minimum number of classes under</span>
+<span class="co">#&gt; consideration was considered to be the best solution according to one or</span>
+<span class="co">#&gt; more fit indices. Examine your results with care; consider adding a smaller</span>
+<span class="co">#&gt; number of classes.</span>
 <span class="co">#&gt; Compare tidyLPA solutions:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC      BIC      Warnings</span>
-<span class="co">#&gt;  1     1       669.7856 685.4166         </span>
-<span class="co">#&gt;  1     2       635.6954 661.7471         </span>
-<span class="co">#&gt;  1     3       624.1063 660.5787 Warning </span>
-<span class="co">#&gt;  6     1       616.8271 640.2736         </span>
-<span class="co">#&gt;  6     2       616.4333 665.9315         </span>
-<span class="co">#&gt;  6     3       632.4716 708.0215         </span>
+<span class="co">#&gt;  1     1       927.4312 948.2726         </span>
+<span class="co">#&gt;  1     2       888.2100 922.0772         </span>
+<span class="co">#&gt;  1     3       884.1551 931.0482 Warning </span>
+<span class="co">#&gt;  6     1       871.7012 908.1736         </span>
+<span class="co">#&gt;  6     2       875.1009 950.6509         </span>
+<span class="co">#&gt;  6     3       874.5291 989.1566         </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Best model according to AIC is Model 6 with 2 classes.</span>
+<span class="co">#&gt; Best model according to AIC is Model 6 with 1 classes.</span>
 <span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; An analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul &amp; Erisoglu, 2017), suggests the best solution is Model 6 with 1 classes.</span></code></pre></div>
-</div>
 </div>
 <div id="more-information-on-model-specifications" class="section level1">
 <h1 class="hasAnchor">
@@ -235,7 +260,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <p>Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the <a href="https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
 <p>Here is an example of specifying a model with varying variances and covariances (Model 6):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, 
                       <span class="dt">variances =</span> <span class="st">"varying"</span>,
                       <span class="dt">covariances =</span> <span class="st">"varying"</span>)
@@ -247,7 +272,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
 <span class="co">#&gt;  6     3       583.133 656.889 0.860   0.000    0.969    0.160 0.617</span>
 <span class="co">#&gt;  BLRT_p</span>
-<span class="co">#&gt;  0.099</span></code></pre></div>
+<span class="co">#&gt;  0.089</span></code></pre></div>
 <p>In general, the approach to choosing the model is similar to choosing the number of profiles, requiring <strong>deciding on the basis of evidence from multiple sources</strong>, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by <a href="http://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor and colleagues (2007)</a> has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated.</p>
 <p>Note that <em>p</em> represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.</p>
 <div id="equal-variances-and-covariances-fixed-to-0-model-1" class="section level3">
@@ -317,7 +342,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <a href="#other-options" class="anchor"></a>Other options</h1>
 <p>There is a lot of output that is possible to obtain from the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function - much more than a tidy data frame, which is the default. The easiest way to access it is by using the <code><a href="../reference/get_estimates.html">get_estimates()</a></code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)
 <span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span>
 <span class="co">#&gt; Warning: </span>
@@ -327,41 +352,41 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt; # A tibble: 18 x 8</span>
 <span class="co">#&gt;    Category  Parameter      Estimate     se         p Class Model Classes</span>
 <span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Means     broad_interest    3.09  0.202  4.17e- 53     1     1       3</span>
-<span class="co">#&gt;  2 Means     enjoyment         3.51  0.178  2.57e- 86     1     1       3</span>
-<span class="co">#&gt;  3 Means     self_efficacy     1.58  0.186  1.82e- 17     1     1       3</span>
-<span class="co">#&gt;  4 Variances broad_interest    0.489 0.103  2.32e-  6     1     1       3</span>
-<span class="co">#&gt;  5 Variances enjoyment         0.230 0.0603 1.31e-  4     1     1       3</span>
-<span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0495 7.12e-  7     1     1       3</span>
-<span class="co">#&gt;  7 Means     broad_interest    1.14  0.407  5.08e-  3     2     1       3</span>
-<span class="co">#&gt;  8 Means     enjoyment         1.14  0.382  2.79e-  3     2     1       3</span>
-<span class="co">#&gt;  9 Means     self_efficacy     3.39  0.570  2.56e-  9     2     1       3</span>
-<span class="co">#&gt; 10 Variances broad_interest    0.489 0.103  2.32e-  6     2     1       3</span>
-<span class="co">#&gt; 11 Variances enjoyment         0.230 0.0603 1.31e-  4     2     1       3</span>
-<span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0495 7.12e-  7     2     1       3</span>
-<span class="co">#&gt; 13 Means     broad_interest    2.27  0.221  9.98e- 25     3     1       3</span>
-<span class="co">#&gt; 14 Means     enjoyment         2.49  0.172  2.07e- 47     3     1       3</span>
-<span class="co">#&gt; 15 Means     self_efficacy     2.26  0.100  9.81e-113     3     1       3</span>
-<span class="co">#&gt; 16 Variances broad_interest    0.489 0.103  2.32e-  6     3     1       3</span>
-<span class="co">#&gt; 17 Variances enjoyment         0.230 0.0603 1.31e-  4     3     1       3</span>
-<span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0495 7.12e-  7     3     1       3</span></code></pre></div>
+<span class="co">#&gt;  1 Means     broad_interest    3.09  0.193  5.42e- 58     1     1       3</span>
+<span class="co">#&gt;  2 Means     enjoyment         3.51  0.169  7.63e- 96     1     1       3</span>
+<span class="co">#&gt;  3 Means     self_efficacy     1.58  0.174  1.02e- 19     1     1       3</span>
+<span class="co">#&gt;  4 Variances broad_interest    0.489 0.109  7.38e-  6     1     1       3</span>
+<span class="co">#&gt;  5 Variances enjoyment         0.230 0.0570 5.20e-  5     1     1       3</span>
+<span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0487 4.48e-  7     1     1       3</span>
+<span class="co">#&gt;  7 Means     broad_interest    1.14  0.358  1.43e-  3     2     1       3</span>
+<span class="co">#&gt;  8 Means     enjoyment         1.14  0.391  3.50e-  3     2     1       3</span>
+<span class="co">#&gt;  9 Means     self_efficacy     3.39  0.518  5.42e- 11     2     1       3</span>
+<span class="co">#&gt; 10 Variances broad_interest    0.489 0.109  7.38e-  6     2     1       3</span>
+<span class="co">#&gt; 11 Variances enjoyment         0.230 0.0570 5.20e-  5     2     1       3</span>
+<span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0487 4.48e-  7     2     1       3</span>
+<span class="co">#&gt; 13 Means     broad_interest    2.27  0.210  3.84e- 27     3     1       3</span>
+<span class="co">#&gt; 14 Means     enjoyment         2.49  0.176  2.78e- 45     3     1       3</span>
+<span class="co">#&gt; 15 Means     self_efficacy     2.26  0.0995 4.59e-114     3     1       3</span>
+<span class="co">#&gt; 16 Variances broad_interest    0.489 0.109  7.38e-  6     3     1       3</span>
+<span class="co">#&gt; 17 Variances enjoyment         0.230 0.0570 5.20e-  5     3     1       3</span>
+<span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0487 4.48e-  7     3     1       3</span></code></pre></div>
 <p>Other options include how the raw data is processed.</p>
 <p>We can center or scale the data before estimating the profiles with the <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">4</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()
 <span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/poms.html">poms</a></span>() <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">4</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()
 <span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-10-2.png" width="700"></p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-11-2.png" width="700"></p>
 <p>Since we often wish to use the estimated profiles in subsequent analyses, we may want the original <code>data.frame</code>, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this <code>data.frame</code>, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function <code><a href="../reference/get_data.html">get_data()</a></code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/get_data.html">get_data</a></span>(m3)
 <span class="co">#&gt; # A tibble: 300 x 9</span>
@@ -402,6 +427,11 @@ pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100
 <p>Rosenberg, J. M., van Lissa, C. J., Beymer, P. N., Anderson, D. J., Schell, M. J. &amp; Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. <a href="https://data-edu.github.io/tidyLPA/" class="uri">https://data-edu.github.io/tidyLPA/</a></p>
 </blockquote>
 </div>
+<div id="acknowledgments" class="section level2">
+<h2 class="hasAnchor">
+<a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
+<p>This material is based upon work supported by the National Science Foundation under <em>Grant No.: DRL#1661064</em>. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not reflect the views of the National Science Foundation.</p>
+</div>
 </div>
   </div>
 
@@ -410,20 +440,9 @@ pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#background-on-latent-profile-analysis-lpa">Background on Latent Profile Analysis (LPA)</a></li>
-      <li>
-<a href="#description-of-the-goals-of-tidylpa">Description of the goals of tidyLPA</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#software-approach-to-carrying-out-lpa-interface-to-mclust-and-to-mplus">Software approach to carrying out LPA: Interface to mclust (and to MPlus)</a></li>
-      </ul>
-</li>
-      <li>
-<a href="#example">Example</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#installation">Installation</a></li>
-      <li><a href="#mclust">Mclust</a></li>
+<li><a href="#mclust">Mclust</a></li>
       <li><a href="#mplus">Mplus</a></li>
       <li><a href="#comparing-a-wide-range-of-solutions">Comparing a wide range of solutions</a></li>
-      </ul>
-</li>
       <li>
 <a href="#more-information-on-model-specifications">More information on model specifications</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#model-specification">Model specification</a></li>
@@ -432,6 +451,7 @@ pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100
       <li>
 <a href="#other-options">Other options</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#conclusion">Conclusion</a></li>
+      <li><a href="#acknowledgments">Acknowledgments</a></li>
       </ul>
 </li>
       </ul>
