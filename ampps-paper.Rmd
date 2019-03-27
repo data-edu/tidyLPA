@@ -96,33 +96,21 @@ Though studies examining learning from a person-oriented perspective are not ver
 
 In this article, our goal is to review person-oriented analysis focused on getting started (on both knowing about and doing person-oriented analyses) in an informed way. More specifically, we start with an overview of the methodology, describe specific software tools, explain analytic choices made in the course of their use, and conclude with general recommendations One challenge facing those trying to learn about and apply person-oriented analysis in their research is the multitude of terms used for similar analytic approaches or ideas. Throughout this manuscript, we aim to point these out and explain when and why a variety of terms have been used. Thus, this manuscript is written for an informed and curious reader at any level interested in understanding this particular approach.
 
-## Overview of Methodologies
+# Latent Profile Analysis
 
-At present, there are a number of approaches to carrying out person-oriented analysis when the indicators, of variables, used to find the groups are continuous. This section is focused upon two approaches: cluster analysis and Latent Profile Analysis (LPA). We focus on these because they are relatively simple and accessible forms of person-oriented analysis that can also accommodate cross sectional and longitudinal data alike. Just as a brief point of contrast, when the indicators for the groups are dichotomous (or categorical and can therefore be “dummy-coded” to be dichotomous), an approach closely related to LPA, Latent Class Analysis, can be used (cite PSU folks).
-
-## Cluster Analysis
-
-Cluster analysis is an approach that has been frequently applied to analysis of topics in educational psychology (such as motivation and engagement) from a more holistic, whole-person approach. One particular way in which cluster analysis has been used has been as part of an approach termed I-States-as-Objects Analysis (ISOA). The purpose of ISOA is to identify profiles at specific time points, and then to explore how individuals do or do not shift between profiles across time points (needs cite). In their early work, Bergman and Magnusson (1999) and colleagues (1999) described a two-step approach to cluster analysis as part of their I-States-as-Objects analysis. In this approach, all of the observations are clustered. The key idea behind the approach is that each observation represents not a permanent group, but rather a status, or an i-state. These i-states, are considered independently for the purposes of constructing profiles. Then, shifts between these i-states across time (say, two or three time points) are evaluated.
-
-Commonly, cluster analysis carried out as part of ISOA in fact involves two distinct clustering steps. This is because different clustering algorithms have different strengths--as well as weaknesses. In ISOA, the first step is Ward’s hierarchical cluster analysis (Bergman & El-Khouri, 1999). In this step, observations are split, step-by-step, based upon their multivariate similarity. The analyst provides the number of groups which will be used and interpreted, though technically most algorithms will continue splitting the groups until each observation makes up its own. This type of clustering is deterministic: The same results will be obtained each time it is run. In the second step of the cluster analysis, an iterative, k-means cluster analysis is carried out (Bergman and El-Khouri, 1999). For this step, the algorithm partitions the observations into groups, the success of the clustering based on a criterion such as the variability in the data explained by the groups, and then “moves,” when possible, the observations that are not in the group they are most similar to to the one that they are most similar to. When no more such moves are possible, the algorithm stops. On its own, k-means is not deterministic: Depending on the starting values, it can obtain different results the different times that it is run. So, the results from the hierarchical cluster analysis, the first step, are used as start values to initialize the k-means clustering.
-
-The rationale behind using these two approaches is that the hierarchical clustering provides reasonable guesses for the profile membership, and then the iterative clustering optimizes the clustering solution. To sum up, then, cluster analysis as part of ISOA in fact involves two separate cluster analyses. The merits of this approach are to leverage the benefits of each: the iterative clustering starts with reasonable cluster solutions generated from the hierarchical clustering and optimizes them. 
-
-## Latent Profile Analysis 
-
-Another approach what is becoming increasingly common for carrying out person-oriented analysis is Latent Profile Analysis (LPA). LPA is a type of finite mixture model (Harring and Hodis, 2017). The goal of this approach is estimate the parameters for a number of distributions (often multivariate) from a single dataset. The approach can be thought of as seeking an answer to the question, Do the data in a sample come from more than one population? Thus, such an approach is model-based, and some descriptions in the literature refer to it as model-based clustering (Hennig, Meila, Murtagh, & Rocci, 2015; Scrucca, Fop, Murphy, & Raftery, 2017). Thus, one distinction between LPA and cluster analytic approaches is that LPA is model-based; instead of using algorithms to group together cases, LPA seeks to estimate parameters - in terms of variances and covariances and how they are the same or different across profiles - that best characterize the different distributions. Then, this approach seeks to assign to each observation a probability that the observation is a sample from the population associated with each profile (or mixture component). 
+LPA is a type of finite mixture model (Harring and Hodis, 2017). The goal of this approach is estimate the parameters for a number of distributions (often multivariate) from a single dataset. The approach can be thought of as seeking an answer to the question, Do the data in a sample come from more than one population? Thus, such an approach is model-based, and some descriptions in the literature refer to it as model-based clustering (Hennig, Meila, Murtagh, & Rocci, 2015; Scrucca, Fop, Murphy, & Raftery, 2017). Thus, one distinction between LPA and cluster analytic approaches is that LPA is model-based; instead of using algorithms to group together cases, LPA seeks to estimate parameters - in terms of variances and covariances and how they are the same or different across profiles - that best characterize the different distributions. Then, this approach seeks to assign to each observation a probability that the observation is a sample from the population associated with each profile (or mixture component). 
 
 Because LPA is model-based, a number of different model parameterizations can be estimated. These models differ in terms of whether--and how--parameters are estimated across the profiles. These parameters are the means for the different profiles, which, in this approach, always are estimated freely across the profiles; the variances for the variables used to create the profiles, which can be estimated freely or can be estimated to be the same, or equal, across profiles; and the covariances of the variables used to create the profiles, which can be freely-estimated, estimated to be equal, or fixed to be zero. One challenge facing the analyst using LPA is that these parameters and the distinct model parameterizations that can be estimated is the different terminology used. As one example, Scrucca et al. (2017) refer to these parameterizations not in terms of whether and how parameters are estimated, but rather in terms of the geometric properties of the distributions that result from particular parameterizations. Muthen and Muthen (1997-2017) and others (Pastor et al., 2007) commonly refer to local independence to mean that the covariances are fixed to zero (also described as the specification of the covariance matrix as “diagonal,” because only the diagonal components, or the variances, are estimated). More information on the model parameterizations are discussed in the context of the software tool tidyLPA that we have developed. 
 
  This section outlines several LPA models and guidelines/examples for when they might be most appropriate in person-centered analysis. In general, as more parameters are estimated (i.e., those that are fixed to zero are estimated as being equal across profiles; or those estimated as being equal across profiles are freely-estimated across them), the model becomes more complex; the model may fit better, but also be overfit, meaning that the profiles identified may be challenging to replicate with another, separate data set. Even still, flexibility in terms of which models can be estimated also has affordances. For example, the varying means, equal variances, and covariances fixed to 0. A researcher might choose this model specification if she wants to model the variables to be used to create profiles that are independent. This model is very simple, as no covariances are estimated and the variances are estimated to be the same across profiles.  As we estimate more parameters (and decrease the degrees of freedom), we are more likely to fit the data, but less likely to be able to replicate the model with a second set of data.  In other words, more parameters may mean a loss of external validity. As we progress toward more complex models (with increasingly complex parameterization, i.e. models 3 and 4 above), then we are more likely to fit the data better.
 
-    A number of notes regarding person-oriented analyses are important to raise at the same time as their promise. Bauer (2007) notes that many samples of data can be usefully broken down into profiles, and that the addition of profiles will likely be suggested for reasons other than the samples coming from more than one distribution (i.e., due to non-normality in the variables measured). Bauer also cautions that profiles should not be reified; that profiles do not necessarily exist outside of the analysis that they should be interpreted more as useful interpretative devices. These cautions suggest that, in general, parsimony, interpretability, and a general sense that the profiles are not necessarily real, but are rather helpful analytic tools, should be both priorities for the analyst and the reader of studies using this approach.
+A number of notes regarding person-oriented analyses are important to raise at the same time as their promise. Bauer (2007) notes that many samples of data can be usefully broken down into profiles, and that the addition of profiles will likely be suggested for reasons other than the samples coming from more than one distribution (i.e., due to non-normality in the variables measured). Bauer also cautions that profiles should not be reified; that profiles do not necessarily exist outside of the analysis that they should be interpreted more as useful interpretative devices. These cautions suggest that, in general, parsimony, interpretability, and a general sense that the profiles are not necessarily real, but are rather helpful analytic tools, should be both priorities for the analyst and the reader of studies using this approach.
 
 # Specific Software Tools 
 
-SPSS is a common tool to carry out cluster analyses. SPSS provides functionality to carry out both hierarchical and k-means cluster analysis. While somewhat straightforward to carry out, particularly in SPSS’s graphical user interface (GUI), there are some challenges to use of this approach. The GUI in SPSS can be challenging, even for the most able analyst, to be able to document every step with syntax, and so reproducing the entire analysis efficiently can be a challenge, both for the analyst exploring various solutions and for the reviewer looking to replicate this work. Additionally, SPSS is commercial software (and is expensive), and so analysts without the software cannot carry out this analysis.                                                                                    
+SPSS is a common tool to carry out cluster analyses. SPSS provides functionality to carry out both hierarchical and k-means cluster analysis. While somewhat straightforward to carry out, particularly in SPSS’s graphical user interface (GUI), there are some challenges to use of this approach. The GUI in SPSS can be challenging, even for the most able analyst, to be able to document every step with syntax, and so reproducing the entire analysis efficiently can be a challenge, both for the analyst exploring various solutions and for the reviewer looking to replicate this work. Additionally, SPSS is commercial software (and is expensive), and so analysts without the software cannot carry out this analysis.                                                                         
 
- Accordingly, we worked to develop tools, initially used by the research team and now shared more widely, to provide basic functionality for each of the two primary approaches described in this section, cluster analysis and Latent Profile Analysis (LPA). In addition to being freely-available and open-source (i.e., anyone can inspect the source code), the tools described lend themselves to an open science. It is especially important to have an open transparent methodology when using person-centered approaches because of the high dependence on researcher judgment at multiple points in the process.
+Accordingly, we worked to develop tools, initially used by the research team and now shared more widely, to provide basic functionality to carry out Latent Profile Analysis (LPA). In addition to being freely-available and open-source (i.e., anyone can inspect the source code), the tools described lend themselves to an open science. It is especially important to have an open transparent methodology when using person-centered approaches because of the high dependence on researcher judgment at multiple points in the process.
 
 Accordingly, we set out to develop packages that a) provided sensible defaults and were easy to use, but provided the option to access and modify all of the inputs to the model (i.e., low barrier, high ceiling), b) interfaced to existing tools,, and are able to translate between what existing tools are capable of and what researchers and analysts carrying-out person-oriented analyses would like to specify, c) made it easy to carry-out fully-reproducible analyses and d) were well-documented. Both of these packages--one for two-step cluster analysis and one for LPA--are designed to do one thing well, namely, quickly and easily estimate profiles using cluster analysis or a model-based approach (Latent Profile Analysis). 
 
@@ -138,15 +126,11 @@ Given the subjectivity involved, it is important that researchers be transparent
 
 The data can be transformed by centering or scaling. Typically, these are done after the profiles are created, so that differences between profiles can be more easily explored. They can also be done prior to the analysis, which can be helpful for obtaining solutions when the variables are on very different scales..
 
-## Whether to Use Cluster Analysis or LPA
-
-Whether to use cluster analysis or LPA depends in part on the nature of the data being investigated (cite the 2010 debate on this topic between Vermunt and others; MacLachlan, 2011; Steinley & Brusco, 2011a; Steinley & Brusco, 2011b; Vermunt, 2011). In some cases, cluster analysis and LPA solutions are very similar (when a constrained LPA model is fit). Broadly, if the variables used can be considered independent of one another, then cluster analysis may be justified in terms of reaching an optimal solution. However, LPA provides other benefits, such as the availability of information criteria (i.e., the Aikake Information Criteria [AIC] and the Bayesian Information Criteria [BIC] and statistical tests for the number of profiles (when a model is chosen, with a bootstrapped likelihood-ratio test). LPA also results in probabilistic assignments; this information can be used in subsequent analyses rather than the simple assignment (Collins & Lanza, 2010).
-
 ## How to Choose the Number of Profiles
 
 In the case of choosing the number of profiles (and the specification of the model / profile solution), multiple criteria, such as the BIC or the proportion of variance explained are recommended for decision-making, but also interpretability in light of theory, parsimony, and evidence from cross-validation should be considered. For cluster analysis, the proportion of variance explained can be helpful for selecting a number of candidate profiles. Then, the analyst should focus on the interpretability of the solution as well as concerns of parsimony; if two profile solutions are similar, then the more simple solution may be preferred. 
 
-## How to Choose Options for the Clustering Procedure or to Select the Model Parameterization
+## How to Select the Model Parameterization
 
 This applies most to LPA, but in cluster analysis, there are also options about the distance metric used. In LPA, we can determine which parameters - variance and covariance - are estimated to be the same or different across all profiles, and, in the case of covariance, whether it is fixed to zero. Of course, for the profiles we are most interested in, the mean is allowed to vary across profiles. The models with more parameters freely-estimated use more degrees of freedom; thus, similar to the number of profiles selected, the balance between adding more parameters (and having a more complex model) and interpretability and parsimony must be balanced. If a more complex model fits better and is interpretable and is justifiable in terms of the data collected, then it may be preferred to simpler models. If the two models are similar in terms of their fit, then the more simple, parsimonious model should be selected. 
 
@@ -158,49 +142,81 @@ A second general recommendation considers more flexibly incorporating time, when
 
 Third, best practices in within-person or longitudinal research call for modeling the nesting structure. However, researchers have yet to successfully incorporate this practice into the person centered approach. One way to approach this is to use cross-classified mixed effects models, as in Strati, Schmidt, and Maier (2017) and in Rosenberg (2018). In such approaches, dependencies in terms of, for example, individuals responding to (ESM) surveys at the same time and repeated responses being associated with the same individuals can both be modeled, although the effects of these two sources of dependencies are not nested as in very common uses of multi-level models, but rather are cross-classified. West, Welch, & Galecki (2014) have a description of the use of multi-level models with cross-classified data and tools (including those freely available through R) that can be used to estimate them.
 
+# Rationale
+
+Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. Note that LPA works best with continuous variables (and, in some cases, ordinal variables), but is not appropriate for dichotomous (binary) variables.
+
+Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see [here](https://www.statmodel.com/examples/mixture.shtml)) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters. 
+
+Different *models* (or how or whether parameters are estimated) can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow. 
 
 
-# tidyLPA update
+# Description of the goals of tidyLPA
 
-## Rationale for the update
+The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used [mclust](https://www.stat.washington.edu/mclust/) package for Gaussian Mixture Modeling. This means that tidyLPA does not contain code to carry out LPA directly, but rather provides "wrappers" to mclust functions that make them easier to use. The primary contributions of tidyLPA are to:
 
-**tidyLPA** has received a major update. Your old function calls might not work as expected anymore. The new version of tidyLPA aims to make Latent Profile Analysis (LPA) even more accessible to a broad audience, by means of a user-friendly interface, and to fit more seemlessly into a 'tidyverse' workflow.
+1. Provide functionality to specify models that are common to LPA
+2. Make it easier to use the output in subsequent analysis through a ["tidy" interface](https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html), in that:
+- input and output are both a `data.frame` (specifically its modified version, a `tibble`) that can be used to create plots or can be used in subsequent analyses
+- uses the "pipe" operator, `%>%` to compose functions
+- being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)
+
+## Software approach to carrying out LPA: Interface to mclust (and to MPlus)
+
+In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the [R version of OpenMx](https://openmx.ssri.psu.edu/) can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use. 
+
+Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term "mixture component" has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified. 
+
+In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see [RMixMod](https://cran.r-project.org/package=Rmixmod), which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod, mclust, and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., "spherical, equal volume"), rather than in terms of whether and how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.
+
+This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This [R Markdown output](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html) contains information on how mclust and Mplus compare. The R Markdown to generate the output is also available [here](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd), and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Note that most of the output is identical, thoughthere are some differences in the hundreths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
+
+# tidyLPA use
+
+tidyLPA aims to make Latent Profile Analysis (LPA) even more accessible to a broad audience, by means of a user-friendly interface, and to fit more seemlessly into a 'tidyverse' workflow.
 
 As before, **tidyLPA** offers a parallel workflow for the open-source package Mclust, and the commercial package *Mplus*.
 
 These changes necessitated some simplification of the existing functions. Advanced options are still available, but require slightly more work on the user's part. The upside of this is that, for most users, the tidyLPA workflow and documentation are substantially simplified.
 
-## Major changes
+# Example
 
-There have been major changes to the two primary functions, `estimate_profiles()` and `compare_solutions()`
+## Installation
 
-* `estimate_profiles()` now estimates any number of profiles, for any number of models, using any algorithm. It has a simplified user interface. This makes it a more general function, of which the former version (which could only estimate one number of profiles for one model) is a special, restricted case.
+You can install tidyLPA from CRAN with:
 
-* `compare_solutions()` now compares solutions estimated by estimate_profiles(), suggesting the optimal model and number of classes. This replaces its dual role of estimating AND comparing solutions.
-    `* `compare_solutions()` gives you the same set of fit indices for Mclust and Mplus. It provides a broader range of fit indices than before
-    * `compare_solutions()` calls `AHP()``, a function which uses the Automatic Hierarchical Process to determine the optimal number of classes, based on several reputable fit indices
+```{r, eval = FALSE}
+install.packages("tidyLPA")
+```
 
-* `plot_profiles()` now incorporates best practices for plotting latent profile analyses: Visualizing cluster centroids, standard errors, cluster variances, and classification uncertainty by means of weighted raw data
+You can also install the development version of tidyLPA from GitHub with:
 
-* `impute_missing()` offers two easy-to-use single imputation options, for use with the Mclust package (which does not natively handle missing data). Mplus handles partially missing data by default.
+```{r gh-installation, eval = FALSE}
+install.packages("devtools")
+devtools::install_github("data-edu/tidyLPA")
+```
 
-The best way to understand these changes to **tidyLPA**, though, is by explaining the new workflow.
+## Mclust
 
-## Example analysis using estimate_profiles()
+Here is a brief example using the built-in `pisaUSA15` data set and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See `?estimate_profiles` for more details.
 
-A full analysis might look like the following:
+In these examples, we pass the results of one function to the next by *piping* (using the `%>%` operator, loaded from the `dplyr` package). We pass the data to a function that selects relevant variables, and then to `estimate_profiles`:
+
+```{r, message = F}
+library(tidyLPA)
+library(tidyverse)
+```
 
 ```{r}
-library(tidyverse)
-library(tidyLPA)
-
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
     estimate_profiles(3)
 ```
 
-You can use Mplus simply by changing the package argument for `estimate_profiles()`:
+## Mplus
+
+We can use Mplus simply by changing the package argument for `estimate_profiles()` (not run):
 
 ```{r, eval = FALSE}
 pisaUSA15[1:100, ] %>%
@@ -213,9 +229,9 @@ A simple summary of the analysis is printed to the console (and its posterior pr
 
 If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument `package = "MplusAutomation`.
 
-We can plot the profiles by piping the output to `plot_profiles()`.
+We can plot the profiles by piping the output to `plot_profiles()`:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
@@ -224,10 +240,9 @@ pisaUSA15[1:100, ] %>%
     plot_profiles()
 ```
 
-## Example analysis using compare_solutions()
+## Comparing a wide range of solutions
 
-The function `compare_solutions()` compares the fit of several estimated models,
-with varying numbers of profiles and model specifications:
+The function `compare_solutions()` compares the fit of several estimated models, with varying numbers of profiles and model specifications:
 
 ```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
@@ -239,47 +254,150 @@ pisaUSA15[1:100, ] %>%
     compare_solutions(statistics = c("AIC", "BIC"))
 ```
 
-## Deprecated functionality:
 
-* `compare_solutions()` no longer estimates profiles. It merely compares solutions estimated by `estimate_profiles()`
+## Model specification
 
-* all Mplus-specific functions are deprecated. `estimate_profiles()` offers a unified interface to Mclust and Mplus. These Mplus-specific functions are deprecated:
+In addition to the number of profiles (specified with the `n_profiles` argument), the model can be specified in terms of whether and how the variable variances and covariances are estimated.
 
-    * `estimate_profiles_mplus()`
-        * `compare_profiles_mplus()`
-        * `plot_profiles_mplus()`
+The models are specified by passing arguments to the `variance` and `covariance` arguments. The possible values for these arguments are:
 
-* estimate_profiles and compare_solutions no longer select variables, passed as unquoted variable names, from 'df'. Instead, they use all variables in df. To select variables prior to analysis, use:
+- `variances`: "equal" and "zero"
+- `covariances`: "varying", "equal", and "zero"
 
-    * The dplyr function select(df, Your, Selected, Variable, Names)
-        * The base R function df[, c("Your", "Selected", "Variable", "Names")]
+If no values are specified for these, then the variances are constrained to be equal across classes, and covariances are fixed to 0 (conditional independence of the indicators).
 
-* estimate_profiles and compare_solutions no longer center and scale the raw data. To center and scale variables prior to analysis, use scale(df, center = TRUE, scale = TRUE)
+These arguments allow for four models to be specified:
 
-* estimate_profiles no longer accepts arguments specific to Mplus or Mclust. Instead, you can specify additional arguments directly to the core functions `mplusModeler()` and `Mclust()`. See the help file for these functions for more details. Deprecated arguments, whose functionality is supplanted by passing arguments directly to these core functions, are:
+* Equal variances and covariances fixed to 0 (Model 1)
+* Varying variances and covariances fixed to 0 (Model 2)
+* Equal variances and equal covariances (Model 3)
+* Varying variances and varying covariances (Model 6)
 
-For Mclust:
-              
-    * prior_control
+Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the [vignette](https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html).
 
-For Mplus:
+Here is an example of specifying a model with varying variances and covariances (Model 6):
 
-    * starts
-    * m_iterations
-    * st_iterations
-    * convergence_criterion
-    * optseed
-    * cluster_ID
-    * include_VLMR
-    * include_BLRT (but BLRT is returned by default now)
-
-# tidyLPA function with _mplus() appended require Mplus to use
-
-```{r, eval = FALSE}
-estimate_profiles_mplus(data, var1, var2, var3, ariances = “free”, covariances = “equal”) %>% 
-    plot_profiles_mplus()
+```{r, eval = TRUE}
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    estimate_profiles(3, 
+                      variances = "varying",
+                      covariances = "varying")
 ```
 
+In general, the approach to choosing the model is similar to choosing the number of profiles, requiring **deciding on the basis of evidence from multiple sources**, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by [Pastor and colleagues (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. 
+
+Note that *p* represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.
+
+### 1. Equal variances, and covariances fixed to 0 (model 1)
+
+In this model, which corresponds to the mclust model wit the name "EEI", the variances are estimated to be equal across profiles, indicated by the absence of a p subscript for any of the diagonal elements of the matrix. The covariances are constrained to be zero, as indicated by the 0's between every combination of the variables. 
+
+It is specified with `variances = "equal"` and `covariances = "zero"`. 
+
+This model is highly constrained but also parsimonious: the profiles are estimated in such a way that the variables' variances are identical for each of the profiles, and the relationships between the variables are not estimated. In this way, less degrees of freedom are taken used to explain the observations that make up the data. However, estimating more parameters--as in the other models--may better explain the data, justifying the addition in complexity that their addition involves (and their reduction in degrees of freedom). This model is sometimes referred to as a *class-invariant* parameterization.
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2 }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3 }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
+$$
+
+### 2. Varying variances and covariances fixed to 0 (model 2)
+
+This model corresponds to the mclust model "VVI" and allows for the variances to be freely estimated across profiles. The covariances are constrained to zero. 
+
+It is specified with `variances = "varying"` and `covariances = "zero"`. 
+
+Thus, it is more flexible (and less parsimonious) than model 1, but in terms of the covariances, is more constrained than model 2. This model is sometimes referred to as a *class-varying diagonal* parameterization.
+
+$$ 
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & 0 & 0 & 0 \\ 0 & { \sigma  }_{ 2p }^{ 2 } & 0 & 0 \\ 0 & 0 & { \sigma  }_{ 3p }^{ 2 } & 0 \\ 0 & 0 & 0 & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+$$
+
+
+### 3. Equal variances and equal covariances (model 3)
+
+This model corresponds to the mclust model "EEE". In this model, the variances are still constrained to be the same across the profiles, although now the covariances are estimated (but like the variances, are constrained to be the same across profiles). 
+
+It is specified with `variances = "equal"` and `covariances = "equal"`. 
+
+Thus, this model is the first to estimate the covariance (or correlations) of the variables used to create the profiles, thus adding more information that can be used to better understand the characteristics of the profiles (and, potentially, better explain the data). This model is sometimes referred to as a *class-invariant unrestricted* parameterization.
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
+$$
+
+
+### 4. Varying means, varying variances, and equal covariances (model 4)
+
+This model, which specifies for the variances to be freely estimated across the profiles and for the covariances to be estimated to be equal across profiles, extends model 3. 
+
+It is specified with `variances = "varying"` and `covariances = "equal"`. 
+
+Unfortunately, this model cannot be specified with mclust, though it can be with MPlus; this model *can* be used with the functions to interface to MPlus described below.
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21 } & { \sigma  }_{ 31 } & { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23 } & { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } & { \sigma  }_{ 12 } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } & { \sigma  }_{ 12 } & { \sigma  }_{ 12 } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+$$
+
+### 5. Varying means, equal variances, and varying covariances (model 5)
+
+This model specifies the variances to be equal across the profiles, but allows the covariances to be freely estimated across the profiles. 
+
+It is specified with `variances = "equal"` and `covariances = "varying"`. 
+
+Like model 4, this model cannot be specified with mclust, though it can be with MPlus. Again, this model *can* be used with the functions to interface to MPlus described below.
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
+$$
+
+### 6. Varying variances and varying covariances (model 4)
+
+This model corresponds to the mclust model "VVV". It allows the variances and the covariances to be freely estimated across profiles. 
+
+It is specified with `variances = "varying"` and `covariances = "varying"`. 
+
+Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications. This model is sometimes referred to as a *class-varying unrestricted* parameterization.
+
+$$
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+$$
+
+# Other options
+
+There is a lot of output that is possible to obtain from the `estimate_profiles()` function - much more than a tidy data frame, which is the default. The easiest way to access it is by using the `get_estimates()` function.
+
+```{r, eval = TRUE}
+m3 <- pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    estimate_profiles(3)
+
+get_estimates(m3)
+```
+
+Other options include how the raw data is processed. 
+
+We can center or scale the data before estimating the profiles with the `scale()` or `poms()` functions:
+
+```{r, eval = TRUE}
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    scale() %>%
+    estimate_profiles(4) %>%
+    plot_profiles()
+
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    poms() %>%
+    estimate_profiles(4) %>%
+    plot_profiles()
+```
+
+Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function `get_data()`
+
+```{r, eval = TRUE}
+get_data(m3)
+```
 # Conclusion
 
 Person-oriented analysis ia way to consider how psychological constructs are experienced (and can be analyzed) together and at once. Though described in contrast to a variable-centered approach, scholars have pointed out how person-oriented approaches are complementary to variable-centered analyses (Marsh, Ludtke, Trautwein, & Morin, 2009). A person-oriented approach can help us to consider multiple variables together and at once and in a more dynamic way, reflected in the methodological approaches for cluster analysis and LPA that identify profiles of individuals responses.
