@@ -1,3 +1,7 @@
+# tidyLPA 1.0.1
+
+* Important bug fix for calculation of prob_min and prob_max for Mclust
+
 # tidyLPA 1.0.0
 
 * major, breaking changes detailed in the vignette [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html)

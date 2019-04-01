@@ -332,18 +332,18 @@ calc_fitindices <- function(model, fitindices){
 
 avgprobs_mostlikely <- function(post_prob, class){
     if(is.null(dim(post_prob))) return(1)
-    t(sapply(unique(class), function(i){colMeans(post_prob[class == i, , drop = FALSE])}))
+    t(sapply(1:ncol(post_prob), function(i){colMeans(post_prob[class == i, , drop = FALSE])}))
 }
 
 classification_probs_mostlikely <- function(post_prob, class){
     if(is.null(dim(post_prob))) return(1)
     avg_probs <- avgprobs_mostlikely(post_prob, class)
     C <- length(unique(class))
-    N <- table(class)
+    N <- sapply(1:C, function(x) sum(class == x))
     tab <- mapply(function(this_row, this_col){
         (avg_probs[this_row, this_col]*N[this_row])/(sum(avg_probs[ , this_col] * N))
-    }, this_row = rep(1:C, 2), this_col = rep(1:C, each = 2))
-    matrix(tab, 2, 2, byrow = TRUE)
+    }, this_row = rep(1:C, C), this_col = rep(1:C, each = C))
+    matrix(tab, C, C, byrow = TRUE)
 }
 
 # ICL method for mplus.model ----------------------------------------------
