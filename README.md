@@ -5,7 +5,7 @@
 Note
 ----
 
-tidyLPA has undergone some major changes. You can read about them here [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
+tidyLPA has undergone some major changes. You can read about them [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
 
 Background
 ----------
@@ -54,9 +54,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       635.569 672.041 0.650   0.000    0.889    0.220 0.480
+#>  1     3       645.835 682.307 0.807   0.000    0.991    0.030 0.680
 #>  BLRT_p
-#>  0.050
+#>  0.010
 ```
 
 ### Mplus
@@ -71,9 +71,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       634.952 671.424 0.782   0.869    0.913    0.030 0.560
+#>  1     3       632.488 668.960 0.788   0.814    0.954    0.030 0.670
 #>  BLRT_p
-#>  0.667
+#>  0.013
 ```
 
 A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as `plot`, `compare_solutions`, `get_data`, `get_fit`, etc. This is the "tidy" part, in that the function can be embedded in a tidy analysis pipeline.
