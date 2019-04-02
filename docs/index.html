@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@
 <div id="note" class="section level2">
 <h2 class="hasAnchor">
 <a href="#note" class="anchor"></a>Note</h2>
-<p>tidyLPA has undergone some major changes. You can read about them here <a href="https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html">here</a>.</p>
+<p>tidyLPA has undergone some major changes. You can read about them <a href="https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html">here</a>.</p>
 </div>
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
@@ -127,9 +127,9 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt; tidyLPA analysis using mclust: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
-<span class="co">#&gt;  1     3       624.541 661.013 0.816   0.000    0.992    0.030 0.690</span>
+<span class="co">#&gt;  1     3       634.296 670.768 0.789   0.000    0.992    0.030 0.610</span>
 <span class="co">#&gt;  BLRT_p</span>
-<span class="co">#&gt;  0.020</span></code></pre></div>
+<span class="co">#&gt;  0.010</span></code></pre></div>
 </div>
 <div id="mplus" class="section level3">
 <h3 class="hasAnchor">
@@ -142,9 +142,9 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <span class="co">#&gt; tidyLPA analysis using mplus: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span>
-<span class="co">#&gt;  1     3       630.562 667.034 0.792   0.836    0.946    0.030 0.650</span>
+<span class="co">#&gt;  1     3       634.720 671.192 0.774   0.775    0.946    0.030 0.650</span>
 <span class="co">#&gt;  BLRT_p</span>
-<span class="co">#&gt;  0.013</span></code></pre></div>
+<span class="co">#&gt;  0.000</span></code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
 <p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
 </div>
