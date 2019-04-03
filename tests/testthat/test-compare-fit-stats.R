@@ -46,12 +46,27 @@ test_that("fit stats are the same for both mplus and mclust", {
                                       n_profiles = 2,
                                       models = 1,
                                       package = "MplusAutomation")
+
     m_cars_mclust <- estimate_profiles(mtcars[, c("mpg", "hp")],
                                        n_profiles = 2,
                                        models = 1)
 
     expect_equal(as.vector(m_cars_mplus$model_1_class_2$fit), tab_mclust$val, tolerance = .05)
     expect_equal(as.vector(m_cars_mclust$model_1_class_2$fit), tab_mclust$val, tolerance = .05)
+    expect_equal(as.vector(m_cars_mplus$model_1_class_2$fit), as.vector(m_cars_mplus$model_1_class_2$fit), tolerance = .05)
+
+    m_cars_mplus$model_1_class_2$fit
+
+    kept_cases <- complete.cases(pisaUSA15[, c("broad_interest", "enjoyment", "self_efficacy")])
+    m_pisa_mplus <- estimate_profiles(pisaUSA15[kept_cases, c("broad_interest", "enjoyment", "self_efficacy")],
+                                      n_profiles = 3,
+                                      models = 1,
+                                      package = "MplusAutomation")
+    m_pisa_mclust <- estimate_profiles(pisaUSA15[kept_cases, c("broad_interest", "enjoyment", "self_efficacy")],
+                                       n_profiles = 3,
+                                       models = 1)
+
+    expect_equal(as.vector(m_pisa_mplus$model_1_class_2$fit), as.vector(m_pisa_mplus$model_1_class_2$fit), tolerance = .05)
 
     m_cars_mplus_benchmark_stats <- tibble(stat = names(m_cars_mplus$model_1_class_2$fit),
                                            val = m_cars_mplus$model_1_class_2$fit)

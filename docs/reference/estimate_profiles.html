@@ -66,7 +66,7 @@ MplusAutomation)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -208,31 +208,29 @@ c("zero", "equal")</code>).</p>
 <span class='no'>iris_sample</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
     <span class='st'>"Petal.Length"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>estimate_profiles</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
-#&gt; <span class='warning'>One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3</span></div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
+  <span class='fu'>estimate_profiles</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
 #&gt; 
 #&gt;  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
-#&gt;  1     3       62.153 68.942 0.998   0.000    1.000    0.167 0.500 0.020 </div><div class='input'>
+#&gt;  1     3       62.153 68.942 0.998   0.999    1.000    0.167 0.500 0.020 </div><div class='input'>
 </div><div class='input'><span class='co'># Example 2:</span>
 <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
     <span class='st'>"Petal.Length"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>estimate_profiles</span>(<span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>The 'variances'/'covariances' arguments were ignored in favor of the 'models' argument.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
-#&gt; <span class='warning'>One or more analyses resulted in warnings! Examine these analyses carefully: model_1_class_3, model_2_class_3, model_2_class_4, model_3_class_3, model_3_class_4</span></div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
+  <span class='fu'>estimate_profiles</span>(<span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>The 'variances'/'covariances' arguments were ignored in favor of the 'models' argument.</span></div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
 #&gt; 
 #&gt;  Model Classes AIC      BIC      Entropy prob_min prob_max n_min n_max BLRT_p
 #&gt;  1     1       1150.806 1168.870 1.000   1.000    1.000    1.000 1.000       
 #&gt;  1     2       885.638  915.744  0.985   0.995    0.995    0.340 0.660 0.010 
-#&gt;  1     3       765.160  807.309  0.925   0.000    1.000    0.267 0.400 0.010 
-#&gt;  1     4       758.711  812.902  0.866   0.002    0.061    0.093 0.393 0.020 
+#&gt;  1     3       765.160  807.309  0.925   0.943    0.999    0.267 0.400 0.010 
+#&gt;  1     4       758.711  812.902  0.866   0.700    0.961    0.093 0.393 0.020 
 #&gt;  2     1       1150.806 1168.870 1.000   1.000    1.000    1.000 1.000       
 #&gt;  2     2       770.958  810.096  1.000   1.000    1.000    0.333 0.667 0.010 
-#&gt;  2     3       702.546  762.758  0.887   0.000    1.000    0.313 0.353 0.010 
-#&gt;  2     4       695.509  776.796  0.876   0.000    0.949    0.093 0.353 0.050 
+#&gt;  2     3       702.546  762.758  0.887   0.907    1.000    0.313 0.353 0.010 
+#&gt;  2     4       695.509  776.796  0.876   0.907    0.949    0.093 0.353 0.050 
 #&gt;  3     1       851.331  878.427  1.000   1.000    1.000    1.000 1.000       
 #&gt;  3     2       693.264  732.402  1.000   1.000    1.000    0.333 0.667 0.010 
-#&gt;  3     3       650.144  701.325  0.917   0.000    1.000    0.327 0.340 0.010 
-#&gt;  3     4       646.806  710.029  0.896   0.000    0.011    0.047 0.340 0.040 </div><div class='input'>
+#&gt;  3     3       650.144  701.325  0.917   0.944    1.000    0.327 0.340 0.010 
+#&gt;  3     4       646.806  710.029  0.896   0.706    0.967    0.047 0.340 0.040 </div><div class='input'>
 <span class='co'># Example 3:</span>
 <span class='no'>iris_subset</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/subset'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,

@@ -20,8 +20,7 @@ knitr::opts_chunk$set(
 
 ## Note
 
-tidyLPA has undergone some major changes. You can read about them here [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
-
+tidyLPA has undergone some major changes. You can read about them  [here](https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html).
 
 ## Background
 
