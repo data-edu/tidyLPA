@@ -15,7 +15,7 @@
 #' @return An object of class 'tidyLPA' and 'list'
 estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
     arg_list <- match.call()
-
+    warnings <- NULL
     no_na_rows <- !apply(df, 1, anyNA)
     if(any(!no_na_rows)){
         warning("The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.\n")
@@ -45,32 +45,39 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
                verbose = FALSE,
                ...
         ))
-        out$model$mclustBootstrap <- MclustBootstrap(out$model, nboot = 100, type = "bs", verbose = FALSE)
-        out$model$LRTS <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$obs[this_class-1])
-        out$model$LRTS_p <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$p.value[this_class-1])
-        out$fit <- c(Model = this_model, Classes = this_class, calc_fitindices(out$model))
-        estimates <- estimates(out$model)
-        estimates$Model <- this_model
-        estimates$Classes <- this_class
-        if(this_class == 1){
-            estimates$se[estimates$Category == "Means"] <- estimates$Estimate[estimates$Category == "Variances"]/out$model$n
-            estimates$se[estimates$Category == "Variances"] <- sapply(sqrt(estimates$Estimate[estimates$Category == "Variances"]),
-                                                                      se_s, n = out$model$n)^2
-            estimates$p <- stats::pnorm(abs(estimates$Estimate), sd = estimates$se, lower.tail = FALSE)
+        if(is.null(out$model)){
+            warning("Mclust could not estimate model ", this_model, " with ", this_class, " classes.", call. = FALSE)
+            out$model$mclustBootstrap <- out$model$LRTS <- out$model$LRTS_p <- out$estimates <- out$dff <- NULL
+            out$fit <- c(Model = this_model, Classes = this_class, rep(NA, 16))
+            warnings <- c(warnings, paste0("Mclust could not estimate model ", this_model, " with ", this_class, " classes."))
+        } else {
+            out$model$mclustBootstrap <- MclustBootstrap(out$model, nboot = 100, type = "bs", verbose = FALSE)
+            out$model$LRTS <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$obs[this_class-1])
+            out$model$LRTS_p <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$p.value[this_class-1])
+            out$fit <- c(Model = this_model, Classes = this_class, calc_fitindices(out$model))
+            estimates <- estimates(out$model)
+            estimates$Model <- this_model
+            estimates$Classes <- this_class
+            if(this_class == 1){
+                estimates$se[estimates$Category == "Means"] <- estimates$Estimate[estimates$Category == "Variances"]/out$model$n
+                estimates$se[estimates$Category == "Variances"] <- sapply(sqrt(estimates$Estimate[estimates$Category == "Variances"]),
+                                                                          se_s, n = out$model$n)^2
+                estimates$p <- stats::pnorm(abs(estimates$Estimate), sd = estimates$se, lower.tail = FALSE)
+            }
+            out$estimates <- estimates
+            outdat <- cbind(out$model$z, out$model$classification)
+            dff <- matrix(NA, dim(df)[1], dim(outdat)[2])
+            dff[no_na_rows, ] <- outdat
+            colnames(dff) <- c(paste0("CPROB", 1:ncol(out$model$z)), "Class")
+            out$dff <- as_tibble(cbind(df, dff))
+            out$dff$model_number <- this_model
+            out$dff$classes_number <- this_class
+            out$dff <- out$dff[, c((ncol(out$dff)-1), ncol(out$dff), 1:(ncol(out$dff)-2))]
+            # Set warnings
+            if(out$fit[["prob_min"]]< .001) warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
+            if(out$fit[["n_min"]] < .01) warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
+
         }
-        out$estimates <- estimates
-        outdat <- cbind(out$model$z, out$model$classification)
-        dff <- matrix(NA, dim(df)[1], dim(outdat)[2])
-        dff[no_na_rows, ] <- outdat
-        colnames(dff) <- c(paste0("CPROB", 1:ncol(out$model$z)), "Class")
-        out$dff <- as_tibble(cbind(df, dff))
-        out$dff$model_number <- this_model
-        out$dff$classes_number <- this_class
-        out$dff <- out$dff[, c((ncol(out$dff)-1), ncol(out$dff), 1:(ncol(out$dff)-2))]
-        # Set warnings
-        warnings <- NULL
-        if(out$fit[["prob_min"]]< .001) warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
-        if(out$fit[["n_min"]] < .01) warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")
         out$warnings <- warnings
         class(out) <- c("tidyProfile.mclust", "tidyProfile", "list")
         out
