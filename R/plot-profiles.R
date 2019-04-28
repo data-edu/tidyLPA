@@ -18,16 +18,19 @@ plot_profiles <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = T
 plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
 
     df_plot <- droplevels(x[["df_plot"]])
-    if(!is.null(x[["df_raw"]])) df_raw <- droplevels(x[["df_raw"]])
 
-    # Check consistency of factor levels
-    if(rawdata & !all(unique(df_plot$Variable) %in% unique(df_raw$Variable))){
-        stop("Could not match raw data to model estimates.")
+    if(rawdata){
+        df_raw <- droplevels(x[["df_raw"]])
+        # Check consistency of factor levels
+        if(!all(unique(df_plot$Variable) %in% unique(df_raw$Variable))){
+            stop("Could not match raw data to model estimates.")
+        }
+        df_raw$Variable <- as.numeric(df_raw$Variable)
     }
 
     level_labels <- levels(df_plot$Variable)
     df_plot$Variable <- as.numeric(df_plot$Variable)
-    df_raw$Variable <- as.numeric(df_raw$Variable)
+
     # Basic plot
     if (bw) {
         classplot <-
