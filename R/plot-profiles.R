@@ -18,7 +18,7 @@ plot_profiles <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = T
 plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
 
     df_plot <- droplevels(x[["df_plot"]])
-    df_raw <- droplevels(x[["df_raw"]])
+    if(!is.null(x[["df_raw"]])) df_raw <- droplevels(x[["df_raw"]])
 
     # Check consistency of factor levels
     if(rawdata & !all(unique(df_plot$Variable) %in% unique(df_raw$Variable))){
