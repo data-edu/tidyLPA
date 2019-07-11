@@ -299,25 +299,27 @@ get_data <- function(x, ...) {
 #' @export
 get_data.tidyLPA <- function(x, ...) {
     out <- lapply(x, function(x) {
-        dt <- data.frame(x[["dff"]])
-        prob_names <- grep("^CPROB", names(dt), value = TRUE)
-        if (length(prob_names) > 1) {
-            reshape(
-                dt,
-                varying = c("Probability" = prob_names),
-                direction = "long",
-                v.names = "Probability",
-                timevar = "Class_prob",
-                sep = ""
-            )
-        } else {
-            cbind(
-                dt[, 1:(ncol(dt) - 2)],
-                Class = dt$Class,
-                Class_prob = dt$Class,
-                Probability = dt$CPROB1,
-                id = 1:nrow(dt)
-            )
+        if(!is.null(x[["dff"]])){
+            dt <- data.frame(x[["dff"]])
+            prob_names <- grep("^CPROB", names(dt), value = TRUE)
+            if (length(prob_names) > 1) {
+                reshape(
+                    dt,
+                    varying = c("Probability" = prob_names),
+                    direction = "long",
+                    v.names = "Probability",
+                    timevar = "Class_prob",
+                    sep = ""
+                )
+            } else {
+                cbind(
+                    dt[, 1:(ncol(dt) - 2)],
+                    Class = dt$Class,
+                    Class_prob = dt$Class,
+                    Probability = dt$CPROB1,
+                    id = 1:nrow(dt)
+                )
+            }
         }
     })
     as_tibble(do.call(rbind, out))
@@ -327,7 +329,11 @@ get_data.tidyLPA <- function(x, ...) {
 #' of class 'tidyProfile'.
 #' @export
 get_data.tidyProfile <- function(x, ...) {
-    x[["dff"]]
+    if(!is.null(x[["dff"]])){
+        x[["dff"]]
+    } else {
+        stop("This tidyProfile has no data attached.")
+    }
 }
 
 #' @title Print tidyLPA

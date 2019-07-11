@@ -143,7 +143,7 @@ plot_density.tidyLPA <-
              alpha = .2,
              facet_labels = NULL) {
         Args <- as.list(match.call()[-1])
-
+        x[sapply(x, function(i){is.null(i[["dff"]])})] <- NULL
         # Check if all variables (except CPROBs) are identical across models
         plot_df <- lapply(x, function(x)
             as.data.frame(x$dff))

@@ -16,8 +16,20 @@ plot_profiles <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = T
 #' @import ggplot2
 #' @export
 plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
-    df_plot <- x[["df_plot"]]
-    df_raw <- x[["df_raw"]]
+
+    df_plot <- droplevels(x[["df_plot"]])
+
+    if(rawdata){
+        df_raw <- droplevels(x[["df_raw"]])
+        # Check consistency of factor levels
+        if(!all(unique(df_plot$Variable) %in% unique(df_raw$Variable))){
+            stop("Could not match raw data to model estimates.")
+        }
+        df_raw$Variable <- as.numeric(df_raw$Variable)
+    }
+
+    level_labels <- levels(df_plot$Variable)
+    df_plot$Variable <- as.numeric(df_plot$Variable)
 
     # Basic plot
     if (bw) {
@@ -59,7 +71,11 @@ plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
             ) +
             scale_alpha_continuous(range = alpha_range, guide = FALSE)
     }
-    classplot <- classplot + geom_point(data = df_plot) + theme_bw()
+    classplot <- classplot + geom_point(data = df_plot) +
+        scale_x_continuous(breaks = 1:length(level_labels),
+                           labels = level_labels) +
+        theme_bw() +
+        theme(panel.grid.minor.x = element_blank())
 
     if(add_line) classplot <- classplot + geom_line(data = df_plot)
 
@@ -77,8 +93,8 @@ plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
     }
     if(sd){
 
-        df_plot$sd_xmin <- as.numeric(df_plot$Variable)-.2
-        df_plot$sd_xmax <- as.numeric(df_plot$Variable)+.2
+        df_plot$sd_xmin <- df_plot$Variable-.2
+        df_plot$sd_xmax <- df_plot$Variable+.2
         df_plot$sd_ymin <- df_plot$Value - sqrt(df_plot$Value.Variances)
         df_plot$sd_ymax <- df_plot$Value + sqrt(df_plot$Value.Variances)
 
@@ -153,9 +169,9 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
     df_plot$idvar <- paste0(df_plot$Model, df_plot$Classes, df_plot$Class, df_plot$Variable)
     df_plot <- reshape(data.frame(df_plot), idvar = "idvar", timevar = "Category", v.names = c("Value", "se"), direction = "wide")
 
-    df_plot <- df_plot[, -5]
+    df_plot <- df_plot[, -match("idvar", names(df_plot))]
     # Get some classy names
-    names(df_plot)[5:6] <- c("Value", "se")
+    names(df_plot) <- gsub("\\.Means", "", names(df_plot))
 
     if (rawdata) {
         df_raw <- data.frame(get_data(x))
