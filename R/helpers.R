@@ -1,11 +1,10 @@
 #' @importFrom MplusAutomation mplusAvailable
 .onAttach <- function(libname, pkgname) {
     has_mplus <- mplusAvailable(TRUE)
-    print_message <- paste0("tidyLPA has received a major update, with a much easier workflow and improved functionality. However, you might have to update old syntax to account for the new workflow. See vignette('introduction-to-major-changes') for details!\n\n",
+    print_message <- paste0("tidyLPA is intended for academic use. We do not make any money on this and only ask that you please cite this in publications when you use the results. You can use the function citation('tidyLPA') to create a citation.",
                             ifelse(has_mplus == 0, "Mplus is installed; you can use package = 'MplusAutomation' when calling estimate_profiles().",
                                    "Mplus is not installed. Use only package = 'mclust' when calling estimate_profiles().")
                             )
-
     packageStartupMessage(print_message)
 }
 
