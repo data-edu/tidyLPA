@@ -137,6 +137,27 @@ pisaUSA15[1:100, ] %>%
     compare_solutions(statistics = c("AIC", "BIC"))
 ```
 
+## Accessing values in the output
+
+A few helper functions are available to make it easier to work with the output of an analysis.
+
+`get_data()` returns the data:
+
+```{r}
+m <- pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>%
+    estimate_profiles(3, package = "MplusAutomation")
+
+get_data(m)
+```
+
+`get_fit()` returns the fit statistics:
+
+```{r}
+get_fit(m)
+```
+
 ## More information
 
 To learn more:
