@@ -4,7 +4,7 @@ author: "Caspar van Lissa"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Forthcoming major changes}
+  %\VignetteIndexEntry{Major changes for version 1.0.0}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
