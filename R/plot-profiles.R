@@ -150,7 +150,6 @@ plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
 #' @export
 plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
     Args <- as.list(match.call()[-1])
-
     df_plot <- get_estimates(x)
 
     df_plot$Value <- df_plot$Estimate
@@ -174,7 +173,8 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
     names(df_plot) <- gsub("\\.Means", "", names(df_plot))
 
     if (rawdata) {
-        df_raw <- data.frame(get_data(x))
+        df_raw <- get_long_data(x)
+        df_raw <- df_raw[, c("model_number", "classes_number", attr(x[[1]]$dff, "selected"), "Class", "Class_prob", "Probability", "id")]
         df_raw$Class <- ordered(df_raw$Class_prob, levels = levels(df_plot$Class))
         variable_names <- paste("Value", names(df_raw)[-c(1,2, ncol(df_raw)-c(0:3))], sep = "...")
         names(df_raw)[-c(1,2, ncol(df_raw)-c(0:3))] <- variable_names

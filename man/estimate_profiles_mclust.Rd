@@ -4,7 +4,7 @@
 \alias{estimate_profiles_mclust}
 \title{Estimate latent profiles using mclust}
 \usage{
-estimate_profiles_mclust(df, n_profiles, model_numbers, ...)
+estimate_profiles_mclust(df, n_profiles, model_numbers, select_vars, ...)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
@@ -16,6 +16,10 @@ analysis with that many mixture components.}
 \item{model_numbers}{Numeric vector. Numbers of the models to be estimated.
 See \code{\link{estimate_profiles}} for a description of the models available
 in tidyLPA.}
+
+\item{select_vars}{Character. Optional vector of variable names in \code{df},
+to be used for model estimation. Defaults to \code{NULL}, which means all
+variables in \code{df} are used.}
 
 \item{...}{Parameters passed directly to \code{\link[mclust]{Mclust}}. See
 the documentation of \code{\link[mclust]{Mclust}}.}

@@ -5,7 +5,7 @@
 \title{Estimate latent profiles}
 \usage{
 estimate_profiles(df, n_profiles, models = NULL, variances = "equal",
-  covariances = "zero", package = "mclust", ...)
+  covariances = "zero", package = "mclust", select_vars = NULL, ...)
 }
 \arguments{
 \item{df}{data.frame of numeric data; continuous indicators are required for
@@ -31,6 +31,10 @@ profiles), and "varying" (free covariances across profiles).}
 
 \item{package}{Character. Which package to use; 'mclust' or
 'MplusAutomation' (requires Mplus to be installed). Default: 'mclust'.}
+
+\item{select_vars}{Character. Optional vector of variable names in \code{df},
+to be used for model estimation. Defaults to \code{NULL}, which means all
+variables in \code{df} are used.}
 
 \item{...}{Additional arguments are passed to the estimating function; i.e.,
 \code{\link[mclust]{Mclust}}, or \code{\link[MplusAutomation]{mplusModeler}}.}

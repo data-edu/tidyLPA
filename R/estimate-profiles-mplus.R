@@ -10,6 +10,9 @@
 #' @param model_numbers Numeric vector. Numbers of the models to be estimated.
 #' See \code{\link{estimate_profiles}} for a description of the models available
 #' in tidyLPA.
+#' @param select_vars Character. Optional vector of variable names in \code{df},
+#' to be used for model estimation. Defaults to \code{NULL}, which means all
+#' variables in \code{df} are used.
 #' @param ... Parameters passed directly to
 #' \code{\link[MplusAutomation]{mplusModeler}}. See the documentation of
 #' \code{\link[MplusAutomation]{mplusModeler}}.
@@ -20,8 +23,15 @@
 #' @importFrom methods hasArg
 #' @import MplusAutomation
 estimate_profiles_mplus2 <-
-    function(df, n_profiles, model_numbers, ..., keepfiles = FALSE) {
+    function(df, n_profiles, model_numbers, select_vars, ..., keepfiles = FALSE) {
         arg_list <- as.list(match.call())
+        df_full <- df
+        df <- df[, select_vars, drop = FALSE]
+        all_na_rows <- rowSums(is.na(df)) == ncol(df)
+        if(any(all_na_rows)){
+            warning("Data set contains cases with missing on all variables. These cases were not included in the analysis.\n")
+        }
+        df <- df[!all_na_rows, , drop = FALSE]
         model_overall <- ifelse("model_overall" %in% names(arg_list), arg_list[["model_overall"]], "")
         filename_stem <- NULL
         if("filename_stem" %in% names(arg_list)) filename_stem <- arg_list[["filename_stem"]]
@@ -212,15 +222,18 @@ estimate_profiles_mplus2 <-
                     }
                     out$estimates <- estimates
 
-                    dff <- out$model$savedata
-                    if(!is.null(dff)){
-                        names(dff)[c(match(toupper(param_names), names(dff)), ncol(dff))] <-
-                            c(original_names, "Class")
+                    if(!is.null(out$model[["savedata"]])){
+                        #dff <- out$model$savedata
+                        outdat <- as.matrix(out$model$savedata[, grep("CPROB1", names(out$model$savedata)):ncol(out$model$savedata)])
+                        dff <- matrix(NA_real_, dim(df_full)[1], dim(outdat)[2])
+                        dff[!all_na_rows, ] <- outdat
+                        colnames(dff) <- c(paste0("CPROB", 1:(ncol(dff)-1)), "Class")
 
-                        dff$model_number <- this_model
-                        dff$classes_number <- this_class
-
-                        out$dff <- as_tibble(dff[, c(ncol(dff)-c(1, 0), 1:(ncol(dff)-2))])
+                        out$dff <- as_tibble(cbind(df_full, dff))
+                        out$dff$model_number <- this_model
+                        out$dff$classes_number <- this_class
+                        out$dff <- out$dff[, c((ncol(out$dff)-1), ncol(out$dff), 1:(ncol(out$dff)-2))]
+                        attr(out$dff, "selected") <- names(df)
                     }
 
                     # Check for warnings ------------------------------------------------------
