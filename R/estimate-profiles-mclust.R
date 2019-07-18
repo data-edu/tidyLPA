@@ -9,11 +9,16 @@
 #' @param model_numbers Numeric vector. Numbers of the models to be estimated.
 #' See \code{\link{estimate_profiles}} for a description of the models available
 #' in tidyLPA.
+#' @param select_vars Character. Optional vector of variable names in \code{df},
+#' to be used for model estimation. Defaults to \code{NULL}, which means all
+#' variables in \code{df} are used.
 #' @param ... Parameters passed directly to \code{\link[mclust]{Mclust}}. See
 #' the documentation of \code{\link[mclust]{Mclust}}.
 #' @author Caspar J. van Lissa
 #' @return An object of class 'tidyLPA' and 'list'
-estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
+estimate_profiles_mclust <- function(df, n_profiles, model_numbers, select_vars, ...){
+    df_full <- df
+    df <- df[, select_vars, drop = FALSE]
     arg_list <- match.call()
     warnings <- NULL
     no_na_rows <- !apply(df, 1, anyNA)
@@ -69,10 +74,11 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, ...){
             dff <- matrix(NA, dim(df)[1], dim(outdat)[2])
             dff[no_na_rows, ] <- outdat
             colnames(dff) <- c(paste0("CPROB", 1:ncol(out$model$z)), "Class")
-            out$dff <- as_tibble(cbind(df, dff))
+            out$dff <- as_tibble(cbind(df_full, dff))
             out$dff$model_number <- this_model
             out$dff$classes_number <- this_class
             out$dff <- out$dff[, c((ncol(out$dff)-1), ncol(out$dff), 1:(ncol(out$dff)-2))]
+            attr(out$dff, "selected") <- names(df)
             # Set warnings
             if(out$fit[["prob_min"]]< .001) warnings <- c(warnings, "Some classes were not assigned any cases with more than .1% probability. Consequently, these solutions are effectively identical to a solution with one class less.")
             if(out$fit[["n_min"]] < .01) warnings <- c(warnings, "Less than 1% of cases were assigned to one of the profiles. Interpret this solution with caution and consider other models.")

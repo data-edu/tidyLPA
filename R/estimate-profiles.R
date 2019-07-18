@@ -21,6 +21,9 @@
 #' profiles), and "varying" (free covariances across profiles).
 #' @param package Character. Which package to use; 'mclust' or
 #' 'MplusAutomation' (requires Mplus to be installed). Default: 'mclust'.
+#' @param select_vars Character. Optional vector of variable names in \code{df},
+#' to be used for model estimation. Defaults to \code{NULL}, which means all
+#' variables in \code{df} are used.
 #' @param ... Additional arguments are passed to the estimating function; i.e.,
 #' \code{\link[mclust]{Mclust}}, or \code{\link[MplusAutomation]{mplusModeler}}.
 #' @return A list of class 'tidyLPA'.
@@ -72,6 +75,7 @@ estimate_profiles <- function(df,
                               variances = "equal",
                               covariances = "zero",
                               package = "mclust",
+                              select_vars = NULL,
                               ...) {
     UseMethod("estimate_profiles", df)
 }
@@ -118,6 +122,7 @@ estimate_profiles.default <- function(df,
                                       variances = "equal",
                                       covariances = "zero",
                                       package = "mclust",
+                                      select_vars = NULL,
                                       ...) {
     # Check deprecated arguments ----------------------------------------------
 
@@ -132,6 +137,19 @@ estimate_profiles.default <- function(df,
         "scale_raw_data" = "Before running estimate_profiles, run the function 'scale' on your data (see ?scale). Also see ?poms (percentage-of-maximum scoring) for a way to put your variables on an easily comparable scale."
     ))
 
+    # Check if there is an argument 'select_vars'' ----------------------------
+    if(!is.null(select_vars)){
+        if(!all(select_vars %in% names(df))){
+            stop("The following variables are not in df: ", paste(select_vars[!select_vars %in% names(df)], collapse = ", "))
+        }
+    } else {
+        select_vars <- names(df)
+    }
+    # Backup df
+    df_full <- df
+    df <- df[, select_vars, drop = FALSE]
+
+    # Deprecated variable selection -------------------------------------------
     check_dots <- match.call(expand.dots = FALSE)$`...`
     if(any(names(df) %in% unlist(check_dots))){
         warning("It looks like you are trying to extract some variables from df. This functionality is deprecated. Instead, estimate_profiles() always uses all variables in df. Select your variables prior to analysis, using either:\n  The dplyr function select(df, Your, Selected, Variable, Names), or\n  The base R function df[, c('Your', 'Selected', 'Variable', 'Names')]")
@@ -183,8 +201,8 @@ estimate_profiles.default <- function(df,
     }
 
     out <- switch(package,
-           "mplusautomation" = estimate_profiles_mplus2(df, n_profiles, model_numbers, ...),
-           "mclust" = estimate_profiles_mclust(df, n_profiles, model_numbers, ...))
+           "mplusautomation" = estimate_profiles_mplus2(df_full, n_profiles, model_numbers, select_vars, ...),
+           "mclust" = estimate_profiles_mclust(df_full, n_profiles, model_numbers, select_vars, ...))
 
     # Check warnings here
     warnings <- sapply(out, function(x){!is.null(x[["warnings"]])})
@@ -298,6 +316,30 @@ get_data <- function(x, ...) {
 #' numbers of classes and models, of class 'tidyLPA'.
 #' @export
 get_data.tidyLPA <- function(x, ...) {
+    cl <- match.call()
+    if(length(x) == 1){
+        cl$x <- x[[1]]
+        cl[[1]] <- as.name("get_data")
+        return(eval.parent(cl))
+    }
+    as_tibble(do.call(get_long_data, as.list(cl[-1])))
+}
+
+#' @describeIn get_data Get data for a single latent profile analysis object,
+#' of class 'tidyProfile'.
+#' @export
+get_data.tidyProfile <- function(x, ...) {
+    if(!is.null(x[["dff"]])){
+        x[["dff"]]
+    } else {
+        stop("This tidyProfile has no data attached.")
+    }
+}
+
+
+# Internal ----------------------------------------------------------------
+
+get_long_data <- function(x, ...) {
     out <- lapply(x, function(x) {
         if(!is.null(x[["dff"]])){
             dt <- data.frame(x[["dff"]])
@@ -322,18 +364,7 @@ get_data.tidyLPA <- function(x, ...) {
             }
         }
     })
-    as_tibble(do.call(rbind, out))
-}
-
-#' @describeIn get_data Get data for a single latent profile analysis object,
-#' of class 'tidyProfile'.
-#' @export
-get_data.tidyProfile <- function(x, ...) {
-    if(!is.null(x[["dff"]])){
-        x[["dff"]]
-    } else {
-        stop("This tidyProfile has no data attached.")
-    }
+    do.call(rbind, out)
 }
 
 #' @title Print tidyLPA
