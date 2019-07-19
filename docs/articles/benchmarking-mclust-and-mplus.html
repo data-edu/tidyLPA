@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vignette Title • tidyLPA</title>
+<title>Benchmarking mclust and MPlus • tidyLPA</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Vignette Title">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Benchmarking mclust and MPlus">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -56,7 +56,7 @@
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
     <li>
-      <a href="../articles/benchmarking-mclust-and-mplus.html">Vignette Title</a>
+      <a href="../articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -79,7 +79,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Vignette Title</h1>
+      <h1>Benchmarking mclust and MPlus</h1>
                         <h4 class="author">Vignette Author</h4>
             
             <h4 class="date">2019-07-19</h4>
@@ -187,7 +187,7 @@
 <a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#&gt;         n_min     n_max  BLRT_val     BLRT_p</span></a>
 <a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#&gt; 1  0.33333333 0.6666667 504.20541 0.00990099</span></a>
 <a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">#&gt; 2  0.30000000 0.3666667 254.97066 0.00990099</span></a>
-<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">#&gt; 3  0.09333333 0.4266667  10.70000 0.11881188</span></a>
+<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">#&gt; 3  0.09333333 0.4266667  10.70000 0.13861386</span></a>
 <a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co">#&gt; 4  0.33333333 0.6666667 709.66438 0.00990099</span></a>
 <a class="sourceLine" id="cb3-41" data-line-number="41"><span class="co">#&gt; 5  0.24666667 0.4200000 158.00903 0.00990099</span></a>
 <a class="sourceLine" id="cb3-42" data-line-number="42"><span class="co">#&gt; 6  0.10666667 0.4200000  38.71413 0.00990099</span></a>
@@ -196,7 +196,7 @@
 <a class="sourceLine" id="cb3-45" data-line-number="45"><span class="co">#&gt; 9  0.04000000 0.3400000  11.99215 0.09900990</span></a>
 <a class="sourceLine" id="cb3-46" data-line-number="46"><span class="co">#&gt; 10 0.33333333 0.6666667 331.11985 0.00990099</span></a>
 <a class="sourceLine" id="cb3-47" data-line-number="47"><span class="co">#&gt; 11 0.30000000 0.3666667  68.33773 0.00990099</span></a>
-<a class="sourceLine" id="cb3-48" data-line-number="48"><span class="co">#&gt; 12 0.08000000 0.3666667  25.39920 0.67326733</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-48" data-line-number="48"><span class="co">#&gt; 12 0.08000000 0.3666667  25.39920 0.64356436</span></a></code></pre></div>
 </div>
 </div>
 <div id="using-mplus-1" class="section level1">

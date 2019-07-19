@@ -56,7 +56,7 @@
       <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
     <li>
-      <a href="../articles/benchmarking-mclust-and-mplus.html">Vignette Title</a>
+      <a href="../articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -137,9 +137,9 @@
 <pre><code>## tidyLPA analysis using mclust: 
 ## 
 ##  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-##  1     3       643.055 679.527 0.732   0.812    0.906    0.200 0.530
+##  1     3       636.248 672.720 0.709   0.819    0.889    0.210 0.540
 ##  BLRT_p
-##  0.030</code></pre>
+##  0.099</code></pre>
 <p>You can use Mplus simply by changing the package argument for <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>

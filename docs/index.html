@@ -63,7 +63,7 @@
       <a href="articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
     <li>
-      <a href="articles/benchmarking-mclust-and-mplus.html">Vignette Title</a>
+      <a href="articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
     </li>
     <li>
       <a href="articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -128,9 +128,9 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       624.026 660.499 0.790   0.814    0.951    0.030 0.660</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       632.092 668.564 0.662   0.809    0.893    0.210 0.450</span></a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.010</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.139</span></a></code></pre></div>
 </div>
 <div id="mplus" class="section level3">
 <h3 class="hasAnchor">
@@ -143,7 +143,7 @@
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mplus: </span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  1     3       651.516 687.988 0.790   0.857    0.930    0.030 0.620</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  1     3       635.438 671.910 0.814   0.854    0.954    0.030 0.660</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;  0.013</span></a></code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
@@ -216,16 +216,16 @@
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; # A tibble: 300 x 9</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;           &lt;dbl&gt;          &lt;int&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1            1              3            3.8       4            1        2</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     1</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     1</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     3</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5            1              3            1.8       2.2          2        1</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     1</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7            1              3            3         3.8          2.25     2</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        1</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9            1              3            1         2.8          2.62     1</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10            1              3            2.2       2            1.75     1</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1            1              3            3.8       4            1        3</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     2</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     2</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     1</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5            1              3            1.8       2.2          2        2</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     2</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7            1              3            3         3.8          2.25     3</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        2</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9            1              3            1         2.8          2.62     2</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10            1              3            2.2       2            1.75     2</span></a>
 <a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; # … with 290 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
 <a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; #   Probability &lt;dbl&gt;, id &lt;int&gt;</span></a></code></pre></div>
 <p><code><a href="reference/get_fit.html">get_fit()</a></code> returns the fit statistics:</p>
@@ -233,7 +233,7 @@
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 18</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;   Model Classes LogLik   AIC   AWE   BIC  CAIC   CLC   KIC SABIC   ICL</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -300.  628.  769.  664.  678.  601.  645.  620. -687.</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -301.  629.  770.  666.  680.  603.  646.  621. -685.</span></a>
 <a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; # … with 7 more variables: Entropy &lt;dbl&gt;, prob_min &lt;dbl&gt;, prob_max &lt;dbl&gt;,</span></a>
 <a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; #   n_min &lt;dbl&gt;, n_max &lt;dbl&gt;, BLRT_val &lt;dbl&gt;, BLRT_p &lt;dbl&gt;</span></a></code></pre></div>
 </div>
