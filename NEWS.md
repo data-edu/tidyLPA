@@ -1,3 +1,10 @@
+# tidyLPA 1.0.3
+
+* Fix bug when mclust model does not converge
+* improve `get_data()` so it returns data in long form
+* change message on load
+* change vignette titles
+
 # tidyLPA 1.0.1
 
 * Important bug fix for calculation of prob_min and prob_max for Mclust
