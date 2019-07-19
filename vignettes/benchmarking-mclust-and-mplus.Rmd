@@ -1,0 +1,44 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Using mclust
+
+## Just one fit
+
+```{r}
+library(tidyLPA)
+library(dplyr)
+
+iris %>% 
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>% 
+  estimate_profiles(n_profiles = 2) %>% 
+  get_fit() %>% 
+  as.data.frame()
+```
+
+# Using MPlus
+
+## Just one fit
+
+```{r}
+iris %>% 
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>% 
+  estimate_profiles(n_profiles = 2, package = "mplus") %>% 
+  get_fit() %>% 
+  as.data.frame()
+```
