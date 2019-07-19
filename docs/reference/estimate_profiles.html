@@ -66,7 +66,7 @@ MplusAutomation)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -89,7 +89,10 @@ MplusAutomation)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Introduction_to_tidyLPA.html">UNKNOWN TITLE</a>
+      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+    </li>
+    <li>
+      <a href="../articles/benchmarking-mclust-and-mplus.html">Vignette Title</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -130,7 +133,7 @@ Mplus (using the R-interface of
     </div>
 
     <pre class="usage"><span class='fu'>estimate_profiles</span>(<span class='no'>df</span>, <span class='no'>n_profiles</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>variances</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
-  <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='st'>"zero"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='st'>"zero"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>, <span class='kw'>select_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,6 +173,12 @@ profiles), and "varying" (free covariances across profiles).</p></td>
       <th>package</th>
       <td><p>Character. Which package to use; 'mclust' or
 'MplusAutomation' (requires Mplus to be installed). Default: 'mclust'.</p></td>
+    </tr>
+    <tr>
+      <th>select_vars</th>
+      <td><p>Character. Optional vector of variable names in <code>df</code>,
+to be used for model estimation. Defaults to <code>NULL</code>, which means all
+variables in <code>df</code> are used.</p></td>
     </tr>
     <tr>
       <th>...</th>

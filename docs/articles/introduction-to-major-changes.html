@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -53,7 +53,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Introduction_to_tidyLPA.html">UNKNOWN TITLE</a>
+      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+    </li>
+    <li>
+      <a href="../articles/benchmarking-mclust-and-mplus.html">Vignette Title</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -79,7 +82,7 @@
       <h1>Major changes for version 1.0.0</h1>
                         <h4 class="author">Caspar van Lissa</h4>
             
-            <h4 class="date">2019-04-02</h4>
+            <h4 class="date">2019-07-19</h4>
       
       
       <div class="hidden name"><code>introduction-to-major-changes.Rmd</code></div>
@@ -104,7 +107,7 @@
 <p>There have been major changes to the two primary functions, <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> and <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code></p>
 <ul>
 <li><p><code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> now estimates any number of profiles, for any number of models, using any algorithm. It has a simplified user interface. This makes it a more general function, of which the former version (which could only estimate one number of profiles for one model) is a special, restricted case.</p></li>
-<li><p><code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> now compares solutions estimated by estimate_profiles(), suggesting the optimal model and number of classes. This replaces its dual role of estimating AND comparing solutions. <code>*</code>compare_solutions()<code>gives you the same set of fit indices for Mclust and Mplus. It provides a broader range of fit indices than before *</code>compare_solutions()<code>calls</code>AHP()``, a function which uses the Automatic Hierarchical Process to determine the optimal number of classes, based on several reputable fit indices</p></li>
+<li><p><code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> now compares solutions estimated by estimate_profiles(), suggesting the optimal model and number of classes. This replaces its dual role of estimating AND comparing solutions. <code>*</code>compare_solutions()<code>gives you the same set of fit indices for Mclust and Mplus. It provides a broader range of fit indices than before   *</code>compare_solutions()<code>calls</code>AHP()``, a function which uses the Automatic Hierarchical Process to determine the optimal number of classes, based on several reputable fit indices</p></li>
 <li><p><code><a href="../reference/plot_profiles.html">plot_profiles()</a></code> now incorporates best practices for plotting latent profile analyses: Visualizing cluster centroids, standard errors, cluster variances, and classification uncertainty by means of weighted raw data</p></li>
 <li><p><code>impute_missing()</code> offers two easy-to-use single imputation options, for use with the Mclust package (which does not natively handle missing data). Mplus handles partially missing data by default.</p></li>
 </ul>
@@ -114,11 +117,11 @@
 <h2 class="hasAnchor">
 <a href="#example-analysis-using-estimate_profiles" class="anchor"></a>Example analysis using estimate_profiles()</h2>
 <p>A full analysis might look like the following:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)</a></code></pre></div>
 <pre><code>## tidyLPA has received a major update, with a much easier workflow and improved functionality. However, you might have to update old syntax to account for the new workflow. See vignette('introduction-to-major-changes') for details!
 ## 
 ## Mplus is not installed. Use only package = 'mclust' when calling estimate_profiles().</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -127,42 +130,42 @@
 <pre><code>## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</a></code></pre></div>
 <pre><code>## tidyLPA analysis using mclust: 
 ## 
 ##  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-##  1     3       622.140 658.612 0.801   0.043    0.831    0.030 0.640
+##  1     3       643.055 679.527 0.732   0.812    0.906    0.200 0.530
 ##  BLRT_p
-##  0.010</code></pre>
+##  0.030</code></pre>
 <p>You can use Mplus simply by changing the package argument for <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)</a></code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
 <p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
 <p>We can plot the profiles by piping the output to <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</a></code></pre></div>
 </div>
 <div id="example-analysis-using-compare_solutions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-analysis-using-compare_solutions" class="anchor"></a>Example analysis using compare_solutions()</h2>
 <p>The function <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> compares the fit of several estimated models, with varying numbers of profiles and model specifications:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, 
-                      <span class="dt">variances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),
-                      <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, </a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">                      <span class="dt">variances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">                      <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</a></code></pre></div>
 </div>
 <div id="deprecated-functionality" class="section level2">
 <h2 class="hasAnchor">

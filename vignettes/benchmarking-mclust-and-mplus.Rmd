@@ -42,3 +42,31 @@ iris %>%
   get_fit() %>% 
   as.data.frame()
 ```
+
+# Using mclust
+
+## Many fits
+
+```{r}
+library(tidyLPA)
+library(dplyr)
+
+iris %>% 
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>% 
+  estimate_profiles(n_profiles = 2:4, models = c(1, 2, 3, 6)) %>% 
+  get_fit() %>% 
+  as.data.frame()
+```
+
+# Using MPlus
+
+##  Many fits
+
+```{r}
+iris %>% 
+  select(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) %>% 
+  estimate_profiles(n_profiles = 2:4, models = c(1, 2, 3, 6),
+                    package = "mplus") %>% 
+  get_fit() %>% 
+  as.data.frame()
+```
