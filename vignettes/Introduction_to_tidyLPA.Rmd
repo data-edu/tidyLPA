@@ -284,15 +284,17 @@ pisaUSA15[1:100, ] %>%
     plot_profiles()
 ```
 
-Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function `get_data()`
+Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function `get_data()`:
 
 ```{r, eval = TRUE}
 get_data(m3)
 ```
 
-## Conclusion
+If we wish to work with the fit statistics more programatically, we can use the `get_fit()` function:
 
-tidyLPA is actively being developed and this vignette will change as the package continues to be developed and used. The latest version of tidyLPA is available [here](https://github.com/data-edu/tidyLPA) on GitHub. More information is also available on the tidyLPA website [here](https://data-edu.github.io/tidyLPA/)
+```{r}
+get_fit(m3)
+```
 
 **Notes**
 
