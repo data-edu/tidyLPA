@@ -4,74 +4,74 @@ author: "Joshua M. Rosenberg"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteIndexEntry{Introduction to tidyLPA}
+  %\VignetteIndexEntry{Introduction to tidyLPA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   % \VignetteDepends{dplyr}
-  ---
+---
   
-  ```{r, echo = FALSE}
-  knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-  )
-  ```
-  
-  Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles, or groups, of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. 
-  
-  tidyLPA provides the functionality to carry out LPA in R. In particular, tidyLPA provides functionality to specify different models that determine whether and how different parameters (i.e., means, variances, and covariances) are estimated and to specify (and compare solutions for) the number of profiles to estimate.
-  
-  This introduction to tidyLPA vignette is an overview of LPA and the tidyLPA package. This vignette covers the following topics:
-  
-  1. Background on Latent Profile Analysis
-  1. Description of the goals of tidyLPA
-  1. Software approach to carrying out LPA: Interface to mclust (and to MPlus)
-  1. An example
-  1. More information on model specification
-  1. Other options
-  1. Conclusion
-  
-  # Background on Latent Profile Analysis (LPA)
-  
-  Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. Note that LPA works best with continuous variables (and, in some cases, ordinal variables), but is not appropriate for dichotomous (binary) variables.
-  
-  Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see [here](https://www.statmodel.com/examples/mixture.shtml)) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters. 
-  
-  Different *models* (or how or whether parameters are estimated) can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow. 
-  
-  # Description of the goals of tidyLPA
-  
-  The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used [mclust](https://www.stat.washington.edu/mclust/) package for Gaussian Mixture Modeling. This means that tidyLPA does not contain code to carry out LPA directly, but rather provides "wrappers" to mclust functions that make them easier to use. The primary contributions of tidyLPA are to:
-  
-  1. Provide functionality to specify models that are common to LPA
-  2. Make it easier to use the output in subsequent analysis through a ["tidy" interface](https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html), in that:
-  - input and output are both a `data.frame` (specifically its modified version, a `tibble`) that can be used to create plots or can be used in subsequent analyses
-  - uses the "pipe" operator, `%>%` to compose functions
-  - being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)
-  
-  ## Software approach to carrying out LPA: Interface to mclust (and to MPlus)
-  
-  In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the [R version of OpenMx](https://openmx.ssri.psu.edu/) can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use. 
-  
-  Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term "mixture component" has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified. 
-  
-  In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see [RMixMod](https://cran.r-project.org/package=Rmixmod), which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod, mclust, and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., "spherical, equal volume"), rather than in terms of whether and how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.
-  
-  This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This [R Markdown output](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html) contains information on how mclust and Mplus compare. The R Markdown to generate the output is also available [here](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd), and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Note that most of the output is identical, thoughthere are some differences in the hundreths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
-  
-  # Example
-  
-  ## Installation
-  
-  You can install tidyLPA from CRAN with:
-  
-  ```{r, eval = FALSE}
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>"
+)
+```
+
+Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles, or groups, of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. 
+
+tidyLPA provides the functionality to carry out LPA in R. In particular, tidyLPA provides functionality to specify different models that determine whether and how different parameters (i.e., means, variances, and covariances) are estimated and to specify (and compare solutions for) the number of profiles to estimate.
+
+This introduction to tidyLPA vignette is an overview of LPA and the tidyLPA package. This vignette covers the following topics:
+
+1. Background on Latent Profile Analysis
+1. Description of the goals of tidyLPA
+1. Software approach to carrying out LPA: Interface to mclust (and to MPlus)
+1. An example
+1. More information on model specification
+1. Other options
+1. Conclusion
+
+# Background on Latent Profile Analysis (LPA)
+
+Latent Profile Analysis (LPA) is a statistical modeling approach for estimating distinct profiles of variables. In the social sciences and in educational research, these profiles could represent, for example, how different youth experience dimensions of being engaged (i.e., cognitively, behaviorally, and affectively) at the same time. Note that LPA works best with continuous variables (and, in some cases, ordinal variables), but is not appropriate for dichotomous (binary) variables.
+
+Many analysts have carried out LPA using a latent variable modeling approach. From this approach, different parameters - means, variances, and covariances - are freely estimated across profiles, fixed to be the same across profiles, or constrained to be zero. The MPlus software is commonly used to estimate these models (see [here](https://www.statmodel.com/examples/mixture.shtml)) using the expectation-maximization (EM) algorithm to obtain the maximum likelihood estimates for the parameters. 
+
+Different *models* (or how or whether parameters are estimated) can be specified and estimated. While MPlus is widely-used (and powerful), it is costly, closed-source, and can be difficult to use, particularly with respect to interpreting or using the output of specified models as part of a reproducible workflow. 
+
+# Description of the goals of tidyLPA
+
+The goal of tidyLPA is to make it easy to carry out LPA using R. In particular, tidyLPA provides an interface to the powerful and widely-used [mclust](https://www.stat.washington.edu/mclust/) package for Gaussian Mixture Modeling. This means that tidyLPA does not contain code to carry out LPA directly, but rather provides "wrappers" to mclust functions that make them easier to use. The primary contributions of tidyLPA are to:
+
+1. Provide functionality to specify models that are common to LPA
+2. Make it easier to use the output in subsequent analysis through a ["tidy" interface](https://CRAN.R-project.org/package=tidyverse/vignettes/manifesto.html), in that:
+- input and output are both a `data.frame` (specifically its modified version, a `tibble`) that can be used to create plots or can be used in subsequent analyses
+- uses the "pipe" operator, `%>%` to compose functions
+- being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)
+
+## Software approach to carrying out LPA: Interface to mclust (and to MPlus)
+
+In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the [R version of OpenMx](https://openmx.ssri.psu.edu/) can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use. 
+
+Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term "mixture component" has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified. 
+
+In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see [RMixMod](https://cran.r-project.org/package=Rmixmod), which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod, mclust, and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., "spherical, equal volume"), rather than in terms of whether and how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.
+
+This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This [R Markdown output](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html) contains information on how mclust and Mplus compare. The R Markdown to generate the output is also available [here](https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd), and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Note that most of the output is identical, thoughthere are some differences in the hundreths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
+
+# Example
+
+## Installation
+
+You can install tidyLPA from CRAN with:
+
+```{r, eval = FALSE}
 install.packages("tidyLPA")
 ```
 
 You can also install the development version of tidyLPA from GitHub with:
 
-```{r, gh-installation, eval = FALSE}
+```{r gh-installation, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("data-edu/tidyLPA")
 ```
@@ -84,7 +84,7 @@ In these examples, we pass the results of one function to the next by *piping* (
 
 ```{r, message = F}
 library(tidyLPA)
-library(dplyr)
+library(tidyverse)
 ```
 
 ```{r}
@@ -120,27 +120,17 @@ pisaUSA15[1:100, ] %>%
     plot_profiles()
 ```
 
-Note that we can plot an array of solutions by passing a vector (for `n_profiles` or `models`) to `estimate_profiles()` before we plot the profiles:
+## Comparing a wide range of solutions
+
+The function `compare_solutions()` compares the fit of several estimated models, with varying numbers of profiles and model specifications:
 
 ```{r, eval = TRUE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
-    scale() %>%
-    estimate_profiles(n_profiles = 2:4) %>% 
-    plot_profiles()
-```
-
-## Comparing a wide range of solutions
-
-The function `compare_solutions()` compares the fit of several estimated models, with varying numbers of profiles and model specifications:
-
-```{r, eval = FALSE}
-pisaUSA15[1:100, ] %>%
-    single_imputation() %>%
     estimate_profiles(1:3, 
                       variances = c("equal", "varying"),
-                      covariances = c("zero", "varying")) %>% 
+                      covariances = c("zero", "varying")) %>%
     compare_solutions(statistics = c("AIC", "BIC"))
 ```
 
@@ -283,17 +273,27 @@ pisaUSA15[1:100, ] %>%
     estimate_profiles(4) %>%
     plot_profiles()
 ```
-
 Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function `get_data()`:
 
 ```{r, eval = TRUE}
 get_data(m3)
 ```
 
+We note that *if more than one model is fit at once, then the data is returned not in the (wide) format above, but in long form*, e.g.:
+
+```{r}
+m4 <- pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>% 
+    estimate_profiles(c(3, 4))
+
+get_data(m4)
+```
+
 If we wish to work with the fit statistics more programatically, we can use the `get_fit()` function:
 
 ```{r}
-get_fit(m3)
+get_fit(m4)
 ```
 
 **Notes**

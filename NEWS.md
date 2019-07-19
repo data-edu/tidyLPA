@@ -4,6 +4,7 @@
 * improve `get_data()` so it returns data in long form
 * change message on load
 * change vignette titles
+* fix bug where `single_imputation` fails if there is no missing data
 
 # tidyLPA 1.0.1
 
