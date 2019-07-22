@@ -408,7 +408,7 @@ print.tidyLPA <-
                        "n_min",
                        "n_max",
                        "BLRT_p"),
-             digits = 3,
+             digits = 2,
              na.print = "",
              ...) {
         fits <- get_fit(x)
@@ -450,7 +450,7 @@ print.tidyLPA <-
 #' @export
 print.tidyProfile <-
     function(x,
-             digits = 3,
+             digits = 2,
              na.print = "",
              ...) {
         dat <- get_fit(x)
