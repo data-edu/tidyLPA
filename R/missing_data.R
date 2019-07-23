@@ -90,7 +90,8 @@
 #' @rdname single_imputation
 #' @export
 single_imputation <- function(x, method = "imputeData"){
-    if(FALSE) missForest(iris)
+    if(all(complete.cases(x))) return(x)
+    if(FALSE) missForest(x)
     imputed <- invisible(switch(method,
                       "imputeData" = do.call(imputeData, list(data = x, verbose = FALSE)),
                       "missForest" = do.call(missForest::missForest, list(xmis = as.matrix(x)))$ximp,

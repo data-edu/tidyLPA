@@ -72,6 +72,23 @@ set.seed(42)
 knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 ```
 
+The questions on the Scimo per and post survey are from Ryan and Deci's "Learning Climate Questionnaire".  You can read a short description here:
+
+https://selfdeterminationtheory.org/pas-learning-climate/
+
+It is 15 questions, but they identify 6 which can be used as  short-form.  Questions 1, 2, 4, 7, 10, 14.  I have attached the PDF of the survey since you have to create an account on their website do download it.  Below are the question text, along with the variable name in the Scimo data:
+
+I feel that my instructor provides me choices and options.  t_choices1
+I feel understood by my instructor.  t_understand1
+My instructor conveyed confidence in my ability to do well in the course.  t_confidence1
+My instructor encouraged me to ask questions.  t_encourage1
+My instructor listens to how I would like to do things.  t_listen1
+My instructor tries to understand how I see things before suggesting a new way to do things.  t_triesunder1
+
+Also, is this tutorial going to be a journal paper, or something on github, etc. as a kind of manual for using LPA?  If so, and you think I would be a good fit, I would love to help out on it if you have author space!
+
+Let me know if you need anything else.
+
 <!-- tidyLPA Tutorial for AMPPS -->
 <!-- https://www.psychologicalscience.org/publications/ampps/ampps-submission-guidelines#NEMP -->
 <!-- Tutorials -->

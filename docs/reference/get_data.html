@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -86,7 +86,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Introduction_to_tidyLPA.html">UNKNOWN TITLE</a>
+      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+    </li>
+    <li>
+      <a href="../articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -147,7 +150,9 @@ ignored in this function.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble.</p>
+    <p>If one model is fit, the data is returned in wide format as a tibble.
+If more than one model is fit, the data is returned in long form. See the
+examples.</p>
     
     <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
 
@@ -162,11 +167,18 @@ of class 'tidyProfile'.</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='kw'>if</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/interactive'>interactive</a></span>()){
+ <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+ <span class='co'># the data is returned in wide form</span>
  <span class='no'>results</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
-   <span class='fu'>select</span>(<span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>) <span class='kw'>%&gt;%</span>
+   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>) <span class='kw'>%&gt;%</span>
    <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='fl'>3</span>)
  <span class='fu'>get_data</span>(<span class='no'>results</span>)
- <span class='fu'>get_data</span>(<span class='no'>results</span><span class='kw'>[[</span><span class='fl'>1</span>]])
+
+ <span class='co'># note that if more than one model is fit, the data is returned in long form</span>
+ <span class='no'>results1</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span> <span class='kw'>%&gt;%</span>
+   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>Sepal.Length</span>, <span class='no'>Sepal.Width</span>, <span class='no'>Petal.Length</span>, <span class='no'>Petal.Width</span>) <span class='kw'>%&gt;%</span>
+   <span class='fu'><a href='estimate_profiles.html'>estimate_profiles</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>4</span>))
+ <span class='fu'>get_data</span>(<span class='no'>results1</span>)
  }
 <span class='co'># }</span></pre>
   </div>

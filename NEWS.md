@@ -1,3 +1,13 @@
+# tidyLPA 1.0.3
+
+* Fix bug when mclust model does not converge
+* improve `get_data()` so it returns data in long form
+* change message on load
+* change vignette titles
+* fix bug where `single_imputation` fails if there is no missing data
+* added details to `estimate_profiles()` on what models cannot be fit with mclust
+* added results of benchmarking as a new vignette
+
 # tidyLPA 1.0.1
 
 * Important bug fix for calculation of prob_min and prob_max for Mclust

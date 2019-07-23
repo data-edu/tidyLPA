@@ -72,7 +72,7 @@ imputeData (see examples).
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -95,7 +95,10 @@ imputeData (see examples).
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Introduction_to_tidyLPA.html">UNKNOWN TITLE</a>
+      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+    </li>
+    <li>
+      <a href="../articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -207,7 +210,7 @@ simulation studies indicate that this method is preferable to mclust's
 <span class='co'># Plot shows slight advantage for missForest</span>
 <span class='no'>plotdat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/vector'>as.vector</a></span>(<span class='no'>simulation</span>), <span class='kw'>model</span> <span class='kw'>=</span>
                       <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mf"</span>, <span class='st'>"im"</span>), <span class='no'>n</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>plotdat</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>accuracy</span>, <span class='kw'>colour</span> <span class='kw'>=</span> <span class='no'>model</span>))+<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></span>()
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>plotdat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>accuracy</span>, <span class='kw'>colour</span> <span class='kw'>=</span> <span class='no'>model</span>))+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>geom_density</a></span>()
 
 <span class='co'># Simulation for real data (i.e., unknown whether assumptions are met)</span>
 <span class='no'>simulation</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>replicate</a></span>(<span class='fl'>100</span>, {
@@ -232,7 +235,7 @@ simulation studies indicate that this method is preferable to mclust's
 <span class='co'># Plot shows slight advantage for missForest</span>
 <span class='no'>plotdat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/vector'>as.vector</a></span>(<span class='no'>tmp</span>),
                       <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mf"</span>, <span class='st'>"im"</span>), <span class='no'>n</span>))
-<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>plotdat</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>accuracy</span>, <span class='kw'>colour</span> <span class='kw'>=</span> <span class='no'>model</span>))+<span class='fu'><a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></span>()
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>plotdat</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>accuracy</span>, <span class='kw'>colour</span> <span class='kw'>=</span> <span class='no'>model</span>))+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density.html'>geom_density</a></span>()
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

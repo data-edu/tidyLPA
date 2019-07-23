@@ -64,7 +64,7 @@ package mclust." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -87,7 +87,10 @@ package mclust." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Introduction_to_tidyLPA.html">UNKNOWN TITLE</a>
+      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+    </li>
+    <li>
+      <a href="../articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
     </li>
     <li>
       <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
@@ -125,7 +128,7 @@ package <code><a href='https://www.rdocumentation.org/packages/mclust/topics/Mcl
     
     </div>
 
-    <pre class="usage"><span class='fu'>estimate_profiles_mclust</span>(<span class='no'>df</span>, <span class='no'>n_profiles</span>, <span class='no'>model_numbers</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_profiles_mclust</span>(<span class='no'>df</span>, <span class='no'>n_profiles</span>, <span class='no'>model_numbers</span>, <span class='no'>select_vars</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,6 +148,12 @@ analysis with that many mixture components.</p></td>
       <td><p>Numeric vector. Numbers of the models to be estimated.
 See <code><a href='estimate_profiles.html'>estimate_profiles</a></code> for a description of the models available
 in tidyLPA.</p></td>
+    </tr>
+    <tr>
+      <th>select_vars</th>
+      <td><p>Character. Optional vector of variable names in <code>df</code>,
+to be used for model estimation. Defaults to <code>NULL</code>, which means all
+variables in <code>df</code> are used.</p></td>
     </tr>
     <tr>
       <th>...</th>

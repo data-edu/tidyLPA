@@ -55,8 +55,8 @@ most common requirements. These are:
 \item Equal variances and covariances fixed to 0
 \item Varying variances and covariances fixed to 0
 \item Equal variances and equal covariances
-\item Varying variances and equal covariances
-\item Equal variances and varying covariances
+\item Varying variances and equal covariances (not able to be fit w/ mclust)
+\item Equal variances and varying covariances (not able to be fit w/ mclust)
 \item Varying variances and varying covariances
 }
 
@@ -84,7 +84,7 @@ iris \%>\%
   estimate_profiles(n_profiles = 1:4, models = 1:3)
 
 # Example 3:
-iris_subset \%>\%
+iris_sample \%>\%
   subset(select = c("Sepal.Length", "Sepal.Width",
     "Petal.Length")) \%>\%
   estimate_profiles(n_profiles = 1:4, variances = c("equal", "varying"),

@@ -2,7 +2,7 @@ Type: Package
 Package: tidyLPA
 Title: Easily Carry Out Latent Profile Analysis (LPA) Using
     Open-Source or Commercial Software
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: 
     c(person(given = c("Joshua", "M"),
              family = "Rosenberg",
@@ -55,8 +55,7 @@ Suggests:
     rmarkdown,
     testthat,
     tidyverse
-VignetteBuilder: 
-    knitr
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
