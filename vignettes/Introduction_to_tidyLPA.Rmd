@@ -296,6 +296,25 @@ If we wish to work with the fit statistics more programatically, we can use the 
 get_fit(m4)
 ```
 
+Descriptions of these fit indices follows:
+
+*LogLik: Log-likelihood of the data, given the model.
+*AIC: Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters.
+*AWE: Approximate weight of evidence; combines information on model fit and on classification errors (Celeux et al., 1997)
+*BIC: Bayesian information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size.
+*CAIC: Consistent Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size.
+*CLC: Classification Likelihood Criterion; based on -2 log-likelihood, and penalized by the entropy (Biernacki, 1997).
+*KIC: Kullback information criterion; based on -2 log-likelihood, and penalized by 3 times the number of parameters -1 (Cavanaugh, 1999).
+*SABIC: Sample size-adjusted bayesian information criterion (Sclove, 1987).
+*ICL: Integrated completed likelihood (Biernacki, Celeux, & Govaert, 2000).
+*Entropy: A measure of classification uncertainty, reverse-coded so that 1 reflects complete certainty of classification, and 0 complete uncertainty (see Celeux & Soromenho, 1996).
+*Prob. Min.: Minimum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The minimum should be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to; see Jung & Wickrama, 2008).
+*Prob. Max.: Maximum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The maximum should also be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to).
+*N Min.: Proportion of the sample assigned to the smallest class (based on most likely class membership).
+*N Max.: Proportion of the sample assigned to the largest class (based on most likely class membership).
+*BLRT: bootstrapped likelihood test
+*BLRT p-value: p-value for the bootstrapped likelihood ratio test
+
 **Notes**
 
 This is related to [prcr](https://github.com/jrosen48/prcr), for use of two-step cluster analysis to carry out person-oriented analyses.

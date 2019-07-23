@@ -82,7 +82,7 @@
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2019-07-19</h4>
+            <h4 class="date">2019-07-23</h4>
       
       
       <div class="hidden name"><code>Introduction_to_tidyLPA.Rmd</code></div>
@@ -158,9 +158,9 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       635.270 671.742 0.636   0.796    0.846    0.210 0.500</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       626.167 662.640 0.699   0.847    0.879    0.210 0.490</span></a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.050</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.059</span></a></code></pre></div>
 </div>
 <div id="mplus" class="section level2">
 <h2 class="hasAnchor">
@@ -192,26 +192,20 @@
 <a class="sourceLine" id="cb7-5" data-line-number="5">                      <span class="dt">variances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),</a>
 <a class="sourceLine" id="cb7-6" data-line-number="6">                      <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Warning: Mclust could not estimate model 6 with 3 classes.</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; Warning: </span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_6_class_3</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; Warning: </span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; One or more analyses resulted in warnings! Examine these analyses carefully: model_6_class_3</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; Compare tidyLPA solutions:</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  Model Classes AIC      BIC      Warnings</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt;  1     1       673.8466 689.4776         </span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;  1     2       634.5180 660.5697         </span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;  1     3       632.1342 668.6066         </span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  6     1       619.0426 642.4891         </span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;  6     2       618.0502 667.5484         </span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt;  6     3                         Warning </span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; Best model according to AIC is Model 6 with 2 classes.</span></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; An analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul &amp; Erisoglu, 2017), suggests the best solution is Model 6 with 1 classes.</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Compare tidyLPA solutions:</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  Model Classes AIC     BIC    </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  1     1       697.678 713.309</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  1     2       652.527 678.579</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  1     3       640.010 676.482</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  6     1       628.288 651.735</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  6     2       636.972 686.470</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  6     3       621.739 697.289</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; Best model according to AIC is Model 6 with 3 classes.</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; An analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul &amp; Erisoglu, 2017), suggests the best solution is Model 6 with 1 classes.</span></a></code></pre></div>
 </div>
 </div>
 <div id="more-information-on-model-specifications" class="section level1">
@@ -249,7 +243,7 @@
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
 <a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6     3       583.133 656.889 0.860   0.870    0.985    0.160 0.617</span></a>
 <a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  0.109</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  0.059</span></a></code></pre></div>
 <p>In general, the approach to choosing the model is similar to choosing the number of profiles, requiring <strong>deciding on the basis of evidence from multiple sources</strong>, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by <a href="http://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor and colleagues (2007)</a> has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated.</p>
 <p>Note that <em>p</em> represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.</p>
 <div id="equal-variances-and-covariances-fixed-to-0-model-1" class="section level3">
@@ -325,26 +319,26 @@
 <a class="sourceLine" id="cb9-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw"><a href="../reference/get_estimates.html">get_estimates</a></span>(m3)</a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; # A tibble: 18 x 8</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    Category  Parameter      Estimate     se        p Class Model Classes</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1 Means     broad_interest    3.09  0.174  1.31e-70     1     1       3</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2 Means     enjoyment         3.51  0.178  1.45e-86     1     1       3</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3 Means     self_efficacy     1.58  0.163  2.72e-22     1     1       3</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4 Variances broad_interest    0.489 0.104  2.88e- 6     1     1       3</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5 Variances enjoyment         0.230 0.0514 7.28e- 6     1     1       3</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0454 6.38e- 8     1     1       3</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7 Means     broad_interest    1.14  0.430  7.96e- 3     2     1       3</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8 Means     enjoyment         1.14  0.394  3.73e- 3     2     1       3</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9 Means     self_efficacy     3.39  0.472  6.18e-13     2     1       3</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10 Variances broad_interest    0.489 0.104  2.88e- 6     2     1       3</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 11 Variances enjoyment         0.230 0.0514 7.28e- 6     2     1       3</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0454 6.38e- 8     2     1       3</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 13 Means     broad_interest    2.27  0.187  7.64e-34     3     1       3</span></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; 14 Means     enjoyment         2.49  0.206  1.84e-33     3     1       3</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; 15 Means     self_efficacy     2.26  0.131  2.24e-66     3     1       3</span></a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; 16 Variances broad_interest    0.489 0.104  2.88e- 6     3     1       3</span></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; 17 Variances enjoyment         0.230 0.0514 7.28e- 6     3     1       3</span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0454 6.38e- 8     3     1       3</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    Category  Parameter      Estimate     se         p Class Model Classes</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1 Means     broad_interest    3.09  0.223  1.08e- 43     1     1       3</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2 Means     enjoyment         3.51  0.185  2.10e- 80     1     1       3</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3 Means     self_efficacy     1.58  0.191  1.33e- 16     1     1       3</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4 Variances broad_interest    0.489 0.116  2.38e-  5     1     1       3</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5 Variances enjoyment         0.230 0.0539 1.91e-  5     1     1       3</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0482 3.40e-  7     1     1       3</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7 Means     broad_interest    1.14  0.384  2.98e-  3     2     1       3</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8 Means     enjoyment         1.14  0.331  5.67e-  4     2     1       3</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9 Means     self_efficacy     3.39  0.566  2.03e-  9     2     1       3</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10 Variances broad_interest    0.489 0.116  2.38e-  5     2     1       3</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 11 Variances enjoyment         0.230 0.0539 1.91e-  5     2     1       3</span></a>
+<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0482 3.40e-  7     2     1       3</span></a>
+<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 13 Means     broad_interest    2.27  0.189  4.57e- 33     3     1       3</span></a>
+<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; 14 Means     enjoyment         2.49  0.162  5.64e- 53     3     1       3</span></a>
+<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; 15 Means     self_efficacy     2.26  0.0993 1.70e-114     3     1       3</span></a>
+<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; 16 Variances broad_interest    0.489 0.116  2.38e-  5     3     1       3</span></a>
+<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; 17 Variances enjoyment         0.230 0.0539 1.91e-  5     3     1       3</span></a>
+<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0482 3.40e-  7     3     1       3</span></a></code></pre></div>
 <p>Other options include how the raw data is processed.</p>
 <p>We can center or scale the data before estimating the profiles with the <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
@@ -405,10 +399,12 @@
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 18</span></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;   Model Classes LogLik   AIC   AWE   BIC  CAIC   CLC   KIC SABIC   ICL</span></a>
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -304.  637.  778.  673.  687.  610.  654.  629. -696.</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 2     1       4  -303.  642.  824.  689.  707.  607.  663.  632. -731.</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -306.  641.  782.  677.  691.  615.  658.  633. -701.</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 2     1       4  -297.  631.  813.  678.  696.  597.  652.  621. -696.</span></a>
 <a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; # … with 7 more variables: Entropy &lt;dbl&gt;, prob_min &lt;dbl&gt;, prob_max &lt;dbl&gt;,</span></a>
 <a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; #   n_min &lt;dbl&gt;, n_max &lt;dbl&gt;, BLRT_val &lt;dbl&gt;, BLRT_p &lt;dbl&gt;</span></a></code></pre></div>
+<p>Descriptions of these fit indices follows:</p>
+<p><em>LogLik: Log-likelihood of the data, given the model. </em>AIC: Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters. <em>AWE: Approximate weight of evidence; combines information on model fit and on classification errors (Celeux et al., 1997) </em>BIC: Bayesian information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size. <em>CAIC: Consistent Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size. </em>CLC: Classification Likelihood Criterion; based on -2 log-likelihood, and penalized by the entropy (Biernacki, 1997). <em>KIC: Kullback information criterion; based on -2 log-likelihood, and penalized by 3 times the number of parameters -1 (Cavanaugh, 1999). </em>SABIC: Sample size-adjusted bayesian information criterion (Sclove, 1987). <em>ICL: Integrated completed likelihood (Biernacki, Celeux, &amp; Govaert, 2000). </em>Entropy: A measure of classification uncertainty, reverse-coded so that 1 reflects complete certainty of classification, and 0 complete uncertainty (see Celeux &amp; Soromenho, 1996). <em>Prob. Min.: Minimum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The minimum should be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to; see Jung &amp; Wickrama, 2008). </em>Prob. Max.: Maximum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The maximum should also be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to). <em>N Min.: Proportion of the sample assigned to the smallest class (based on most likely class membership). </em>N Max.: Proportion of the sample assigned to the largest class (based on most likely class membership). <em>BLRT: bootstrapped likelihood test </em>BLRT p-value: p-value for the bootstrapped likelihood ratio test</p>
 <p><strong>Notes</strong></p>
 <p>This is related to <a href="https://github.com/jrosen48/prcr">prcr</a>, for use of two-step cluster analysis to carry out person-oriented analyses.</p>
 <p>To contribute, file issues via GitHub <a href="https://github.com/data-edu/tidyLPA/issues">here</a> or get in touch <a href="mailto:jrosen@msu.edu">via email</a> or <a href="https://twitter.com/jrosenberg6432">Twitter</a>.</p>
