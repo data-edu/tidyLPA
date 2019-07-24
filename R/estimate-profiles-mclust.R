@@ -32,13 +32,25 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, select_vars,
     }
     run_models <- expand.grid(prof = n_profiles, mod = model_numbers)
 
-
+#browser()
     boot_blrt <- lapply(boot_model_names, function(mod_name){
-        mclustBootstrapLRT(full_data,
-                           modelName = mod_name,
-                           nboot = ifelse(methods::hasArg("nboot"), arg_list$nboot, 100),
-                           maxG = max(n_profiles),
-                           verbose = FALSE)
+        # mclustBootstrapLRT(full_data,
+        #                    modelName = mod_name,
+        #                    nboot = ifelse(methods::hasArg("nboot"), arg_list$nboot, 100),
+        #                    maxG = max(n_profiles),
+        #                    verbose = FALSE)
+
+        tryCatch({
+            mclustBootstrapLRT(full_data,
+                               modelName = mod_name,
+                               nboot = ifelse(methods::hasArg("nboot"), arg_list$nboot, 100),
+                               maxG = max(n_profiles),
+                               verbose = FALSE)
+        }, error = function(e) {
+            return(list(obs = rep(NA, max(n_profiles)),
+                        p.value = rep(NA, max(n_profiles))))
+        })
+
     })
 
 
