@@ -97,7 +97,7 @@
 <div id="rationale-for-the-update" class="section level2">
 <h2 class="hasAnchor">
 <a href="#rationale-for-the-update" class="anchor"></a>Rationale for the update</h2>
-<p><strong>tidyLPA</strong> has received a major update. Your old function calls might not work as expected anymore. The new version of tidyLPA aims to make Latent Profile Analysis (LPA) even more accessible to a broad audience, by means of a user-friendly interface, and to fit more seemlessly into a ‘tidyverse’ workflow.</p>
+<p><strong>tidyLPA</strong> has received a major update. Your old function calls might not work as expected anymore. The new version of tidyLPA aims to make Latent Profile Analysis (LPA) even more accessible to a broad audience, by means of a user-friendly interface, and to fit more seamlessly into a ‘tidyverse’ workflow.</p>
 <p>As before, <strong>tidyLPA</strong> offers a parallel workflow for the open-source package Mclust, and the commercial package <em>Mplus</em>.</p>
 <p>These changes necessitated some simplification of the existing functions. Advanced options are still available, but require slightly more work on the user’s part. The upside of this is that, for most users, the tidyLPA workflow and documentation are substantially simplified.</p>
 </div>
@@ -118,7 +118,9 @@
 <a href="#example-analysis-using-estimate_profiles" class="anchor"></a>Example analysis using estimate_profiles()</h2>
 <p>A full analysis might look like the following:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)</a></code></pre></div>
-<pre><code>## tidyLPA is intended for academic use. We do not make any money on this and only ask that you please cite this in publications when you use the results. You can use the function citation('tidyLPA') to create a citation.Mplus is not installed. Use only package = 'mclust' when calling estimate_profiles().</code></pre>
+<pre><code>## tidyLPA has received a major update, with a much easier workflow and improved functionality. However, you might have to update old syntax to account for the new workflow. See vignette('introduction-to-major-changes') for details!
+## 
+## Mplus is not installed. Use only package = 'mclust' when calling estimate_profiles().</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
@@ -134,8 +136,10 @@
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</a></code></pre></div>
 <pre><code>## tidyLPA analysis using mclust: 
 ## 
-##  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
-##  1     3       634.37 670.84 0.67    0.81     0.89     0.20  0.47  0.09</code></pre>
+##  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
+##  1     3       622.864 659.336 0.798   0.834    0.951    0.030 0.640
+##  BLRT_p
+##  0.010</code></pre>
 <p>You can use Mplus simply by changing the package argument for <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
