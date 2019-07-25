@@ -4,7 +4,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
 [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
 [![Build
 Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
@@ -74,8 +74,10 @@ pisaUSA15[1:100, ] %>%
     estimate_profiles(3)
 #> tidyLPA analysis using mclust: 
 #> 
-#>  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
-#>  1     3       621.32 657.80 0.82    0.85     0.96     0.03  0.69  0.01
+#>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
+#>  1     3       628.157 664.629 0.664   0.749    0.864    0.210 0.540
+#>  BLRT_p
+#>  0.040
 ```
 
 ### Mplus
@@ -90,8 +92,10 @@ pisaUSA15[1:100, ] %>%
     estimate_profiles(3, package = "MplusAutomation")
 #> tidyLPA analysis using mplus: 
 #> 
-#>  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
-#>  1     3       628.86 665.33 0.80    0.83     0.96     0.03  0.66  0.01
+#>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
+#>  1     3       638.886 675.358 0.783   0.823    0.942    0.030 0.660
+#>  BLRT_p
+#>  0.020
 ```
 
 A simple summary of the analysis is printed to the console (and its

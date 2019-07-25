@@ -128,9 +128,9 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       630.293 666.765 0.822   0.850    0.958    0.030 0.680</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       628.690 665.163 0.808   0.842    0.952    0.030 0.670</span></a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.020</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.010</span></a></code></pre></div>
 </div>
 <div id="mplus" class="section level3">
 <h3 class="hasAnchor">
@@ -143,7 +143,7 @@
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mplus: </span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  1     3       628.220 664.692 0.804   0.831    0.953    0.040 0.650</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  1     3       627.312 663.784 0.775   0.848    0.923    0.030 0.590</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;  0.000</span></a></code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
@@ -221,7 +221,7 @@
 <a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
 <a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
 <a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     2</span></a>
 <a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
 <a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
 <a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
@@ -240,7 +240,7 @@
 <a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
 <a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
 <a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     2</span></a>
 <a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
 <a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
 <a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
@@ -325,7 +325,7 @@
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=tidyLPA"><img src="https://www.r-pkg.org/badges/version/tidyLPA" alt="CRAN status"></a></li>
 <li><a href="https://cran.r-project.org/package=tidyLPA"><img src="https://cranlogs.r-pkg.org/badges/tidyLPA"></a></li>
-<li><a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a></li>
 <li><a href="https://doi.org/10.21105/joss.00978"><img src="http://joss.theoj.org/papers/10.21105/joss.00978/status.svg" alt="DOI"></a></li>
 <li><a href="https://travis-ci.org/data-edu/tidyLPA"><img src="https://travis-ci.org/data-edu/tidyLPA.svg?branch=master" alt="Build Status"></a></li>
 </ul>
