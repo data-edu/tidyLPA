@@ -74,10 +74,8 @@ pisaUSA15[1:100, ] %>%
     estimate_profiles(3)
 #> tidyLPA analysis using mclust: 
 #> 
-#>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       633.029 669.501 0.810   0.852    0.951    0.040 0.650
-#>  BLRT_p
-#>  0.020
+#>  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
+#>  1     3       621.32 657.80 0.82    0.85     0.96     0.03  0.69  0.01
 ```
 
 ### Mplus
@@ -92,10 +90,8 @@ pisaUSA15[1:100, ] %>%
     estimate_profiles(3, package = "MplusAutomation")
 #> tidyLPA analysis using mplus: 
 #> 
-#>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       631.010 667.482 0.806   0.835    0.955    0.040 0.660
-#>  BLRT_p
-#>  0.000
+#>  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
+#>  1     3       628.86 665.33 0.80    0.83     0.96     0.03  0.66  0.01
 ```
 
 A simple summary of the analysis is printed to the console (and its
@@ -188,39 +184,56 @@ output of an analysis.
 m <- pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
-    estimate_profiles(3, package = "MplusAutomation")
+    estimate_profiles(3:4)
 
 get_data(m)
-#> # A tibble: 300 x 9
+#> # A tibble: 700 x 9
 #>    model_number classes_number broad_interest enjoyment self_efficacy Class
 #>           <dbl>          <int>          <dbl>     <dbl>         <dbl> <dbl>
-#>  1            1              3            3.8       4            1        3
-#>  2            1              3            3         3            2.75     2
-#>  3            1              3            1.8       2.8          3.38     2
-#>  4            1              3            1.4       1            2.75     1
-#>  5            1              3            1.8       2.2          2        2
-#>  6            1              3            1.6       1.6          1.88     2
-#>  7            1              3            3         3.8          2.25     3
-#>  8            1              3            2.6       2.2          2        2
-#>  9            1              3            1         2.8          2.62     2
-#> 10            1              3            2.2       2            1.75     2
-#> # … with 290 more rows, and 3 more variables: Class_prob <int>,
+#>  1            1              3            3.8       4            1        1
+#>  2            1              3            3         3            2.75     3
+#>  3            1              3            1.8       2.8          3.38     3
+#>  4            1              3            1.4       1            2.75     2
+#>  5            1              3            1.8       2.2          2        3
+#>  6            1              3            1.6       1.6          1.88     3
+#>  7            1              3            3         3.8          2.25     1
+#>  8            1              3            2.6       2.2          2        3
+#>  9            1              3            1         2.8          2.62     3
+#> 10            1              3            2.2       2            1.75     3
+#> # … with 690 more rows, and 3 more variables: Class_prob <int>,
 #> #   Probability <dbl>, id <int>
 ```
 
-`get_fit()` returns the fit statistics:
+We note that `get_data()` returns data in wide format when applied to an
+object of class tidyProfile (one element of a tidyLPA object), or when
+applied to a tidyLPA object of length one. `get_data()` returns long
+format when applied to a tidyLPA object containing multiple tidyProfile
+analyses (because then the wide format does not make sense).
+
+To transform data in the wide format into the long format, the
+`gather()` function from the **tidyr** package can be used, e.g.:
 
 ``` r
-get_fit(m)
-#> # A tibble: 1 x 18
-#>   Model Classes LogLik   AIC   AWE   BIC  CAIC   CLC   KIC SABIC   ICL
-#>   <dbl>   <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1     1       3  -298.  625.  766.  661.  675.  598.  642.  617. -681.
-#> # … with 7 more variables: Entropy <dbl>, prob_min <dbl>, prob_max <dbl>,
-#> #   n_min <dbl>, n_max <dbl>, BLRT_val <dbl>, BLRT_p <dbl>
+get_data(m) %>% 
+    tidyr::gather(Class_prob, Probability, contains("CPROB"))
+#> # A tibble: 700 x 9
+#>    model_number classes_number broad_interest enjoyment self_efficacy Class
+#>           <dbl>          <int>          <dbl>     <dbl>         <dbl> <dbl>
+#>  1            1              3            3.8       4            1        1
+#>  2            1              3            3         3            2.75     3
+#>  3            1              3            1.8       2.8          3.38     3
+#>  4            1              3            1.4       1            2.75     2
+#>  5            1              3            1.8       2.2          2        3
+#>  6            1              3            1.6       1.6          1.88     3
+#>  7            1              3            3         3.8          2.25     1
+#>  8            1              3            2.6       2.2          2        3
+#>  9            1              3            1         2.8          2.62     3
+#> 10            1              3            2.2       2            1.75     3
+#> # … with 690 more rows, and 3 more variables: Class_prob <int>,
+#> #   Probability <dbl>, id <int>
 ```
 
-## More information
+# Learn more
 
 To learn more:
 
@@ -277,5 +290,3 @@ Foundation under *Grant No.: DRL\#1661064*. Any opinions, findings,
 conclusions, or recommendations expressed in this material are those of
 the authors and do not reflect the views of the National Science
 Foundation.
-adding a line
-adding a line line

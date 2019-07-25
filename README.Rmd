@@ -147,18 +147,21 @@ A few helper functions are available to make it easier to work with the output o
 m <- pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
-    estimate_profiles(3, package = "MplusAutomation")
+    estimate_profiles(3:4)
 
 get_data(m)
 ```
 
-`get_fit()` returns the fit statistics:
+We note that `get_data()` returns data in wide format when applied to an object of class tidyProfile (one element of a tidyLPA object), or when applied to a tidyLPA object of length one. `get_data()` returns long format when applied to a tidyLPA object containing multiple tidyProfile analyses (because then the wide format does not make sense).
+
+To transform data in the wide format into the long format, the `gather()` function from the **tidyr** package can be used, e.g.:
 
 ```{r}
-get_fit(m)
+get_data(m) %>% 
+    tidyr::gather(Class_prob, Probability, contains("CPROB"))
 ```
 
-## More information
+# Learn more
 
 To learn more:
 
