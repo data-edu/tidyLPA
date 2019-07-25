@@ -134,7 +134,7 @@ imputeData (see examples).
     <p>This function accommodates several methods for single imputation
 of data. Currently, the following methods are defined:</p><ul>
 <li><p>"imputeData"Applies the mclust native imputation function
-<code><a href='https://www.rdocumentation.org/packages/mclust/topics/imputeData'>imputeData</a></code></p></li>
+<code><a href='https://mclust-org.github.io/mclust/reference/imputeData.html'>imputeData</a></code></p></li>
 <li><p>"missForest"Applies non-parameteric, random-forest based data
 imputation using <code><a href='https://www.rdocumentation.org/packages/missForest/topics/missForest'>missForest</a></code>. Radom forests can
 accommodate any complex interactions and non-linear relations in the data. My
@@ -193,9 +193,9 @@ simulation studies indicate that this method is preferable to mclust's
     <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/missForest/topics/prodNA'>prodNA</a></span>(<span class='no'>dat</span>)
 
     <span class='no'>d_mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/missForest/topics/missForest'>missForest</a></span>(<span class='no'>d</span>)$<span class='no'>ximp</span>
-    <span class='no'>m_mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/mclust/topics/Mclust'>Mclust</a></span>(<span class='no'>d_mf</span>, <span class='kw'>G</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"EEI"</span>)
-    <span class='no'>d_im</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/mclust/topics/imputeData'>imputeData</a></span>(<span class='no'>d</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-    <span class='no'>m_im</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/mclust/topics/Mclust'>Mclust</a></span>(<span class='no'>d_im</span>, <span class='kw'>G</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"EEI"</span>)
+    <span class='no'>m_mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mclust-org.github.io/mclust/reference/Mclust.html'>Mclust</a></span>(<span class='no'>d_mf</span>, <span class='kw'>G</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"EEI"</span>)
+    <span class='no'>d_im</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mclust-org.github.io/mclust/reference/imputeData.html'>imputeData</a></span>(<span class='no'>d</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <span class='no'>m_im</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mclust-org.github.io/mclust/reference/Mclust.html'>Mclust</a></span>(<span class='no'>d_im</span>, <span class='kw'>G</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"EEI"</span>)
 
     <span class='no'>class_tabl_mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/prop.table'>prop.table</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>class</span>, <span class='no'>m_mf</span>$<span class='no'>classification</span>)),
                           <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)[<span class='fl'>1</span>:<span class='fl'>3</span>]
@@ -217,9 +217,9 @@ simulation studies indicate that this method is preferable to mclust's
     <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/missForest/topics/prodNA'>prodNA</a></span>(<span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>])
 
     <span class='no'>d_mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/missForest/topics/missForest'>missForest</a></span>(<span class='no'>d</span>)$<span class='no'>ximp</span>
-    <span class='no'>m_mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/mclust/topics/Mclust'>Mclust</a></span>(<span class='no'>d_mf</span>, <span class='kw'>G</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"EEI"</span>)
-    <span class='no'>d_im</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/mclust/topics/imputeData'>imputeData</a></span>(<span class='no'>d</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-    <span class='no'>m_im</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/mclust/topics/Mclust'>Mclust</a></span>(<span class='no'>d_im</span>, <span class='kw'>G</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"EEI"</span>)
+    <span class='no'>m_mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mclust-org.github.io/mclust/reference/Mclust.html'>Mclust</a></span>(<span class='no'>d_mf</span>, <span class='kw'>G</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"EEI"</span>)
+    <span class='no'>d_im</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mclust-org.github.io/mclust/reference/imputeData.html'>imputeData</a></span>(<span class='no'>d</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <span class='no'>m_im</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://mclust-org.github.io/mclust/reference/Mclust.html'>Mclust</a></span>(<span class='no'>d_im</span>, <span class='kw'>G</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='st'>"EEI"</span>)
 
     <span class='no'>class_tabl_mf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/prop.table'>prop.table</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/table'>table</a></span>(<span class='no'>iris</span>$<span class='no'>Species</span>,
                           <span class='no'>m_mf</span>$<span class='no'>classification</span>)), <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)[<span class='fl'>1</span>:<span class='fl'>3</span>]

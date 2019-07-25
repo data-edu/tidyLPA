@@ -82,7 +82,7 @@
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2019-07-23</h4>
+            <h4 class="date">2019-07-25</h4>
       
       
       <div class="hidden name"><code>Introduction_to_tidyLPA.Rmd</code></div>
@@ -157,10 +157,8 @@
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       634.599 671.072 0.785   0.822    0.948    0.030 0.640</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.010</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       625.82 662.30 0.80    0.83     0.95     0.03  0.65  0.03</span></a></code></pre></div>
 </div>
 <div id="mplus" class="section level2">
 <h2 class="hasAnchor">
@@ -195,14 +193,14 @@
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Compare tidyLPA solutions:</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  Model Classes AIC     BIC    </span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  1     1       684.449 700.080</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  1     2       644.795 670.846</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  1     3       638.793 675.265</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  6     1       624.350 647.797</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  6     2       631.730 681.228</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  6     3       622.699 698.248</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  1     1       674.615 690.246</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  1     2       644.974 671.025</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  1     3       634.974 671.446</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  6     1       628.736 652.183</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  6     2       636.121 685.619</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  6     3       630.297 705.847</span></a>
 <a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; Best model according to AIC is Model 6 with 3 classes.</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; Best model according to AIC is Model 6 with 1 classes.</span></a>
 <a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span></a>
 <a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; An analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul &amp; Erisoglu, 2017), suggests the best solution is Model 6 with 1 classes.</span></a></code></pre></div>
@@ -237,13 +235,11 @@
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, </a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">                      <span class="dt">variances =</span> <span class="st">"varying"</span>,</a>
 <a class="sourceLine" id="cb8-5" data-line-number="5">                      <span class="dt">covariances =</span> <span class="st">"varying"</span>)</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a>
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6     3       583.133 656.889 0.860   0.870    0.985    0.160 0.617</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  0.069</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6     3       583.13 656.89 0.86    0.87     0.98     0.16  0.62  0.07</span></a></code></pre></div>
 <p>In general, the approach to choosing the model is similar to choosing the number of profiles, requiring <strong>deciding on the basis of evidence from multiple sources</strong>, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by <a href="http://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor and colleagues (2007)</a> has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated.</p>
 <p>Note that <em>p</em> represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.</p>
 <div id="equal-variances-and-covariances-fixed-to-0-model-1" class="section level3">
@@ -315,30 +311,30 @@
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">m3 &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw"><a href="../reference/get_estimates.html">get_estimates</a></span>(m3)</a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; # A tibble: 18 x 8</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    Category  Parameter      Estimate     se         p Class Model Classes</span></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1 Means     broad_interest    3.09  0.183  6.21e- 64     1     1       3</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2 Means     enjoyment         3.51  0.159  2.34e-108     1     1       3</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3 Means     self_efficacy     1.58  0.123  6.39e- 38     1     1       3</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4 Variances broad_interest    0.489 0.108  5.94e-  6     1     1       3</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5 Variances enjoyment         0.230 0.0545 2.36e-  5     1     1       3</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0343 8.54e- 13     1     1       3</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7 Means     broad_interest    1.14  0.418  6.34e-  3     2     1       3</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8 Means     enjoyment         1.14  0.346  9.79e-  4     2     1       3</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9 Means     self_efficacy     3.39  0.650  1.76e-  7     2     1       3</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10 Variances broad_interest    0.489 0.108  5.94e-  6     2     1       3</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 11 Variances enjoyment         0.230 0.0545 2.36e-  5     2     1       3</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0343 8.54e- 13     2     1       3</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 13 Means     broad_interest    2.27  0.188  1.74e- 33     3     1       3</span></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; 14 Means     enjoyment         2.49  0.158  8.85e- 56     3     1       3</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; 15 Means     self_efficacy     2.26  0.0950 5.80e-125     3     1       3</span></a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; 16 Variances broad_interest    0.489 0.108  5.94e-  6     3     1       3</span></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; 17 Variances enjoyment         0.230 0.0545 2.36e-  5     3     1       3</span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0343 8.54e- 13     3     1       3</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1 Means     broad_interest    3.09  0.193  1.34e- 57     1     1       3</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2 Means     enjoyment         3.51  0.147  7.92e-126     1     1       3</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3 Means     self_efficacy     1.58  0.172  4.77e- 20     1     1       3</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4 Variances broad_interest    0.489 0.0946 2.41e-  7     1     1       3</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5 Variances enjoyment         0.230 0.0504 4.85e-  6     1     1       3</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0442 2.78e-  8     1     1       3</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7 Means     broad_interest    1.14  0.249  4.67e-  6     2     1       3</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8 Means     enjoyment         1.14  0.263  1.44e-  5     2     1       3</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9 Means     self_efficacy     3.39  0.448  3.33e- 14     2     1       3</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10 Variances broad_interest    0.489 0.0946 2.41e-  7     2     1       3</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 11 Variances enjoyment         0.230 0.0504 4.85e-  6     2     1       3</span></a>
+<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0442 2.78e-  8     2     1       3</span></a>
+<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 13 Means     broad_interest    2.27  0.183  2.34e- 35     3     1       3</span></a>
+<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; 14 Means     enjoyment         2.49  0.150  1.17e- 61     3     1       3</span></a>
+<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; 15 Means     self_efficacy     2.26  0.0990 3.77e-115     3     1       3</span></a>
+<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; 16 Variances broad_interest    0.489 0.0946 2.41e-  7     3     1       3</span></a>
+<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; 17 Variances enjoyment         0.230 0.0504 4.85e-  6     3     1       3</span></a>
+<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0442 2.78e-  8     3     1       3</span></a></code></pre></div>
 <p>Other options include how the raw data is processed.</p>
 <p>We can center or scale the data before estimating the profiles with the <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
@@ -346,7 +342,7 @@
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">4</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
@@ -354,7 +350,7 @@
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/poms.html">poms</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">4</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-10-2.png" width="700"></p>
 </div>
 <div id="getting-data" class="section level1">
@@ -362,21 +358,21 @@
 <a href="#getting-data" class="anchor"></a>Getting data</h1>
 <p>Since we often wish to use the estimated profiles in subsequent analyses, we may want the original <code>data.frame</code>, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this <code>data.frame</code>, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function <code><a href="../reference/get_data.html">get_data()</a></code>:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/get_data.html">get_data</a></span>(m3)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 300 x 9</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1            1              3            3.8       4            1        1</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2            1              3            3         3            2.75     3</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # … with 290 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; #   Probability &lt;dbl&gt;, id &lt;int&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 9</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1            1              3            3.8       4            1   </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2            1              3            3         3            2.75</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4            1              3            1.4       1            2.75</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5            1              3            1.8       2.2          2   </span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7            1              3            3         3.8          2.25</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8            1              3            2.6       2.2          2   </span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9            1              3            1         2.8          2.62</span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10            1              3            2.2       2            1.75</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # … with 90 more rows, and 4 more variables: CPROB1 &lt;dbl&gt;, CPROB2 &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; #   CPROB3 &lt;dbl&gt;, Class &lt;dbl&gt;</span></a></code></pre></div>
 <p>We note that <em>if more than one model is fit at once, then the data is returned not in the (wide) format above, but in long form</em>, e.g.:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">m4 &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
@@ -408,12 +404,43 @@
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 18</span></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;   Model Classes LogLik   AIC   AWE   BIC  CAIC   CLC   KIC SABIC   ICL</span></a>
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -299.  625.  767.  662.  676.  599.  642.  618. -679.</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 2     1       4  -286.  608.  790.  655.  673.  574.  629.  599. -666.</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -299.  626.  767.  663.  677.  600.  643.  618. -685.</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 2     1       4  -287.  610.  792.  657.  675.  576.  631.  600. -670.</span></a>
 <a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; # … with 7 more variables: Entropy &lt;dbl&gt;, prob_min &lt;dbl&gt;, prob_max &lt;dbl&gt;,</span></a>
 <a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; #   n_min &lt;dbl&gt;, n_max &lt;dbl&gt;, BLRT_val &lt;dbl&gt;, BLRT_p &lt;dbl&gt;</span></a></code></pre></div>
 <p>Descriptions of these fit indices follows:</p>
-<p><em>LogLik: Log-likelihood of the data, given the model.<br></em>AIC: Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters.<br><em>AWE: Approximate weight of evidence; combines information on model fit and on classification errors (Celeux et al., 1997).<br></em>BIC: Bayesian information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size.<br><em>CAIC: Consistent Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size.<br></em>CLC: Classification Likelihood Criterion; based on -2 log-likelihood, and penalized by the entropy (Biernacki, 1997).<br><em>KIC: Kullback information criterion; based on -2 log-likelihood, and penalized by 3 times the number of parameters -1 (Cavanaugh, 1999).<br></em>SABIC: Sample size-adjusted bayesian information criterion (Sclove, 1987).<br><em>ICL: Integrated completed likelihood (Biernacki, Celeux, &amp; Govaert, 2000).<br></em>Entropy: A measure of classification uncertainty, reverse-coded so that 1 reflects complete certainty of classification, and 0 complete uncertainty (see Celeux &amp; Soromenho, 1996).<br><em>Prob. Min.: Minimum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The minimum should be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to; see Jung &amp; Wickrama, 2008).<br></em>Prob. Max.: Maximum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The maximum should also be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to).<br><em>N Min.: Proportion of the sample assigned to the smallest class (based on most likely class membership).<br></em>N Max.: Proportion of the sample assigned to the largest class (based on most likely class membership).<br><em>BLRT: bootstrapped likelihood test.<br></em>BLRT p-value: p-value for the bootstrapped likelihood ratio test.</p>
+<ul>
+<li>LogLik: Log-likelihood of the data, given the model.<br>
+</li>
+<li>AIC: Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters.<br>
+</li>
+<li>AWE: Approximate weight of evidence; combines information on model fit and on classification errors (Celeux et al., 1997).<br>
+</li>
+<li>BIC: Bayesian information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size.</li>
+<li>CAIC: Consistent Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size.<br>
+</li>
+<li>CLC: Classification Likelihood Criterion; based on -2 log-likelihood, and penalized by the entropy (Biernacki, 1997).<br>
+</li>
+<li>KIC: Kullback information criterion; based on -2 log-likelihood, and penalized by 3 times the number of parameters -1 (Cavanaugh, 1999).<br>
+</li>
+<li>SABIC: Sample size-adjusted bayesian information criterion (Sclove, 1987).<br>
+</li>
+<li>ICL: Integrated completed likelihood (Biernacki, Celeux, &amp; Govaert, 2000).<br>
+</li>
+<li>Entropy: A measure of classification uncertainty, reverse-coded so that 1 reflects complete certainty of classification, and 0 complete uncertainty (see Celeux &amp; Soromenho, 1996).<br>
+</li>
+<li>Prob. Min.: Minimum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The minimum should be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to; see Jung &amp; Wickrama, 2008).<br>
+</li>
+<li>Prob. Max.: Maximum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The maximum should also be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to).<br>
+</li>
+<li>N Min.: Proportion of the sample assigned to the smallest class (based on most likely class membership).<br>
+</li>
+<li>N Max.: Proportion of the sample assigned to the largest class (based on most likely class membership).<br>
+</li>
+<li>BLRT: bootstrapped likelihood test.<br>
+</li>
+<li>BLRT p-value: p-value for the bootstrapped likelihood ratio test.</li>
+</ul>
 <p><strong>Notes</strong></p>
 <p>This is related to <a href="https://github.com/jrosen48/prcr">prcr</a>, for use of two-step cluster analysis to carry out person-oriented analyses.</p>
 <p>To contribute, file issues via GitHub <a href="https://github.com/data-edu/tidyLPA/issues">here</a> or get in touch <a href="mailto:jrosen@msu.edu">via email</a> or <a href="https://twitter.com/jrosenberg6432">Twitter</a>.</p>

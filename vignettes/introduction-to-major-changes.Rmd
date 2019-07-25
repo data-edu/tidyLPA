@@ -13,7 +13,7 @@ vignette: >
 
 ## Rationale for the update
 
-**tidyLPA** has received a major update. Your old function calls might not work as expected anymore. The new version of tidyLPA aims to make Latent Profile Analysis (LPA) even more accessible to a broad audience, by means of a user-friendly interface, and to fit more seemlessly into a 'tidyverse' workflow.
+**tidyLPA** has received a major update. Your old function calls might not work as expected anymore. The new version of tidyLPA aims to make Latent Profile Analysis (LPA) even more accessible to a broad audience, by means of a user-friendly interface, and to fit more seamlessly into a 'tidyverse' workflow.
 
 As before, **tidyLPA** offers a parallel workflow for the open-source package Mclust, and the commercial package *Mplus*.
 
