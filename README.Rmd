@@ -186,7 +186,7 @@ One of the easiest but also most important ways to contribute is to post a quest
 
 Contributions are also welcome via by making pull requests (PR), e.g. through [this page on GitHub](https://github.com/data-edu/tidyLPA/pulls). It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.
 
-Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](https://link.springer.com/article/10.1007/s41686-019-00030-5). By participating in this project you agree to abide by its terms.
 
 ## Acknowledgments
 

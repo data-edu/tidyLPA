@@ -75,9 +75,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       628.157 664.629 0.664   0.749    0.864    0.210 0.540
+#>  1     3       628.854 665.326 0.760   0.779    0.924    0.120 0.620
 #>  BLRT_p
-#>  0.040
+#>  0.030
 ```
 
 ### Mplus
@@ -93,9 +93,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       638.886 675.358 0.783   0.823    0.942    0.030 0.660
+#>  1     3       643.734 680.206 0.806   0.838    0.955    0.030 0.670
 #>  BLRT_p
-#>  0.020
+#>  0.000
 ```
 
 A simple summary of the analysis is printed to the console (and its
@@ -284,8 +284,8 @@ you first file an issue outlining what you will do in the PR. You can
 also reach out via the methods described above.
 
 Please note that this project is released with a [Contributor Code of
-Conduct](CONDUCT.md). By participating in this project you agree to
-abide by its terms.
+Conduct](https://link.springer.com/article/10.1007/s41686-019-00030-5).
+By participating in this project you agree to abide by its terms.
 
 ## Acknowledgments
 
