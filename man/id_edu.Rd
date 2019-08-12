@@ -19,49 +19,49 @@ average, 14 years old, and the last one when they were 18 years old.
 }
 \details{
 \tabular{lll}{
-  \strong{commitment1} \tab \code{numeric} \tab Mean score
+  \strong{com1} \tab \code{numeric} \tab Mean score
   of educational commitment in
   wave 1\cr
-  \strong{exploration1} \tab \code{numeric} \tab Mean score
+  \strong{exp1} \tab \code{numeric} \tab Mean score
   of educational exploration in
   wave 1\cr
-  \strong{reconsideration1} \tab \code{numeric} \tab Mean score
+  \strong{rec1} \tab \code{numeric} \tab Mean score
   of educational reconsideration in
   wave 1\cr
-  \strong{commitment2} \tab \code{numeric} \tab Mean score
+  \strong{com2} \tab \code{numeric} \tab Mean score
   of educational commitment in
   wave 2\cr
-  \strong{exploration2} \tab \code{numeric} \tab Mean score
+  \strong{exp2} \tab \code{numeric} \tab Mean score
   of educational exploration in
   wave 2\cr
-  \strong{reconsideration2} \tab \code{numeric} \tab Mean score
+  \strong{rec2} \tab \code{numeric} \tab Mean score
   of educational reconsideration in
   wave 2\cr
-  \strong{commitment3} \tab \code{numeric} \tab Mean score
+  \strong{com3} \tab \code{numeric} \tab Mean score
   of educational commitment in
   wave 3\cr
-  \strong{exploration3} \tab \code{numeric} \tab Mean score
+  \strong{exp3} \tab \code{numeric} \tab Mean score
   of educational exploration in
   wave 3\cr
-  \strong{reconsideration3} \tab \code{numeric} \tab Mean score
+  \strong{rec3} \tab \code{numeric} \tab Mean score
   of educational reconsideration in
   wave 3\cr
-  \strong{commitment4} \tab \code{numeric} \tab Mean score
+  \strong{com4} \tab \code{numeric} \tab Mean score
   of educational commitment in
   wave 4\cr
-  \strong{exploration4} \tab \code{numeric} \tab Mean score
+  \strong{exp4} \tab \code{numeric} \tab Mean score
   of educational exploration in
   wave 4\cr
-  \strong{reconsideration4} \tab \code{numeric} \tab Mean score
+  \strong{rec4} \tab \code{numeric} \tab Mean score
   of educational reconsideration in
   wave 4\cr
-  \strong{commitment5} \tab \code{numeric} \tab Mean score
+  \strong{com5} \tab \code{numeric} \tab Mean score
   of educational commitment in
   wave 5\cr
-  \strong{exploration5} \tab \code{numeric} \tab Mean score
+  \strong{exp5} \tab \code{numeric} \tab Mean score
   of educational exploration in
   wave 5\cr
-  \strong{reconsideration5} \tab \code{numeric} \tab Mean score
+  \strong{rec5} \tab \code{numeric} \tab Mean score
   of educational reconsideration in
   wave 5\cr
   \strong{sex} \tab \code{factor} \tab Adolescent sex; M = male, F = female.
