@@ -4,7 +4,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
 [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
 [![Build
 Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
@@ -75,9 +75,9 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       633.029 669.501 0.810   0.852    0.951    0.040 0.650
+#>  1     3       628.854 665.326 0.760   0.779    0.924    0.120 0.620
 #>  BLRT_p
-#>  0.020
+#>  0.030
 ```
 
 ### Mplus
@@ -93,7 +93,7 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mplus: 
 #> 
 #>  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max
-#>  1     3       631.010 667.482 0.806   0.835    0.955    0.040 0.660
+#>  1     3       643.734 680.206 0.806   0.838    0.955    0.030 0.670
 #>  BLRT_p
 #>  0.000
 ```
@@ -188,39 +188,56 @@ output of an analysis.
 m <- pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
-    estimate_profiles(3, package = "MplusAutomation")
+    estimate_profiles(3:4)
 
 get_data(m)
-#> # A tibble: 300 x 9
+#> # A tibble: 700 x 9
 #>    model_number classes_number broad_interest enjoyment self_efficacy Class
 #>           <dbl>          <int>          <dbl>     <dbl>         <dbl> <dbl>
-#>  1            1              3            3.8       4            1        3
-#>  2            1              3            3         3            2.75     2
-#>  3            1              3            1.8       2.8          3.38     2
-#>  4            1              3            1.4       1            2.75     1
-#>  5            1              3            1.8       2.2          2        2
-#>  6            1              3            1.6       1.6          1.88     2
-#>  7            1              3            3         3.8          2.25     3
-#>  8            1              3            2.6       2.2          2        2
-#>  9            1              3            1         2.8          2.62     2
-#> 10            1              3            2.2       2            1.75     2
-#> # … with 290 more rows, and 3 more variables: Class_prob <int>,
+#>  1            1              3            3.8       4            1        1
+#>  2            1              3            3         3            2.75     3
+#>  3            1              3            1.8       2.8          3.38     3
+#>  4            1              3            1.4       1            2.75     2
+#>  5            1              3            1.8       2.2          2        3
+#>  6            1              3            1.6       1.6          1.88     3
+#>  7            1              3            3         3.8          2.25     1
+#>  8            1              3            2.6       2.2          2        3
+#>  9            1              3            1         2.8          2.62     3
+#> 10            1              3            2.2       2            1.75     3
+#> # … with 690 more rows, and 3 more variables: Class_prob <int>,
 #> #   Probability <dbl>, id <int>
 ```
 
-`get_fit()` returns the fit statistics:
+We note that `get_data()` returns data in wide format when applied to an
+object of class tidyProfile (one element of a tidyLPA object), or when
+applied to a tidyLPA object of length one. `get_data()` returns long
+format when applied to a tidyLPA object containing multiple tidyProfile
+analyses (because then the wide format does not make sense).
+
+To transform data in the wide format into the long format, the
+`gather()` function from the **tidyr** package can be used, e.g.:
 
 ``` r
-get_fit(m)
-#> # A tibble: 1 x 18
-#>   Model Classes LogLik   AIC   AWE   BIC  CAIC   CLC   KIC SABIC   ICL
-#>   <dbl>   <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1     1       3  -298.  625.  766.  661.  675.  598.  642.  617. -681.
-#> # … with 7 more variables: Entropy <dbl>, prob_min <dbl>, prob_max <dbl>,
-#> #   n_min <dbl>, n_max <dbl>, BLRT_val <dbl>, BLRT_p <dbl>
+get_data(m) %>% 
+    tidyr::gather(Class_prob, Probability, contains("CPROB"))
+#> # A tibble: 700 x 9
+#>    model_number classes_number broad_interest enjoyment self_efficacy Class
+#>           <dbl>          <int>          <dbl>     <dbl>         <dbl> <dbl>
+#>  1            1              3            3.8       4            1        1
+#>  2            1              3            3         3            2.75     3
+#>  3            1              3            1.8       2.8          3.38     3
+#>  4            1              3            1.4       1            2.75     2
+#>  5            1              3            1.8       2.2          2        3
+#>  6            1              3            1.6       1.6          1.88     3
+#>  7            1              3            3         3.8          2.25     1
+#>  8            1              3            2.6       2.2          2        3
+#>  9            1              3            1         2.8          2.62     3
+#> 10            1              3            2.2       2            1.75     3
+#> # … with 690 more rows, and 3 more variables: Class_prob <int>,
+#> #   Probability <dbl>, id <int>
 ```
 
-## More information
+# Learn more
 
 To learn more:
 
@@ -267,8 +284,8 @@ you first file an issue outlining what you will do in the PR. You can
 also reach out via the methods described above.
 
 Please note that this project is released with a [Contributor Code of
-Conduct](CONDUCT.md). By participating in this project you agree to
-abide by its terms.
+Conduct](https://link.springer.com/article/10.1007/s41686-019-00030-5).
+By participating in this project you agree to abide by its terms.
 
 ## Acknowledgments
 

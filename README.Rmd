@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 [![CRAN status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
 [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
 [![Build Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
 
@@ -147,18 +147,21 @@ A few helper functions are available to make it easier to work with the output o
 m <- pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
-    estimate_profiles(3, package = "MplusAutomation")
+    estimate_profiles(3:4)
 
 get_data(m)
 ```
 
-`get_fit()` returns the fit statistics:
+We note that `get_data()` returns data in wide format when applied to an object of class tidyProfile (one element of a tidyLPA object), or when applied to a tidyLPA object of length one. `get_data()` returns long format when applied to a tidyLPA object containing multiple tidyProfile analyses (because then the wide format does not make sense).
+
+To transform data in the wide format into the long format, the `gather()` function from the **tidyr** package can be used, e.g.:
 
 ```{r}
-get_fit(m)
+get_data(m) %>% 
+    tidyr::gather(Class_prob, Probability, contains("CPROB"))
 ```
 
-## More information
+# Learn more
 
 To learn more:
 
@@ -183,7 +186,7 @@ One of the easiest but also most important ways to contribute is to post a quest
 
 Contributions are also welcome via by making pull requests (PR), e.g. through [this page on GitHub](https://github.com/data-edu/tidyLPA/pulls). It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.
 
-Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](https://link.springer.com/article/10.1007/s41686-019-00030-5). By participating in this project you agree to abide by its terms.
 
 ## Acknowledgments
 

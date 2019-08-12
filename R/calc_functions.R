@@ -114,7 +114,7 @@ priority_vector <- function(m){
 #' @details Many fit indices are available for model selection. Following
 #' the procedure developed by Akogul and Erisoglu (2017), this function
 #' integrates information from several fit indices, and selects the best model,
-#' using Saaty's (1990) Analytic Hierarchy Process (AHP). Conceptuall, the
+#' using Saaty's (1990) Analytic Hierarchy Process (AHP). Conceptually, the
 #' process consists of the following steps:
 #' \enumerate{
 #' \item For each fit index, calculate the amount of support provided for each

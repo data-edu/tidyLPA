@@ -4,7 +4,7 @@
 \alias{print.tidyProfile}
 \title{Print tidyProfile}
 \usage{
-\method{print}{tidyProfile}(x, digits = 3, na.print = "", ...)
+\method{print}{tidyProfile}(x, digits = 2, na.print = "", ...)
 }
 \arguments{
 \item{x}{An object of class 'tidyProfile'.}
