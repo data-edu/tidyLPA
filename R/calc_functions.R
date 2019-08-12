@@ -44,12 +44,14 @@ poms <- function(data){
 }
 
 # Stirling's approximation for the SE of an SD
-#se_s <- function(s, n){
-#    s * sqrt(exp(1) * ((1-(1/n))^(n-1))-1)
-#}
+se_s_stirling <- function(s, n){
+    s * sqrt(exp(1) * ((1-(1/n))^(n-1))-1)
+}
+
 # SE of an SD
 se_s <- function(s, n){
-    s * (gamma((n-1)/2)/gamma(n/2)) * sqrt(((n-1)/2)-(gamma(n/2)/gamma((n-1)/2))^2)
+    tryCatch({s * (gamma((n-1)/2)/gamma(n/2)) * sqrt(((n-1)/2)-(gamma(n/2)/gamma((n-1)/2))^2)},
+             warning = function(x){se_s_stirling(s, n)})
 }
 
 syntax_class_specific <- function(mn, parameters){
