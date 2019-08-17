@@ -1,3 +1,7 @@
+# tidyLPA 1.0.4
+* add data for paper
+* wrap mclust to handle errors better
+
 # tidyLPA 1.0.3
 
 * Fix bug when mclust model does not converge
