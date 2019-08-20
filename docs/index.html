@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -128,9 +128,9 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       628.690 665.163 0.808   0.842    0.952    0.030 0.670</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       636.861 673.334 0.811   0.850    0.954    0.030 0.680</span></a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.010</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.020</span></a></code></pre></div>
 </div>
 <div id="mplus" class="section level3">
 <h3 class="hasAnchor">
@@ -143,7 +143,7 @@
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mplus: </span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  1     3       627.312 663.784 0.775   0.848    0.923    0.030 0.590</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  1     3       629.462 665.934 0.812   0.858    0.951    0.030 0.630</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;  0.000</span></a></code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
@@ -217,14 +217,14 @@
 <a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;           &lt;dbl&gt;          &lt;int&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1            1              3            3.8       4            1        1</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     3</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     2</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     2</span></a>
 <a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
 <a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     2</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7            1              3            3         3.8          2.25     3</span></a>
 <a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9            1              3            1         2.8          2.62     2</span></a>
 <a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span></a>
 <a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; # … with 690 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
 <a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; #   Probability &lt;dbl&gt;, id &lt;int&gt;</span></a></code></pre></div>
@@ -236,14 +236,14 @@
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;           &lt;dbl&gt;          &lt;int&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  1            1              3            3.8       4            1        1</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  2            1              3            3         3            2.75     3</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  2            1              3            3         3            2.75     2</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     2</span></a>
 <a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
 <a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     2</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  7            1              3            3         3.8          2.25     3</span></a>
 <a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  9            1              3            1         2.8          2.62     2</span></a>
 <a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span></a>
 <a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; # … with 690 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
 <a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; #   Probability &lt;dbl&gt;, id &lt;int&gt;</span></a></code></pre></div>
@@ -277,7 +277,7 @@
 </li>
 </ul>
 <p>Contributions are also welcome via by making pull requests (PR), e.g. through <a href="https://github.com/data-edu/tidyLPA/pulls">this page on GitHub</a>. It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.</p>
-<p>Please note that this project is released with a <a href="CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
+<p>Please note that this project is released with a <a href="https://link.springer.com/article/10.1007/s41686-019-00030-5">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
