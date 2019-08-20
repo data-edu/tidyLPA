@@ -174,6 +174,7 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
 
     if (rawdata) {
         df_raw <- get_long_data(x)
+
         df_raw <- df_raw[, c("model_number", "classes_number", attr(x[[1]]$dff, "selected"), "Class", "Class_prob", "Probability", "id")]
         df_raw$Class <- ordered(df_raw$Class_prob, levels = levels(df_plot$Class))
         variable_names <- paste("Value", names(df_raw)[-c(1,2, ncol(df_raw)-c(0:3))], sep = "...")

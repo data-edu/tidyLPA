@@ -53,6 +53,7 @@ estimate_profiles_mplus2 <-
             stop(param_warning, "\nThe resulting variable names were not unique. Please rename your variables prior to running the analysis, to prevent duplicates. The duplicated variable names are:\n\n",
                  gsub(", ", "", toString(t(cbind(paste0(c("Original:", names(df)[dups]), "\t"), paste0(c("Renamed:", param_names[dups]), "\n"))))))
         }
+        selected_variables <- names(df)
         names(df) <- param_names
 
         Args <- c(list(
@@ -233,7 +234,7 @@ estimate_profiles_mplus2 <-
                         out$dff$model_number <- this_model
                         out$dff$classes_number <- this_class
                         out$dff <- out$dff[, c((ncol(out$dff)-1), ncol(out$dff), 1:(ncol(out$dff)-2))]
-                        attr(out$dff, "selected") <- names(df)
+                        attr(out$dff, "selected") <- selected_variables
                     }
 
                     # Check for warnings ------------------------------------------------------
