@@ -103,4 +103,8 @@ various fit indices, including likelihood ratio tests and other statistics
 (e.g., entropy) for each parameterization. All three functions use **mclust**;
 corresponding functions with `_mplus()` appended use the **MPlus** software.
 
+# Acknowledgment
+
+This material is based upon work supported by the National Science Foundation under Grant No. 1661064. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not reflect the views of the National Science Foundation.
+
 # References
