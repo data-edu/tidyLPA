@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Estimate latent profiles using Mplus — estimate_profiles_mplus2 • tidyLPA</title>
+<title>Simulated empathy data — empathy • tidyLPA</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,13 @@
 
 
 
-<meta property="og:title" content="Estimate latent profiles using Mplus — estimate_profiles_mplus2" />
+<meta property="og:title" content="Simulated empathy data — empathy" />
 
-<meta property="og:description" content="Estimates latent profiles (finite mixture models) using the commercial
-program Mplus, through the R-interface of
-MplusAutomation." />
+<meta property="og:description" content="This simulated dataset, based on Van Lissa et al., 2014, contains six annual
+assessments of adolescents' mean scores on the empathic concern and
+perspective taking subscales of the Interpersonal Reactivity Index
+(Davis, 1983). The first measurement wave occurred when adolescents were, on
+average, 13 years old, and the last one when they were 18 years old." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,76 +119,93 @@ MplusAutomation." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Estimate latent profiles using Mplus</h1>
+    <h1>Simulated empathy data</h1>
     
-    <div class="hidden name"><code>estimate_profiles_mplus2.Rd</code></div>
+    <div class="hidden name"><code>empathy.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Estimates latent profiles (finite mixture models) using the commercial
-program Mplus, through the R-interface of
-<code><a href='https://www.rdocumentation.org/packages/MplusAutomation/topics/mplusModeler'>MplusAutomation</a></code>.</p>
+    <p>This simulated dataset, based on Van Lissa et al., 2014, contains six annual
+assessments of adolescents' mean scores on the empathic concern and
+perspective taking subscales of the Interpersonal Reactivity Index
+(Davis, 1983). The first measurement wave occurred when adolescents were, on
+average, 13 years old, and the last one when they were 18 years old.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>estimate_profiles_mplus2</span>(<span class='no'>df</span>, <span class='no'>n_profiles</span>, <span class='no'>model_numbers</span>, <span class='no'>select_vars</span>, <span class='no'>...</span>,
-  <span class='kw'>keepfiles</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>df</th>
-      <td><p>data.frame with two or more columns with continuous variables</p></td>
-    </tr>
-    <tr>
-      <th>n_profiles</th>
-      <td><p>Numeric vector. The number of profiles (or mixture
-components) to be estimated. Each number in the vector corresponds to an
-analysis with that many mixture components.</p></td>
-    </tr>
-    <tr>
-      <th>model_numbers</th>
-      <td><p>Numeric vector. Numbers of the models to be estimated.
-See <code><a href='estimate_profiles.html'>estimate_profiles</a></code> for a description of the models available
-in tidyLPA.</p></td>
-    </tr>
-    <tr>
-      <th>select_vars</th>
-      <td><p>Character. Optional vector of variable names in <code>df</code>,
-to be used for model estimation. Defaults to <code>NULL</code>, which means all
-variables in <code>df</code> are used.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Parameters passed directly to
-<code><a href='https://www.rdocumentation.org/packages/MplusAutomation/topics/mplusModeler'>mplusModeler</a></code>. See the documentation of
-<code><a href='https://www.rdocumentation.org/packages/MplusAutomation/topics/mplusModeler'>mplusModeler</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>keepfiles</th>
-      <td><p>Logical. Whether to retain the files created by
-<code>mplusModeler</code> (e.g., for future reference, or to manually edit them).</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <pre class="usage"><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>empathy</span>)</pre>
+        
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class 'tidyLPA' and 'list'</p>
+    <p>A data frame with 467 rows and 13 variables.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <table class='table'>
+<tr><td></td><td></td><td><strong>ec1</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of empathic concern in</td><td>wave 1</td></tr>
+<tr><td></td><td></td><td><strong>ec2</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of empathic concern in</td><td>wave 2</td></tr>
+<tr><td></td><td></td><td><strong>ec3</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of empathic concern in</td><td>wave 3</td></tr>
+<tr><td></td><td></td><td><strong>ec4</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of empathic concern in</td><td>wave 4</td></tr>
+<tr><td></td><td></td><td><strong>ec5</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of empathic concern in</td><td>wave 5</td></tr>
+<tr><td></td><td></td><td><strong>ec6</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of empathic concern in</td><td>wave 6</td></tr>
+<tr><td></td><td></td><td><strong>pt1</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of perspective taking in</td><td>wave 1</td></tr>
+<tr><td></td><td></td><td><strong>pt2</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of perspective taking in</td><td>wave 2</td></tr>
+<tr><td></td><td></td><td><strong>pt3</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of perspective taking in</td><td>wave 3</td></tr>
+<tr><td></td><td></td><td><strong>pt4</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of perspective taking in</td><td>wave 4</td></tr>
+<tr><td></td><td></td><td><strong>pt5</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of perspective taking in</td><td>wave 5</td></tr>
+<tr><td></td><td></td><td><strong>pt6</strong></td></tr>
+<tr><td></td><td></td><td><code>numeric</code></td></tr>
+<tr><td></td><td>Mean score of perspective taking in</td><td>wave 6</td></tr>
+<tr><td></td><td></td><td><strong>sex</strong></td></tr>
+<tr><td></td><td></td><td><code>factor</code></td></tr>
+<tr><td></td><td>Adolescent sex; M = male, F = female.</td><td></td></tr>
+</table>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Van Lissa, C. J., Hawk, S. T., Branje, S. J., Koot, H. M.,
+Van Lier, P. A., &amp; Meeus, W. H. (2014). Divergence Between Adolescent and
+Parental Perceptions of Conflict in Relationship to Adolescent Empathy
+Development. Journal of Youth and Adolescence, (Journal Article), 1–14.
+<a href='https://doi.org/10.1007/s10964-014-0152-5'>
+DOI:10.1007/s10964-014-0152-5</a></p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
+      <li><a href="#format">Format</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#references">References</a></li>
           </ul>
 
-    <h2>Author</h2>
-    <p>Caspar J. van Lissa</p>
   </div>
 </div>
 
