@@ -203,7 +203,8 @@ estimate_profiles_mplus2 <-
                         varwarnings = TRUE,
                         Mplus_command = "Mplus",
                         writeData = "ifmissing",
-                        hashfilename = TRUE
+                        hashfilename = TRUE,
+                        ...
                     )
                 ))$results)
 
