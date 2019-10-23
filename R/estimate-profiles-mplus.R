@@ -89,10 +89,34 @@ estimate_profiles_mplus2 <-
                 gsub("  ", "\n", x)
             })
 
+        mplusObjectArgNames <-
+            c(
+                "TITLE",
+                "DATA",
+                "VARIABLE",
+                "DEFINE",
+                "MONTECARLO",
+                "MODELPOPULATION",
+                "MODELMISSING",
+                "ANALYSIS",
+                "MODEL",
+                "MODELINDIRECT",
+                "MODELCONSTRAINT",
+                "MODELTEST",
+                "MODELPRIORS",
+                "OUTPUT",
+                "SAVEDATA",
+                "PLOT",
+                "usevariables",
+                "rdata",
+                "autov",
+                "imputed"
+            )
 
+        mplusObjectArgs <- Args[which(names(Args) %in% mplusObjectArgNames)]
 
         # Create mplusObject template
-        base_object <- invisible(suppressMessages(do.call(mplusObject, Args)))
+        base_object <- invisible(suppressMessages(do.call(mplusObject, mplusObjectArgs)))
         if(ncol(df) == 1){
             base_object$VARIABLE <- paste0("NAMES = ", names(df), ";\n")
         }
@@ -201,7 +225,6 @@ estimate_profiles_mplus2 <-
                         run = 1L,
                         check = FALSE,
                         varwarnings = TRUE,
-                        Mplus_command = "Mplus",
                         writeData = "ifmissing",
                         hashfilename = TRUE,
                         ...
