@@ -15,3 +15,5 @@ binary/
 *.dat
 *.txt
 *.log
+analysis-for-paper.r
+ex-data.csv
