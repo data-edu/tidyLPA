@@ -63,7 +63,7 @@ pisaUSA15[1:100, ] %>%
 
 We can use Mplus simply by changing the package argument for `estimate_profiles()`:
 
-```{r}
+```{r, eval = FALSE}
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
