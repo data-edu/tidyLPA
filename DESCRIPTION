@@ -53,8 +53,7 @@ Suggests:
     missForest,
     parallel,
     rmarkdown,
-    testthat,
-    tidyverse
+    testthat
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
