@@ -114,6 +114,7 @@ estimate_profiles_mplus2 <-
             )
 
         mplusObjectArgs <- Args[which(names(Args) %in% mplusObjectArgNames)]
+        leftOverArgs <- Args[-(which(names(Args) %in% mplusObjectArgNames))]
 
         # Create mplusObject template
         base_object <- invisible(suppressMessages(do.call(mplusObject, mplusObjectArgs)))
@@ -214,21 +215,24 @@ estimate_profiles_mplus2 <-
                 ))
 
                 out <- list(model = quiet(suppressMessages(
-                    mplusModeler(
-                        object = base_object,
-                        dataout = ifelse(
-                            !is.null(filename_stem),
-                            paste0("data_", filename_stem, ".dat"),
-                            "data.dat"
-                        ),
-                        modelout = filename["inp"],
-                        run = 1L,
-                        check = FALSE,
-                        varwarnings = TRUE,
-                        writeData = "ifmissing",
-                        hashfilename = TRUE,
-                        ...
-                    )
+                    do.call(what = mplusModeler,
+                            args = c(
+                                list(
+                                    object = base_object,
+                                    dataout = ifelse(
+                                        !is.null(filename_stem),
+                                        paste0("data_", filename_stem, ".dat"),
+                                        "data.dat"
+                                    ),
+                                    modelout = filename["inp"],
+                                    run = 1L,
+                                    check = FALSE,
+                                    varwarnings = TRUE,
+                                    writeData = "ifmissing",
+                                    hashfilename = TRUE
+                                ),
+                                leftOverArgs
+                            ))
                 ))$results)
 
                 warnings <- NULL
