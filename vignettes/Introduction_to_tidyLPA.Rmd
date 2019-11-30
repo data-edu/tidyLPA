@@ -84,7 +84,7 @@ In these examples, we pass the results of one function to the next by *piping* (
 
 ```{r, message = F}
 library(tidyLPA)
-library(tidyverse)
+library(dplyr)
 ```
 
 ```{r}
