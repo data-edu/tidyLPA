@@ -161,8 +161,10 @@ We note that `get_data()` returns data in wide format when applied to an object 
 To transform data in the wide format into the long format, the `gather()` function from the **tidyr** package can be used, e.g.:
 
 ```{r}
+library(tidyr)
+
 get_data(m) %>% 
-  tidyr::gather(Class_prob, Probability, contains("CPROB"))
+  gather(Class_prob, Probability, contains("CPROB"))
 ```
 
 # Learn more
