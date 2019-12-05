@@ -365,3 +365,68 @@ icl.mplus.model <- function(object, ...)
 #LMR and ALMR indistinguishable from each other: https://www.tandfonline.com/doi/full/10.1080/10705511.2016.1169188?scroll=top&needAccess=true
 
 # https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
+
+#' @title Lo-Mendell-Rubin likelihood ratio test
+#' @description Implements the ad-hoc adjusted likelihood ratio test (LRT)
+#' described in Formula 15 of Lo, Mendell, & Rubin (2001), or LMR LRT.
+#' @param n Integer. Sample size
+#' @param null_ll Numeric. Log-likelihood of the null model.
+#' @param null_param Integer. Number of parameters of the null model.
+#' @param null_classes Integer. Number of classes of the null model.
+#' @param alt_ll Numeric. Log-likelihood of the alternative model.
+#' @param alt_param Integer. Number of parameters of the alternative model.
+#' @param alt_classes Integer. Number of classes of the alternative model.
+#' @return A numeric vector containing the likelihood ratio LR, the ad-hoc
+#' corrected LMR, degrees of freedom, and the LMR p-value.
+#' @references Lo Y, Mendell NR, Rubin DB. Testing the number of components in a
+#' normal mixture. Biometrika. 2001;88(3):767–778. doi:10.1093/biomet/88.3.767
+#' @examples
+#' calc_lrt(150L, -741.02, 8, 1, -488.91, 13, 2)
+#' @rdname calc_lrt
+#' @export
+calc_lrt <- function(n, null_ll, null_param, null_classes, alt_ll, alt_param, alt_classes){
+  args <- list(
+    null = c(null_ll, null_param, n, null_classes),
+    alt = c(alt_ll, alt_param, n, alt_classes)
+  )
+  do.call(calc_lrt_internal, args)
+}
+
+calc_lrt_internal <- function(null, alt){
+  # c(ll, parameters, n, class)
+  if(!alt[3] == null[3]){
+    warning("Null and alt models estimated on different number of cases, and might not be nested. Used lowest number of cases.")
+  }
+  n <- min(c(alt[3], null[3]))
+  if(!alt[4]>null[4]){
+    stop("Alternative model does not have more classes than null model.")
+  }
+  lr_test_stat = -2 * (null[1] - alt[1])
+  modlr_test_stat <- lr_test_stat / (1 + (((3 * alt[4] - 1) - (3 * null[4] - 1)) * log(n))^-1)
+  df <- (alt[2] - null[2])
+  lmrt_p <- pchisq(q = modlr_test_stat, df = df, lower.tail = FALSE)
+  out <- c(lr = lr_test_stat, lmr_lr = modlr_test_stat, df = df, lmr_p = lmrt_p)
+  class(out) <- c("LRT", class(out))
+  out
+}
+
+#' @method print LRT
+#' @export
+print.LRT <- function(x,
+                      digits = 3,
+                      na.print = "",
+                      ...) {
+  cat("Lo-Mendell-Rubin ad-hoc adjusted likelihood ratio rest:\n\n")
+  cat(
+    "LR = ",
+    formatC(x[["lr"]], digits = digits, format = "f"),
+    ", LMR LR (df = ",
+    as.integer(x[["df"]]),
+    ") = ",
+    formatC(x[["lmr_lr"]], digits = digits, format = "f"),
+    ", p ",
+    ifelse(x[["lmr_p"]] < 1/10^digits,
+           paste0("< ", 1/10^digits),
+           paste0("= ", formatC(x[["lmr_p"]], digits = digits, format = "f")))
+  , sep = "")
+}

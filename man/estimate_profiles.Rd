@@ -64,7 +64,8 @@ Two interfaces are available to estimate these models; specify their numbers
 in the \code{models} argument (e.g., \code{models = 1}, or
 \code{models = c(1, 2, 3)}), or specify the variances/covariances to be
 estimated (e.g.,: \code{variances = c("equal", "varying"), covariances =
-c("zero", "equal")}).
+c("zero", "equal")}). Note that when mclust is used, \code{models =
+c(1, 2, 3, 6)} are the only models available.
 }
 \examples{
 
