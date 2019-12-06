@@ -142,7 +142,7 @@ In addition to the number of profiles (specified with the `n_profiles` argument)
 
 The models are specified by passing arguments to the `variance` and `covariance` arguments. The possible values for these arguments are:
 
-- `variances`: "equal" and "zero"
+- `variances`: "equal" and "varying"
 - `covariances`: "varying", "equal", and "zero"
 
 If no values are specified for these, then the variances are constrained to be equal across classes, and covariances are fixed to 0 (conditional independence of the indicators).
@@ -232,7 +232,7 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2 }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3 }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
 $$
 
-### 6. Varying variances and varying covariances (model 4)
+### 6. Varying variances and varying covariances (model 6)
 
 This model corresponds to the mclust model "VVV". It allows the variances and the covariances to be freely estimated across profiles. 
 
@@ -338,7 +338,7 @@ Pastor, D. A., Barron, K. E., Miller, B. J., & Davis, S. L. (2007). A latent pro
 
 **How to cite tidyLPA**
 
-> Rosenberg, J. M., Beymer, P. N., Anderson, D. J., & Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. *Journal of Open Source Software, 3*(30), 978, https://doi.org/10.21105/joss.00978
+> Rosenberg, J. M., Beymer, P. N., Anderson, D. J., Van Lissa, C. J., & Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. *Journal of Open Source Software, 3*(30), 978, https://doi.org/10.21105/joss.00978
 
 You can also cite the most latest version with the following citation:
 
