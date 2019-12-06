@@ -177,7 +177,6 @@ estimates.mplus.model <- function(model){
 
 
 estimates.Mclust <- function(model){
-
     ses_mean <- apply(model$mclustBootstrap$mean, 3, colSD)
     ses_var <- apply(model$mclustBootstrap$variance, 4, function(x) {
         apply(x, 3, colSD)
@@ -221,7 +220,7 @@ estimates.Mclust <- function(model){
     df$Class <- rep(1:n_class, each = nrow(df)/n_class)
     row.names(df) <- NULL
     names(df) <- c("Category", "Parameter", "Estimate", "se", "p", "Class")
-    df
+    df[!(duplicated(df$Estimate) & df$Category == "Covariances"), ]
 
 }
 
