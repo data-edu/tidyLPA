@@ -392,6 +392,7 @@ calc_lrt <- function(n, null_ll, null_param, null_classes, alt_ll, alt_param, al
   do.call(calc_lrt_internal, args)
 }
 
+#' @importFrom stats pchisq
 calc_lrt_internal <- function(null, alt){
   # c(ll, parameters, n, class)
   if(!alt[3] == null[3]){
