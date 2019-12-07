@@ -332,7 +332,7 @@ get_data.tidyLPA <- function(x, ...) {
         cl[[1]] <- as.name("get_data")
         return(eval.parent(cl))
     }
-    as_tibble(do.call(get_long_data, as.list(cl[-1])))
+    as_tibble(do.call(.get_long_data, as.list(cl[-1])))
 }
 
 #' @describeIn get_data Get data for a single latent profile analysis object,
@@ -349,7 +349,7 @@ get_data.tidyProfile <- function(x, ...) {
 
 # Internal ----------------------------------------------------------------
 
-get_long_data <- function(x, ...) {
+.get_long_data <- function(x, ...) {
     out <- lapply(x, function(x) {
         if(!is.null(x[["dff"]])){
             dt <- data.frame(x[["dff"]])
