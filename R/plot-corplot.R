@@ -247,77 +247,97 @@ get_palette <- function(x){
 }
 
 #' @import grid gtable
-merge_corplots <- function(plots, ...){
+merge_corplots <- function(plots, ...) {
+    suppressWarnings({
+        suppressMessages({
+            n_vars <- sqrt(length(plots))
 
-    n_vars <- sqrt(length(plots))
+            null_grobs <- sapply(plots, inherits, what = "NULL")
+            plots[null_grobs] <- lapply(1:sum(null_grobs), nullGrob)
 
-    null_grobs <- sapply(plots, inherits, what = "NULL")
-    plots[null_grobs] <- lapply(1:sum(null_grobs), nullGrob)
+            grob_legend <- ggplot_gtable(ggplot_build(plots[[2]]))
+            grob_legend <-
+                grob_legend$grobs[[which(sapply(grob_legend$grobs, `[[`, "name") == "guide-box")]]
 
-    grob_legend <- ggplot_gtable(ggplot_build(plots[[2]]))
-    grob_legend <- grob_legend$grobs[[which(sapply(grob_legend$grobs, `[[`, "name") == "guide-box")]]
+            model_mat <- matrix(1L:(n_vars * n_vars), nrow = n_vars)
+            model_mat[upper.tri(model_mat)] <- NA
 
-    model_mat <- matrix(1L:(n_vars*n_vars), nrow = n_vars)
-    model_mat[upper.tri(model_mat)] <- NA
+            no_x_y <- na.omit(as.vector(model_mat[-nrow(model_mat),-1]))
+            keep_x <- model_mat[nrow(model_mat),-1, drop = TRUE]
+            keep_y <- model_mat[-nrow(model_mat), 1, drop = TRUE]
 
-    no_x_y <- na.omit(as.vector(model_mat[-nrow(model_mat), -1]))
-    keep_x <- model_mat[nrow(model_mat), -1, drop = TRUE]
-    keep_y <- model_mat[-nrow(model_mat), 1, drop = TRUE]
+            #     This is to remove legends and axis and adjust width
+            plots[[n_vars]] <-
+                ggplotGrob(plots[[n_vars]] + theme(legend.position = "none"))
+            fixed_widths <- plots[[n_vars]]$widths
+            fixed_heights <- plots[[n_vars]]$heights
 
-#     This is to remove legends and axis and adjust width
-    plots[[n_vars]] <- suppressMessages(ggplotGrob(plots[[n_vars]]+theme(legend.position = "none")))
-    fixed_widths <- plots[[n_vars]]$widths
-    fixed_heights <- plots[[n_vars]]$heights
-    plots[keep_y] <- lapply(plots[keep_y], function(this_plot){
-        if(inherits(this_plot, "ggplot")){
-            suppressMessages(ggplotGrob(this_plot+theme(axis.title.x = element_blank(),
-                                                        axis.text.x = element_blank(),
-                                                        axis.ticks.x = element_blank(),
-                                                        legend.position = "none")))
-        }
+            plots[keep_y] <- lapply(plots[keep_y], function(this_plot) {
+                if (inherits(this_plot, "ggplot")) {
+                    ggplotGrob(
+                        this_plot + theme(
+                            axis.title.x = element_blank(),
+                            axis.text.x = element_blank(),
+                            axis.ticks.x = element_blank(),
+                            legend.position = "none"
+                        )
+                    )
+                }
+            })
+            plots[keep_x] <- lapply(plots[keep_x], function(this_plot) {
+                if (inherits(this_plot, "ggplot")) {
+                    ggplotGrob(
+                        this_plot + theme(
+                            axis.title.y = element_blank(),
+                            axis.text.y = element_blank(),
+                            axis.ticks.y = element_blank(),
+                            legend.position = "none"
+                        )
+                    )
+                }
+            })
+            plots[no_x_y] <- lapply(plots[no_x_y], function(this_plot) {
+                if (inherits(this_plot, "ggplot")) {
+                    ggplotGrob(
+                        this_plot + theme(
+                            axis.title.x = element_blank(),
+                            axis.text.x = element_blank(),
+                            axis.ticks.x = element_blank(),
+                            axis.title.y = element_blank(),
+                            axis.text.y = element_blank(),
+                            axis.ticks.y = element_blank(),
+                            legend.position = "none"
+                        )
+                    )
+                }
+            })
+
+            plots <- lapply(plots, function(x) {
+                x$widths <- fixed_widths
+                x$heights <- fixed_heights
+                x
+            })
+
+            plots[[((n_vars - 1) * n_vars) + 1]] <- grob_legend
+
+            gt <- gtable_matrix(
+                "corr_plot",
+                matrix(plots, nrow = n_vars, ncol = n_vars),
+                widths = unit(rep(1, n_vars), "null"),
+                heights = unit(rep(1, n_vars), "null")
+            )
+
+            # left <- textGrob(ylab, rot = 90, just = c(.5, .5))
+            # gt <- gtable_add_cols(gt, widths = grobWidth(left)+ unit(0.5, "line"), 0)
+            # gt <- gtable_add_grob(gt, left, t = 1, b = nrow(gt),
+            #                       l = 1, r = 1, z = Inf)
+            # gt <- gtable_add_cols(gt, widths = unit(0.5, "line"))
+
+            grid.newpage()
+            grid.draw(gt)
+            invisible(gt)
         })
-    plots[keep_x] <- lapply(plots[keep_x], function(this_plot){
-        if(inherits(this_plot, "ggplot")){
-        suppressMessages(ggplotGrob(this_plot+theme(axis.title.y = element_blank(),
-                                                    axis.text.y = element_blank(),
-                                                    axis.ticks.y = element_blank(),
-                                                    legend.position = "none")))
-        }
     })
-    plots[no_x_y] <- lapply(plots[no_x_y], function(this_plot){
-        if(inherits(this_plot, "ggplot")){
-        suppressMessages(ggplotGrob(this_plot+theme(axis.title.x = element_blank(),
-                                                    axis.text.x = element_blank(),
-                                                    axis.ticks.x = element_blank(),
-                                                    axis.title.y = element_blank(),
-                                                    axis.text.y = element_blank(),
-                                                    axis.ticks.y = element_blank(),
-                                                    legend.position = "none")))
-        }
-    })
-
-    plots <- lapply(plots, function(x){
-        x$widths <- fixed_widths
-        x$heights <- fixed_heights
-        x
-    })
-
-    plots[[((n_vars-1)*n_vars)+1]] <- grob_legend
-
-    gt <- gtable_matrix("corr_plot",
-                        matrix(plots, nrow = n_vars, ncol = n_vars),
-                        widths = unit(rep(1, n_vars), "null"),
-                        heights = unit(rep(1, n_vars), "null"))
-
-    # left <- textGrob(ylab, rot = 90, just = c(.5, .5))
-    # gt <- gtable_add_cols(gt, widths = grobWidth(left)+ unit(0.5, "line"), 0)
-    # gt <- gtable_add_grob(gt, left, t = 1, b = nrow(gt),
-    #                       l = 1, r = 1, z = Inf)
-    # gt <- gtable_add_cols(gt, widths = unit(0.5, "line"))
-
-    grid.newpage()
-    grid.draw(gt)
-    invisible(gt)
 }
 
 #plot_corplot.tidyProfile(res)
