@@ -109,8 +109,6 @@ plot_corplot.tidyLPA <- function(x, variables = NULL, sd = TRUE, cors = TRUE, ra
 #' @method plot_corplot tidyProfile
 #' @export
 plot_corplot.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE, ...){
-    #Args <- as.list(match.call()[-1])
-    #x <- res$model_6_class_2
 
     df_plot <- get_cordat(as.data.frame(get_estimates(x)))
     df_plot$Class <- ordered(df_plot$Class)
@@ -139,14 +137,11 @@ plot_corplot.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE
 
     args_dens <- list(plot_df = df_density,
                       variables = NULL)
-    #Args <- c(list(plot_df = plot_df), as.list(match.call()[-c(1:2, 6)]))
-    #density_plot <- do.call(.plot_density_fun, Args)
 
     dens_plotlist <- lapply(Args$variables, function(thisvar){
-        #args_dens$x <- df_density[, c("Title", thisvar, "Class", "Probability", "ID")]
         names(args_dens$plot_df)[which(names(args_dens$plot_df) == thisvar)] <- "Value"
         args_dens$variables <- thisvar
-        do.call(.plot_density_fun, args_dens) + theme_bw()# + scale_y_continuous(expand = c(0,"5%")) + scale_x_continuous(expand = c(0,0))
+        do.call(.plot_density_fun, args_dens) + theme_bw() + labs(x = thisvar, y = thisvar)
     })
 
     cor_plotlist <- lapply(unique(df_plot$Parameter), function(this_cor){
@@ -194,9 +189,13 @@ plot_corplot.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE
         }
         p + labs(x = df_plot$xvar[1], y = df_plot$yvar[1])
     })
-
-    if (return_list) return(list(cor_plots = cor_plotlist, dens_plots = dens_plotlist))
-    merge_corplots(list(cor_plots = cor_plotlist, dens_plots = dens_plotlist))
+    n_vars <- length(dens_plotlist)
+    model_mat <- matrix(1L:(n_vars*n_vars), nrow = n_vars)
+    plot_list <- vector("list", length = length(model_mat))
+    plot_list[diag(model_mat)] <- dens_plotlist
+    plot_list[which(lower.tri(model_mat))] <- cor_plotlist
+    if (return_list) return(plot_list)
+    merge_corplots(plot_list)
 }
 
 
@@ -249,42 +248,27 @@ get_palette <- function(x){
 
 #' @import grid gtable
 merge_corplots <- function(plots, ...){
-    #args <- match.call()
-    #if(!("ylab" %in% names(args))){
-    #    ylab <- plots[[1]]$labels$y
-    #
-    #plots <- cor_plotlist
 
-    dens_plotlist <- plots[["dens_plots"]]
-    plots <- plots[["cor_plots"]]
+    n_vars <- sqrt(length(plots))
 
-    grob_legend <- ggplot_gtable(ggplot_build(plots[[1]]))
+    null_grobs <- sapply(plots, inherits, what = "NULL")
+    plots[null_grobs] <- lapply(1:sum(null_grobs), nullGrob)
+
+    grob_legend <- ggplot_gtable(ggplot_build(plots[[2]]))
     grob_legend <- grob_legend$grobs[[which(sapply(grob_legend$grobs, `[[`, "name") == "guide-box")]]
 
-    n_vars <- length(dens_plotlist)#((sqrt(8*(length(plots)) + 1) - 1)/2)+1
-
-    grob_list <- lapply(1:(n_vars*n_vars), nullGrob)
-
     model_mat <- matrix(1L:(n_vars*n_vars), nrow = n_vars)
-    grob_cor <- model_mat[lower.tri(model_mat)]
-    grob_list[grob_cor] <- plots
+    model_mat[upper.tri(model_mat)] <- NA
 
-    grob_dens <- diag(model_mat)
-    grob_null <- grob_cor <- model_mat[upper.tri(model_mat)]
-
-    grob_cols <- grob_rows <- n_vars
-
-    no_x <- as.vector(model_mat[-nrow(model_mat), ])
-    no_x <- no_x[!no_x %in% grob_null]
-    no_y <- model_mat[nrow(model_mat), -1]
-    no_x_y <- model_mat[lower.tri(model_mat, diag = TRUE)]
-    no_x_y <- no_x_y[!no_x_y %in% c(has_x, has_y)]
+    no_x_y <- na.omit(as.vector(model_mat[-nrow(model_mat), -1]))
+    keep_x <- model_mat[nrow(model_mat), -1, drop = TRUE]
+    keep_y <- model_mat[-nrow(model_mat), 1, drop = TRUE]
 
 #     This is to remove legends and axis and adjust width
-    grob_list[[n_vars]] <- suppressMessages(ggplotGrob(grob_list[[n_vars]]+theme(legend.position = "none")))
-    fixed_widths <- grob_list[[n_vars]]$widths
-    fixed_heights <- grob_list[[n_vars]]$heights
-    grob_list[no_x] <- lapply(grob_list[no_x], function(this_plot){
+    plots[[n_vars]] <- suppressMessages(ggplotGrob(plots[[n_vars]]+theme(legend.position = "none")))
+    fixed_widths <- plots[[n_vars]]$widths
+    fixed_heights <- plots[[n_vars]]$heights
+    plots[keep_y] <- lapply(plots[keep_y], function(this_plot){
         if(inherits(this_plot, "ggplot")){
             suppressMessages(ggplotGrob(this_plot+theme(axis.title.x = element_blank(),
                                                         axis.text.x = element_blank(),
@@ -292,7 +276,7 @@ merge_corplots <- function(plots, ...){
                                                         legend.position = "none")))
         }
         })
-    grob_list[no_y] <- lapply(grob_list[no_y], function(this_plot){
+    plots[keep_x] <- lapply(plots[keep_x], function(this_plot){
         if(inherits(this_plot, "ggplot")){
         suppressMessages(ggplotGrob(this_plot+theme(axis.title.y = element_blank(),
                                                     axis.text.y = element_blank(),
@@ -300,7 +284,7 @@ merge_corplots <- function(plots, ...){
                                                     legend.position = "none")))
         }
     })
-    grob_list[no_x_y] <- lapply(grob_list[no_x_y], function(this_plot){
+    plots[no_x_y] <- lapply(plots[no_x_y], function(this_plot){
         if(inherits(this_plot, "ggplot")){
         suppressMessages(ggplotGrob(this_plot+theme(axis.title.x = element_blank(),
                                                     axis.text.x = element_blank(),
@@ -312,43 +296,16 @@ merge_corplots <- function(plots, ...){
         }
     })
 
-
-    grob_list[grob_dens] <- lapply(dens_plotlist, function(this_plot){
-        if(inherits(this_plot, "ggplot")){
-            suppressMessages(ggplotGrob(this_plot+theme(axis.title.x = element_blank(),
-                                                        axis.text.x = element_blank(),
-                                                        axis.ticks.x = element_blank(),
-                                                        axis.title.y = element_blank(),
-                                                        axis.text.y = element_blank(),
-                                                        axis.ticks.y = element_blank(),
-                                                        legend.position = "none")))
-        }
-    })
-
-    grob_list[c(no_x, no_y, no_x_y, grob_dens)] <- lapply(grob_list[c(no_x, no_y, no_x_y, grob_dens)], function(x){
+    plots <- lapply(plots, function(x){
         x$widths <- fixed_widths
         x$heights <- fixed_heights
         x
     })
-    #grob_list[grob_dens] <- lapply(1:n_vars, nullGrob)
 
-    grob_list[[model_mat[1, n_vars]]] <- grob_legend
-    #
-    # for(x in 1:length(plots)){
-    #     if(x %in%)
-    #     if(!(x %in% model_mat[-nrow(model_mat), -1][lower.tri(model_mat[-nrow(model_mat), -1])]){
-    #         plots[[x]] <- plots[[x]] + theme(axis.text.y = element_blank(),
-    #                                          axis.ticks.y = element_blank())
-    #     }
-    #     if(!x == grob_cols){
-    #         plots[[x]] <- plots[[x]] +
-    #     }
-    #     plots[[x]] <- suppressMessages(ggplotGrob(plots[[x]]+theme(axis.title.y = element_blank())))
-    #     if(x > 1) plots[[x]]$widths <- plots[[1]]$widths
-    # }
+    plots[[((n_vars-1)*n_vars)+1]] <- grob_legend
 
     gt <- gtable_matrix("corr_plot",
-                        matrix(grob_list, nrow = n_vars, ncol = n_vars),
+                        matrix(plots, nrow = n_vars, ncol = n_vars),
                         widths = unit(rep(1, n_vars), "null"),
                         heights = unit(rep(1, n_vars), "null"))
 
