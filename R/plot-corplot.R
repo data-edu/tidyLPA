@@ -216,7 +216,10 @@ plot_corplot.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE
             legend.box = "horizontal",
             legend.position = c(1, .997),
             legend.justification = c(1, 1)
-        ) + theme_bw()
+        ) + theme_bw() +
+        scale_x_continuous(expand = c(0, 0))+
+        scale_y_continuous(expand = c(0, 0))
+
 }
 
 
@@ -250,14 +253,21 @@ get_palette <- function(x){
 merge_corplots <- function(plots, ...) {
     suppressWarnings({
         suppressMessages({
+
             n_vars <- sqrt(length(plots))
 
             null_grobs <- sapply(plots, inherits, what = "NULL")
             plots[null_grobs] <- lapply(1:sum(null_grobs), nullGrob)
 
-            grob_legend <- ggplot_gtable(ggplot_build(plots[[2]]))
+            plot2_grobs <- ggplot_gtable(ggplot_build(plots[[2]]))
             grob_legend <-
-                grob_legend$grobs[[which(sapply(grob_legend$grobs, `[[`, "name") == "guide-box")]]
+                plot2_grobs$grobs[[which(sapply(plot2_grobs$grobs, `[[`, "name") == "guide-box")]]
+            width_grob <- grobWidth(plot2_grobs$grobs[[grep("^axis.title.y.left", sapply(tmp$grobs, `[[`, "name"))]])
+
+            # axes <- lapply(plots[1:n_vars], function(x){
+            #     tmp <- ggplot_gtable(ggplot_build(x))
+            #     tmp$grobs[[grep("^axis.title.y.left", sapply(tmp$grobs, `[[`, "name"))]]
+            #     })
 
             model_mat <- matrix(1L:(n_vars * n_vars), nrow = n_vars)
             model_mat[upper.tri(model_mat)] <- NA
@@ -311,12 +321,26 @@ merge_corplots <- function(plots, ...) {
                     )
                 }
             })
+            #save(plots, width_grob, n_vars, fixed_heights, fixed_widths, grob_legend,model_mat, plot2_grobs, file = "tmp.RData")
+            #browser()
+            for(x in 1:length(plots)){
+                plots[[x]]$widths <- fixed_widths
+                if(x > n_vars){
+                    plots[[x]]$widths[c(1,3)] <- unit(0, "cm")
+                    plots[[x]]$widths[4] <- plots[[x]]$widths[4]+width_grob
+                }
+                plots[[x]]$heights <- fixed_heights
+                if(!x %in% model_mat[nrow(model_mat), ]){
+                    plots[[x]]$heights[c(1,9)] <- unit(0, "cm")
+                    plots[[x]]$heights[8] <- plots[[x]]$heights[8]+width_grob
+                }
+            }
+            #plots[-c(1:n_vars)] <- lapply(plots[-c(1:n_vars)], function(x) {
 
-            plots <- lapply(plots, function(x) {
-                x$widths <- fixed_widths
-                x$heights <- fixed_heights
-                x
-            })
+
+                #x$heights <- fixed_heights
+            #    x
+            #})
 
             plots[[((n_vars - 1) * n_vars) + 1]] <- grob_legend
 
@@ -327,9 +351,10 @@ merge_corplots <- function(plots, ...) {
                 heights = unit(rep(1, n_vars), "null")
             )
 
-            # left <- textGrob(ylab, rot = 90, just = c(.5, .5))
-            # gt <- gtable_add_cols(gt, widths = grobWidth(left)+ unit(0.5, "line"), 0)
-            # gt <- gtable_add_grob(gt, left, t = 1, b = nrow(gt),
+
+            #left <- textGrob(ylab, rot = 90, just = c(.5, .5))
+            #gt <- gtable_add_cols(gt, widths = grobWidth(axes[[1]])+ unit(0.5, "line"), 0)
+            #gt <- gtable_add_grob(gt, axes, t = 1, b = nrow(gt),
             #                       l = 1, r = 1, z = Inf)
             # gt <- gtable_add_cols(gt, widths = unit(0.5, "line"))
 
