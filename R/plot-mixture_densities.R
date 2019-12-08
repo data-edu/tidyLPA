@@ -96,9 +96,7 @@ plot_density.default <-
         }
 
         density_plot <- density_plot +
-            theme_bw() +
-            scale_x_continuous(expand = c(0, 0)) +
-            scale_y_continuous(expand = c(0, 0))
+            theme_bw()
 
         suppressWarnings(print(density_plot))
         return(invisible(density_plot))
@@ -115,7 +113,7 @@ plot_density.tidyLPA <-
              facet_labels = NULL,
              ...) {
 
-        Args <- as.list(match.call()[-1])
+        Args <- as.list(match.call()[-c(1,2)])
 
         # If no variables have been specified, use all variables
         var_names <-
@@ -130,6 +128,7 @@ plot_density.tidyLPA <-
             stop("No valid variables provided.")
 
         Args[["variables"]] <- variables
+        Args[["x"]] <- force(x)
         Args[["x"]] <- do.call(.extract_density_data, Args[c("x", "variables")])
         do.call("plot_density", Args)
     }
@@ -147,13 +146,13 @@ plot_density.tidyLPA <-
             x[, which(names(x) %in% c(grep("^CPROB", names(x), value = TRUE), variables))]
         })
     plot_df <- lapply(plot_df, function(x) {
-        if (length(grep("^CPROB", names(x))) == 1) {
-            names(x) <- gsub("^CPROB1", "Probability.Total", names(x))
-            x
-        } else {
+        #if (length(grep("^CPROB", names(x))) == 1) {
+        #    names(x) <- gsub("^CPROB1", "Probability.Total", names(x))
+        #    x
+        #} else {
             names(x) <- gsub("^CPROB", "Probability.", names(x))
             data.frame(x, Probability.Total = 1)
-        }
+        #}
 
     })
 

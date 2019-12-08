@@ -31,11 +31,22 @@ make_ellipsis <- function(r, xmean, ymean, sdx, sdy){
 }
 
 get_cordat <- function(est){
-    df_cors <- est[est$Category == "Covariances", -match("p", names(est))]
+    df_cors <- est[est$Category == "Covariances", -match("p", names(est)), drop = FALSE]
+    if(nrow(df_cors) == 0){
+        vars <- est[est$Class == 1 & est$Category == "Means", ]$Parameter
+        cors <- apply(expand.grid(vars, vars), 1, paste0, collapse = ".WITH.")[which(upper.tri(diag(vars)))]
+        df_cors <- data.frame(Category = "Covariances",
+                              Parameter = cors,
+                              Estimate = 0,
+                              se = 0,
+                              Class = rep(unique(est$Class), each = length(cors)),
+                              Model = est$Model[1],
+                              Classes = est$Classes[1])
+
+    }
     df_cors$xvar <- gsub("\\.WITH.*$", "", df_cors$Parameter)
     df_cors$yvar <- gsub("^.+?WITH\\.", "", df_cors$Parameter)
     df_cors$id <- do.call(paste0, df_cors[c("Class", "Model", "Classes")])
-
     est <- est[!est$Category == "Covariances", -match("p", names(est))]
     est$id <- do.call(paste0, est[c("Parameter", "Class", "Model", "Classes")])
     est <- reshape(est, direction = "wide", v.names = c("Estimate", "se"), timevar = "Category", idvar = "id")
@@ -87,30 +98,34 @@ get_cordat <- function(est){
 #' @author Caspar J. van Lissa
 #' @export
 #' @keywords mixture correlation plot
-#' @rdname plot_corplot
+#' @rdname plot_bivariate
 #' @export
-plot_corplot <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE, ...){
-    UseMethod("plot_corplot", x)
+plot_bivariate <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE){
+    UseMethod("plot_bivariate", x)
 }
 
-#' @method plot_corplot tidyLPA
+#' @method plot_bivariate tidyLPA
 #' @export
-plot_corplot.tidyLPA <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE, ...){
+plot_bivariate.tidyLPA <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE){
     Args <- match.call()
     if(length(x) == 1){
         Args$x <- x[[1]]
-        Args[[1]] <- as.name("plot_corplot")
+        Args[[1]] <- as.name("plot_bivariate")
         eval.parent(Args)
     } else {
-        stop("plot_corplot can only plot a single tidyProfile object. This tidyLPA object contains ", length(x), " tidyProfile objects. Extract one of these objects using '$' or '[[]]' and try again.")
+        stop("plot_bivariate can only plot a single tidyProfile object. This tidyLPA object contains ", length(x), " tidyProfile objects. Extract one of these objects using '$' or '[[]]' and try again.")
     }
 }
 
-#' @method plot_corplot tidyProfile
+#' @method plot_bivariate tidyProfile
 #' @export
-plot_corplot.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE, ...){
+plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE){
+    est <- get_estimates(x)
+    if(is.null(est)){
+        stop("Cannot plot this tidyProfile, because it does not contain estimates. Check whether this model has converged.", call. = FALSE)
+    }
+    df_plot <- get_cordat(as.data.frame(est))
 
-    df_plot <- get_cordat(as.data.frame(get_estimates(x)))
     df_plot$Class <- ordered(df_plot$Class)
 
     if (rawdata) {
@@ -225,31 +240,18 @@ plot_corplot.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE
 
 get_palette <- function(x){
     switch(max(x-2, 1),
-              rgb(c(228,55,77),
-                  c(26,126,175),
-                  c(28,184,74),maxColorValue=255),
-              rgb(c(228,55,77,152),
-                  c(26,126,175,78),
-                  c(28,184,74,163),maxColorValue=255),
-              rgb(c(228,55,77,152,255),
-                  c(26,126,175,78,127),
-                  c(28,184,74,163,0),maxColorValue=255),
-              rgb(c(228,55,77,152,255,255),
-                  c(26,126,175,78,127,255),
-                  c(28,184,74,163,0,51),maxColorValue=255),
-              rgb(c(228,55,77,152,255,255,166),
-                  c(26,126,175,78,127,255,86),
-                  c(28,184,74,163,0,51,40),maxColorValue=255),
-              rgb(c(228,55,77,152,255,255,166,247),
-                  c(26,126,175,78,127,255,86,129),
-                  c(28,184,74,163,0,51,40,191),maxColorValue=255),
-              rgb(c(228,55,77,152,255,255,166,247,153),
-                  c(26,126,175,78,127,255,86,129,153),
-                  c(28,184,74,163,0,51,40,191,153),maxColorValue=255)
+           c("#E41A1C", "#377EB8", "#4DAF4A"),
+           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3"),
+           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00"),
+           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33"),
+           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628"),
+           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628", "#F781BF"),
+           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999")
     )[1:x]
 }
 
 #' @import grid gtable
+#' @importFrom stats na.omit
 merge_corplots <- function(plots, ...) {
     suppressWarnings({
         suppressMessages({
@@ -262,7 +264,7 @@ merge_corplots <- function(plots, ...) {
             plot2_grobs <- ggplot_gtable(ggplot_build(plots[[2]]))
             grob_legend <-
                 plot2_grobs$grobs[[which(sapply(plot2_grobs$grobs, `[[`, "name") == "guide-box")]]
-            width_grob <- grobWidth(plot2_grobs$grobs[[grep("^axis.title.y.left", sapply(tmp$grobs, `[[`, "name"))]])
+            width_grob <- grobWidth(plot2_grobs$grobs[[grep("^axis.title.y.left", sapply(plot2_grobs$grobs, `[[`, "name"))]])
 
             # axes <- lapply(plots[1:n_vars], function(x){
             #     tmp <- ggplot_gtable(ggplot_build(x))
@@ -321,8 +323,7 @@ merge_corplots <- function(plots, ...) {
                     )
                 }
             })
-            #save(plots, width_grob, n_vars, fixed_heights, fixed_widths, grob_legend,model_mat, plot2_grobs, file = "tmp.RData")
-            #browser()
+
             for(x in 1:length(plots)){
                 plots[[x]]$widths <- fixed_widths
                 if(x > n_vars){
@@ -365,4 +366,4 @@ merge_corplots <- function(plots, ...) {
     })
 }
 
-#plot_corplot.tidyProfile(res)
+#plot_bivariate.tidyProfile(res)

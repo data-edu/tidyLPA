@@ -61,7 +61,7 @@ pisaUSA15[1:100, ] %>%
 
 ### Mplus
 
-We can use Mplus simply by changing the package argument for `estimate_profiles()`:
+We can use Mplus simply by changing the package argument for `estimate_profiles()` to `"MplusAutomation"`:
 
 ```{r, eval = FALSE}
 pisaUSA15[1:100, ] %>%
@@ -156,7 +156,7 @@ m <- pisaUSA15[1:100, ] %>%
 get_data(m)
 ```
 
-We note that `get_data()` returns data in wide format when applied to an object of class tidyProfile (one element of a tidyLPA object), or when applied to a tidyLPA object of length one. `get_data()` returns long format when applied to a tidyLPA object containing multiple tidyProfile analyses (because then the wide format does not make sense).
+We note that `get_data()` returns data in wide format when applied to an object of class tidyProfile (one element of a tidyLPA object), or when applied to a tidyLPA object of length one. `get_data()` returns long format when applied to a tidyLPA object containing multiple tidyProfile analyses, because the number of columns varies between the different class solutions.
 
 To transform data in the wide format into the long format, the `gather()` function from the **tidyr** package can be used, e.g.:
 
@@ -179,7 +179,7 @@ To learn more:
 
 > Rosenberg, J. M., Beymer, P. N., Anderson, D. J., Van Lissa, C. J., & Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. *Journal of Open Source Software, 3*(30), 978, https://doi.org/10.21105/joss.00978
 
-You can also cite the most latest version with the following citation:
+You can also cite the R-package with the following citation:
 
 > Rosenberg, J. M., van Lissa, C. J.,  Beymer, P. N., Anderson, D. J., Schell, M. J. & Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. https://data-edu.github.io/tidyLPA/
 

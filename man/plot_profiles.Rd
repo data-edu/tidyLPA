@@ -11,7 +11,7 @@ plot_profiles(x, variables = NULL, ci = 0.95, sd = TRUE,
   0.1), ...)
 
 \method{plot_profiles}{default}(x, variables = NULL, ci = 0.95,
-  sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE,
+  sd = TRUE, add_line = FALSE, rawdata = TRUE, bw = FALSE,
   alpha_range = c(0, 0.1), ...)
 
 \method{plot_profiles}{tidyLPA}(x, variables = NULL, ci = 0.95,

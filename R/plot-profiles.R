@@ -15,7 +15,7 @@ plot_profiles <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = T
 #' @rdname plot_profiles
 #' @import ggplot2
 #' @export
-plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
+plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = FALSE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
 
     df_plot <- droplevels(x[["df_plot"]])
 
@@ -54,7 +54,7 @@ plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
                     shape = "Class",
                     colour = "Class"
                 )
-            )
+            ) + scale_colour_manual(values = get_palette(max(df_plot$Classes)))
     }
 
     if (rawdata) {
