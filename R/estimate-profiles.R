@@ -350,6 +350,9 @@ get_data.tidyProfile <- function(x, ...) {
 # Internal ----------------------------------------------------------------
 
 .get_long_data <- function(x, ...) {
+    if(inherits(x, "tidyProfile")){
+        x <- list(x)
+    }
     out <- lapply(x, function(x) {
         if(!is.null(x[["dff"]])){
             dt <- data.frame(x[["dff"]])

@@ -57,6 +57,7 @@ plot_density <-
     }
 
 
+#' @method plot_density default
 #' @export
 plot_density.default <-
     function(x,
@@ -103,6 +104,7 @@ plot_density.default <-
     }
 
 
+#' @method plot_density tidyLPA
 #' @export
 plot_density.tidyLPA <-
     function(x,
@@ -133,8 +135,41 @@ plot_density.tidyLPA <-
         do.call("plot_density", Args)
     }
 
+#' @method plot_density tidyProfile
+#' @export
+plot_density.tidyProfile <-
+    function(x,
+             variables = NULL,
+             bw = FALSE,
+             conditional = FALSE,
+             alpha = .2,
+             facet_labels = NULL,
+             ...) {
+        Args <- as.list(match.call()[-c(1,2)])
+
+        # If no variables have been specified, use all variables
+        var_names <-
+            names(x$dff)[-grep("^(model_number|classes_number|CPROB\\d+|Class)$",
+                                    names(x$dff))]
+        if (is.null(variables)) {
+            variables <- var_names
+        } else {
+            variables <- variables[which((variables) %in% (var_names))]
+        }
+        if (!length(variables))
+            stop("No valid variables provided.")
+
+        Args[["variables"]] <- variables
+        Args[["x"]] <- force(x)
+        Args[["x"]] <- do.call(.extract_density_data, Args[c("x", "variables")])
+        do.call("plot_density", Args)
+    }
+
 .extract_density_data <- function(x,
                                   variables = NULL, longform = TRUE){
+    if(inherits(x, "tidyProfile")){
+        x <- list(x)
+    }
     x[sapply(x, function(i){is.null(i[["dff"]])})] <- NULL
     # Check if all variables (except CPROBs) are identical across models
     plot_df <- lapply(x, function(x)
@@ -143,18 +178,10 @@ plot_density.tidyLPA <-
 
     plot_df <-
         lapply(plot_df, function(x) {
-            x[, which(names(x) %in% c(grep("^CPROB", names(x), value = TRUE), variables))]
-        })
-    plot_df <- lapply(plot_df, function(x) {
-        #if (length(grep("^CPROB", names(x))) == 1) {
-        #    names(x) <- gsub("^CPROB1", "Probability.Total", names(x))
-        #    x
-        #} else {
+            x <- x[, which(names(x) %in% c(grep("^CPROB", names(x), value = TRUE), variables))]
             names(x) <- gsub("^CPROB", "Probability.", names(x))
             data.frame(x, Probability.Total = 1)
-        #}
-
-    })
+        })
 
     for (i in names(plot_df)) {
         plot_df[[i]][, grep("^Probability", names(plot_df[[i]]))] <-
@@ -162,7 +189,6 @@ plot_density.tidyLPA <-
                 x / length(x)
             })
     }
-
 
     plot_df <- lapply(plot_df, function(x) {
         reshape(
@@ -175,10 +201,15 @@ plot_density.tidyLPA <-
         )
     })
 
-    plot_df <-
-        do.call(rbind, lapply(names(plot_df), function(x) {
-            data.frame(Title = gsub("_", " ", x), plot_df[[x]])
-        }))
+    if(length(plot_df) > 1){
+        plot_df <-
+            do.call(rbind, lapply(names(plot_df), function(x) {
+                data.frame(Title = gsub("_", " ", x), plot_df[[x]])
+            }))
+    } else {
+        plot_df <- data.frame(Title = "", plot_df[[1]])
+    }
+
     if(longform){
         variable_names <-
             which(!(
