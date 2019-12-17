@@ -239,15 +239,20 @@ plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TR
 
 
 get_palette <- function(x){
-    switch(max(x-2, 1),
-           c("#E41A1C", "#377EB8", "#4DAF4A"),
-           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3"),
-           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00"),
-           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33"),
-           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628"),
-           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628", "#F781BF"),
-           c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999")
-    )[1:x]
+    if(x < 10){
+        switch(max(x-2, 1),
+               c("#E41A1C", "#377EB8", "#4DAF4A"),
+               c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3"),
+               c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00"),
+               c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33"),
+               c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628"),
+               c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628", "#F781BF"),
+               c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999")
+        )[1:x]
+    } else {
+        colrs <- grDevices::colors()[grep('gr(a|e)y', grDevices::colors(), invert = T)]
+        c(get_palette(9), sample(colrs, (x-9)))
+    }
 }
 
 #' @import grid gtable

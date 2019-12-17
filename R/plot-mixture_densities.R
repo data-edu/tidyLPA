@@ -239,7 +239,7 @@ plot_density.tidyLPA <-
             plot_df$alpha[plot_df$Class == "Total"] <- 0
             #plot_df$size <- .5
             #plot_df$size[plot_df$Class == "Total"] <- 1
-            plot_df$Class <- ordered(plot_df$Class, levels = c(levels(plot_df$Class)[-1], levels(plot_df$Class)[1]))
+            plot_df$Class <- ordered(plot_df$Class, levels = c(levels(plot_df$Class)[-1][order(as.numeric(levels(plot_df$Class)[-1]))], levels(plot_df$Class)[1]))
             density_plot <-
                 ggplot(plot_df,
                        aes_string(x = "Value",
@@ -248,9 +248,11 @@ plot_density.tidyLPA <-
                                   weight = "Probability",
                                   alpha = "alpha"#,
                                   #size = "size"
-                       )) +
-                scale_colour_manual(values = c(get_palette(length(levels(plot_df$Class))-1), "#000000"))+
-                scale_fill_manual(values = c(get_palette(length(levels(plot_df$Class))-1), "#000000"))+
+                       ))
+            class_colors <- c(get_palette(length(levels(plot_df$Class))-1), "#000000")
+            density_plot <- density_plot +
+                scale_colour_manual(values = class_colors)+
+                scale_fill_manual(values = class_colors) +
                 scale_alpha_continuous(range = c(0, alpha), guide = FALSE)+
                 scale_size_continuous(range = c(.5, 1), guide = FALSE)+
                 geom_density()+
