@@ -339,11 +339,13 @@ avgprobs_mostlikely <- function(post_prob, class){
 classification_probs_mostlikely <- function(post_prob, class){
     if(is.null(dim(post_prob))) return(1)
     avg_probs <- avgprobs_mostlikely(post_prob, class)
-    C <- length(unique(class))
+    avg_probs[is.na(avg_probs)] <- 0
+    C <- dim(post_prob)[2]
     N <- sapply(1:C, function(x) sum(class == x))
     tab <- mapply(function(this_row, this_col){
-        (avg_probs[this_row, this_col]*N[this_row])/(sum(avg_probs[ , this_col] * N))
+        (avg_probs[this_row, this_col]*N[this_row])/(sum(avg_probs[ , this_col] * N, na.rm = TRUE))
     }, this_row = rep(1:C, C), this_col = rep(1:C, each = C))
+
     matrix(tab, C, C, byrow = TRUE)
 }
 
