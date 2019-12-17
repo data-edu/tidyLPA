@@ -294,9 +294,15 @@ calc_fitindices <- function(model, fitindices){
         n <- model$n
         post_prob <- model$z
         class <- model$classification
+        class_tab <- table(model$classification)
+        if(length(class_tab) == ncol(post_prob)){
+          prop_n <- range(prop.table(class_tab))
+        } else {
+          prop_n <- c(0, max(prop.table(class_tab)))
+        }
         fits <- c(ifelse(ncol(post_prob) == 1, 1, 1 + (1/(nrow(post_prob)*log(ncol(post_prob))))*(sum(rowSums(post_prob * log(post_prob+1e-12))))),
                  range(diag(classification_probs_mostlikely(post_prob, class))),
-                 range(prop.table(table(model$classification))),
+                 prop_n,
                  model$LRTS,
                  model$LRTS_p
         )

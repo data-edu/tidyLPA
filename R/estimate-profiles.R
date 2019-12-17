@@ -416,6 +416,9 @@ print.tidyLPA <-
              na.print = "",
              ...) {
         fits <- get_fit(x)
+        if(all(is.na(fits[, -c(1,2)]))){
+            stop("This tidyLPA analysis does not contain any valid results. Most likely, all models failed to converge.", call. = FALSE)
+        }
         dat <- as.matrix(fits[, c("Model", "Classes", stats)])
         miss_val <- is.na(dat)
         #dat$Model <- paste("Model ", dat$Model)
