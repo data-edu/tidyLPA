@@ -69,7 +69,9 @@ plot_density.default <-
 
         plot_df <- x
         # Plot figure
-        Args <- c(list(plot_df = plot_df), as.list(match.call()[-c(1:2, 6)]))
+        Args <- as.list(match.call()[-1])
+        Args <- Args[which(names(Args) %in% c("variables", "bw", "conditional", "alpha"))]
+        Args <- c(Args, list(plot_df = plot_df))
         density_plot <- do.call(.plot_density_fun, Args)
         # Relabel facets
         label_facets <- c(levels(plot_df$Variable), levels(plot_df$Title))
