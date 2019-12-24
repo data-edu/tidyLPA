@@ -43,6 +43,8 @@ Depends:
 Imports: 
     dplyr,
     ggplot2,
+    gtable,
+    grid,
     mclust,
     methods,
     mix,

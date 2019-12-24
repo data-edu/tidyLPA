@@ -177,7 +177,6 @@ estimates.mplus.model <- function(model){
 
 
 estimates.Mclust <- function(model){
-
     ses_mean <- apply(model$mclustBootstrap$mean, 3, colSD)
     ses_var <- apply(model$mclustBootstrap$variance, 4, function(x) {
         apply(x, 3, colSD)
@@ -221,7 +220,7 @@ estimates.Mclust <- function(model){
     df$Class <- rep(1:n_class, each = nrow(df)/n_class)
     row.names(df) <- NULL
     names(df) <- c("Category", "Parameter", "Estimate", "se", "p", "Class")
-    df
+    df[!(duplicated(df$Estimate) & df$Category == "Covariances"), ]
 
 }
 
@@ -295,9 +294,15 @@ calc_fitindices <- function(model, fitindices){
         n <- model$n
         post_prob <- model$z
         class <- model$classification
+        class_tab <- table(model$classification)
+        if(length(class_tab) == ncol(post_prob)){
+          prop_n <- range(prop.table(class_tab))
+        } else {
+          prop_n <- c(0, max(prop.table(class_tab)))
+        }
         fits <- c(ifelse(ncol(post_prob) == 1, 1, 1 + (1/(nrow(post_prob)*log(ncol(post_prob))))*(sum(rowSums(post_prob * log(post_prob+1e-12))))),
                  range(diag(classification_probs_mostlikely(post_prob, class))),
-                 range(prop.table(table(model$classification))),
+                 prop_n,
                  model$LRTS,
                  model$LRTS_p
         )
@@ -340,11 +345,13 @@ avgprobs_mostlikely <- function(post_prob, class){
 classification_probs_mostlikely <- function(post_prob, class){
     if(is.null(dim(post_prob))) return(1)
     avg_probs <- avgprobs_mostlikely(post_prob, class)
-    C <- length(unique(class))
+    avg_probs[is.na(avg_probs)] <- 0
+    C <- dim(post_prob)[2]
     N <- sapply(1:C, function(x) sum(class == x))
     tab <- mapply(function(this_row, this_col){
-        (avg_probs[this_row, this_col]*N[this_row])/(sum(avg_probs[ , this_col] * N))
+        (avg_probs[this_row, this_col]*N[this_row])/(sum(avg_probs[ , this_col] * N, na.rm = TRUE))
     }, this_row = rep(1:C, C), this_col = rep(1:C, each = C))
+
     matrix(tab, C, C, byrow = TRUE)
 }
 

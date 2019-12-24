@@ -1,3 +1,11 @@
+# tidyLPA 1.0.5
+* Add C. J. van Lissa as author on JOSS paper
+* Fix bug re. passing additional parameters to mplusObject()
+* Add function to calculate Lo-Mendell-Rubin LR test
+* Add plot_bivariate function
+* Set default for plot_profiles(add_line = FALSE), because the line does not 
+  convey any meaningful information
+
 # tidyLPA 1.0.4
 * add data for paper
 * wrap mclust to handle errors better

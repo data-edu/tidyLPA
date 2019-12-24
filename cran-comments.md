@@ -1,14 +1,14 @@
 # CRAN comments
 
-We are submitting this update <30 days after the last update due to the discovery of a bug in the previous update that we wish to address ASAP. Thank you!
-
 ## Test environments
+* local local Windows 10 install, R 3.6.1
 * local OS X install, R 3.5.1
-* ubuntu 14.04 (on travis-ci), R 3.5.1
+* travis-ci, Ubuntu 16.04.6, R 3.6.1
+* rhub check: Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+* rhub check: Ubuntu Linux 16.04 LTS, R-release, GCC
+* rhub check: Fedora Linux, R-devel, clang, gfortran
 * win-builder (devel and release)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 notes

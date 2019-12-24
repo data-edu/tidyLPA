@@ -18,3 +18,4 @@ binary/
 analysis-for-paper.r
 ex-data.csv
 tests/test_local.R
+*.RData
