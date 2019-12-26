@@ -1,3 +1,6 @@
+.mplusObjectArgNames <- formalArgs(mplusObject)
+.mplusModelerArgNames <- formalArgs(mplusModeler)
+
 #' Estimate latent profiles using Mplus
 #'
 #' Estimates latent profiles (finite mixture models) using the commercial
@@ -24,56 +27,53 @@
 #' @import MplusAutomation
 estimate_profiles_mplus2 <-
     function(df, n_profiles, model_numbers, select_vars, ..., keepfiles = FALSE) {
-        arg_list <- as.list(match.call())
+
+        arg_list <- as.list(match.call())[-1]
         df_full <- df
         df <- df[, select_vars, drop = FALSE]
         all_na_rows <- rowSums(is.na(df)) == ncol(df)
         if(any(all_na_rows)){
             warning("Data set contains cases with missing on all variables. These cases were not included in the analysis.\n")
+            df <- df[!all_na_rows, , drop = FALSE]
         }
-        df <- df[!all_na_rows, , drop = FALSE]
-        model_overall <- ifelse("model_overall" %in% names(arg_list), arg_list[["model_overall"]], "")
+        # Always rename all variables for Mplus; simpler than handling
+        # restrictions on variable name length and characters used:
+        original_names <- selected_variables <- names(df)
+        names(df) <- param_names <- paste0("X", 1:ncol(df))
+
+        # Check which arguments the user tried to pass.
+        # First, check for arguments that cannot be used at all
+        .estimate_profiles_mplus2ArgNames <- c("df", "n_profiles", "model_numbers", "select_vars", "keepfiles")
+        if(any(!(names(arg_list) %in% c(.estimate_profiles_mplus2ArgNames, .mplusModelerArgNames, .mplusObjectArgNames)))){
+            illegal_args <- names(arg_list)[which(!(names(arg_list) %in% c(.estimate_profiles_mplus2ArgNames, .mplusModelerArgNames, .mplusObjectArgNames)))]
+            stop("The following illegal arguments were detected in the call to estimate_profiles:\n", paste0("  ", illegal_args, collapse = "\n"), "\nThese are not valid arguments to estimate_profiles(), mplusObject(), or mplusModeler(). Drop these arguments, and try again.", sep = "", call. = FALSE)
+        }
+        # Next, check for arguments that are constructed by estimate_profiles
+        Args <- list(...)
+        if(any(c("rdata", "usevariables", "MODEL") %in% names(Args))){
+            illegal_args <- c("rdata", "usevariables", "MODEL")[which(c("rdata", "usevariables", "MODEL") %in% names(Args))]
+            stop("The following illegal arguments were detected in the call to estimate_profiles:\n", paste0("  ", illegal_args, collapse = "\n"), "\nThese arguments are constructed by estimate_profiles(), and cannot be passed by users. Drop these arguments, and try again.", sep = "", call. = FALSE)
+        }
+
+        Args <- c(list(rdata = df, usevariables = param_names), Args)
+
+        # Create necessary mplusObject arguments for mixture model, taking
+        # into account any existing arguments passed by the user
+        if("model_overall" %in% names(arg_list)){
+            model_overall <- arg_list[["model_overall"]]
+            for(i in 1:length(original_names)){
+                model_overall <- gsub(original_names[i], param_names[i], model_overall)
+            }
+        } else {
+            model_overall <- ""
+        }
+
         filename_stem <- NULL
         if("filename_stem" %in% names(arg_list)) filename_stem <- arg_list[["filename_stem"]]
-        original_names <- param_names <- names(df)
-        param_warning <- ""
-        param_names_length <- sapply(param_names, nchar)
-        if (any(param_names_length > 8)) {
-            param_warning <- "\nMplus cannot handle variable names longer than 8 characters. Some variable names were truncated.\n"
-            param_names[param_names_length > 8] <-
-                substring(param_names[param_names_length > 8], 1, 8)
-        }
-        if (any(grepl("\\.", param_names))) {
-            param_warning <- paste0(param_warning, "Some variable names contained periods. These were replaced with underscores.\n")
-            param_names[grepl("\\.", param_names)] <-
-                gsub("\\.", "_", param_names[grepl("\\.", param_names)])
-        }
-        if(!length(unique(param_names)) == length(param_names)){
-            dups <- duplicated(param_names) | duplicated(param_names, fromLast = TRUE)
-            stop(param_warning, "\nThe resulting variable names were not unique. Please rename your variables prior to running the analysis, to prevent duplicates. The duplicated variable names are:\n\n",
-                 gsub(", ", "", toString(t(cbind(paste0(c("Original:", names(df)[dups]), "\t"), paste0(c("Renamed:", param_names[dups]), "\n"))))))
-        }
-        selected_variables <- names(df)
-        names(df) <- param_names
-
-        Args <- c(list(
-            rdata = df,
-            usevariables = param_names,
-            OUTPUT = "TECH14;"
-        ),
-        list(...))
-        if (hasArg("MODEL")) {
-            warning(
-                "MODEL argument was dropped: createMixtures constructs its own MODEL argument from model_overall and model_class_specific."
-            )
-            Args$MODEL <- NULL
-        }
-
-        if (hasArg("model_overall")) {
-            Args[["MODEL"]] <-
-                paste(c("%OVERALL%\n", model_overall, "\n\n"), collapse = "")
+        if (hasArg("OUTPUT")) {
+            Args[["OUTPUT"]] <- paste0("TECH14;\n", Args[["OUTPUT"]])
         } else {
-            Args[["MODEL"]] <- ""
+            Args[["OUTPUT"]] <- "TECH14;\n"
         }
 
         if (hasArg("ANALYSIS")) {
@@ -89,34 +89,11 @@ estimate_profiles_mplus2 <-
                 gsub("  ", "\n", x)
             })
 
-        mplusObjectArgNames <-
-            c(
-                "TITLE",
-                "DATA",
-                "VARIABLE",
-                "DEFINE",
-                "MONTECARLO",
-                "MODELPOPULATION",
-                "MODELMISSING",
-                "ANALYSIS",
-                "MODEL",
-                "MODELINDIRECT",
-                "MODELCONSTRAINT",
-                "MODELTEST",
-                "MODELPRIORS",
-                "OUTPUT",
-                "SAVEDATA",
-                "PLOT",
-                "usevariables",
-                "rdata",
-                "autov",
-                "imputed"
-            )
+        # Separate arguments for mplusObject and mplusModeler
+        mplusObjectArgs <- Args[which(names(Args) %in% .mplusObjectArgNames)]
+        mplusModelerArgs <- Args[which(names(Args) %in% .mplusModelerArgNames)]
 
-        mplusObjectArgs <- Args[which(names(Args) %in% mplusObjectArgNames)]
-        leftOverArgs <- Args[-(which(names(Args) %in% mplusObjectArgNames))]
-
-        # Create mplusObject template
+        # Create mplusObject template for all models
         base_object <- invisible(suppressMessages(do.call(mplusObject, mplusObjectArgs)))
         if(ncol(df) == 1){
             base_object$VARIABLE <- paste0("NAMES = ", names(df), ";\n")
@@ -126,8 +103,7 @@ estimate_profiles_mplus2 <-
 
         out_list <- mapply(
             FUN = function(this_class, this_model) {
-                # Generate specific Mplus object ------------------------------------------
-
+                # Generate specific Mplus object for each individual model
                 base_object$VARIABLE <-
                     paste0(base_object$VARIABLE, paste(c(
                         "CLASSES = ",
@@ -231,7 +207,7 @@ estimate_profiles_mplus2 <-
                                     writeData = "ifmissing",
                                     hashfilename = TRUE
                                 ),
-                                leftOverArgs
+                                mplusModelerArgs
                             ))
                 ))$results)
 

@@ -332,7 +332,7 @@ get_data.tidyLPA <- function(x, ...) {
         cl[[1]] <- as.name("get_data")
         return(eval.parent(cl))
     }
-    as_tibble(do.call(get_long_data, as.list(cl[-1])))
+    as_tibble(do.call(.get_long_data, as.list(cl[-1])))
 }
 
 #' @describeIn get_data Get data for a single latent profile analysis object,
@@ -349,7 +349,10 @@ get_data.tidyProfile <- function(x, ...) {
 
 # Internal ----------------------------------------------------------------
 
-get_long_data <- function(x, ...) {
+.get_long_data <- function(x, ...) {
+    if(inherits(x, "tidyProfile")){
+        x <- list(x)
+    }
     out <- lapply(x, function(x) {
         if(!is.null(x[["dff"]])){
             dt <- data.frame(x[["dff"]])
@@ -413,6 +416,9 @@ print.tidyLPA <-
              na.print = "",
              ...) {
         fits <- get_fit(x)
+        if(all(is.na(fits[, -c(1,2)]))){
+            stop("This tidyLPA analysis does not contain any valid results. Most likely, all models failed to converge.", call. = FALSE)
+        }
         dat <- as.matrix(fits[, c("Model", "Classes", stats)])
         miss_val <- is.na(dat)
         #dat$Model <- paste("Model ", dat$Model)
