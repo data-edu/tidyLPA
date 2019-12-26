@@ -16,4 +16,7 @@ binary/
 *.txt
 *.log
 analysis-for-paper.r
-ex-data.csv
+ex-data.csvs
+benchmarking.R
+tests/test_local.R
+*.RData
