@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply POMS-coding to data — poms • tidyLPA</title>
+<title>Lo-Mendell-Rubin likelihood ratio test — calc_lrt • tidyLPA</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Apply POMS-coding to data — poms" />
-<meta property="og:description" content="Takes in a data.frame, and applies POMS (proportion of of maximum)-coding to
-the numeric columns." />
+<meta property="og:title" content="Lo-Mendell-Rubin likelihood ratio test — calc_lrt" />
+<meta property="og:description" content="Implements the ad-hoc adjusted likelihood ratio test (LRT)
+described in Formula 15 of Lo, Mendell, &amp;amp; Rubin (2001), or LMR LRT." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,53 +122,75 @@ the numeric columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply POMS-coding to data</h1>
+    <h1>Lo-Mendell-Rubin likelihood ratio test</h1>
     
-    <div class="hidden name"><code>poms.Rd</code></div>
+    <div class="hidden name"><code>calc_lrt.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes in a data.frame, and applies POMS (proportion of of maximum)-coding to
-the numeric columns.</p>
+    <p>Implements the ad-hoc adjusted likelihood ratio test (LRT)
+described in Formula 15 of Lo, Mendell, &amp; Rubin (2001), or LMR LRT.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>poms</span>(<span class='no'>data</span>)</pre>
+    <pre class="usage"><span class='fu'>calc_lrt</span>(<span class='no'>n</span>, <span class='no'>null_ll</span>, <span class='no'>null_param</span>, <span class='no'>null_classes</span>, <span class='no'>alt_ll</span>, <span class='no'>alt_param</span>,
+  <span class='no'>alt_classes</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A data.frame.</p></td>
+      <th>n</th>
+      <td><p>Integer. Sample size</p></td>
+    </tr>
+    <tr>
+      <th>null_ll</th>
+      <td><p>Numeric. Log-likelihood of the null model.</p></td>
+    </tr>
+    <tr>
+      <th>null_param</th>
+      <td><p>Integer. Number of parameters of the null model.</p></td>
+    </tr>
+    <tr>
+      <th>null_classes</th>
+      <td><p>Integer. Number of classes of the null model.</p></td>
+    </tr>
+    <tr>
+      <th>alt_ll</th>
+      <td><p>Numeric. Log-likelihood of the alternative model.</p></td>
+    </tr>
+    <tr>
+      <th>alt_param</th>
+      <td><p>Integer. Number of parameters of the alternative model.</p></td>
+    </tr>
+    <tr>
+      <th>alt_classes</th>
+      <td><p>Integer. Number of classes of the alternative model.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame.</p>
+    <p>A numeric vector containing the likelihood ratio LR, the ad-hoc
+corrected LMR, degrees of freedom, and the LMR p-value.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Lo Y, Mendell NR, Rubin DB. Testing the number of components in a
+normal mixture. Biometrika. 2001;88(3):767–778. doi:10.1093/biomet/88.3.767</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>6</span>),
-                   <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
-                   <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"t"</span>, <span class='st'>"f"</span>, <span class='st'>"g"</span>))
-<span class='fu'>poms</span>(<span class='no'>data</span>)</div><div class='output co'>#&gt;     a         b c
-#&gt; 1 0.0 1.0000000 a
-#&gt; 2 0.2 1.0000000 b
-#&gt; 3 0.2 0.0000000 b
-#&gt; 4 0.6 0.6666667 t
-#&gt; 5 0.0 0.0000000 f
-#&gt; 6 1.0 0.3333333 g</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>calc_lrt</span>(<span class='fl'>150L</span>, -<span class='fl'>741.02</span>, <span class='fl'>8</span>, <span class='fl'>1</span>, -<span class='fl'>488.91</span>, <span class='fl'>13</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; Lo-Mendell-Rubin ad-hoc adjusted likelihood ratio rest:
+#&gt; 
+#&gt; LR = 504.220, LMR LR (df = 5) = 472.769, p &lt; 0.001</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#references">References</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Caspar J. van Lissa</p>
   </div>
 </div>
 
