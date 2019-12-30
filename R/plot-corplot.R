@@ -370,5 +370,3 @@ merge_corplots <- function(plots, ...) {
         })
     })
 }
-
-#plot_bivariate.tidyProfile(res)
