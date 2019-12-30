@@ -100,14 +100,14 @@ get_cordat <- function(est){
 #' @examples
 #' # Example 1
 #' iris_sample <- iris[c(1:10, 51:60, 101:110), ] # to make example run more quickly
-#'
+#' \dontrun{
 #' iris_sample %>%
 #'  subset(select = c("Sepal.Length", "Sepal.Width")) %>%
 #'  estimate_profiles(n_profiles = 2, models = 1) %>%
 #'  plot_bivariate()
-#'
+#'}
 #' # Example 2
-#' \donttest{
+#' \dontrun{
 #' mtcars %>%
 #'   subset(select = c("wt", "qsec", "drat")) %>%
 #'   poms() %>%
