@@ -97,6 +97,23 @@ get_cordat <- function(est){
 #' @return An object of class 'ggplot'.
 #' @author Caspar J. van Lissa
 #' @export
+#' @examples
+#' # Example 1
+#' iris_sample <- iris[c(1:10, 51:60, 101:110), ] # to make example run more quickly
+#'
+#' iris_sample %>%
+#'  subset(select = c("Sepal.Length", "Sepal.Width")) %>%
+#'  estimate_profiles(n_profiles = 2, models = 1) %>%
+#'  plot_bivariate()
+#'
+#' # Example 2
+#' \donttest{
+#' mtcars %>%
+#'   subset(select = c("wt", "qsec", "drat")) %>%
+#'   poms() %>%
+#'   estimate_profiles(3) %>%
+#'   plot_bivariate()
+#'}
 #' @keywords mixture correlation plot
 #' @rdname plot_bivariate
 #' @export
