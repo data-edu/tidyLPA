@@ -18,7 +18,7 @@
 #' @param sd Logical. Whether to display a box encompassing +/- 1SD Defaults to
 #' TRUE.
 #' @param add_line Logical. Whether to display a line, connecting cluster centroids
-#' belonging to the same latent class. Defaults to TRUE. Note that the
+#' belonging to the same latent class. Defaults to TRUE. Note that the additional
 #' information conveyed by such a line is limited.
 #' @param rawdata Should raw data be plotted in the background? Setting this to
 #' TRUE might result in long plotting times.
