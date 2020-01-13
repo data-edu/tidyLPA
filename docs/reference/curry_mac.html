@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply POMS-coding to data — poms • tidyLPA</title>
+<title>Simulated MAC data — curry_mac • tidyLPA</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,10 @@
 
 
 
-<meta property="og:title" content="Apply POMS-coding to data — poms" />
-<meta property="og:description" content="Takes in a data.frame, and applies POMS (proportion of of maximum)-coding to
-the numeric columns." />
+<meta property="og:title" content="Simulated MAC data — curry_mac" />
+<meta property="og:description" content="This simulated dataset, based on Curry et al., 2019, contains data on moral
+relevance and judgment across the seven domains of the Morality As
+Cooperation scale." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,53 +123,60 @@ the numeric columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply POMS-coding to data</h1>
+    <h1>Simulated MAC data</h1>
     
-    <div class="hidden name"><code>poms.Rd</code></div>
+    <div class="hidden name"><code>curry_mac.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes in a data.frame, and applies POMS (proportion of of maximum)-coding to
-the numeric columns.</p>
+    <p>This simulated dataset, based on Curry et al., 2019, contains data on moral
+relevance and judgment across the seven domains of the Morality As
+Cooperation scale.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>poms</span>(<span class='no'>data</span>)</pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>curry_mac</span>)</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>data</th>
-      <td><p>A data.frame.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data.frame.</p>
+    <p>A data.frame with 1392 rows and 42 variables.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>6</span>),
-                   <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
-                   <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"t"</span>, <span class='st'>"f"</span>, <span class='st'>"g"</span>))
-<span class='fu'>poms</span>(<span class='no'>data</span>)</div><div class='output co'>#&gt;     a         b c
-#&gt; 1 0.0 1.0000000 a
-#&gt; 2 0.2 1.0000000 b
-#&gt; 3 0.2 0.0000000 b
-#&gt; 4 0.6 0.6666667 t
-#&gt; 5 0.0 0.0000000 f
-#&gt; 6 1.0 0.3333333 g</div></pre>
+    
+<table class='table'>
+<tr><td><strong>sex</strong></td><td><code>factor</code></td><td>Self-identified sex of participants, Male, Female, or Transgendered.</td></tr>
+<tr><td><strong>age_years</strong></td><td><code>numeric</code></td><td>Participants' age in years.</td></tr>
+<tr><td><strong>KinshipR</strong></td><td><code>numeric</code></td><td>Mean score of moral relevance, kinship subscale.</td></tr>
+<tr><td><strong>MutualismR</strong></td><td><code>numeric</code></td><td>Mean score of moral relevance, mutualism subscale.</td></tr>
+<tr><td><strong>ExchangeR</strong></td><td><code>numeric</code></td><td>Mean score of moral relevance, exchange subscale.</td></tr>
+<tr><td><strong>HawkR</strong></td><td><code>numeric</code></td><td>Mean score of moral relevance, hawk subscale.</td></tr>
+<tr><td><strong>DoveR</strong></td><td><code>numeric</code></td><td>Mean score of moral relevance, dove subscale.</td></tr>
+<tr><td><strong>DivisionR</strong></td><td><code>numeric</code></td><td>Mean score of moral relevance, division subscale.</td></tr>
+<tr><td><strong>PossessionR</strong></td><td><code>numeric</code></td><td>Mean score of moral relevance, possession subscale.</td></tr>
+<tr><td><strong>KinshipJ</strong></td><td><code>numeric</code></td><td>Mean score of moral judgment, kinship subscale.</td></tr>
+<tr><td><strong>MutualismJ</strong></td><td><code>numeric</code></td><td>Mean score of moral judgment, mutualism subscale.</td></tr>
+<tr><td><strong>ExchangeJ</strong></td><td><code>numeric</code></td><td>Mean score of moral judgment, exchange subscale.</td></tr>
+<tr><td><strong>HawkJ</strong></td><td><code>numeric</code></td><td>Mean score of moral judgment, hawk subscale.</td></tr>
+<tr><td><strong>DoveJ</strong></td><td><code>numeric</code></td><td>Mean score of moral judgment, dove subscale.</td></tr>
+<tr><td><strong>DivisionJ</strong></td><td><code>numeric</code></td><td>Mean score of moral judgment, division subscale.</td></tr>
+<tr><td><strong>PossessionJ</strong></td><td><code>numeric</code></td><td>Mean score of moral judgment, possession subscale.</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Curry, O. S., Jones Chesters, M., &amp; Van Lissa, C. J. (2019). Mapping morality with a compass: Testing the theory of ‘morality-as-cooperation’ with a new questionnaire. Journal of Research in Personality, 78, 106–124.
+<a href='https://doi.org/10.1016/j.jrp.2018.10.008'>DOI:10.1016/j.jrp.2018.10.008</a></p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#format">Format</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#references">References</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Caspar J. van Lissa</p>
   </div>
 </div>
 
