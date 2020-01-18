@@ -148,7 +148,7 @@ plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
 
 #' @method plot_profiles tidyLPA
 #' @export
-plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
+plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = FALSE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
     Args <- as.list(match.call()[-1])
     df_plot <- get_estimates(x)
 
