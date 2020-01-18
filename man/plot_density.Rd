@@ -4,8 +4,14 @@
 \alias{plot_density}
 \title{Create density plots for mixture models}
 \usage{
-plot_density(x, variables = NULL, bw = FALSE, conditional = FALSE,
-  alpha = 0.2, facet_labels = NULL)
+plot_density(
+  x,
+  variables = NULL,
+  bw = FALSE,
+  conditional = FALSE,
+  alpha = 0.2,
+  facet_labels = NULL
+)
 }
 \arguments{
 \item{x}{Object to plot.}

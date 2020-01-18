@@ -4,9 +4,13 @@
 \alias{print.tidyLPA}
 \title{Print tidyLPA}
 \usage{
-\method{print}{tidyLPA}(x, stats = c("AIC", "BIC", "Entropy", "prob_min",
-  "prob_max", "n_min", "n_max", "BLRT_p"), digits = 2, na.print = "",
-  ...)
+\method{print}{tidyLPA}(
+  x,
+  stats = c("AIC", "BIC", "Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_p"),
+  digits = 2,
+  na.print = "",
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class 'tidyLPA'.}

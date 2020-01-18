@@ -4,8 +4,11 @@
 \alias{AHP}
 \title{Select best model using analytic hyrarchy process}
 \usage{
-AHP(fitindices, relative_importance = c(AIC = 0.2323, AWE = 0.1129, BIC =
-  0.2525, CLC = 0.0922, KIC = 0.3101))
+AHP(
+  fitindices,
+  relative_importance = c(AIC = 0.2323, AWE = 0.1129, BIC = 0.2525, CLC = 0.0922, KIC =
+    0.3101)
+)
 }
 \arguments{
 \item{fitindices}{A matrix or data.frame of fit indices, with colnames
