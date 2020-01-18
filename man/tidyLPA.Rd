@@ -3,7 +3,6 @@
 \docType{package}
 \name{tidyLPA}
 \alias{tidyLPA}
-\alias{tidyLPA-package}
 \title{tidyLPA: Functionality to carry out Latent Profile Analysis in R}
 \description{
 Latent Profile Analysis (LPA) is a statistical modeling approach for

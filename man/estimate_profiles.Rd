@@ -4,8 +4,16 @@
 \alias{estimate_profiles}
 \title{Estimate latent profiles}
 \usage{
-estimate_profiles(df, n_profiles, models = NULL, variances = "equal",
-  covariances = "zero", package = "mclust", select_vars = NULL, ...)
+estimate_profiles(
+  df,
+  n_profiles,
+  models = NULL,
+  variances = "equal",
+  covariances = "zero",
+  package = "mclust",
+  select_vars = NULL,
+  ...
+)
 }
 \arguments{
 \item{df}{data.frame of numeric data; continuous indicators are required for

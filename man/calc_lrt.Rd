@@ -4,8 +4,7 @@
 \alias{calc_lrt}
 \title{Lo-Mendell-Rubin likelihood ratio test}
 \usage{
-calc_lrt(n, null_ll, null_param, null_classes, alt_ll, alt_param,
-  alt_classes)
+calc_lrt(n, null_ll, null_param, null_classes, alt_ll, alt_param, alt_classes)
 }
 \arguments{
 \item{n}{Integer. Sample size}

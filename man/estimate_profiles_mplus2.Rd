@@ -4,8 +4,14 @@
 \alias{estimate_profiles_mplus2}
 \title{Estimate latent profiles using Mplus}
 \usage{
-estimate_profiles_mplus2(df, n_profiles, model_numbers, select_vars, ...,
-  keepfiles = FALSE)
+estimate_profiles_mplus2(
+  df,
+  n_profiles,
+  model_numbers,
+  select_vars,
+  ...,
+  keepfiles = FALSE
+)
 }
 \arguments{
 \item{df}{data.frame with two or more columns with continuous variables}
