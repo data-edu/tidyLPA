@@ -68,7 +68,6 @@ get_cordat <- function(est){
                                                       "Parameter.y", "Class.y", "Model.y", "Classes.y"))]
     df_cors$xsd <- sqrt(df_cors$xsd)
     df_cors$ysd <- sqrt(df_cors$ysd)
-    #names(df_cors)[match(c("Estimate", "Estimate.Means", "se.Means", "Estimate.Variances", "se.Variances", "Estimate.Means.y", "se.Means.y", "Estimate.Variances.y", "se.Variances.y"), names(df_cors))] <- c("Correlation", "xmean", "xmean_se", "xsd", "xv_se", "ymean", "ymean_se", "ysd", "yv_se")
     df_cors$Correlation <- df_cors$Correlation / (df_cors$xsd*df_cors$ysd)
     df_cors[, c("Parameter", "xvar", "yvar", "Class", "Model", "Classes", "Correlation", "xmean", "ymean", "xsd", "ysd")]
 }
