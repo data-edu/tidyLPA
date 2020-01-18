@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introduction to tidyLPA • tidyLPA</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to tidyLPA">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -31,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -39,7 +38,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -77,14 +76,13 @@
 <!--/.navbar -->
 
       
-
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Introduction to tidyLPA</h1>
                         <h4 class="author">Joshua M. Rosenberg</h4>
             
-            <h4 class="date">2019-12-29</h4>
+            <h4 class="date">2019-08-20</h4>
       
       
       <div class="hidden name"><code>Introduction_to_tidyLPA.Rmd</code></div>
@@ -122,7 +120,7 @@
 </ol>
 <ul>
 <li>input and output are both a <code>data.frame</code> (specifically its modified version, a <code>tibble</code>) that can be used to create plots or can be used in subsequent analyses</li>
-<li>uses the “pipe” operator, <code><a href="../reference/pipe.html">%&gt;%</a></code> to compose functions</li>
+<li>uses the “pipe” operator, <code>%&gt;%</code> to compose functions</li>
 <li>being designed and documented to be easy to use, especially for beginners (but also to provide options for finer-grained choices for estimating the model and for viewing more specific forms of the LPA output)</li>
 </ul>
 <div id="software-approach-to-carrying-out-lpa-interface-to-mclust-and-to-mplus" class="section level2">
@@ -141,42 +139,44 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install tidyLPA from CRAN with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"tidyLPA"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"tidyLPA"</span>)</a></code></pre></div>
 <p>You can also install the development version of tidyLPA from GitHub with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"data-edu/tidyLPA"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"data-edu/tidyLPA"</span>)</a></code></pre></div>
 </div>
 <div id="mclust" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mclust" class="anchor"></a>Mclust</h2>
 <p>Here is a brief example using the built-in <code>pisaUSA15</code> data set and variables for broad interest, enjoyment, and self-efficacy. Note that we first type the name of the data frame, followed by the unquoted names of the variables used to create the profiles. We also specify the number of profiles and the model. See <code><a href="../reference/estimate_profiles.html">?estimate_profiles</a></code> for more details.</p>
-<p>In these examples, we pass the results of one function to the next by <em>piping</em> (using the <code><a href="../reference/pipe.html">%&gt;%</a></code> operator, loaded from the <code>dplyr</code> package). We pass the data to a function that selects relevant variables, and then to <code>estimate_profiles</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyLPA)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a></code></pre></div>
+<p>In these examples, we pass the results of one function to the next by <em>piping</em> (using the <code>%&gt;%</code> operator, loaded from the <code>dplyr</code> package). We pass the data to a function that selects relevant variables, and then to <code>estimate_profiles</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyLPA)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       618.83 655.31 0.82    0.84     0.96     0.03  0.70  0.01</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       627.143 663.615 0.792   0.836    0.945    0.030 0.650</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.010</span></a></code></pre></div>
 </div>
 <div id="mplus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mplus" class="anchor"></a>Mplus</h2>
 <p>We can use Mplus simply by changing the package argument for <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> (not run):</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)</a></code></pre></div>
 <p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
 <p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
 <p>We can plot the profiles by piping the output to <code><a href="../reference/plot_profiles.html">plot_profiles()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</a></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
@@ -186,21 +186,21 @@
 <a href="#comparing-a-wide-range-of-solutions" class="anchor"></a>Comparing a wide range of solutions</h2>
 <p>The function <code><a href="../reference/compare_solutions.html">compare_solutions()</a></code> compares the fit of several estimated models, with varying numbers of profiles and model specifications:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, </a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">                      <span class="dt">variances =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">                      <span class="dt">covariances =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">                      <span class="dt">variances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">                      <span class="dt">covariances =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="../reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</a>
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Compare tidyLPA solutions:</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  Model Classes AIC     BIC    </span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  1     1       672.857 688.488</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  1     2       638.423 664.475</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  1     3       638.031 674.504</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  6     1       621.312 644.759</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  6     2       630.030 679.528</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  6     3       618.729 694.278</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  1     1       675.903 691.534</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  1     2       638.862 664.914</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  1     3       630.943 667.415</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  6     1       623.048 646.495</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  6     2       630.033 679.532</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  6     3       619.479 695.029</span></a>
 <a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; Best model according to AIC is Model 6 with 3 classes.</span></a>
 <a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span></a>
@@ -218,7 +218,7 @@
 <p>The models are specified by passing arguments to the <code>variance</code> and <code>covariance</code> arguments. The possible values for these arguments are:</p>
 <ul>
 <li>
-<code>variances</code>: “equal” and “varying”</li>
+<code>variances</code>: “equal” and “zero”</li>
 <li>
 <code>covariances</code>: “varying”, “equal”, and “zero”</li>
 </ul>
@@ -233,15 +233,17 @@
 <p>Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the <a href="https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
 <p>Here is an example of specifying a model with varying variances and covariances (Model 6):</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, </a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">                      <span class="dt">variances =</span> <span class="st">"varying"</span>,</a>
 <a class="sourceLine" id="cb8-5" data-line-number="5">                      <span class="dt">covariances =</span> <span class="st">"varying"</span>)</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a>
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6     3       583.13 656.89 0.86    0.87     0.98     0.16  0.62  0.09</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6     3       583.133 656.889 0.860   0.870    0.985    0.160 0.617</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  BLRT_p</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  0.040</span></a></code></pre></div>
 <p>In general, the approach to choosing the model is similar to choosing the number of profiles, requiring <strong>deciding on the basis of evidence from multiple sources</strong>, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by <a href="http://www.sciencedirect.com/science/article/pii/S0361476X06000543">Pastor and colleagues (2007)</a> has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated.</p>
 <p>Note that <em>p</em> represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.</p>
 <div id="equal-variances-and-covariances-fixed-to-0-model-1" class="section level3">
@@ -294,9 +296,9 @@
 \left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
 \]</span></p>
 </div>
-<div id="varying-variances-and-varying-covariances-model-6" class="section level3">
+<div id="varying-variances-and-varying-covariances-model-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#varying-variances-and-varying-covariances-model-6" class="anchor"></a>6. Varying variances and varying covariances (model 6)</h3>
+<a href="#varying-variances-and-varying-covariances-model-4" class="anchor"></a>6. Varying variances and varying covariances (model 4)</h3>
 <p>This model corresponds to the mclust model “VVV”. It allows the variances and the covariances to be freely estimated across profiles.</p>
 <p>It is specified with <code>variances = "varying"</code> and <code>covariances = "varying"</code>.</p>
 <p>Thus, it is the most complex model, with the potential to allow for understanding many aspects of the variables that are used to estimate the profiles and how they are related. However, it is less parsimonious than all of the other models, and the added parameters should be considered in light of how preferred this model is relative to those with more simple specifications. This model is sometimes referred to as a <em>class-varying unrestricted</em> parameterization.</p>
@@ -311,48 +313,48 @@
 <a href="#get-estimates" class="anchor"></a>Get estimates</h1>
 <p>There is a lot of output that is possible to obtain from the <code><a href="../reference/estimate_profiles.html">estimate_profiles()</a></code> function - much more than a tidy data frame, which is the default. The easiest way to access it is by using the <code><a href="../reference/get_estimates.html">get_estimates()</a></code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">m3 &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw"><a href="../reference/get_estimates.html">get_estimates</a></span>(m3)</a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; # A tibble: 18 x 8</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    Category  Parameter      Estimate     se        p Class Model Classes</span></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1 Means     broad_interest    3.09  0.183  4.77e-64     1     1       3</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2 Means     enjoyment         3.51  0.184  1.45e-81     1     1       3</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3 Means     self_efficacy     1.58  0.169  8.68e-21     1     1       3</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4 Variances broad_interest    0.489 0.109  6.73e- 6     1     1       3</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5 Variances enjoyment         0.230 0.0594 1.05e- 4     1     1       3</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0377 7.25e-11     1     1       3</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7 Means     broad_interest    1.14  0.396  3.96e- 3     2     1       3</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8 Means     enjoyment         1.14  0.342  8.32e- 4     2     1       3</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9 Means     self_efficacy     3.39  0.620  4.40e- 8     2     1       3</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10 Variances broad_interest    0.489 0.109  6.73e- 6     2     1       3</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 11 Variances enjoyment         0.230 0.0594 1.05e- 4     2     1       3</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0377 7.25e-11     2     1       3</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 13 Means     broad_interest    2.27  0.225  8.11e-24     3     1       3</span></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; 14 Means     enjoyment         2.49  0.177  7.14e-45     3     1       3</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; 15 Means     self_efficacy     2.26  0.121  7.18e-78     3     1       3</span></a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; 16 Variances broad_interest    0.489 0.109  6.73e- 6     3     1       3</span></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; 17 Variances enjoyment         0.230 0.0594 1.05e- 4     3     1       3</span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0377 7.25e-11     3     1       3</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1 Means     broad_interest    3.09  0.192  4.33e-58     1     1       3</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2 Means     enjoyment         3.51  0.184  1.49e-81     1     1       3</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3 Means     self_efficacy     1.58  0.174  8.37e-20     1     1       3</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4 Variances broad_interest    0.489 0.111  1.11e- 5     1     1       3</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5 Variances enjoyment         0.230 0.0496 3.34e- 6     1     1       3</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0387 2.25e-10     1     1       3</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7 Means     broad_interest    1.14  0.432  8.24e- 3     2     1       3</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8 Means     enjoyment         1.14  0.361  1.59e- 3     2     1       3</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9 Means     self_efficacy     3.39  0.537  2.56e-10     2     1       3</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10 Variances broad_interest    0.489 0.111  1.11e- 5     2     1       3</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; 11 Variances enjoyment         0.230 0.0496 3.34e- 6     2     1       3</span></a>
+<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0387 2.25e-10     2     1       3</span></a>
+<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; 13 Means     broad_interest    2.27  0.243  9.75e-21     3     1       3</span></a>
+<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; 14 Means     enjoyment         2.49  0.183  5.18e-42     3     1       3</span></a>
+<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; 15 Means     self_efficacy     2.26  0.107  1.49e-98     3     1       3</span></a>
+<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; 16 Variances broad_interest    0.489 0.111  1.11e- 5     3     1       3</span></a>
+<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; 17 Variances enjoyment         0.230 0.0496 3.34e- 6     3     1       3</span></a>
+<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0387 2.25e-10     3     1       3</span></a></code></pre></div>
 <p>Other options include how the raw data is processed.</p>
-<p>We can center or scale the data before estimating the profiles with the <code><a href="https://rdrr.io/r/base/scale.html">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
+<p>We can center or scale the data before estimating the profiles with the <code><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/scale">scale</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">4</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/poms.html">poms</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">4</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="../reference/plot_profiles.html">plot_profiles</a></span>()</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Warning in estimate_profiles_mclust(df, n_profiles, model_numbers, ...): The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></a></code></pre></div>
 <p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-10-2.png" width="700"></p>
 </div>
 <div id="getting-data" class="section level1">
@@ -360,39 +362,39 @@
 <a href="#getting-data" class="anchor"></a>Getting data</h1>
 <p>Since we often wish to use the estimated profiles in subsequent analyses, we may want the original <code>data.frame</code>, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this <code>data.frame</code>, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function <code><a href="../reference/get_data.html">get_data()</a></code>:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/get_data.html">get_data</a></span>(m3)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 100 x 9</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy  CPROB1</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1            1              3            3.8       4            1    1.00e+0</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2            1              3            3         3            2.75 8.29e-2</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38 8.73e-4</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4            1              3            1.4       1            2.75 8.31e-8</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5            1              3            1.8       2.2          2    2.69e-3</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88 1.88e-4</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7            1              3            3         3.8          2.25 9.27e-1</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8            1              3            2.6       2.2          2    1.03e-2</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9            1              3            1         2.8          2.62 1.81e-3</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10            1              3            2.2       2            1.75 4.32e-3</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # … with 90 more rows, and 3 more variables: CPROB2 &lt;dbl&gt;, CPROB3 &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; #   Class &lt;dbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 300 x 9</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1            1              3            3.8       4            1        1</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2            1              3            3         3            2.75     3</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # … with 290 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; #   Probability &lt;dbl&gt;, id &lt;int&gt;</span></a></code></pre></div>
 <p>We note that <em>if more than one model is fit at once, then the data is returned not in the (wide) format above, but in long form</em>, e.g.:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">m4 &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">    </span><span class="kw">select</span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">3</span>, <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">4</span>))</a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"><span class="kw"><a href="../reference/get_data.html">get_data</a></span>(m4)</a>
 <a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; # A tibble: 700 x 9</span></a>
 <a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
 <a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt;  1            1              3            3.8       4            1        1</span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     2</span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     2</span></a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     3</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     3</span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
 <a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
 <a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
 <a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
-<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        2</span></a>
+<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
 <a class="sourceLine" id="cb13-18" data-line-number="18"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
 <a class="sourceLine" id="cb13-19" data-line-number="19"><span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span></a>
 <a class="sourceLine" id="cb13-20" data-line-number="20"><span class="co">#&gt; # … with 690 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
@@ -404,12 +406,12 @@
 <p>If we wish to work with the fit statistics more programatically, we can use the <code><a href="../reference/get_fit.html">get_fit()</a></code> function:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/get_fit.html">get_fit</a></span>(m4)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 18</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;   Model Classes LogLik   AIC   AWE   BIC  CAIC   CLC   KIC SABIC   ICL Entropy</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -303.  634.  775.  670.  684.  607.  651.  626. -711.   0.634</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 2     1       4  -299.  635.  817.  682.  700.  600.  656.  625. -710.   0.768</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; # … with 6 more variables: prob_min &lt;dbl&gt;, prob_max &lt;dbl&gt;, n_min &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; #   n_max &lt;dbl&gt;, BLRT_val &lt;dbl&gt;, BLRT_p &lt;dbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;   Model Classes LogLik   AIC   AWE   BIC  CAIC   CLC   KIC SABIC   ICL</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -296.  620.  761.  656.  670.  593.  637.  612. -673.</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 2     1       4  -296.  627.  810.  674.  692.  593.  648.  617. -714.</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; # … with 7 more variables: Entropy &lt;dbl&gt;, prob_min &lt;dbl&gt;, prob_max &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; #   n_min &lt;dbl&gt;, n_max &lt;dbl&gt;, BLRT_val &lt;dbl&gt;, BLRT_p &lt;dbl&gt;</span></a></code></pre></div>
 <p>Descriptions of these fit indices follows:</p>
 <ul>
 <li>LogLik: Log-likelihood of the data, given the model.<br>
@@ -455,7 +457,7 @@
 </ul>
 <p><strong>How to cite tidyLPA</strong></p>
 <blockquote>
-<p>Rosenberg, J. M., Beymer, P. N., Anderson, D. J., Van Lissa, C. J., &amp; Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. <em>Journal of Open Source Software, 3</em>(30), 978, <a href="https://doi.org/10.21105/joss.00978" class="uri">https://doi.org/10.21105/joss.00978</a></p>
+<p>Rosenberg, J. M., Beymer, P. N., Anderson, D. J., &amp; Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. <em>Journal of Open Source Software, 3</em>(30), 978, <a href="https://doi.org/10.21105/joss.00978" class="uri">https://doi.org/10.21105/joss.00978</a></p>
 </blockquote>
 <p>You can also cite the most latest version with the following citation:</p>
 <blockquote>
@@ -470,7 +472,6 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -508,20 +509,17 @@
 </div>
 
 
-
       <footer><div class="copyright">
   <p>Developed by Joshua M Rosenberg, Caspar van Lissa.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
-
       </footer>
 </div>
 
   
-
 
   </body>
 </html>
