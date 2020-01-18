@@ -134,6 +134,31 @@ pisaUSA15[1:100, ] %>%
     compare_solutions(statistics = c("AIC", "BIC"))
 ```
 
+## Passing additional arguments
+
+Additional arguments can be passed as follows.
+
+For MPlus (here, the additional argument is `ANALYSIS`; see:
+
+```{r, eval = FALSE}
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>% 
+    estimate_profiles(3, 
+                      package = "mplus", 
+                      ANALYSIS = "starts = 100, 20;")
+```
+
+For mclust (here, the additional argument is to `prior`; see `?mclust::mclust` for other options):
+
+```{r, eval = FALSE}
+pisaUSA15[1:100, ] %>%
+    select(broad_interest, enjoyment, self_efficacy) %>%
+    single_imputation() %>% 
+    estimate_profiles(3,
+                      prior = priorControl())
+```
+
 # More information on model specifications
 
 ## Model specification

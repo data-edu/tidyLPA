@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply POMS-coding to data — poms • tidyLPA</title>
+<title>Create correlation plots for a mixture model — plot_bivariate • tidyLPA</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,9 @@
 
 
 
-<meta property="og:title" content="Apply POMS-coding to data — poms" />
-<meta property="og:description" content="Takes in a data.frame, and applies POMS (proportion of of maximum)-coding to
-the numeric columns." />
+<meta property="og:title" content="Create correlation plots for a mixture model — plot_bivariate" />
+<meta property="og:description" content="Creates a faceted plot of two-dimensional correlation plots and
+unidimensional density plots for an object of class 'tidyProfile'." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,49 +122,76 @@ the numeric columns." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply POMS-coding to data</h1>
+    <h1>Create correlation plots for a mixture model</h1>
     
-    <div class="hidden name"><code>poms.Rd</code></div>
+    <div class="hidden name"><code>plot_bivariate.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Takes in a data.frame, and applies POMS (proportion of of maximum)-coding to
-the numeric columns.</p>
+    <p>Creates a faceted plot of two-dimensional correlation plots and
+unidimensional density plots for an object of class 'tidyProfile'.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>poms</span>(<span class='no'>data</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_bivariate</span>(<span class='no'>x</span>, <span class='kw'>variables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cors</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>rawdata</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>bw</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>alpha_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0.1</span>),
+  <span class='kw'>return_list</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A data.frame.</p></td>
+      <th>x</th>
+      <td><p>tidyProfile object to plot. A tidyProfile is one element of a
+tidyLPA analysis.</p></td>
+    </tr>
+    <tr>
+      <th>variables</th>
+      <td><p>Which variables to plot. If NULL, plots all variables that
+are present in all models.</p></td>
+    </tr>
+    <tr>
+      <th>sd</th>
+      <td><p>Logical. Whether to show the estimated standard deviations as lines
+emanating from the cluster centroid.</p></td>
+    </tr>
+    <tr>
+      <th>cors</th>
+      <td><p>Logical. Whether to show the estimated correlation (standardized
+covariance) as ellipses surrounding the cluster centroid.</p></td>
+    </tr>
+    <tr>
+      <th>rawdata</th>
+      <td><p>Logical. Whether to plot raw data, weighted by posterior class
+probability.</p></td>
+    </tr>
+    <tr>
+      <th>bw</th>
+      <td><p>Logical. Whether to make a black and white plot (for print) or a
+color plot. Defaults to FALSE, because these density plots are hard to read
+in black and white.</p></td>
+    </tr>
+    <tr>
+      <th>alpha_range</th>
+      <td><p>Numeric vector (0-1). Sets
+the transparency of geom_density and geom_point.</p></td>
+    </tr>
+    <tr>
+      <th>return_list</th>
+      <td><p>Logical. Whether to return a list of ggplot objects, or
+just the final plot. Defaults to FALSE.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame.</p>
+    <p>An object of class 'ggplot'.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>6</span>),
-                   <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>3</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>4</span>),
-                   <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"t"</span>, <span class='st'>"f"</span>, <span class='st'>"g"</span>))
-<span class='fu'>poms</span>(<span class='no'>data</span>)</div><div class='output co'>#&gt;     a         b c
-#&gt; 1 0.0 1.0000000 a
-#&gt; 2 0.2 1.0000000 b
-#&gt; 3 0.2 0.0000000 b
-#&gt; 4 0.6 0.6666667 t
-#&gt; 5 0.0 0.0000000 f
-#&gt; 6 1.0 0.3333333 g</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>

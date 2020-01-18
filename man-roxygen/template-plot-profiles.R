@@ -18,7 +18,7 @@
 #' @param sd Logical. Whether to display a box encompassing +/- 1SD Defaults to
 #' TRUE.
 #' @param add_line Logical. Whether to display a line, connecting cluster centroids
-#' belonging to the same latent class. Defaults to TRUE. Note that the
+#' belonging to the same latent class. Defaults to TRUE. Note that the additional
 #' information conveyed by such a line is limited.
 #' @param rawdata Should raw data be plotted in the background? Setting this to
 #' TRUE might result in long plotting times.
@@ -32,19 +32,19 @@
 #' @keywords plot mixture
 #' @examples
 #' # Example 1
-# iris_sample <- iris[c(1:10, 51:60, 101:110), ] # to make example run more quickly
-#
-# iris_sample %>%
-#   subset(select = c("Sepal.Length", "Sepal.Width")) %>%
-#   estimate_profiles(n_profiles = 1:2, models = 1:2) %>%
-#   plot_profiles()
+#' iris_sample <- iris[c(1:10, 51:60, 101:110), ] # to make example run more quickly
+#'
+#' iris_sample %>%
+#'  subset(select = c("Sepal.Length", "Sepal.Width")) %>%
+#'  estimate_profiles(n_profiles = 1:2, models = 1:2) %>%
+#'  plot_profiles()
 #'
 #' # Example 2
 #'
 #' \donttest{
 #' mtcars %>%
 #'   subset(select = c("wt", "qsec", "drat")) %>%
-#'   poms %>%
+#'   poms() %>%
 #'   estimate_profiles(1:4) %>%
 #'   plot_profiles(add_line = F)
 #'}

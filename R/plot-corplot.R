@@ -68,7 +68,6 @@ get_cordat <- function(est){
                                                       "Parameter.y", "Class.y", "Model.y", "Classes.y"))]
     df_cors$xsd <- sqrt(df_cors$xsd)
     df_cors$ysd <- sqrt(df_cors$ysd)
-    #names(df_cors)[match(c("Estimate", "Estimate.Means", "se.Means", "Estimate.Variances", "se.Variances", "Estimate.Means.y", "se.Means.y", "Estimate.Variances.y", "se.Variances.y"), names(df_cors))] <- c("Correlation", "xmean", "xmean_se", "xsd", "xv_se", "ymean", "ymean_se", "ysd", "yv_se")
     df_cors$Correlation <- df_cors$Correlation / (df_cors$xsd*df_cors$ysd)
     df_cors[, c("Parameter", "xvar", "yvar", "Class", "Model", "Classes", "Correlation", "xmean", "ymean", "xsd", "ysd")]
 }
@@ -97,6 +96,23 @@ get_cordat <- function(est){
 #' @return An object of class 'ggplot'.
 #' @author Caspar J. van Lissa
 #' @export
+#' @examples
+#' # Example 1
+#' iris_sample <- iris[c(1:10, 51:60, 101:110), ] # to make example run more quickly
+#' \dontrun{
+#' iris_sample %>%
+#'  subset(select = c("Sepal.Length", "Sepal.Width")) %>%
+#'  estimate_profiles(n_profiles = 2, models = 1) %>%
+#'  plot_bivariate()
+#'}
+#' # Example 2
+#' \dontrun{
+#' mtcars %>%
+#'   subset(select = c("wt", "qsec", "drat")) %>%
+#'   poms() %>%
+#'   estimate_profiles(3) %>%
+#'   plot_bivariate()
+#'}
 #' @keywords mixture correlation plot
 #' @rdname plot_bivariate
 #' @export
@@ -370,5 +386,3 @@ merge_corplots <- function(plots, ...) {
         })
     })
 }
-
-#plot_bivariate.tidyProfile(res)
