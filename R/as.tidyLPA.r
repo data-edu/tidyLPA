@@ -112,7 +112,7 @@ as.tidyLPA <- function(modelList) {
 
     out_list <- lapply(modelList, function(x) {
         this_class <- nrow(x$class_counts$modelEstimated)
-        this_model <- NA
+        this_model <- 99
 
         out <- list(model = x)
         out$fit <-
@@ -127,6 +127,9 @@ as.tidyLPA <- function(modelList) {
         out$dff$classes_number <- this_class
         out$dff <-
             out$dff[, c((ncol(out$dff) - 1), ncol(out$dff), 1:(ncol(out$dff) - 2))]
+        if(names(out$dff)[length(names(out$dff))] == "C"){
+            names(out$dff)[length(names(out$dff))] <- "Class"
+        }
         #if(simplify) out$model <- NULL
         class(out) <-
             c("tidyProfile.mplus", "tidyProfile", "list")
