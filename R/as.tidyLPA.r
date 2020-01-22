@@ -120,8 +120,10 @@ as.tidyLPA <- function(modelList) {
               Classes = this_class,
               calc_fitindices(out$model))
         out$estimates <- estimates(out$model)
-        out$estimates$Model <-
-            paste0("Model ", this_model, ", ", this_class, " classes")
+        out$estimates$Model <- this_model
+        out$estimates$Classes <- this_class
+
+            #paste0("Model ", this_model, ", ", this_class, " classes")
         out$dff <- out$model$savedata
         out$dff$model_number <- this_model
         out$dff$classes_number <- this_class
