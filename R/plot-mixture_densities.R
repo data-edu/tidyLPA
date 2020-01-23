@@ -265,13 +265,11 @@ plot_density.tidyProfile <-
             density_plot <-
                 ggplot(plot_df,
                        aes_string(x = "Value", y = "..count..", fill = "Class", weight = "Probability")) +
-                scale_fill_manual(values = get_palette(length(variables))) +
+                scale_fill_manual(values = get_palette(length(levels(plot_df$Class))-1)) +
                 geom_density(position = "fill")
         } else{
             plot_df$alpha <- alpha
             plot_df$alpha[plot_df$Class == "Total"] <- 0
-            #plot_df$size <- .5
-            #plot_df$size[plot_df$Class == "Total"] <- 1
             plot_df$Class <- ordered(plot_df$Class, levels = c(levels(plot_df$Class)[-1][order(as.numeric(levels(plot_df$Class)[-1]))], levels(plot_df$Class)[1]))
             density_plot <-
                 ggplot(plot_df,

@@ -16,7 +16,6 @@ plot_profiles <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = T
 #' @import ggplot2
 #' @export
 plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_line = FALSE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), ...){
-
     df_plot <- droplevels(x[["df_plot"]])
 
     if(rawdata){
@@ -152,19 +151,21 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
     Args <- as.list(match.call()[-1])
     df_plot <- get_estimates(x)
 
-    df_plot$Value <- df_plot$Estimate
+    names(df_plot)[match(c("Estimate", "Parameter"), names(df_plot))] <- c("Value", "Variable")
     df_plot$Class <- ordered(df_plot$Class)
-    df_plot$Variable <- ordered(df_plot$Parameter, levels = unique(df_plot$Parameter))
 
+    if(!"Classes" %in% names(df_plot)){
+        df_plot$Classes <- length(unique(df_plot$Class))
+    }
     # Drop useless stuff
     df_plot <- df_plot[grepl("(^Means$|^Variances$)", df_plot$Category),
-                       -match(c("p", "Parameter", "Estimate"), names(df_plot))]
-
+                       -match(c("p"), names(df_plot))]
+    df_plot$Variable <- ordered(df_plot$Variable, levels = unique(df_plot$Variable))
     # Select only requested variables, or else, all variables
     if (!is.null(variables)) {
         df_plot <- df_plot[tolower(df_plot$Variable) %in% tolower(variables), ]
     }
-
+    variables <- levels(df_plot$Variable)
     df_plot$idvar <- paste0(df_plot$Model, df_plot$Classes, df_plot$Class, df_plot$Variable)
     df_plot <- reshape(data.frame(df_plot), idvar = "idvar", timevar = "Category", v.names = c("Value", "se"), direction = "wide")
 
@@ -175,7 +176,7 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
     if (rawdata) {
         df_raw <- .get_long_data(x)
 
-        df_raw <- df_raw[, c("model_number", "classes_number", attr(x[[1]]$dff, "selected"), "Class", "Class_prob", "Probability", "id")]
+        df_raw <- df_raw[, c("model_number", "classes_number", variables, "Class", "Class_prob", "Probability", "id")]
         df_raw$Class <- ordered(df_raw$Class_prob, levels = levels(df_plot$Class))
         variable_names <- paste("Value", names(df_raw)[-c(1,2, ncol(df_raw)-c(0:3))], sep = "...")
         names(df_raw)[-c(1,2, ncol(df_raw)-c(0:3))] <- variable_names

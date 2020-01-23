@@ -148,7 +148,6 @@ plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TR
         df_raw <- .extract_rawdata(x, select_vars = unique(c(df_plot$xvar, df_plot$yvar)))
         df_raw$Class <- ordered(df_raw$Class, levels = levels(df_plot$Class))
     }
-
     # Basic plot
     p <- .base_plot(ifelse(bw, 0, max(df_plot$Classes)))
     Args <- list(
