@@ -97,9 +97,6 @@
     <li>
       <a href="../articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
     </li>
-    <li>
-      <a href="../articles/introduction-to-major-changes.html">Major changes for version 1.0.0</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -130,8 +127,11 @@
     <p>Integrates information from several fit indices, and selects the best model.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>AHP</span>(<span class='no'>fitindices</span>, <span class='kw'>relative_importance</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>AIC</span> <span class='kw'>=</span> <span class='fl'>0.2323</span>, <span class='kw'>AWE</span> <span class='kw'>=</span> <span class='fl'>0.1129</span>, <span class='kw'>BIC</span> <span class='kw'>=</span>
-  <span class='fl'>0.2525</span>, <span class='kw'>CLC</span> <span class='kw'>=</span> <span class='fl'>0.0922</span>, <span class='kw'>KIC</span> <span class='kw'>=</span> <span class='fl'>0.3101</span>))</pre>
+    <pre class="usage"><span class='fu'>AHP</span>(
+  <span class='no'>fitindices</span>,
+  <span class='kw'>relative_importance</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>AIC</span> <span class='kw'>=</span> <span class='fl'>0.2323</span>, <span class='kw'>AWE</span> <span class='kw'>=</span> <span class='fl'>0.1129</span>, <span class='kw'>BIC</span> <span class='kw'>=</span> <span class='fl'>0.2525</span>, <span class='kw'>CLC</span> <span class='kw'>=</span> <span class='fl'>0.0922</span>, <span class='kw'>KIC</span> <span class='kw'>=</span>
+    <span class='fl'>0.3101</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
