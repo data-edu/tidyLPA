@@ -165,6 +165,7 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
     if (!is.null(variables)) {
         df_plot <- df_plot[tolower(df_plot$Variable) %in% tolower(variables), ]
     }
+    df_plot$Variable <- droplevels(df_plot$Variable)
     variables <- levels(df_plot$Variable)
     df_plot$idvar <- paste0(df_plot$Model, df_plot$Classes, df_plot$Class, df_plot$Variable)
     df_plot <- reshape(data.frame(df_plot), idvar = "idvar", timevar = "Category", v.names = c("Value", "se"), direction = "wide")
@@ -175,7 +176,6 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
 
     if (rawdata) {
         df_raw <- .get_long_data(x)
-
         df_raw <- df_raw[, c("model_number", "classes_number", variables, "Class", "Class_prob", "Probability", "id")]
         df_raw$Class <- ordered(df_raw$Class_prob, levels = levels(df_plot$Class))
         variable_names <- paste("Value", names(df_raw)[-c(1,2, ncol(df_raw)-c(0:3))], sep = "...")
