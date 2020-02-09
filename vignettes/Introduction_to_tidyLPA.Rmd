@@ -335,7 +335,7 @@ Descriptions of these fit indices follows:
 * CAIC: Consistent Aikake information criterion; based on -2 log-likelihood, and penalized by number of parameters adjusted by sample size.  
 * CLC: Classification Likelihood Criterion; based on -2 log-likelihood, and penalized by the entropy (Biernacki, 1997).  
 * KIC: Kullback information criterion; based on -2 log-likelihood, and penalized by 3 times the number of parameters -1 (Cavanaugh, 1999).  
-* SABIC: Sample size-adjusted bayesian information criterion (Sclove, 1987).  
+* SABIC: Sample size-adjusted Bayesian information criterion (Sclove, 1987).  
 * ICL: Integrated completed likelihood (Biernacki, Celeux, & Govaert, 2000).  
 * Entropy: A measure of classification uncertainty, reverse-coded so that 1 reflects complete certainty of classification, and 0 complete uncertainty (see Celeux & Soromenho, 1996).  
 * Prob. Min.: Minimum of the diagonal of the average latent class probabilities for most likely class membership, by assigned class. The minimum should be as high as possible, reflecting greater classification certainty (cases are assigned to classes they have a high probability of belonging to; see Jung & Wickrama, 2008).  
