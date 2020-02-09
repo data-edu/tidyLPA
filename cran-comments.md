@@ -1,5 +1,7 @@
 # CRAN comments
 
+I have addressed an issue with a URL in a vignette that did not resolve correctly.
+
 ## Test environments
 * local local Windows 10 install, R 3.6.1
 * local OS X install, R 3.5.1
