@@ -5,6 +5,8 @@
 * Add plot_bivariate function
 * Set default for plot_profiles(add_line = FALSE), because the line does not 
   convey any meaningful information
+* Add curry_mac data
+* remove messages about depracated functions
 
 # tidyLPA 1.0.4
 * add data for paper

@@ -86,11 +86,6 @@
   <div class="contents col-md-9">
 
 
-<div id="note" class="section level2">
-<h2 class="hasAnchor">
-<a href="#note" class="anchor"></a>Note</h2>
-<p>tidyLPA has undergone some major changes. You can read about them <a href="https://data-edu.github.io/tidyLPA/articles/introduction-to-major-changes.html">here</a>.</p>
-</div>
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
@@ -117,139 +112,41 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyLPA)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       628.854 665.326 0.760   0.779    0.924    0.120 0.620</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  0.030</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       629.24 665.71 0.80    0.83     0.95     0.03  0.66  0.01</span></a></code></pre></div>
+<p>A simple summary of the analysis is printed to the console (and its posterior probability).</p>
+<p>The resulting object can be further passed down a pipeline to other functions, such as:</p>
+<ul>
+<li><code><a href="reference/plot_profiles.html">plot_profiles()</a></code></li>
+<li><code><a href="reference/compare_solutions.html">compare_solutions()</a></code></li>
+<li><code><a href="reference/get_data.html">get_data()</a></code></li>
+<li><code><a href="reference/get_fit.html">get_fit()</a></code></li>
+</ul>
+<p>This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
 </div>
 <div id="mplus" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mplus" class="anchor"></a>Mplus</h3>
-<p>We can use Mplus simply by changing the package argument for <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code>:</p>
+<p>We can use Mplus simply by changing the package argument for <code><a href="reference/estimate_profiles.html">estimate_profiles()</a></code> to <code>"MplusAutomation"</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mplus: </span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  1     3       643.734 680.206 0.806   0.838    0.955    0.030 0.670</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;  BLRT_p</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;  0.000</span></a></code></pre></div>
-<p>A simple summary of the analysis is printed to the console (and its posterior probability). The resulting object can be further passed down a pipeline to other functions, such as <code>plot</code>, <code>compare_solutions</code>, <code>get_data</code>, <code>get_fit</code>, etc. This is the “tidy” part, in that the function can be embedded in a tidy analysis pipeline.</p>
-<p>If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument <code>package = "MplusAutomation</code>.</p>
-</div>
-<div id="plotting-the-profiles" class="section level3">
-<h3 class="hasAnchor">
-<a href="#plotting-the-profiles" class="anchor"></a>Plotting the profiles</h3>
-<p>We can plot the profiles by piping the output to <code><a href="reference/plot_profiles.html">plot_profiles()</a></code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">    </span><span class="kw"><a href="reference/plot_profiles.html">plot_profiles</a></span>()</a></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-1.png"><!-- --></p>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, <span class="dt">package =</span> <span class="st">"MplusAutomation"</span>)</a></code></pre></div>
 </div>
 </div>
-<div id="model-specification" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-specification" class="anchor"></a>Model specification</h2>
-<p>In addition to the number of profiles (specified with the <code>n_profiles</code> argument), the model can be specified in terms of whether and how the variable variances and covariances are estimated.</p>
-<p>The models are specified by passing arguments to the <code>variance</code> and <code>covariance</code> arguments. The possible values for these arguments are:</p>
-<ul>
-<li>
-<code>variances</code>: “equal” and “zero”</li>
-<li>
-<code>covariances</code>: “varying”, “equal”, and “zero”</li>
-</ul>
-<p>If no values are specified for these, then the variances are constrained to be equal across classes, and covariances are fixed to 0 (conditional independence of the indicators).</p>
-<p>These arguments allow for four models to be specified:</p>
-<ul>
-<li>Equal variances and covariances fixed to 0 (Model 1)</li>
-<li>Varying variances and covariances fixed to 0 (Model 2)</li>
-<li>Equal variances and equal covariances (Model 3)</li>
-<li>Varying variances and varying covariances (Model 6)</li>
-</ul>
-<p>Two additional models (Models 4 and 5) can be fit using MPlus. More information on the models can be found in the <a href="https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>.</p>
-<p>Here is an example of specifying a model with varying variances and covariances (Model 6; not run here):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span>, </a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">                      <span class="dt">variances =</span> <span class="st">"varying"</span>,</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">                      <span class="dt">covariances =</span> <span class="st">"varying"</span>)</a></code></pre></div>
-</div>
-<div id="comparing-a-wide-range-of-solutions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#comparing-a-wide-range-of-solutions" class="anchor"></a>Comparing a wide range of solutions</h2>
-<p>The function <code><a href="reference/compare_solutions.html">compare_solutions()</a></code> compares the fit of several estimated models, with varying numbers of profiles and model specifications:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, </a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">                      <span class="dt">variances =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"equal"</span>, <span class="st">"varying"</span>),</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">                      <span class="dt">covariances =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"zero"</span>, <span class="st">"varying"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="st">    </span><span class="kw"><a href="reference/compare_solutions.html">compare_solutions</a></span>(<span class="dt">statistics =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AIC"</span>, <span class="st">"BIC"</span>))</a></code></pre></div>
-</div>
-<div id="accessing-values-in-the-output" class="section level2">
-<h2 class="hasAnchor">
-<a href="#accessing-values-in-the-output" class="anchor"></a>Accessing values in the output</h2>
-<p>A few helper functions are available to make it easier to work with the output of an analysis.</p>
-<p><code><a href="reference/get_data.html">get_data()</a></code> returns the data:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">m &lt;-<span class="st"> </span>pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(broad_interest, enjoyment, self_efficacy) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="reference/single_imputation.html">single_imputation</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="reference/estimate_profiles.html">estimate_profiles</a></span>(<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw"><a href="reference/get_data.html">get_data</a></span>(m)</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; # A tibble: 700 x 9</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;           &lt;dbl&gt;          &lt;int&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;  1            1              3            3.8       4            1        1</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     3</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; # … with 690 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; #   Probability &lt;dbl&gt;, id &lt;int&gt;</span></a></code></pre></div>
-<p>We note that <code><a href="reference/get_data.html">get_data()</a></code> returns data in wide format when applied to an object of class tidyProfile (one element of a tidyLPA object), or when applied to a tidyLPA object of length one. <code><a href="reference/get_data.html">get_data()</a></code> returns long format when applied to a tidyLPA object containing multiple tidyProfile analyses (because then the wide format does not make sense).</p>
-<p>To transform data in the wide format into the long format, the <code>gather()</code> function from the <strong>tidyr</strong> package can be used, e.g.:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="reference/get_data.html">get_data</a></span>(m) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">    </span>tidyr<span class="op">::</span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span>(Class_prob, Probability, <span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">contains</a></span>(<span class="st">"CPROB"</span>))</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; # A tibble: 700 x 9</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;           &lt;dbl&gt;          &lt;int&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  1            1              3            3.8       4            1        1</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  2            1              3            3         3            2.75     3</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; # … with 690 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; #   Probability &lt;dbl&gt;, id &lt;int&gt;</span></a></code></pre></div>
-</div>
-<div id="learn-more" class="section level1">
+<div id="learning-more" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#learn-more" class="anchor"></a>Learn more</h1></div>
-<p>To learn more:</p>
+<a href="#learning-more" class="anchor"></a>Learning More</h1></div>
+<p>To learn more, we highly recommend the following:</p>
 <ul>
-<li><p>Browse the tidyLPA <a href="https://data-edu.github.io/tidyLPA/">website</a> (especially check out the Reference page to see more about other functions)</p></li>
-<li><p><em>Read the Introduction to tidyLPA</em> <a href="https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>, which has much more information on the models that can be specified with tidyLPA and on additional functionality</p></li>
+<li>Browse the tidyLPA <a href="https://data-edu.github.io/tidyLPA/">website</a> (especially check out the Reference page to see more about other functions)</li>
+<li>
+<em>Read the Introduction to tidyLPA</em> <a href="https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html">vignette</a>, which has much more information on the models that can be specified with tidyLPA and on additional functionality</li>
 </ul>
 <div id="citing-tidylpa" class="section level2">
 <h2 class="hasAnchor">
@@ -257,21 +154,21 @@
 <blockquote>
 <p>Rosenberg, J. M., Beymer, P. N., Anderson, D. J., Van Lissa, C. J., &amp; Schmidt, J. A. (2018). tidyLPA: An R Package to Easily Carry Out Latent Profile Analysis (LPA) Using Open-Source or Commercial Software. <em>Journal of Open Source Software, 3</em>(30), 978, <a href="https://doi.org/10.21105/joss.00978" class="uri">https://doi.org/10.21105/joss.00978</a></p>
 </blockquote>
-<p>You can also cite the most latest version with the following citation:</p>
-<blockquote>
-<p>Rosenberg, J. M., van Lissa, C. J., Beymer, P. N., Anderson, D. J., Schell, M. J. &amp; Schmidt, J. A. (2019). tidyLPA: Easily carry out Latent Profile Analysis (LPA) using open-source or commercial software [R package]. <a href="https://data-edu.github.io/tidyLPA/" class="uri">https://data-edu.github.io/tidyLPA/</a></p>
-</blockquote>
 </div>
 <div id="contributing-and-contact-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contributing-and-contact-information" class="anchor"></a>Contributing and Contact Information</h2>
-<p>One of the easiest but also most important ways to contribute is to post a question or to provide feedback. Both positive <em>and</em> negative feedback is welcome and helpful. You can get in touch by . . .</p>
+<p>One of the easiest but also most important ways to contribute is to post a question or to provide feedback. Both positive <em>and</em> negative feedback is welcome and helpful. You can get in touch by:</p>
 <ul>
-<li>Sending a message via <a href="mailto:tidylpa@googlegroups.com" class="email">tidylpa@googlegroups.com</a> or view the <a href="https://groups.google.com/forum/#!forum/tidylpa">the tidyLPA group page</a> (<em>preferred</em>)</li>
-<li>Filing an issue on GitHub <a href="https://github.com/data-edu/tidyLPA">here</a>
-</li>
+<li><p>Sending a message via <a href="mailto:tidylpa@googlegroups.com" class="email">tidylpa@googlegroups.com</a> or view the <a href="https://groups.google.com/forum/#!forum/tidylpa">the tidyLPA group page</a></p></li>
+<li><p>Filing an issue on GitHub <a href="https://github.com/data-edu/tidyLPA">here</a></p></li>
 </ul>
-<p>Contributions are also welcome via by making pull requests (PR), e.g. through <a href="https://github.com/data-edu/tidyLPA/pulls">this page on GitHub</a>. It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.</p>
+<p>Contributions are also welcome via by making pull requests (PR), e.g. through <a href="https://github.com/data-edu/tidyLPA/pulls">this page on GitHub</a>.</p>
+<p>It may be easier if you first file an issue outlining what you will do in the PR. You can also reach out via the methods described above.</p>
+</div>
+<div id="contributor-code-of-conduct" class="section level2">
+<h2 class="hasAnchor">
+<a href="#contributor-code-of-conduct" class="anchor"></a>Contributor Code of Conduct</h2>
 <p>Please note that this project is released with a <a href="https://link.springer.com/article/10.1007/s41686-019-00030-5">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 <div id="acknowledgments" class="section level2">
