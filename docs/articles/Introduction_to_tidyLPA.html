@@ -128,7 +128,7 @@
 <p>In the open-source R software, there is not yet a tool to easily carry out LPA, though there are many tools that one could use to. For example, the <a href="https://openmx.ssri.psu.edu/">R version of OpenMx</a> can be used for this purpose (and to specify almost any model possible to specify within a latent variable modeling approach). However, while OpenMx is very flexible, it can also be challenging to use.</p>
 <p>Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term “mixture component” has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified.</p>
 <p>In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see <a href="https://cran.r-project.org/package=Rmixmod">RMixMod</a>, which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod, mclust, and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., “spherical, equal volume”), rather than in terms of whether and how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.</p>
-<p>This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This <a href="https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html">R Markdown output</a> contains information on how mclust and Mplus compare. The R Markdown to generate the output is also available <a href="https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd">here</a>, and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Note that most of the output is identical, though there are some differences in the hundreths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used.</p>
+<p>This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This <a href="https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.html">R Markdown output</a> contains information on how mclust and Mplus compare. The R Markdown to generate the output is also available <a href="https://jrosen48.github.io/r-markdown/comparing-mplus-mclust.Rmd">here</a>, and, as long as you have purchased MPlus (and installed MplusAutomation), can be used to replicate all of the results for the benchmark. Note that most of the output is identical, though there are some differences in the hundredths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used.</p>
 </div>
 </div>
 <div id="example" class="section level1">
@@ -157,7 +157,7 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; tidyLPA analysis using mclust: </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       627.56 664.03 0.81    0.84     0.95     0.03  0.66  0.01</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  1     3       635.45 671.92 0.72    0.83     0.89     0.21  0.53  0.07</span></a></code></pre></div>
 </div>
 <div id="mplus" class="section level2">
 <h2 class="hasAnchor">
@@ -192,14 +192,14 @@
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Compare tidyLPA solutions:</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  Model Classes AIC     BIC    </span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  1     1       673.945 689.576</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  1     2       636.610 662.661</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  1     3       625.794 662.267</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  6     1       617.093 640.539</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  6     2       628.340 677.839</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  6     3       618.584 694.134</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  1     1       682.857 698.488</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  1     2       650.082 676.134</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  1     3       646.310 682.782</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  6     1       636.401 659.847</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  6     2       631.478 680.977</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  6     3       634.884 710.434</span></a>
 <a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; Best model according to AIC is Model 6 with 1 classes.</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; Best model according to AIC is Model 6 with 2 classes.</span></a>
 <a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span></a>
 <a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; An analytic hierarchy process, based on the fit indices AIC, AWE, BIC, CLC, and KIC (Akogul &amp; Erisoglu, 2017), suggests the best solution is Model 6 with 1 classes.</span></a></code></pre></div>
@@ -332,26 +332,26 @@
 <a class="sourceLine" id="cb11-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="kw"><a href="../reference/get_estimates.html">get_estimates</a></span>(m3)</a>
 <a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; # A tibble: 18 x 8</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;    Category  Parameter      Estimate     se        p Class Model Classes</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;  1 Means     broad_interest    3.09  0.204  7.84e-52     1     1       3</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;  2 Means     enjoyment         3.51  0.185  8.15e-81     1     1       3</span></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;  3 Means     self_efficacy     1.58  0.210  5.86e-14     1     1       3</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt;  4 Variances broad_interest    0.489 0.107  4.91e- 6     1     1       3</span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt;  5 Variances enjoyment         0.230 0.0558 3.61e- 5     1     1       3</span></a>
-<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0510 1.48e- 6     1     1       3</span></a>
-<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt;  7 Means     broad_interest    1.14  0.344  8.98e- 4     2     1       3</span></a>
-<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt;  8 Means     enjoyment         1.14  0.379  2.62e- 3     2     1       3</span></a>
-<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt;  9 Means     self_efficacy     3.39  0.495  7.03e-12     2     1       3</span></a>
-<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; 10 Variances broad_interest    0.489 0.107  4.91e- 6     2     1       3</span></a>
-<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="co">#&gt; 11 Variances enjoyment         0.230 0.0558 3.61e- 5     2     1       3</span></a>
-<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0510 1.48e- 6     2     1       3</span></a>
-<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="co">#&gt; 13 Means     broad_interest    2.27  0.214  3.61e-26     3     1       3</span></a>
-<a class="sourceLine" id="cb11-23" data-line-number="23"><span class="co">#&gt; 14 Means     enjoyment         2.49  0.169  3.81e-49     3     1       3</span></a>
-<a class="sourceLine" id="cb11-24" data-line-number="24"><span class="co">#&gt; 15 Means     self_efficacy     2.26  0.132  1.85e-65     3     1       3</span></a>
-<a class="sourceLine" id="cb11-25" data-line-number="25"><span class="co">#&gt; 16 Variances broad_interest    0.489 0.107  4.91e- 6     3     1       3</span></a>
-<a class="sourceLine" id="cb11-26" data-line-number="26"><span class="co">#&gt; 17 Variances enjoyment         0.230 0.0558 3.61e- 5     3     1       3</span></a>
-<a class="sourceLine" id="cb11-27" data-line-number="27"><span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0510 1.48e- 6     3     1       3</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;    Category  Parameter      Estimate     se         p Class Model Classes</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;             &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;  1 Means     broad_interest    3.09  0.211  1.06e- 48     1     1       3</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;  2 Means     enjoyment         3.51  0.165  3.64e-101     1     1       3</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;  3 Means     self_efficacy     1.58  0.162  1.68e- 22     1     1       3</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt;  4 Variances broad_interest    0.489 0.114  1.87e-  5     1     1       3</span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt;  5 Variances enjoyment         0.230 0.0527 1.21e-  5     1     1       3</span></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt;  6 Variances self_efficacy     0.246 0.0384 1.55e- 10     1     1       3</span></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt;  7 Means     broad_interest    1.14  0.277  3.89e-  5     2     1       3</span></a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt;  8 Means     enjoyment         1.14  0.310  2.28e-  4     2     1       3</span></a>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt;  9 Means     self_efficacy     3.39  0.512  3.23e- 11     2     1       3</span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; 10 Variances broad_interest    0.489 0.114  1.87e-  5     2     1       3</span></a>
+<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="co">#&gt; 11 Variances enjoyment         0.230 0.0527 1.21e-  5     2     1       3</span></a>
+<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="co">#&gt; 12 Variances self_efficacy     0.246 0.0384 1.55e- 10     2     1       3</span></a>
+<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="co">#&gt; 13 Means     broad_interest    2.27  0.199  3.31e- 30     3     1       3</span></a>
+<a class="sourceLine" id="cb11-23" data-line-number="23"><span class="co">#&gt; 14 Means     enjoyment         2.49  0.155  7.38e- 58     3     1       3</span></a>
+<a class="sourceLine" id="cb11-24" data-line-number="24"><span class="co">#&gt; 15 Means     self_efficacy     2.26  0.0837 2.69e-160     3     1       3</span></a>
+<a class="sourceLine" id="cb11-25" data-line-number="25"><span class="co">#&gt; 16 Variances broad_interest    0.489 0.114  1.87e-  5     3     1       3</span></a>
+<a class="sourceLine" id="cb11-26" data-line-number="26"><span class="co">#&gt; 17 Variances enjoyment         0.230 0.0527 1.21e-  5     3     1       3</span></a>
+<a class="sourceLine" id="cb11-27" data-line-number="27"><span class="co">#&gt; 18 Variances self_efficacy     0.246 0.0384 1.55e- 10     3     1       3</span></a></code></pre></div>
 <p>Other options include how the raw data is processed.</p>
 <p>We can center or scale the data before estimating the profiles with the <code><a href="https://rdrr.io/r/base/scale.html">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">pisaUSA15[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>, ] <span class="op">%&gt;%</span></a>
@@ -401,13 +401,13 @@
 <a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy Class</span></a>
 <a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt;           &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt;  1            1              3            3.8       4            1        1</span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     3</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt;  2            1              3            3         3            2.75     2</span></a>
 <a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt;  3            1              3            1.8       2.8          3.38     3</span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     2</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt;  4            1              3            1.4       1            2.75     3</span></a>
 <a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt;  5            1              3            1.8       2.2          2        3</span></a>
 <a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt;  6            1              3            1.6       1.6          1.88     3</span></a>
 <a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co">#&gt;  7            1              3            3         3.8          2.25     1</span></a>
-<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        3</span></a>
+<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">#&gt;  8            1              3            2.6       2.2          2        2</span></a>
 <a class="sourceLine" id="cb15-18" data-line-number="18"><span class="co">#&gt;  9            1              3            1         2.8          2.62     3</span></a>
 <a class="sourceLine" id="cb15-19" data-line-number="19"><span class="co">#&gt; 10            1              3            2.2       2            1.75     3</span></a>
 <a class="sourceLine" id="cb15-20" data-line-number="20"><span class="co">#&gt; # … with 690 more rows, and 3 more variables: Class_prob &lt;int&gt;,</span></a>
@@ -421,8 +421,8 @@
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 18</span></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt;   Model Classes LogLik   AIC   AWE   BIC  CAIC   CLC   KIC SABIC   ICL Entropy</span></a>
 <a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -301.  631.  772.  667.  681.  604.  648.  623. -687.   0.806</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt; 2     1       4  -291.  618.  800.  665.  683.  584.  639.  608. -678.   0.900</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt; 1     1       3  -301.  629.  771.  666.  680.  603.  646.  622. -706.   0.640</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt; 2     1       4  -296.  628.  810.  675.  693.  593.  649.  618. -708.   0.736</span></a>
 <a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt; # … with 6 more variables: prob_min &lt;dbl&gt;, prob_max &lt;dbl&gt;, n_min &lt;dbl&gt;,</span></a>
 <a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt; #   n_max &lt;dbl&gt;, BLRT_val &lt;dbl&gt;, BLRT_p &lt;dbl&gt;</span></a></code></pre></div>
 <p>Descriptions of these fit indices follows:</p>
@@ -440,7 +440,7 @@
 </li>
 <li>KIC: Kullback information criterion; based on -2 log-likelihood, and penalized by 3 times the number of parameters -1 (Cavanaugh, 1999).<br>
 </li>
-<li>SABIC: Sample size-adjusted bayesian information criterion (Sclove, 1987).<br>
+<li>SABIC: Sample size-adjusted Bayesian information criterion (Sclove, 1987).<br>
 </li>
 <li>ICL: Integrated completed likelihood (Biernacki, Celeux, &amp; Govaert, 2000).<br>
 </li>
