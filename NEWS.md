@@ -1,4 +1,7 @@
 # tidyLPA 1.0.5
+* Correction citation to refer to JOSS paper
+
+# tidyLPA 1.0.5
 * Add C. J. van Lissa as author on JOSS paper
 * Fix bug re. passing additional parameters to mplusObject()
 * Add function to calculate Lo-Mendell-Rubin LR test
