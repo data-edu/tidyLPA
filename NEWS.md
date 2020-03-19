@@ -1,4 +1,4 @@
-# tidyLPA 1.0.5
+# tidyLPA 1.0.6
 * Correction citation to refer to JOSS paper
 
 # tidyLPA 1.0.5
