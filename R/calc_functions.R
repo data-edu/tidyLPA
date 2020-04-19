@@ -163,9 +163,23 @@ estimates <- function(model, ...){
 
 
 estimates.mplus.model <- function(model){
-    df <- subset(model$parameters[["unstandardized"]], grepl("(^Means$|^Intercepts$|^Variances$|\\.WITH$)", model$parameters[["unstandardized"]]$paramHeader)
-                 &
-                     model$parameters[["unstandardized"]]$param %in% toupper(strsplit(model$input$variable$names, " ")[[1]]), select = -5)
+  # Select means, variances, covariances of class-specific parameters; drop est_se
+    df <- suppressWarnings(subset(model$parameters[["unstandardized"]], grepl("(^Means$|^Intercepts$|^Variances$|\\.WITH$)", model$parameters[["unstandardized"]]$paramHeader) & !is.na(as.numeric(model$parameters[["unstandardized"]]$LatentClass)), select = -5))
+    # Extract original variable names
+
+    varnames <- strsplit(model$input$variable$names, " ")[[1]]
+    # Match original var names to names in $param column
+    param_match <- sapply(df$param, pmatch, toupper(varnames))
+    # Replace names in $param column
+    df$param[!is.na(param_match)] <- varnames[param_match[!is.na(param_match)]]
+    # Match original var names to names in $paramHeader column (remove any suffixes starting with ., like .WITH)
+    param_match <- sapply(gsub("\\..*$", "", df$paramHeader), pmatch, toupper(varnames))
+    # Replace these one at a time (necessary because of .WITH etc)
+    for(i in 1:length(param_match)){
+      if(is.na(param_match[i])) next
+      df$paramHeader[i] <- gsub(names(param_match)[i], varnames[param_match[i]], df$paramHeader[i])
+    }
+    df <- subset(df, df$param %in% varnames)
     if(is.null(df)){return(NULL)}
     covariances <- grepl(".WITH$", df$paramHeader)
     df$param[covariances] <- paste(df$paramHeader[covariances], df$param[covariances], sep = ".")

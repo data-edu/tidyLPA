@@ -12,8 +12,10 @@ if(getOption("test_mplus")){
         expect_equal(m_cars_mclust$model_2_class_2$fit[!names(m_cars_mclust$model_2_class_2$fit) %in% c("BLRT_p")],
                      m_cars_mplus$model_2_class_2$fit[!names(m_cars_mplus$model_2_class_2$fit) %in% c("BLRT_p")], tolerance = .0001)
     })
-    m_mplus <- estimate_profiles(iris[, 1:4], n_profiles = 3,  models = c(1:3,6), package = "MplusAutomation")
-    m_mclust <- estimate_profiles(iris[, 1:4], n_profiles = 3,  models = c(1:3,6))
+    iris_df <- iris
+    names(iris_df) <- gsub("\\.", "_", names(iris_df))
+    m_mplus <- estimate_profiles(iris_df[, 1:4], n_profiles = 3,  models = c(1:3,6), package = "MplusAutomation")
+    m_mclust <- estimate_profiles(iris_df[, 1:4], n_profiles = 3,  models = c(1:3,6))
 
     test_that("estimate_profiles() yields the same estimates for mclust and Mplus", {
         expect_equal(m_mclust[[1]]$estimates$Estimate, m_mplus[[1]]$estimates$Estimate, tolerance = .001)
