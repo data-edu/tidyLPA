@@ -1,4 +1,7 @@
 if(getOption("test_mplus")) {
+    library(tibble)
+    iris_df <- iris
+    names(iris_df) <- gsub("\\.", "_", names(iris_df))
     test_that("fit stats are the same for both mplus and mclust", {
         tab_mclust <- tibble::tribble(
             ~ stat,
@@ -118,7 +121,7 @@ if(getOption("test_mplus")) {
                 val = m_cars_mplus$model_1_class_2$fit
             )
 
-        m_cars_clust_benchmark_stats <-
+        m_cars_mclust_benchmark_stats <-
             tibble(
                 stat = names(m_cars_mclust$model_1_class_2$fit),
                 val = m_cars_mclust$model_1_class_2$fit
@@ -142,80 +145,80 @@ if(getOption("test_mplus")) {
                   # Model 1
                   m_cars_mplus_model1 <-
                       estimate_profiles(
-                          iris[, c("Sepal.Length",
-                                   "Sepal.Width",
-                                   "Petal.Length",
-                                   "Petal.Width")],
+                          iris_df[, c("Sepal_Length",
+                                   "Sepal_Width",
+                                   "Petal_Length",
+                                   "Petal_Width")],
                           n_profiles = 2,
                           models = 1,
                           package = "MplusAutomation"
                       )
 
                   m_cars_mclust_model1 <-
-                      estimate_profiles(iris[, c("Sepal.Length",
-                                                 "Sepal.Width",
-                                                 "Petal.Length",
-                                                 "Petal.Width")],
+                      estimate_profiles(iris_df[, c("Sepal_Length",
+                                                 "Sepal_Width",
+                                                 "Petal_Length",
+                                                 "Petal_Width")],
                                         n_profiles = 2,
                                         models = 1)
 
                   # Model 2
                   m_cars_mplus_model2 <-
                       estimate_profiles(
-                          iris[, c("Sepal.Length",
-                                   "Sepal.Width",
-                                   "Petal.Length",
-                                   "Petal.Width")],
+                          iris_df[, c("Sepal_Length",
+                                   "Sepal_Width",
+                                   "Petal_Length",
+                                   "Petal_Width")],
                           n_profiles = 2,
                           models = 2,
                           package = "MplusAutomation"
                       )
 
                   m_cars_mclust_model2 <-
-                      estimate_profiles(iris[, c("Sepal.Length",
-                                                 "Sepal.Width",
-                                                 "Petal.Length",
-                                                 "Petal.Width")],
+                      estimate_profiles(iris_df[, c("Sepal_Length",
+                                                 "Sepal_Width",
+                                                 "Petal_Length",
+                                                 "Petal_Width")],
                                         n_profiles = 2,
                                         models = 2)
 
                   # Model 3
                   m_cars_mplus_model3 <-
                       estimate_profiles(
-                          iris[, c("Sepal.Length",
-                                   "Sepal.Width",
-                                   "Petal.Length",
-                                   "Petal.Width")],
+                          iris_df[, c("Sepal_Length",
+                                   "Sepal_Width",
+                                   "Petal_Length",
+                                   "Petal_Width")],
                           n_profiles = 2,
                           models = 3,
                           package = "MplusAutomation"
                       )
 
                   m_cars_mclust_model3 <-
-                      estimate_profiles(iris[, c("Sepal.Length",
-                                                 "Sepal.Width",
-                                                 "Petal.Length",
-                                                 "Petal.Width")],
+                      estimate_profiles(iris_df[, c("Sepal_Length",
+                                                 "Sepal_Width",
+                                                 "Petal_Length",
+                                                 "Petal_Width")],
                                         n_profiles = 2,
                                         models = 3)
 
                   # Model 6
                   m_cars_mplus_model6 <-
                       estimate_profiles(
-                          iris[, c("Sepal.Length",
-                                   "Sepal.Width",
-                                   "Petal.Length",
-                                   "Petal.Width")],
+                          iris_df[, c("Sepal_Length",
+                                   "Sepal_Width",
+                                   "Petal_Length",
+                                   "Petal_Width")],
                           n_profiles = 2,
                           models = 6,
                           package = "MplusAutomation"
                       )
 
                   m_cars_mclust_model6 <-
-                      estimate_profiles(iris[, c("Sepal.Length",
-                                                 "Sepal.Width",
-                                                 "Petal.Length",
-                                                 "Petal.Width")],
+                      estimate_profiles(iris_df[, c("Sepal_Length",
+                                                 "Sepal_Width",
+                                                 "Petal_Length",
+                                                 "Petal_Width")],
                                         n_profiles = 2,
                                         models = 6)
 

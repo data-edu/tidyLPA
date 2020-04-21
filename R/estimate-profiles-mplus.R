@@ -27,7 +27,6 @@
 #' @import MplusAutomation
 estimate_profiles_mplus2 <-
     function(df, n_profiles, model_numbers, select_vars, ..., keepfiles = FALSE) {
-
         arg_list <- as.list(match.call())[-1]
         df_full <- df
         df <- df[, select_vars, drop = FALSE]
@@ -38,8 +37,13 @@ estimate_profiles_mplus2 <-
         }
         # Always rename all variables for Mplus; simpler than handling
         # restrictions on variable name length and characters used:
-        original_names <- selected_variables <- names(df)
-        names(df) <- param_names <- paste0("X", 1:ncol(df))
+        if(any(!grepl("^[a-zA-Z][a-zA-Z0-9_]+?$", names(df)))){
+            stop("Mplus variable names must start with an alphabetical character, and may contain numbers and/or the underscore character (_). Some of your variables violate this rule:\n  ", paste0(names(df)[!grepl("^[a-zA-Z][a-zA-Z0-9_]+?$", names(df))], collapse = "\n  "), call. = FALSE)
+        }
+        if(any(duplicated(substr(names(df), 1, 8)))){
+            stop("Mplus truncates variables to 8 characters. To extract the results correctly, variable names must be unique in the first 8 characters. Your variable names violating this rule are:\n  ", paste0(gsub("^(.{8})(.*)$", "\\1\\[\\2\\]", names(df))[duplicated(substr(names(df), 1, 8)) | duplicated(substr(names(df), 1, 8), fromLast = TRUE)], collapse = "\n  "), call. = FALSE)
+        }
+        param_names <- selected_variables <- names(df)
 
         # Check which arguments the user tried to pass.
         # First, check for arguments that cannot be used at all
@@ -61,9 +65,6 @@ estimate_profiles_mplus2 <-
         # into account any existing arguments passed by the user
         if("model_overall" %in% names(arg_list)){
             model_overall <- arg_list[["model_overall"]]
-            for(i in 1:length(original_names)){
-                model_overall <- gsub(original_names[i], param_names[i], model_overall)
-            }
         } else {
             model_overall <- ""
         }
@@ -221,9 +222,6 @@ estimate_profiles_mplus2 <-
                     if(!is.null(estimates)){
                         estimates$Model <- this_model
                         estimates$Classes <- this_class
-                        for(which_name in 1:length(param_names)){
-                            estimates$Parameter <- gsub(toupper(param_names[which_name]), original_names[which_name], estimates$Parameter)
-                        }
                     }
                     out$estimates <- estimates
 
@@ -258,12 +256,13 @@ estimate_profiles_mplus2 <-
                 }
 
                 warnings <- unlist(c(warnings, sapply(out$model$warnings, paste, collapse = " "), sapply(out$model$errors, paste, collapse = " ")))
+                warnings <- warnings[!grepl("first 8 characters", warnings)]
                 if(this_class == 1){
-                    warnings <- warnings[!sapply(warnings, grepl, pattern = "TECH14 option is not available for TYPE=MIXTURE with only one class.")]
+                    warnings <- warnings[!grepl("TECH14 option is not available for TYPE=MIXTURE with only one class.", warnings)]
 
                 }
-                if(this_model %in% c(1, 2)){
-                    warnings <- warnings[!sapply(warnings, grepl, pattern = "All variables are uncorrelated with all other variables within class.")]
+                if(this_model %in% c(1, 2, 6)){
+                    warnings <- warnings[!grepl("All variables are uncorrelated with all other variables within class.", warnings)]
                 }
                 if(length(warnings)) out$warnings <- warnings
                 class(out) <- c("tidyProfile.mplus", "tidyProfile", "list")
