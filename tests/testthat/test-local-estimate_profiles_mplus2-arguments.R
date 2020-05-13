@@ -1,9 +1,10 @@
 if(getOption("test_mplus")){
     test_that("Mplus can handle ANALYSIS = 'starts = .....;'", {
         iris_sample <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
+        names(iris_sample) <- gsub("\\.", "_", names(iris_sample))
         # With an argument passed on to mplusModeler, returns a warning
-        res <- estimate_profiles(iris_sample[, c("Sepal.Length", "Sepal.Width",
-                                                 "Petal.Length")],
+        res <- estimate_profiles(iris_sample[, c("Sepal_Length", "Sepal_Width",
+                                                 "Petal_Length")],
                                  3,
                                  package = "mplus",
                                  ANALYSIS = "starts = 15,3;",
