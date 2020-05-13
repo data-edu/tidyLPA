@@ -4,7 +4,9 @@
 \name{id_edu}
 \alias{id_edu}
 \title{Simulated identity data}
-\format{A data frame with 443 rows and 16 variables.}
+\format{
+A data frame with 443 rows and 16 variables.
+}
 \usage{
 data(id_edu)
 }

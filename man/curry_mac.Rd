@@ -4,7 +4,9 @@
 \name{curry_mac}
 \alias{curry_mac}
 \title{Simulated MAC data}
-\format{A data.frame with 1392 rows and 42 variables.}
+\format{
+A data.frame with 1392 rows and 42 variables.
+}
 \usage{
 data(curry_mac)
 }
