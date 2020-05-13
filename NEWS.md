@@ -1,3 +1,6 @@
+# tidyLPA 1.0.7
+* Update package start-up message
+
 # tidyLPA 1.0.6
 * Correction citation to refer to JOSS paper
 
