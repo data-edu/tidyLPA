@@ -32,43 +32,52 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, select_vars,
     }
     run_models <- expand.grid(prof = n_profiles, mod = model_numbers)
 
-#browser()
-    boot_blrt <- lapply(boot_model_names, function(mod_name){
-        # mclustBootstrapLRT(full_data,
-        #                    modelName = mod_name,
-        #                    nboot = ifelse(methods::hasArg("nboot"), arg_list$nboot, 100),
-        #                    maxG = max(n_profiles),
-        #                    verbose = FALSE)
+    # Collect arguments and prepare them for different functions --------------
+    dots <- list(...)
 
+    # Arguments for mclustBootstrapLRT ----------------------------------------
+    Args_boot <- dots[which(names(dots) %in% c("nboot", "level", "maxG", "verbose", "prior", "control", "initialization"))]
+    Args_boot[["maxG"]] <- max(n_profiles)
+    Args_boot[["data"]] <- full_data
+    if(is.null(Args_boot[["nboot"]])) Args_boot[["nboot"]] <- 100
+    if(is.null(Args_boot[["verbose"]])) Args_boot[["verbose"]] <- FALSE
+
+    boot_blrt <- lapply(boot_model_names, function(mod_name){
+        Args_boot[["modelName"]] <- mod_name
         tryCatch({
-            mclustBootstrapLRT(full_data,
-                               modelName = mod_name,
-                               nboot = ifelse(methods::hasArg("nboot"), arg_list$nboot, 100),
-                               maxG = max(n_profiles),
-                               verbose = FALSE)
+            do.call(mclustBootstrapLRT, Args_boot)
         }, error = function(e) {
             return(list(obs = rep(NA, max(n_profiles)),
                         p.value = rep(NA, max(n_profiles))))
         })
-
     })
 
+    # Arguments for Mclust ----------------------------------------------------
+    Args_mclust <- dots[which(names(dots) %in% c("prior", "control", "initialization", "warn", "verbose"))]
+    Args_mclust[["data"]] <- full_data
+    if(is.null(Args_mclust[["verbose"]])) Args_mclust[["verbose"]] <- FALSE
+    if(is.null(Args_mclust[["warn"]])) Args_mclust[["warn"]] <- FALSE
 
     out_list <- mapply(FUN = function(this_class, this_model){
-        out <- list(model = Mclust(full_data,
-               G = this_class,
-               modelNames = ifelse(ncol(full_data) == 1, substr(get_modelname(this_model), 1, 1), get_modelname(this_model)),
-               warn = FALSE,
-               verbose = FALSE,
-               ...
-        ))
+        Args_mclust[["G"]] <- this_class  # Do in function
+        Args_mclust[["modelName"]] <- if(ncol(full_data) == 1){
+            substr(get_modelname(this_model), 1, 1)
+        } else {
+                get_modelname(this_model)
+        }
+        out <- list(model = do.call(Mclust, Args_mclust))
         if(is.null(out$model)){
             warning("Mclust could not estimate model ", this_model, " with ", this_class, " classes.", call. = FALSE)
             out$model$mclustBootstrap <- out$model$LRTS <- out$model$LRTS_p <- out$estimates <- out$dff <- NULL
             out$fit <- c(Model = this_model, Classes = this_class, rep(NA, 16))
             warnings <- c(warnings, paste0("Mclust could not estimate model ", this_model, " with ", this_class, " classes."))
         } else {
-            out$model$mclustBootstrap <- MclustBootstrap(out$model, nboot = 100, type = "bs", verbose = FALSE)
+            Args_mclustbootstrap <- dots[which(names(dots) %in% c("nboot", "type", "max.nonfit", "verbose"))]
+            Args_mclustbootstrap[["object"]] <- out$model
+            if(is.null(Args_mclustbootstrap[["nboot"]])) Args_mclustbootstrap[["nboot"]] <- 100
+            if(is.null(Args_mclustbootstrap[["verbose"]])) Args_mclustbootstrap[["verbose"]] <- FALSE
+            if(is.null(Args_mclustbootstrap[["type"]])) Args_mclustbootstrap[["type"]] <- "bs"
+            out$model$mclustBootstrap <- do.call(MclustBootstrap, Args_mclustbootstrap)
             out$model$LRTS <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$obs[this_class-1])
             out$model$LRTS_p <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$p.value[this_class-1])
             out$fit <- c(Model = this_model, Classes = this_class, calc_fitindices(out$model))
