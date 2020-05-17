@@ -4,7 +4,9 @@
 \name{empathy}
 \alias{empathy}
 \title{Simulated empathy data}
-\format{A data frame with 467 rows and 13 variables.}
+\format{
+A data frame with 467 rows and 13 variables.
+}
 \usage{
 data(empathy)
 }

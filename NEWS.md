@@ -1,3 +1,9 @@
+# tidyLPA 1.0.7
+* Update package start-up message
+
+# tidyLPA 1.0.6
+* Correction citation to refer to JOSS paper
+
 # tidyLPA 1.0.5
 * Add C. J. van Lissa as author on JOSS paper
 * Fix bug re. passing additional parameters to mplusObject()
@@ -5,6 +11,8 @@
 * Add plot_bivariate function
 * Set default for plot_profiles(add_line = FALSE), because the line does not 
   convey any meaningful information
+* Add curry_mac data
+* remove messages about depracated functions
 
 # tidyLPA 1.0.4
 * add data for paper
