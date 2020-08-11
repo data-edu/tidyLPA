@@ -2,8 +2,8 @@
 
 ## Response to feedback CRAN maintainers
 
-* I have corrected an invalid URL in a vignette in response to feedback from
-CRAN maintainers; thank you
+* This version addresses feedback from a CRAN maintainer regarding our startup 
+message
 
 ## Test environments
 * local local Windows 10 install, R 3.6.1

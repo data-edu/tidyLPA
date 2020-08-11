@@ -1,4 +1,8 @@
 # tidyLPA 1.0.7
+* pass ... to mclust correctly
+* update for v 4.0
+
+# tidyLPA 1.0.7
 * Update package start-up message
 
 # tidyLPA 1.0.6
