@@ -28,7 +28,7 @@ Authors@R:
              family = "Schell",
              role = "ctb",
              email = "schellma@msu.edu"))
-Maintainer: Joshua M Rosenberg <jmichaelrosenberg@gmail.com>
+Maintainer: Joshua M Rosenberg <jmrosenberg@utk.edu>
 Description: An interface to the 'mclust' package to easily
     carry out latent profile analysis ("LPA"). Provides functionality to
     estimate commonly-specified models. Follows a tidy approach, in that
@@ -52,8 +52,10 @@ Imports:
     tibble
 Suggests: 
     knitr,
+    lme4,
     missForest,
     parallel,
+    pillar,
     rmarkdown,
     testthat
 VignetteBuilder: 

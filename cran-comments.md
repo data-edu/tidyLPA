@@ -1,10 +1,5 @@
 # CRAN comments
 
-## Response to feedback CRAN maintainers
-
-* This version addresses feedback from a CRAN maintainer regarding our startup 
-message
-
 ## Test environments
 * local local Windows 10 install, R 3.6.1
 * local OS X install, R 3.5.1
