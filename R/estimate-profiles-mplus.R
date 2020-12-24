@@ -96,9 +96,9 @@ estimate_profiles_mplus2 <-
 
         # Create mplusObject template for all models
         base_object <- invisible(suppressMessages(do.call(mplusObject, mplusObjectArgs)))
-        if(ncol(df) == 1){
-            base_object$VARIABLE <- paste0("NAMES = ", names(df), ";\n")
-        }
+        # if(ncol(df) == 1){
+        #     base_object$VARIABLE <- paste0("NAMES = ", names(df), ";\n")
+        # }
         run_models <-
             expand.grid(prof = n_profiles, mod = model_numbers)
 
