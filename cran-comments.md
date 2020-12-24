@@ -1,10 +1,5 @@
 # CRAN comments
 
-## Response to feedback CRAN maintainers
-
-* I have corrected an invalid URL in a vignette in response to feedback from
-CRAN maintainers; thank you
-
 ## Test environments
 * local local Windows 10 install, R 3.6.1
 * local OS X install, R 3.5.1

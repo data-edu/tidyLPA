@@ -191,7 +191,7 @@ pisaUSA15[1:100, ] %>%
                       covariances = "varying")
 ```
 
-In general, the approach to choosing the model is similar to choosing the number of profiles, requiring **deciding on the basis of evidence from multiple sources**, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by [Pastor and colleagues (2007)](http://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. 
+In general, the approach to choosing the model is similar to choosing the number of profiles, requiring **deciding on the basis of evidence from multiple sources**, including information criteria, statistical tests, and concerns of interpretability and parsimony. The article by [Pastor and colleagues (2007)](https://www.sciencedirect.com/science/article/pii/S0361476X06000543) has helpful information on the model specifications. Here, the six models that are possible to specify in LPA are described in terms of how the variables used to create the profiles are estimated. 
 
 Note that *p* represents different profiles and each parameterization is represented by a 4 x 4 covariance matrix and therefore would represent the parameterization for a four-profile solution. In all of the models, the means are estimated freely in the different profiles. Imagine that each row and column represents a different variable, i.e., the first row (and column) represents broad interest, the second enjoyment, the third self-efficacy, and the fourth another variable, i.e., future goals and plans.
 

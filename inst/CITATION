@@ -12,7 +12,7 @@ citEntry(entry = "Article",
          volume       = "3",
          number       = "30",
          pages        = "978",
-         url          = "http://joss.theoj.org/papers/10.21105/joss.00978",
+         url          = "https://joss.theoj.org/papers/10.21105/joss.00978",
          doi          = "10.21105/joss.00978",
 
          textVersion  =
