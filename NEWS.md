@@ -1,4 +1,9 @@
-# tidyLPA 1.0.7
+# tidyLPA 1.0.9
+
+* Fix issue where single column DF when using package = "MplusAutomation" would
+  lead to duplicate NAMES = in Mplus syntax
+
+# tidyLPA 1.0.8
 * pass ... to mclust correctly
 * update for v 4.0
 
