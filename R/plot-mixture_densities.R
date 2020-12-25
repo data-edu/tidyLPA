@@ -82,7 +82,7 @@ plot_density.default <-
             label_facets[which(tolower(names(label_facets)) %in% tolower(names(facet_labels)))] <- facet_labels[which(tolower(names(facet_labels)) %in% tolower(names(label_facets)))]
         }
         # Facet the plot
-
+#browser()
         if (length(unique(plot_df$Title)) > 1) {
             if (length(variables) > 1) {
 
@@ -308,19 +308,29 @@ plot_density.tidyProfile <-
 
 
 .get_dens_for_plot <- function(plot_df){
+    #browser()
     vars <- unique(plot_df[["Variable"]])
-    if(length(vars) == 1){
-        densities <- lapply(unique(plot_df$Class), function(thisclass){
-            thedf <- plot_df[plot_df$Class == thisclass, ]
-            thep <- thedf$Probability
-            data.frame(suppressWarnings(density(thedf$Value, weights = thep))[c("x", "y")],
-                       Class = thisclass,
-                       Variable = vars)
-        })
-        do.call(rbind, densities)
+    titles <- unique(plot_df[["Title"]])
+    if(length(titles) == 1){
+        if(length(vars) == 1){
+            densities <- lapply(unique(plot_df$Class), function(thisclass){
+                thedf <- plot_df[plot_df$Class == thisclass, ]
+                thep <- thedf$Probability
+                data.frame(Title = titles,
+                           Variable = vars,
+                           Class = thisclass,
+                           suppressWarnings(density(thedf$Value, weights = thep))[c("x", "y")])
+            })
+            do.call(rbind, densities)
+        } else {
+            do.call(rbind, lapply(vars, function(thisvar){
+                .get_dens_for_plot(plot_df[plot_df$Variable == thisvar, ])
+            }))
+        }
     } else {
-        do.call(rbind, lapply(vars, function(thisvar){
-            .get_dens_for_plot(plot_df[plot_df$Variable == thisvar, ])
+        do.call(rbind, lapply(titles, function(thistit){
+            .get_dens_for_plot(plot_df[plot_df$Title == thistit, ])
         }))
     }
+
 }
