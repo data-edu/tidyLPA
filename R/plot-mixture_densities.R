@@ -247,51 +247,80 @@ plot_density.tidyProfile <-
 }
 
 .plot_density_fun <- function(plot_df, variables, bw = FALSE, conditional = FALSE, alpha = .2){
-    if (bw) {
-        if (conditional) {
+
+    if (conditional) {
+        if (bw) {
             plot_df <- plot_df[-which(plot_df$Class == "Total"),]
             density_plot <-
                 ggplot(plot_df,
                        aes_string(x = "Value", y = "..count..", fill = "Class", weight = "Probability")) +
                 geom_density(position = "fill") + scale_fill_grey(start = 0.2, end = 0.8)
-        } else{
-            density_plot <-
-                ggplot(plot_df,
-                       aes_string(x = "Value", linetype = "Class", weight = "Probability")) +
-                geom_density()
-        }
-    } else{
-        if (conditional) {
+        } else {
             plot_df <- plot_df[-which(plot_df$Class == "Total"),]
             density_plot <-
                 ggplot(plot_df,
                        aes_string(x = "Value", y = "..count..", fill = "Class", weight = "Probability")) +
                 scale_fill_manual(values = get_palette(length(levels(plot_df$Class))-1)) +
                 geom_density(position = "fill")
-        } else{
-            plot_df$alpha <- alpha
-            plot_df$alpha[plot_df$Class == "Total"] <- 0
-            plot_df$Class <- ordered(plot_df$Class, levels = c(levels(plot_df$Class)[-1][order(as.numeric(levels(plot_df$Class)[-1]))], levels(plot_df$Class)[1]))
+        }
+    } else {
+        densities <- .get_dens_for_plot(plot_df)
+        densities$alpha <- alpha
+        densities$alpha[densities$Class == "Total"] <- 0
+        densities$Class <- ordered(densities$Class, levels = c(levels(plot_df$Class)[-1][order(as.numeric(levels(plot_df$Class)[-1]))], levels(plot_df$Class)[1]))
+        if (bw) {
             density_plot <-
-                ggplot(plot_df,
-                       aes_string(x = "Value",
+                ggplot(densities,
+                       aes_string(x = "x",
+                                  y = "y",
+                                  linetype = "Class"
+                                  #size = "size"
+                       )) + labs(x = "Value", y = "density")
+            density_plot <- density_plot +
+                geom_path()+
+                scale_linetype_manual(values = c(2:length(levels(plot_df$Class)), 1))+
+                scale_x_continuous(expand = c(0, 0))+
+                scale_y_continuous(expand = c(0, 0))
+        } else{
+            density_plot <-
+                ggplot(densities,
+                       aes_string(x = "x",
+                                  y = "y",
                                   fill = "Class",
                                   colour = "Class",
-                                  weight = "Probability",
                                   alpha = "alpha"#,
                                   #size = "size"
-                       ))
+                       )) + labs(x = "Value", y = "density")
             class_colors <- c(get_palette(length(levels(plot_df$Class))-1), "#000000")
             density_plot <- density_plot +
                 scale_colour_manual(values = class_colors)+
                 scale_fill_manual(values = class_colors) +
                 scale_alpha_continuous(range = c(0, alpha), guide = FALSE)+
                 scale_size_continuous(range = c(.5, 1), guide = FALSE)+
-                geom_density()+
+                geom_area(position = "identity")+
                 scale_x_continuous(expand = c(0, 0))+
                 scale_y_continuous(expand = c(0, 0))
 
         }
     }
     density_plot
+}
+
+
+.get_dens_for_plot <- function(plot_df){
+    vars <- unique(plot_df[["Variable"]])
+    if(length(vars) == 1){
+        densities <- lapply(unique(plot_df$Class), function(thisclass){
+            thedf <- plot_df[plot_df$Class == thisclass, ]
+            thep <- thedf$Probability
+            data.frame(suppressWarnings(density(thedf$Value, weights = thep))[c("x", "y")],
+                       Class = thisclass,
+                       Variable = vars)
+        })
+        do.call(rbind, densities)
+    } else {
+        do.call(rbind, lapply(vars, function(thisvar){
+            .get_dens_for_plot(plot_df[plot_df$Variable == thisvar, ])
+        }))
+    }
 }
