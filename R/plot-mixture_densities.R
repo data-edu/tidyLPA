@@ -66,8 +66,10 @@ plot_density.default <-
              conditional = FALSE,
              alpha = .2,
              facet_labels = NULL) {
-
         plot_df <- x
+        if(!inherits(plot_df[["Title"]], "factor")){
+            plot_df[["Title"]] <- factor(plot_df[["Title"]])
+        }
         # Plot figure
         Args <- as.list(match.call()[-1])
         Args <- Args[which(names(Args) %in% c("variables", "bw", "conditional", "alpha"))]
@@ -116,7 +118,6 @@ plot_density.tidyLPA <-
              alpha = .2,
              facet_labels = NULL,
              ...) {
-
         Args <- as.list(match.call()[-c(1,2)])
 
         # If no variables have been specified, use all variables
