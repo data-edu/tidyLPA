@@ -82,7 +82,6 @@ plot_density.default <-
             label_facets[which(tolower(names(label_facets)) %in% tolower(names(facet_labels)))] <- facet_labels[which(tolower(names(facet_labels)) %in% tolower(names(label_facets)))]
         }
         # Facet the plot
-#browser()
         if (length(unique(plot_df$Title)) > 1) {
             if (length(variables) > 1) {
 
@@ -247,7 +246,6 @@ plot_density.tidyProfile <-
 }
 
 .plot_density_fun <- function(plot_df, variables, bw = FALSE, conditional = FALSE, alpha = .2){
-
     if (conditional) {
         if (bw) {
             plot_df <- plot_df[-which(plot_df$Class == "Total"),]
@@ -310,8 +308,10 @@ plot_density.tidyProfile <-
 .get_dens_for_plot <- function(plot_df){
     vars <- unique(plot_df[["Variable"]])
     titles <- unique(plot_df[["Title"]])
-    if(length(titles) == 1){
-        if(length(vars) == 1){
+    if(is.null(vars)) vars <- ""
+    if(is.null(titles)) titles <- ""
+    if(length(titles) < 2 ){
+        if(length(vars) < 2){
             densities <- lapply(unique(plot_df$Class), function(thisclass){
                 thedf <- plot_df[plot_df$Class == thisclass, ]
                 thep <- thedf$Probability
