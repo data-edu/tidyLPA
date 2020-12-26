@@ -306,9 +306,8 @@ plot_density.tidyProfile <-
     density_plot
 }
 
-
+#' @importFrom stats density
 .get_dens_for_plot <- function(plot_df){
-    #browser()
     vars <- unique(plot_df[["Variable"]])
     titles <- unique(plot_df[["Title"]])
     if(length(titles) == 1){
