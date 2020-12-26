@@ -2,7 +2,7 @@ Type: Package
 Package: tidyLPA
 Title: Easily Carry Out Latent Profile Analysis (LPA) Using
     Open-Source or Commercial Software
-Version: 1.0.9.1
+Version: 1.0.9.2
 Authors@R: 
     c(person(given = c("Joshua", "M"),
              family = "Rosenberg",
