@@ -1,4 +1,12 @@
 if(getOption("test_mplus")) {
+    oldwd <- getwd()
+    testdir <- file.path(tempdir(), "comparefitstats")
+    dir.create(testdir)
+    setwd(testdir)
+    on.exit({
+        setwd(oldwd)
+        unlink(testdir, recursive = TRUE)
+    })
     library(tibble)
     iris_df <- iris
     names(iris_df) <- gsub("\\.", "_", names(iris_df))
@@ -69,13 +77,14 @@ if(getOption("test_mplus")) {
                 "BLRT_val",
                 22.544
             )
-
+        tmp <- capture_output({
         m_cars_mplus <- estimate_profiles(
             mtcars[, c("mpg", "hp")],
             n_profiles = 2,
             models = 1,
             package = "MplusAutomation"
         )
+        })
 
         m_cars_mclust <- estimate_profiles(mtcars[, c("mpg", "hp")],
                                            n_profiles = 2,
@@ -95,6 +104,7 @@ if(getOption("test_mplus")) {
 
         kept_cases <-
             complete.cases(pisaUSA15[, c("broad_interest", "enjoyment", "self_efficacy")])
+        tmp <- capture_output({
         m_pisa_mplus <-
             estimate_profiles(
                 pisaUSA15[kept_cases, c("broad_interest", "enjoyment", "self_efficacy")],
@@ -103,6 +113,7 @@ if(getOption("test_mplus")) {
                 package = "MplusAutomation",
                 keepfiles = TRUE
             )
+        })
         m_pisa_mclust <-
             estimate_profiles(pisaUSA15[kept_cases, c("broad_interest", "enjoyment", "self_efficacy")],
                               n_profiles = 3,
@@ -132,95 +143,99 @@ if(getOption("test_mplus")) {
         m_cars_mclust_benchmark_stats <-
             m_cars_mclust_benchmark_stats[m_cars_mclust_benchmark_stats$stat %in% tab_benchmark$stat,]
 
-        expect_equal(m_cars_mplus_benchmark_stats$val,
+        expect_equivalent(m_cars_mplus_benchmark_stats$val,
                      tab_benchmark$val,
                      tolerance = .0001)
-        expect_equal(m_cars_mclust_benchmark_stats$val,
+        expect_equivalent(m_cars_mclust_benchmark_stats$val,
                      tab_benchmark$val,
                      tolerance = .0001)
     })
 
     test_that("fit stats are equal to those from models estimated externally in Mplus",
               {
+                  tmp <- capture_output({
                   # Model 1
-                  m_cars_mplus_model1 <-
-                      estimate_profiles(
-                          iris_df[, c("Sepal_Length",
-                                   "Sepal_Width",
-                                   "Petal_Length",
-                                   "Petal_Width")],
-                          n_profiles = 2,
-                          models = 1,
-                          package = "MplusAutomation"
-                      )
+                  suppressWarnings({
+                      m_cars_mplus_model1 <-
+                          estimate_profiles(
+                              iris_df[, c("Sepal_Length",
+                                          "Sepal_Width",
+                                          "Petal_Length",
+                                          "Petal_Width")],
+                              n_profiles = 2,
+                              models = 1,
+                              package = "MplusAutomation"
+                          )
 
-                  m_cars_mclust_model1 <-
-                      estimate_profiles(iris_df[, c("Sepal_Length",
-                                                 "Sepal_Width",
-                                                 "Petal_Length",
-                                                 "Petal_Width")],
-                                        n_profiles = 2,
-                                        models = 1)
+                      m_cars_mclust_model1 <-
+                          estimate_profiles(iris_df[, c("Sepal_Length",
+                                                        "Sepal_Width",
+                                                        "Petal_Length",
+                                                        "Petal_Width")],
+                                            n_profiles = 2,
+                                            models = 1)
 
-                  # Model 2
-                  m_cars_mplus_model2 <-
-                      estimate_profiles(
-                          iris_df[, c("Sepal_Length",
-                                   "Sepal_Width",
-                                   "Petal_Length",
-                                   "Petal_Width")],
-                          n_profiles = 2,
-                          models = 2,
-                          package = "MplusAutomation"
-                      )
+                      # Model 2
+                      m_cars_mplus_model2 <-
+                          estimate_profiles(
+                              iris_df[, c("Sepal_Length",
+                                          "Sepal_Width",
+                                          "Petal_Length",
+                                          "Petal_Width")],
+                              n_profiles = 2,
+                              models = 2,
+                              package = "MplusAutomation"
+                          )
 
-                  m_cars_mclust_model2 <-
-                      estimate_profiles(iris_df[, c("Sepal_Length",
-                                                 "Sepal_Width",
-                                                 "Petal_Length",
-                                                 "Petal_Width")],
-                                        n_profiles = 2,
-                                        models = 2)
+                      m_cars_mclust_model2 <-
+                          estimate_profiles(iris_df[, c("Sepal_Length",
+                                                        "Sepal_Width",
+                                                        "Petal_Length",
+                                                        "Petal_Width")],
+                                            n_profiles = 2,
+                                            models = 2)
 
-                  # Model 3
-                  m_cars_mplus_model3 <-
-                      estimate_profiles(
-                          iris_df[, c("Sepal_Length",
-                                   "Sepal_Width",
-                                   "Petal_Length",
-                                   "Petal_Width")],
-                          n_profiles = 2,
-                          models = 3,
-                          package = "MplusAutomation"
-                      )
+                      # Model 3
+                      m_cars_mplus_model3 <-
+                          estimate_profiles(
+                              iris_df[, c("Sepal_Length",
+                                          "Sepal_Width",
+                                          "Petal_Length",
+                                          "Petal_Width")],
+                              n_profiles = 2,
+                              models = 3,
+                              package = "MplusAutomation"
+                          )
 
-                  m_cars_mclust_model3 <-
-                      estimate_profiles(iris_df[, c("Sepal_Length",
-                                                 "Sepal_Width",
-                                                 "Petal_Length",
-                                                 "Petal_Width")],
-                                        n_profiles = 2,
-                                        models = 3)
+                      m_cars_mclust_model3 <-
+                          estimate_profiles(iris_df[, c("Sepal_Length",
+                                                        "Sepal_Width",
+                                                        "Petal_Length",
+                                                        "Petal_Width")],
+                                            n_profiles = 2,
+                                            models = 3)
 
-                  # Model 6
-                  m_cars_mplus_model6 <-
-                      estimate_profiles(
-                          iris_df[, c("Sepal_Length",
-                                   "Sepal_Width",
-                                   "Petal_Length",
-                                   "Petal_Width")],
-                          n_profiles = 2,
-                          models = 6,
-                          package = "MplusAutomation"
-                      )
+                      # Model 6
+                      m_cars_mplus_model6 <-
+                          estimate_profiles(
+                              iris_df[, c("Sepal_Length",
+                                          "Sepal_Width",
+                                          "Petal_Length",
+                                          "Petal_Width")],
+                              n_profiles = 2,
+                              models = 6,
+                              package = "MplusAutomation"
+                          )
 
-                  m_cars_mclust_model6 <-
-                      estimate_profiles(iris_df[, c("Sepal_Length",
-                                                 "Sepal_Width",
-                                                 "Petal_Length",
-                                                 "Petal_Width")],
-                                        n_profiles = 2,
-                                        models = 6)
+                      m_cars_mclust_model6 <-
+                          estimate_profiles(iris_df[, c("Sepal_Length",
+                                                        "Sepal_Width",
+                                                        "Petal_Length",
+                                                        "Petal_Width")],
+                                            n_profiles = 2,
+                                            models = 6)
+                  })
+                  })
 
                   iris_log_lik <- tribble(~ model,
                                           ~ logLik,
@@ -249,13 +264,13 @@ if(getOption("test_mplus")) {
                           m_cars_mclust_model6$model_6_class_2$model$loglik
                       )
 
-                  expect_equal(iris_log_lik$logLik, iris_log_lik$mplus,
+                  expect_equivalent(iris_log_lik$logLik, iris_log_lik$mplus,
                                tolerance = .0001)
 
-                  expect_equal(iris_log_lik$logLik, iris_log_lik$mclust,
+                  expect_equivalent(iris_log_lik$logLik, iris_log_lik$mclust,
                                tolerance = .0001)
 
-                  expect_equal(iris_log_lik$mplus, iris_log_lik$mclust,
+                  expect_equivalent(iris_log_lik$mplus, iris_log_lik$mclust,
                                tolerance = .0001)
 
               })
