@@ -10,11 +10,9 @@
 ^README\.Rmd$
 ^docs$
 ^cran-comments\.md$
-^\.travis\.yml$
 ^LICENSE\.md$
 ^CODE_OF_CONDUCT\.md$
 ^CONTRIBUTING\.md$
-^codecov\.yml$
 ^CRAN-RELEASE$
 ^SUPPORT\.md$
 .bib
@@ -28,3 +26,4 @@
 ^.*\.dat$
 ^.*\.log$
 ^.*\.RData$
+^\.github$
