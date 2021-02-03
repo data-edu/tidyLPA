@@ -6,8 +6,8 @@ status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.or
 [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
-[![Build
-Status](https://travis-ci.org/data-edu/tidyLPA.svg?branch=master)](https://travis-ci.org/data-edu/tidyLPA)
+[![R-CMD-check](https://github.com/data-edu/tidyLPA/workflows/R-CMD-check/badge.svg)](https://github.com/data-edu/tidyLPA/actions)
+[![test-coverage](https://github.com/data-edu/tidyLPA/workflows/test-coverage/badge.svg)](https://github.com/data-edu/tidyLPA/actions)
 
 ## Background
 
@@ -70,7 +70,7 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
-#>  1     3       629.24 665.71 0.80    0.83     0.95     0.03  0.66  0.01
+#>  1     3       637.83 674.31 0.71    0.80     0.89     0.22  0.53  0.10
 ```
 
 A simple summary of the analysis is printed to the console (and its
