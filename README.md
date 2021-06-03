@@ -4,7 +4,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
 [![](https://cranlogs.r-pkg.org/badges/tidyLPA)](https://cran.r-project.org/package=tidyLPA)
-[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
 [![R-CMD-check](https://github.com/data-edu/tidyLPA/workflows/R-CMD-check/badge.svg)](https://github.com/data-edu/tidyLPA/actions)
 [![test-coverage](https://github.com/data-edu/tidyLPA/workflows/test-coverage/badge.svg)](https://github.com/data-edu/tidyLPA/actions)
@@ -70,7 +70,7 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
-#>  1     3       637.83 674.31 0.71    0.80     0.89     0.22  0.53  0.10
+#>  1     3       629.72 666.20 0.80    0.84     0.95     0.04  0.67  0.01
 ```
 
 A simple summary of the analysis is printed to the console (and its
@@ -79,18 +79,19 @@ posterior probability).
 The resulting object can be further passed down a pipeline to other
 functions, such as:
 
-  - `plot_profiles()`
-  - `compare_solutions()`
-  - `get_data()`
-  - `get_fit()`
+-   `plot_profiles()`
+-   `compare_solutions()`
+-   `get_data()`
+-   `get_fit()`
 
 This is the “tidy” part, in that the function can be embedded in a tidy
 analysis pipeline.
 
 ### Mplus
 
-We can use Mplus simply by changing the package argument for
-`estimate_profiles()` to `"MplusAutomation"`:
+We can use MPlus simply by changing the package argument for
+`estimate_profiles()` to `"MplusAutomation"` (please note that *MPlus
+must be installed on your computer for this functionality to work*):
 
 ``` r
 pisaUSA15[1:100, ] %>%
@@ -103,10 +104,10 @@ pisaUSA15[1:100, ] %>%
 
 To learn more, we highly recommend the following:
 
-  - Browse the tidyLPA [website](https://data-edu.github.io/tidyLPA/)
+-   Browse the tidyLPA [website](https://data-edu.github.io/tidyLPA/)
     (especially check out the Reference page to see more about other
     functions)
-  - *Read the Introduction to tidyLPA*
+-   *Read the Introduction to tidyLPA*
     [vignette](https://data-edu.github.io/tidyLPA/articles/Introduction_to_tidyLPA.html),
     which has much more information on the models that can be specified
     with tidyLPA and on additional functionality
@@ -125,10 +126,10 @@ One of the easiest but also most important ways to contribute is to post
 a question or to provide feedback. Both positive *and* negative feedback
 is welcome and helpful. You can get in touch by:
 
-  - Sending a message via <tidylpa@googlegroups.com> or view the [the
+-   Sending a message via <tidylpa@googlegroups.com> or view the [the
     tidyLPA group page](https://groups.google.com/forum/#!forum/tidylpa)
 
-  - Filing an issue on GitHub
+-   Filing an issue on GitHub
     [here](https://github.com/data-edu/tidyLPA)
 
 Contributions are also welcome via by making pull requests (PR),

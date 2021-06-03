@@ -28,7 +28,7 @@ This introduction to tidyLPA vignette is an overview of LPA and the tidyLPA pack
 1. Software approach to carrying out LPA: Interface to mclust (and to MPlus)
 1. An example
 1. More information on model specification
-1. Other options
+1. Other functionality
 1. Conclusion
 
 # Background on Latent Profile Analysis (LPA)
@@ -55,9 +55,9 @@ In the open-source R software, there is not yet a tool to easily carry out LPA, 
 
 Other tools in R allow for estimating Gaussian mixture models, or models of multivariate Gaussian (or normal) distributions. In this framework, the term "mixture component" has a similar meaning to a profile. While much more constraining than the latent variable modeling framework, the approach is often similar or the same: the EM algorithm is used to (aim to) obtain the maximum likelihood estimates for the parameters being estimated. Like in the latent variable modeling framework, different models can be specified. 
 
-In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see [RMixMod](https://cran.r-project.org/package=Rmixmod), which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod, mclust, and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., "spherical, equal volume"), rather than in terms of whether and how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the expectation-maximization algorithm, which can make comparing results across tools challenging.
+In addition to following the same general approach, using tools that are designed for Gaussian mixture modeling have other benefits, some efficiency-related (see [RMixMod](https://cran.r-project.org/package=Rmixmod), which uses compiled C++ code) and others in terms of ease-of-use (i.e., the plot methods built-in to RMixMod, mclust, and other tools). However, they also have some drawbacks, in that it can be difficult to translate between the model specifications, which are often described in terms of the geometric properties of the multivariate distributions being estimated (i.e., "spherical, equal volume"), rather than in terms of whether and how the means, variances, and covariances are estimated. They also may use different default settings (than those encountered in MPlus) in terms of the EM algorithm, which can make comparing results across tools challenging.
 
-This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This [vignette](https://data-edu.github.io/tidyLPA/articles/benchmarking-mclust-and-mplus.html) contains information on how mclust and Mplus compare. As long as you have purchased MPlus (and installed MplusAutomation), this vignette can be used to replicate all of the results for the benchmark. Note that most of the output is identical, though there are some differences in the hundredths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
+This package focuses on models that are commonly specified as part of LPA. Because MPlus is so widely-used, it can be helpful to compare output from other software to MPlus. The functions in tidyLPA that use mclust have been benchmarked to MPlus for a series of simple models (with small datasets and for models with small numbers of profiles. This [becnhmarking vignette](https://data-edu.github.io/tidyLPA/articles/benchmarking-mclust-and-mplus.html) contains information on how mclust and Mplus compare. As long as you have purchased MPlus (and installed MplusAutomation), this vignette can be used to replicate all of the results for the benchmark. Note that most of the output is identical, though there are some differences in the hundredths decimal places for some. Because of differences in settings for the EM algorithm and particularly for the start values (random starts for MPlus and starting values from hierarchical clustering for mclust), differences may be expected for more complex data and models. An important direction for the development of tidyLPA (the functions that use mclust) is to continue to understand when and why the output differs from MPlus output. Note that tidyLPA also provides functions to interface to MPlus, though these are not the focus of the package, as they require MPlus to be purchased and installed in order to be used. 
 
 # Example
 
@@ -269,7 +269,9 @@ $$
 \left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } & { \sigma  }_{ 21p } & { \sigma  }_{ 31p } & { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } & { \sigma  }_{ 2p }^{ 2 } & { \sigma  }_{ 23p } & { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } & { \sigma  }_{ 12p } & { \sigma  }_{ 3p }^{ 2 } & { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } & { \sigma  }_{ 12p } & { \sigma  }_{ 12p } & { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
 $$
 
-# Get estimates
+## Other functionality 
+
+### Getting estimates
 
 There is a lot of output that is possible to obtain from the `estimate_profiles()` function - much more than a tidy data frame, which is the default. The easiest way to access it is by using the `get_estimates()` function.
 
@@ -299,7 +301,7 @@ pisaUSA15[1:100, ] %>%
     plot_profiles()
 ```
 
-# Getting data
+## Getting data
 
 Since we often wish to use the estimated profiles in subsequent analyses, we may want the original `data.frame`, with variables that are predictors or outcomes of the profiles, included. Here, we created profiles with just two of the three variables, to demonstrate how the third variable is still returned in the output. We can return this `data.frame`, and not just one with the variables used to create the profiles and the profile assignments (and posterior probabilities), using the function `get_data()`:
 
@@ -318,7 +320,7 @@ m4 <- pisaUSA15[1:100, ] %>%
 get_data(m4)
 ```
 
-# Getting fit statistics 
+## Getting fit statistics 
 
 If we wish to work with the fit statistics more programatically, we can use the `get_fit()` function:
 

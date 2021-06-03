@@ -1,5 +1,9 @@
 # CRAN comments
 
+## Comments to maintainer
+
+This was in response to feedback on our last submission; we corrected the URLs.
+
 ## Test environments
 * local local Windows 10 install, R 3.6.1
 * local OS X install, R 3.5.1

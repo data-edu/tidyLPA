@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -40,7 +44,6 @@
 source package mclust, or the commercial program
 Mplus (using the R-interface of
 MplusAutomation)." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -58,7 +61,7 @@ MplusAutomation)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +75,7 @@ MplusAutomation)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.4</span>
       </span>
     </div>
 
@@ -80,7 +83,7 @@ MplusAutomation)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +110,12 @@ MplusAutomation)." />
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/data-edu/tidyLPA/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -122,7 +130,7 @@ MplusAutomation)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Estimate latent profiles</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/data-edu/tidyLPA/blob/master/R/estimate-profiles.R'><code>R/estimate-profiles.R</code></a></small>
     <div class="hidden name"><code>estimate_profiles.Rd</code></div>
     </div>
 
@@ -133,16 +141,16 @@ Mplus (using the R-interface of
 <code><a href='https://rdrr.io/pkg/MplusAutomation/man/mplusModeler.html'>MplusAutomation</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>estimate_profiles</span>(
-  <span class='no'>df</span>,
-  <span class='no'>n_profiles</span>,
-  <span class='kw'>models</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>variances</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
-  <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='st'>"zero"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"mclust"</span>,
-  <span class='kw'>select_vars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>estimate_profiles</span><span class='op'>(</span>
+  <span class='va'>df</span>,
+  <span class='va'>n_profiles</span>,
+  models <span class='op'>=</span> <span class='cn'>NULL</span>,
+  variances <span class='op'>=</span> <span class='st'>"equal"</span>,
+  covariances <span class='op'>=</span> <span class='st'>"zero"</span>,
+  package <span class='op'>=</span> <span class='st'>"mclust"</span>,
+  select_vars <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -220,22 +228,24 @@ c(1, 2, 3, 6)</code> are the only models available.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>iris_sample</span> <span class='kw'>&lt;-</span> <span class='no'>iris</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>, <span class='fl'>51</span>:<span class='fl'>54</span>, <span class='fl'>101</span>:<span class='fl'>104</span>), ] <span class='co'># to make example run more quickly</span>
+<span class='va'>iris_sample</span> <span class='op'>&lt;-</span> <span class='va'>iris</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, <span class='fl'>51</span><span class='op'>:</span><span class='fl'>54</span>, <span class='fl'>101</span><span class='op'>:</span><span class='fl'>104</span><span class='op'>)</span>, <span class='op'>]</span> <span class='co'># to make example run more quickly</span>
 
 <span class='co'># Example 1:</span>
-<span class='no'>iris_sample</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
-    <span class='st'>"Petal.Length"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>estimate_profiles</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
+<span class='va'>iris_sample</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span>select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
+    <span class='st'>"Petal.Length"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>estimate_profiles</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
 #&gt; 
 #&gt;  Model Classes AIC   BIC   Entropy prob_min prob_max n_min n_max BLRT_p
 #&gt;  1     3       62.15 68.94 1.00    1.00     1.00     0.17  0.50  0.01  </div><div class='input'>
 <span class='co'># \donttest{</span>
 <span class='co'># Example 2:</span>
-<span class='no'>iris</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
-    <span class='st'>"Petal.Length"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>estimate_profiles</span>(<span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>models</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; <span class='message'>The 'variances'/'covariances' arguments were ignored in favor of the 'models' argument.</span></div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
+<span class='va'>iris</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span>select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
+    <span class='st'>"Petal.Length"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>estimate_profiles</span><span class='op'>(</span>n_profiles <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, models <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>The 'variances'/'covariances' arguments were ignored in favor of the 'models' argument.</span></div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
 #&gt; 
 #&gt;  Model Classes AIC     BIC     Entropy prob_min prob_max n_min n_max BLRT_p
 #&gt;  1     1       1150.81 1168.87 1.00    1.00     1.00     1.00  1.00        
@@ -251,11 +261,12 @@ c(1, 2, 3, 6)</code> are the only models available.</p>
 #&gt;  3     3       650.14  701.32  0.92    0.94     1.00     0.33  0.34  0.01  
 #&gt;  3     4       646.81  710.03  0.90    0.71     0.97     0.05  0.34  0.07  </div><div class='input'>
 <span class='co'># Example 3:</span>
-<span class='no'>iris_sample</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
-    <span class='st'>"Petal.Length"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>estimate_profiles</span>(<span class='kw'>n_profiles</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>variances</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"equal"</span>, <span class='st'>"varying"</span>),
-                    <span class='kw'>covariances</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"zero"</span>, <span class='st'>"zero"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Mclust could not estimate model 2 with 4 classes.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
+<span class='va'>iris_sample</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span>select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sepal.Length"</span>, <span class='st'>"Sepal.Width"</span>,
+    <span class='st'>"Petal.Length"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>estimate_profiles</span><span class='op'>(</span>n_profiles <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, variances <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"equal"</span>, <span class='st'>"varying"</span><span class='op'>)</span>,
+                    covariances <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"zero"</span>, <span class='st'>"zero"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: some model(s) could not be fitted!</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Mclust could not estimate model 2 with 4 classes.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
 #&gt; <span class='warning'>One or more analyses resulted in warnings! Examine these analyses carefully: model_2_class_4</span></div><div class='output co'>#&gt; tidyLPA analysis using mclust: 
 #&gt; 
 #&gt;  Model Classes AIC   BIC   Entropy prob_min prob_max n_min n_max BLRT_p
@@ -266,19 +277,14 @@ c(1, 2, 3, 6)</code> are the only models available.</p>
 #&gt;  2     1       96.05 98.96 1.00    1.00     1.00     1.00  1.00        
 #&gt;  2     2       60.10 66.40 1.00    1.00     1.00     0.33  0.67  0.01  
 #&gt;  2     3       58.86 68.56 1.00    1.00     1.00     0.17  0.50  0.36  
-#&gt;  2     4                                                               </div><div class='input'># }
+#&gt;  2     4                                                               </div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -289,7 +295,7 @@ c(1, 2, 3, 6)</code> are the only models available.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

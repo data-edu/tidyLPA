@@ -11,8 +11,7 @@ vignette: >
 
 ## Purpose
 
-The purpose of this vignette is to facilitate benchmarking the output from the use of two packages, MPlus (via the MplusAutomation package) and mclust (via the mclust package). As CRAN does not allow for MPlus to be used, this vignette is not rendered, but can be rendered on your own computer as long as you have MPlus (and MplusAutomation) installed.
-
+The purpose of this vignette is to facilitate benchmarking the output from the use of two packages, MPlus (via the MplusAutomation package) and mclust (via the mclust package). As CRAN does not allow for MPlus to be used, this vignette is not rendered, but can be rendered on your own computer as long as you have MPlus (and MplusAutomation) installed. Please note that _MPlus must be installed on your computer for this vignette to run_.
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(

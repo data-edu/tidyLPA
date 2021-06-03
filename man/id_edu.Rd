@@ -74,7 +74,6 @@ Crocetti, E., Klimstra, T. A., Hale, W. W., Koot, H. M., &
 Meeus, W. (2013). Impact of early adolescent externalizing problem behaviors
 on identity development in middle to late adolescence: A prospective 7-year
 longitudinal study. Journal of Youth and Adolescence, 42(11), 1745-1758.
-\href{https://doi.org/10.1007/s10964-013-9924-6}{
-DOI:10.1007/s10964-013-9924-6}
+\doi{10.1007/s10964-013-9924-6}
 }
 \keyword{datasets}

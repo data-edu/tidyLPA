@@ -1,3 +1,7 @@
+# tidyLPA 1.1.0
+
+* Minor edits to introduction to tidyLPA vignette and README
+
 # tidyLPA 1.0.9
 
 * Fix issue where single column DF when using package = "MplusAutomation" would
