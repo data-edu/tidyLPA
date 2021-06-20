@@ -238,6 +238,27 @@ estimates.Mclust <- function(model){
 
 }
 
+estimates.MxModel <- function(model){
+  # Select means, variances, covariances of class-specific parameters; drop est_se
+  df <- tryCatch({
+    sums <- summary(model)
+    sums$parameters
+  }, error = function(e){ return(NULL) })
+  df$Category <- NA
+  df$Category[grepl("\\.S$", df$matrix)] <- "Covariances"
+  df$Category[grepl("\\.M$", df$matrix)] <- "Means"
+  df <- df[!is.na(df$Category), ]
+  # Extract original variable names
+  covariances <- df$Category == "Covariances" & !(df$row == df$col)
+  df$col[covariances] <- paste(df$row[covariances], df$col[covariances], sep = ".")
+  df$Class <- as.integer(gsub("^class(\\d+)\\..$", "\\1", df$matrix))
+  df$p <- 2*pnorm(abs(df$Estimate/df$Std.Error), lower.tail=FALSE)
+  df$Parameter <- df$col
+  df$se <- df$Std.Error
+  row.names(df) <- NULL
+  df[, c("Category", "Parameter", "Estimate", "se", "p", "Class")]
+}
+
 
 # Conversion among number, title, and variance/covariance specific --------
 
@@ -299,56 +320,147 @@ label_parameters <- function(syntax){
 
 # Information criteria ----------------------------------------------------
 
-
-calc_fitindices <- function(model, fitindices){
-    # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
-    if(inherits(model, "Mclust")){
-        ll <- model$loglik
-        parameters <- model$df
-        n <- model$n
-        post_prob <- model$z
-        class <- model$classification
-        class_tab <- table(model$classification)
-        if(length(class_tab) == ncol(post_prob)){
-          prop_n <- range(prop.table(class_tab))
-        } else {
-          prop_n <- c(0, max(prop.table(class_tab)))
-        }
-        fits <- c(ifelse(ncol(post_prob) == 1, 1, 1 + (1/(nrow(post_prob)*log(ncol(post_prob))))*(sum(rowSums(post_prob * log(post_prob+1e-12))))),
-                 range(diag(classification_probs_mostlikely(post_prob, class))),
-                 prop_n,
-                 model$LRTS,
-                 model$LRTS_p
-        )
-    } else {
-        ll <- model$summaries$LL
-        parameters <- model$summaries$Parameters
-        n <- model$summaries$Observations
-        fits <- c(ifelse(is.null(model$summaries$Entropy), 1, model$summaries$Entropy),
-                 tryCatch(range(diag(model$class_counts$classificationProbs.mostLikely)),
-                          warning = function(x) {
-                              c(NA, NA)
-                              }),
-                 range(model$class_counts$mostLikely$proportion),
-                 ifelse(is.null(model$summaries$BLRT_2xLLDiff), NA, model$summaries$BLRT_2xLLDiff),
-                 ifelse(is.null(model$summaries$BLRT_PValue), NA, model$summaries$BLRT_PValue)
-        )
-    }
-    fits <- c(
-      LogLik = ll,
-      AIC = -2*ll + 2*parameters,
-      AWE = -2*(ll + fits[1]) + 2*parameters*(3/2 + log(n)),
-      BIC = -2*ll + parameters * log(n),
-      CAIC = -2*ll + parameters * (log(n)+1),
-      CLC = -2*ll + 2*fits[1],
-      KIC = -2*ll + 3*(parameters + 1),
-      SABIC = -2*ll + parameters * log(((n+2)/24)),
-      ICL = icl(model),
-      fits
-    )
-    names(fits) <- c("LogLik", "AIC", "AWE", "BIC", "CAIC", "CLC", "KIC", "SABIC", "ICL", "Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")
-    fits
+calc_fitindices <- function(model, fitindices, ...){
+  UseMethod("calc_fitindices", model)
 }
+
+calc_fitindices.Mclust <- function(model, fitindices, ...){
+  # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
+  ll <- model$loglik
+  parameters <- model$df
+  n <- model$n
+  post_prob <- model$z
+  class <- model$classification
+  class_tab <- table(model$classification)
+  if(length(class_tab) == ncol(post_prob)){
+    prop_n <- range(prop.table(class_tab))
+  } else {
+    prop_n <- c(0, max(prop.table(class_tab)))
+  }
+  fits <- c(ifelse(ncol(post_prob) == 1, 1, 1 + (1/(nrow(post_prob)*log(ncol(post_prob))))*(sum(rowSums(post_prob * log(post_prob+1e-12))))),
+            range(diag(classification_probs_mostlikely(post_prob, class))),
+            prop_n,
+            model$LRTS,
+            model$LRTS_p
+  )
+  names(fits) <- c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")
+  make_fitvector(ll = ll, parameters = parameters, n = n, postprob = post_prob, fits = fits)
+}
+
+calc_fitindices.MplusObject <- function(model, fitindices, ...){
+  # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
+  ll <- model$summaries$LL
+  parameters <- model$summaries$Parameters
+  n <- model$summaries$Observations
+  fits <- c(ifelse(is.null(model$summaries$Entropy), 1, model$summaries$Entropy),
+            tryCatch(range(diag(model$class_counts$classificationProbs.mostLikely)),
+                     warning = function(x) {
+                       c(NA, NA)
+                     }),
+            range(model$class_counts$mostLikely$proportion),
+            ifelse(is.null(model$summaries$BLRT_2xLLDiff), NA, model$summaries$BLRT_2xLLDiff),
+            ifelse(is.null(model$summaries$BLRT_PValue), NA, model$summaries$BLRT_PValue)
+  )
+  names(fits) <- c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")
+  make_fitvector(ll = ll, parameters = parameters, n = n, postprob = post_prob, fits = fits)
+}
+
+calc_fitindices.MxModel <- function (model, fitindices, ...){
+  sums <- summary(model)
+  ll <- sums$Minus2LogLikelihood
+  parameters <- sums$estimatedParameters
+  n <- model$data$numObs
+
+  post_prob <- extract_postprob(model)
+  class <- apply(post_prob, 1, which.max)
+  class_tab <- table(class)
+  if (length(class_tab) == ncol(post_prob)) {
+    prop_n <- range(prop.table(class_tab))
+  }
+  else {
+    prop_n <- c(0, max(prop.table(class_tab)))
+  }
+  fits <- c(
+    ifelse(ncol(post_prob) == 1, 1, 1 + (1/(nrow(post_prob) *
+                                                      log(ncol(post_prob)))) * (sum(rowSums(post_prob *
+                                                                                              log(post_prob + 1e-12))))),
+            range(diag(classification_probs_mostlikely(post_prob, class))),
+            prop_n,
+            NA, #model$LRTS,
+            NA) #model$LRTS_p)
+  names(fits) <- c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")
+  make_fitvector(ll = ll, parameters = parameters, n = n, postprob = post_prob, fits = fits)
+}
+
+make_fitvector <- function(ll, parameters, n, postprob, fits){
+  LogLik = ll
+  AIC = -2*ll + 2*parameters
+  AWE = -2*(ll + fits[1]) + 2*parameters*(3/2 + log(n))
+  BIC = -2*ll + parameters * log(n)
+  CAIC = -2*ll + parameters * (log(n)+1)
+  CLC = -2*ll + 2*fits[1]
+  KIC = -2*ll + 3*(parameters + 1)
+  SABIC = -2*ll + parameters * log(((n+2)/24))
+  ICL = icl_default(postprob, BIC)
+  c("LogLik" = LogLik,
+    "AIC" = AIC,
+    "AWE" = AWE,
+    "BIC" = BIC,
+    "CAIC" = CAIC,
+    "CLC" = CLC,
+    "KIC" = KIC,
+    "SABIC" = SABIC,
+    "ICL" = ICL,
+    fits)
+}
+
+extract_postprob <- function(model){
+  priors <- model$expectation$output$weights
+  mix_names <- names(model@submodels)
+
+  attr(model@submodels$class1, "fitfunction")$result
+  liks <- sapply(mix_names, function(x){ attr(model@submodels[[x]], "fitfunction")$result })
+
+  #First calculate posteriors:
+  posteriors <- sweep(liks, 2, priors, "*")
+  #Then calculate participants' marginal likelihoods (probably not be necessary):
+  marglik <- rowSums(posteriors)
+  # Divide posteriors by marginal likelihood
+  posteriors <- posteriors/marglik
+  # then normalize them into probabilities:
+  posteriors/rowSums(posteriors)
+}
+
+classification_probs_mostlikely <- function (post_prob, class)
+{
+  if (is.null(dim(post_prob)))
+    return(1)
+  avg_probs <- avgprobs_mostlikely(post_prob, class)
+  avg_probs[is.na(avg_probs)] <- 0
+  C <- dim(post_prob)[2]
+  N <- sapply(1:C, function(x) sum(class == x))
+  tab <- mapply(function(this_row, this_col) {
+    (avg_probs[this_row, this_col] * N[this_row])/(sum(avg_probs[,
+                                                                 this_col] * N, na.rm = TRUE))
+  }, this_row = rep(1:C, C), this_col = rep(1:C, each = C))
+  matrix(tab, C, C, byrow = TRUE)
+}
+
+avgprobs_mostlikely <- function (post_prob, class)
+{
+  if (is.null(dim(post_prob)))
+    return(1)
+  t(sapply(1:ncol(post_prob), function(i) {
+    colMeans(post_prob[class == i, , drop = FALSE])
+  }))
+}
+
+icl.MxModel <- function (object, ...)
+{
+
+}
+
+
 
 
 avgprobs_mostlikely <- function(post_prob, class){
@@ -383,6 +495,20 @@ icl.mplus.model <- function(object, ...)
     }
 }
 
+icl_default <- function(post_prob, BIC){
+  tryCatch({
+    if (!is.null(dim(post_prob))) {
+      C <- post_prob == apply(post_prob, 1, max)
+      (-1 * BIC) + 2 * sum(C * log(apply(post_prob,
+                                                 1, function(x) {
+                                                   x[which.max(x)]
+                                                 }) + 1e-12))
+    }
+    else {
+      (-1 * BIC) + 2 * sum(post_prob * log(post_prob))
+    }
+  }, error = function(e){ NA })
+}
 #LMR and ALMR indistinguishable from each other: https://www.tandfonline.com/doi/full/10.1080/10705511.2016.1169188?scroll=top&needAccess=true
 
 # https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
