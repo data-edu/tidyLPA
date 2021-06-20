@@ -358,8 +358,79 @@ calc_fitindices.Mclust <- function(model, fitindices, ...){
   make_fitvector(ll = ll, parameters = parameters, n = n, postprob = post_prob, fits = fits)
 }
 
-#' @importFrom utils getFromNamespace
-one_mplus_model <- getFromNamespace("one_mplus_model", "MplusAutomation")
+
+mplus_as_list <- function(x){
+  out <- switch(class(x)[1],
+                mplus.model.list = x,
+                mplus.model = list(Model_1 = x),
+                mplusObject = list(Model_1 = x$results),
+                model.list = lapply(x, `[[`, "results"),
+                list = {
+                  if(all(sapply(x, inherits, what = "mplusObject"))){
+                    lapply(x, `[[`, "results")
+                  } else {
+                    if(all(sapply(x, inherits, what = "mplus.model"))){
+                      x
+                    } else {
+                      stop("Not a list of Mplus models.")
+                    }
+                  }
+
+                },
+                stop("Not a list of Mplus models.")
+  )
+  if(is.null(names(out))){
+    nms <- sapply(1:length(out), function(i){
+      if(!is.null(out[[i]][["input"]][["title"]])){
+        out[[i]][["input"]][["title"]]
+      } else {
+        paste0("Model ", i)
+      }
+    })
+    names(out) <- nms
+  } else {
+    if(any(names(out) == "")){
+      names(out)[which(names(out) == "")] <- paste0("Model ", which(names(out) == ""))
+    }
+  }
+  out
+}
+
+
+one_mplus_model <- function(x){
+  out <- switch(class(x)[1],
+                mplus.model = x,
+                mplusObject = x$results,
+                model.list = {
+                  if(length(x) == 1){
+                    x[[1]][["results"]]
+                  } else {
+                    stop("Not a single Mplus model.")
+                  }},
+                list = {
+                  if(length(x) == 1){
+                    if(inherits(x, "mplusObject")){
+                      x[["results"]]
+                    } else {
+                      if(inherits(x, "mplus.model")){
+                        x
+                      } else {
+                        stop("Not a single Mplus model.")
+                      }
+                    }
+                  }
+                },
+                mplus.model.list = {
+                  if(length(x) == 1){
+                    x
+                  } else {
+                    stop("Not a single Mplus model.")
+                  }
+                },
+                stop("Not a single Mplus model.")
+  )
+  out
+}
 
 
 calc_fitindices.MplusObject <- function(model, fitindices, ...){
