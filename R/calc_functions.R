@@ -244,19 +244,30 @@ estimates.MxModel <- function(model){
     sums <- summary(model)
     sums$parameters
   }, error = function(e){ return(NULL) })
+  df$Class <- suppressWarnings(as.integer(gsub("^class(\\d+)\\..$", "\\1", df$matrix))) # Because only weights throws warning
   df$Category <- NA
-  df$Category[grepl("\\.S$", df$matrix)] <- "Covariances"
+  df$Category[grepl("\\.S$", df$matrix)] <- "Variances"
   df$Category[grepl("\\.M$", df$matrix)] <- "Means"
   df <- df[!is.na(df$Category), ]
-  # Extract original variable names
-  covariances <- df$Category == "Covariances" & !(df$row == df$col)
+  covariances <- df$Category == "Variances" & !(df$row == df$col)
+  df$Category[covariances] <- "Covariances"
   df$col[covariances] <- paste(df$row[covariances], df$col[covariances], sep = ".")
-  df$Class <- as.integer(gsub("^class(\\d+)\\..$", "\\1", df$matrix))
   df$p <- 2*pnorm(abs(df$Estimate/df$Std.Error), lower.tail=FALSE)
   df$Parameter <- df$col
   df$se <- df$Std.Error
+  # Because constrained parameters only occur in class 1
+  if(max(df$Class) > 1){
+    df$id <- do.call("paste0", df[c("Category", "col")])
+    df_lst <- split(df, df$Class)
+    only_one <- df_lst[[1]]$id[!df_lst[[1]]$id %in% df_lst[[2]]$id]
+    df_lst[-1] <- lapply(df_lst[-1], function(x){
+      out <- rbind(x, df_lst[[1]][df_lst[[1]]$id %in% only_one, ])
+      out$Class <- out$Class[1]
+      out})
+    df <- do.call(rbind, df_lst)
+  }
   row.names(df) <- NULL
-  df[, c("Category", "Parameter", "Estimate", "se", "p", "Class")]
+  df[order(df$Class, ordered(df$Category, levels = c("Means", "Variances", "Covariances"))), c("Category", "Parameter", "Estimate", "se", "p", "Class")]
 }
 
 

@@ -91,7 +91,6 @@ plot_profiles.default <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
                                       width = .4)
     }
     if(sd){
-
         df_plot$sd_xmin <- df_plot$Variable-.2
         df_plot$sd_xmax <- df_plot$Variable+.2
         df_plot$sd_ymin <- df_plot$Value - sqrt(df_plot$Value.Variances)
