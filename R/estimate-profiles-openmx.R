@@ -15,6 +15,9 @@
 #' @author Caspar J. van Lissa
 #' @return An object of class 'tidyLPA' and 'list'
 #' @importFrom methods hasArg
+#' @importFrom OpenMx mxAutoStart mxData mxExpectationMixture
+#' @importFrom OpenMx mxFitFunctionML mxMatrix mxModel mxRun mxTryHard
+#' @importFrom lavaan mplus2lavaan.modelSyntax
 # @import OpenMx
 estimate_profiles_openmx <-
     function(df, n_profiles, model_numbers, select_vars, ...) {

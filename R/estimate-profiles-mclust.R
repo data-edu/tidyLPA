@@ -23,7 +23,7 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, select_vars,
     warnings <- NULL
     no_na_rows <- !apply(df, 1, anyNA)
     if(any(!no_na_rows)){
-        warning("The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using Mplus, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.\n")
+        warning("The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using OpenMx, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.\n")
     }
     full_data <- df[no_na_rows, , drop = FALSE]
     boot_model_names <- get_modelname(model_numbers)

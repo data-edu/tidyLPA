@@ -1,4 +1,8 @@
+#' @importFrom utils getFromNamespace
+vnames <- getFromNamespace("vnames", "lavaan")
 
+#' @importFrom lavaan lavaanify
+#' @importFrom OpenMx mxModel
 as_ram <- function(model,
                    int.ov.free = TRUE, int.lv.free = FALSE, auto.fix.first = FALSE,
                    auto.fix.single = TRUE, auto.var = TRUE, auto.cov.lv.x = TRUE,
@@ -16,7 +20,7 @@ as_ram <- function(model,
     #lavtab$ustart[lavtab$op == "~1"] <- 0
     #lavtab$ustart[lavtab$op == "~~"] <- .5
     # Identify observed and latent
-    vnames <- lavaan:::vnames(partable = lavtab, type = "all")
+    vnames <- vnames(partable = lavtab, type = "all")
     latent <- unlist(vnames[["lv"]])
     obs <- unlist(vnames[["ov"]])
     # Intercept needs rhs

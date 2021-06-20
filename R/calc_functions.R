@@ -358,11 +358,17 @@ calc_fitindices.Mclust <- function(model, fitindices, ...){
   make_fitvector(ll = ll, parameters = parameters, n = n, postprob = post_prob, fits = fits)
 }
 
+#' @importFrom utils getFromNamespace
+one_mplus_model <- getFromNamespace("one_mplus_model", "MplusAutomation")
+
+
 calc_fitindices.MplusObject <- function(model, fitindices, ...){
+  model <- one_mplus_model(model)
   # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
   ll <- model$summaries$LL
   parameters <- model$summaries$Parameters
   n <- model$summaries$Observations
+  post_prob <- model$savedata[, grep("^CPROB", names(model$savedata))]
   fits <- c(ifelse(is.null(model$summaries$Entropy), 1, model$summaries$Entropy),
             tryCatch(range(diag(model$class_counts$classificationProbs.mostLikely)),
                      warning = function(x) {
@@ -375,6 +381,8 @@ calc_fitindices.MplusObject <- function(model, fitindices, ...){
   names(fits) <- c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")
   make_fitvector(ll = ll, parameters = parameters, n = n, postprob = post_prob, fits = fits)
 }
+
+calc_fitindices.mplus.model <- calc_fitindices.MplusObject
 
 calc_fitindices.MxModel <- function (model, fitindices, ...){
   sums <- summary(model)
@@ -406,10 +414,10 @@ calc_fitindices.MxModel <- function (model, fitindices, ...){
 make_fitvector <- function(ll, parameters, n, postprob, fits){
   LogLik = ll
   AIC = -2*ll + 2*parameters
-  AWE = -2*(ll + fits[1]) + 2*parameters*(3/2 + log(n))
+  AWE = -2*(ll + unname(fits[1])) + 2*parameters*(3/2 + log(n))
   BIC = -2*ll + parameters * log(n)
   CAIC = -2*ll + parameters * (log(n)+1)
-  CLC = -2*ll + 2*fits[1]
+  CLC = -2*ll + 2*unname(fits[1])
   KIC = -2*ll + 3*(parameters + 1)
   SABIC = -2*ll + parameters * log(((n+2)/24))
   ICL = icl_default(postprob, BIC)

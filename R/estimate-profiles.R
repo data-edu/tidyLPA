@@ -1,8 +1,8 @@
 #' @title Estimate latent profiles
-#' @description Estimates latent profiles (finite mixture models) using the open
-#' source package \code{\link[mclust:Mclust]{mclust}}, or the commercial program
-#' Mplus (using the R-interface of
-#' \code{\link[MplusAutomation:mplusModeler]{MplusAutomation}}).
+#' @description Estimates latent profiles (finite mixture models) using either
+#' the open source package \code{\link[mclust:Mclust]{mclust}} or
+#' \code{[OpenMx:mxModel]{OpenMx}}, or the commercial program Mplus (using the
+#' R-interface of \code{\link[MplusAutomation:mplusModeler]{MplusAutomation}}).
 #' @param df data.frame of numeric data; continuous indicators are required for
 #' mixture modeling.
 #' @param n_profiles Integer vector of the number of profiles (or mixture
@@ -19,22 +19,26 @@
 #' to an assumption of conditional independence of the indicators); other
 #' options are "equal" (estimate covariances between items, constrained across
 #' profiles), and "varying" (free covariances across profiles).
-#' @param package Character. Which package to use; 'mclust' or
-#' 'MplusAutomation' (requires Mplus to be installed). Default: 'mclust'.
+#' @param package Character. Which package to use; 'OpenMx', 'mclust', or
+#' 'MplusAutomation' (requires Mplus to be installed). Default: 'OpenMx'.
 #' @param select_vars Character. Optional vector of variable names in \code{df},
 #' to be used for model estimation. Defaults to \code{NULL}, which means all
 #' variables in \code{df} are used.
 #' @param ... Additional arguments are passed to the estimating function; i.e.,
+#' \code{\link[OpenMx]{mxRun}},
 #' \code{\link[mclust]{Mclust}}, or \code{\link[MplusAutomation]{mplusModeler}}.
 #' @return A list of class 'tidyLPA'.
 #' @details Six models are currently available in tidyLPA, corresponding to the
-#' most common requirements. These are:
+#' most common requirements. All models estimate the observed variable means
+#' for each class. The remaining parameters are:
 #' \enumerate{
-#' \item Equal variances and covariances fixed to 0
-#' \item Varying variances and covariances fixed to 0
-#' \item Equal variances and equal covariances
-#' \item Varying variances and equal covariances (not able to be fit w/ mclust)
-#' \item Equal variances and varying covariances (not able to be fit w/ mclust)
+#' \item Equal variances across classes; no covariances between observed
+#' variables
+#' \item Varying variances across classes; no covariances between observed
+#' variables
+#' \item Equal variances and equal covariances across classes
+#' \item Varying variances and equal covariances (not available for \code{package = 'mclust'})
+#' \item Equal variances and varying covariances (not available for \code{package = 'mclust'})
 #' \item Varying variances and varying covariances
 #' }
 #'
@@ -42,8 +46,9 @@
 #' in the \code{models} argument (e.g., \code{models = 1}, or
 #' \code{models = c(1, 2, 3)}), or specify the variances/covariances to be
 #' estimated (e.g.,: \code{variances = c("equal", "varying"), covariances =
-#' c("zero", "equal")}). Note that when mclust is used, \code{models =
-#' c(1, 2, 3, 6)} are the only models available.
+#' c("zero", "equal")}). Note that when \code{package = 'mclust'} is used,
+#' \code{models = c(4, 5)} are not available. Use \code{package = 'OpenMx'} or
+#' \code{package = 'Mplus'} to estimate these models.
 #' @examples
 #'
 #' iris_sample <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
@@ -116,6 +121,7 @@ estimate_profiles.numeric <- function(df,
     NextMethod("estimate_profiles", df)
 }
 
+#' @importFrom tidySEM descriptives
 #' @export
 estimate_profiles.default <- function(df,
                                       n_profiles,
@@ -126,7 +132,6 @@ estimate_profiles.default <- function(df,
                                       select_vars = NULL,
                                       ...) {
     # Check deprecated arguments ----------------------------------------------
-
     deprecated_arguments(c(
         "model" = "Instead, use the argument 'models', or 'variances' and 'covariances'.",
         "toreturn" = "A tibble is returned by default in the $df element of the returned output.",
@@ -149,7 +154,10 @@ estimate_profiles.default <- function(df,
     # Backup df
     df_full <- df
     df <- df[, select_vars, drop = FALSE]
-
+    desc <- descriptives(df)
+    if(any(desc$unique < 10)){
+        warning("Latent profile analysis assumes that all variables have a continuous measurement level. Some variables have fewer than 10 unique values, which may violate this assumption. Carefully examine the results, and avoid complex models, e.g.with free (co)variances or many classes. The variables violating this assumption are: ", paste0(desc$name[desc$unique < 10], collapse = ", "))
+    }
     # Deprecated variable selection -------------------------------------------
     check_dots <- match.call(expand.dots = FALSE)$`...`
     if(any(names(df) %in% unlist(check_dots))){
