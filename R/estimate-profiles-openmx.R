@@ -45,11 +45,12 @@ estimate_profiles_openmx <-
 
         run_models <-
             expand.grid(prof = n_profiles, mod = model_numbers)
-
+        # Prepare initial clustering
+        clusts <- hclust(dist(df))
+        # Create outlist
         out_list <- mapply(
             FUN = function(this_class, this_model) {
                 # Generate specific Mplus object for each individual model
-
                 model_class_specific <-
                     gsub("  ",
                          "\n",
@@ -62,15 +63,36 @@ estimate_profiles_openmx <-
                 classes <- lapply(1:this_class, function(i){
                     mxModel(as_ram(gsub("{C}", i, model_class_specific, fixed = TRUE)),
                             mxFitFunctionML(vector=TRUE),
-                            name = paste0("class", i),
-                            mxData(df, "raw"))
-                    })
-                classes <- lapply(classes, mxAutoStart, type = "ULS")
+                            name = paste0("class", i))
+                })
 
+                splits <- cutree(tree = clusts, k = this_class)
+                starts_overall <- mxAutoStart(mxModel(classes[[1]], mxData(df, type = "raw"), mxFitFunctionML()), type = "ULS")
+                for(i in 1:max(this_class)){
+                    tmp <- mxAutoStart(mxModel(classes[[i]], mxData(df[splits == i, , drop = FALSE], type = "raw"), mxFitFunctionML()), type = "ULS")
+                    classes[[i]]$M$values <- tmp$M$values
+
+                    if(this_model %in% c(1, 3)){
+                        classes[[i]]$S$values <- starts_overall$S$values
+                    }
+                    if(this_model %in% c(2, 6)){
+                        classes[[i]]$S$values <- tmp$S$values
+                    }
+                    if(this_model == 4){
+                        browser()
+                        classes[[i]]$S$values[lower.tri(classes[[i]]$S$values)] <- starts_overall$S$values[lower.tri(starts_overall$S$values)]
+                        classes[[i]]$S$values[upper.tri(classes[[i]]$S$values)] <- starts_overall$S$values[upper.tri(starts_overall$S$values)]
+                        diag(classes[[i]]$S$values) <- diag(tmp$S$values)
+                    }
+                    if(this_model == 5){
+                        classes[[i]]$S$values[lower.tri(classes[[i]]$S$values)] <- tmp$S$values[lower.tri(tmp$S$values)]
+                        classes[[i]]$S$values[upper.tri(classes[[i]]$S$values)] <- tmp$S$values[upper.tri(tmp$S$values)]
+                        diag(classes[[i]]$S$values) <- diag(starts_overall$S$values)
+                    }
+                }
                 # Run analysis ------------------------------------------------------------
-
                 mix <- mxModel(
-                    "mix",
+                    model = paste0("mix", this_class),
                     classes,
                     mxData(df, "raw"),
                     mxMatrix(values=1, nrow=1, ncol=this_class, free=c(FALSE,rep(TRUE, this_class-1)), name="weights"),
