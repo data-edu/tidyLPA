@@ -338,7 +338,15 @@ calc_fitindices <- function(model, fitindices, ...){
 calc_fitindices.Mclust <- function(model, fitindices, ...){
   # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
   ll <- model$loglik
-  parameters <- model$df
+  nvars <- nrow(model$parameters$mean)
+  nclass <- model$G
+                # Prob     + means            + (co)vars, depending on model
+  parameters <- (nclass-1) + (nvars * nclass) + switch(model$call$modelNames,
+                                                       "EEI" = nvars, # One variance per variable
+                                                       "VVI" = (nvars * nclass), # One variance per variable per class
+                                                       "EEE" = nvars + (nvars * (nvars-1)),
+                                                       "VVV" = (nvars * nclass) + ((nvars * (nvars-1)) * nclass))
+
   n <- model$n
   post_prob <- model$z
   class <- model$classification
@@ -457,7 +465,7 @@ calc_fitindices.mplus.model <- calc_fitindices.MplusObject
 
 calc_fitindices.MxModel <- function (model, fitindices, ...){
   sums <- summary(model)
-  ll <- sums$Minus2LogLikelihood
+  ll <- sums$Minus2LogLikelihood/-2
   parameters <- sums$estimatedParameters
   n <- model$data$numObs
 
@@ -484,15 +492,17 @@ calc_fitindices.MxModel <- function (model, fitindices, ...){
 
 make_fitvector <- function(ll, parameters, n, postprob, fits){
   LogLik = ll
-  AIC = -2*ll + 2*parameters
+  AIC = -2*ll + (2*parameters)
   AWE = -2*(ll + unname(fits[1])) + 2*parameters*(3/2 + log(n))
-  BIC = -2*ll + parameters * log(n)
-  CAIC = -2*ll + parameters * (log(n)+1)
-  CLC = -2*ll + 2*unname(fits[1])
-  KIC = -2*ll + 3*(parameters + 1)
-  SABIC = -2*ll + parameters * log(((n+2)/24))
+  BIC = -2*ll + (parameters * log(n))
+  CAIC = -2*ll + (parameters * (log(n)+1))
+  CLC = -2*ll + (2*unname(fits[1]))
+  KIC = -2*ll + (3*(parameters + 1))
+  SABIC = -2*ll + (parameters * log(((n+2)/24)))
   ICL = icl_default(postprob, BIC)
   c("LogLik" = LogLik,
+    "parameters" = parameters,
+    "n" = n,
     "AIC" = AIC,
     "AWE" = AWE,
     "BIC" = BIC,
