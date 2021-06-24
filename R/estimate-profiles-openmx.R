@@ -67,29 +67,23 @@ estimate_profiles_openmx <-
                 })
 
                 splits <- cutree(tree = clusts, k = this_class)
-                starts_overall <- mxAutoStart(mxModel(classes[[1]], mxData(df, type = "raw"), mxFitFunctionML()), type = "ULS")
-                for(i in 1:max(this_class)){
-                    tmp <- mxAutoStart(mxModel(classes[[i]], mxData(df[splits == i, , drop = FALSE], type = "raw"), mxFitFunctionML()), type = "ULS")
-                    classes[[i]]$M$values <- tmp$M$values
-
-                    if(this_model %in% c(1, 3)){
-                        classes[[i]]$S$values <- starts_overall$S$values
-                    }
-                    if(this_model %in% c(2, 6)){
-                        classes[[i]]$S$values <- tmp$S$values
-                    }
-                    if(this_model == 4){
-                        browser()
-                        classes[[i]]$S$values[lower.tri(classes[[i]]$S$values)] <- starts_overall$S$values[lower.tri(starts_overall$S$values)]
-                        classes[[i]]$S$values[upper.tri(classes[[i]]$S$values)] <- starts_overall$S$values[upper.tri(starts_overall$S$values)]
-                        diag(classes[[i]]$S$values) <- diag(tmp$S$values)
-                    }
-                    if(this_model == 5){
-                        classes[[i]]$S$values[lower.tri(classes[[i]]$S$values)] <- tmp$S$values[lower.tri(tmp$S$values)]
-                        classes[[i]]$S$values[upper.tri(classes[[i]]$S$values)] <- tmp$S$values[upper.tri(tmp$S$values)]
-                        diag(classes[[i]]$S$values) <- diag(starts_overall$S$values)
-                    }
-                }
+                browser()
+                # start_groups <- lapply(1:max(this_class), function(i){
+                #     mxAutoStart(mxModel(classes[[i]], mxData(df[splits == i, , drop = FALSE], type = "raw")), type = "ULS")
+                # })
+                # start_groups <- mxAutoStart(
+                #     do.call(mxModel, c(list(model = "start_groups", mxFitFunctionML()), start_groups)),
+                #     type = "ULS")
+                start_groups <- lapply(1:max(this_class), function(i){
+                    mxAutoStart(mxModel(classes[[i]], mxData(df[splits == i, , drop = FALSE], type = "raw"), mxFitFunctionML()), type = "ULS")
+                })
+                tmp <- do.call(mxModel, c(list(model = "start_groups"), start_groups))
+                tmp <- mxRun(omxAssignFirstParameters(tmp))
+                classes <- mapply(function(cls, strt){
+                    cls$M$values <- tmp[[paste0("class", strt)]]$M$values
+                    cls$S$values <- tmp[[paste0("class", strt)]]$S$values
+                    cls
+                }, cls = classes, strt = 1:this_class)
                 # Run analysis ------------------------------------------------------------
                 mix <- mxModel(
                     model = paste0("mix", this_class),
