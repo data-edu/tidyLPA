@@ -87,7 +87,7 @@ estimate_profiles_openmx <-
                 tryCatch({
                     #strts <- mxRun(omxAssignFirstParameters(strts))
                     suppressMessages(invisible({
-                        strts <- mxRun(strts, silent = TRUE)
+                        strts <- mxRun(strts, silent = TRUE, suppressWarnings = TRUE)
                     }))
                     strts_success <- TRUE
                 }, error = function(e){
