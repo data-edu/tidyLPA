@@ -15,8 +15,9 @@
 #' @author Caspar J. van Lissa
 #' @return An object of class 'tidyLPA' and 'list'
 #' @importFrom methods hasArg
-#' @importFrom OpenMx mxAutoStart mxData mxExpectationMixture
+#' @importFrom OpenMx mxAutoStart mxData mxExpectationMixture mxPath
 #' @importFrom OpenMx mxFitFunctionML mxMatrix mxModel mxRun mxTryHard
+#' @importFrom OpenMx omxAssignFirstParameters
 #' @importFrom lavaan mplus2lavaan.modelSyntax
 # @import OpenMx
 estimate_profiles_openmx <-
@@ -62,27 +63,30 @@ estimate_profiles_openmx <-
 
                 classes <- lapply(1:this_class, function(i){
                     mxModel(as_ram(gsub("{C}", i, model_class_specific, fixed = TRUE)),
-                            mxFitFunctionML(vector=TRUE),
+                            # Do not yet give fit function here, because model is run as multigroup first
+                            #mxFitFunctionML(vector=TRUE),
                             name = paste0("class", i))
                 })
 
                 splits <- cutree(tree = clusts, k = this_class)
-                browser()
-                # start_groups <- lapply(1:max(this_class), function(i){
-                #     mxAutoStart(mxModel(classes[[i]], mxData(df[splits == i, , drop = FALSE], type = "raw")), type = "ULS")
-                # })
-                # start_groups <- mxAutoStart(
-                #     do.call(mxModel, c(list(model = "start_groups", mxFitFunctionML()), start_groups)),
-                #     type = "ULS")
-                start_groups <- lapply(1:max(this_class), function(i){
-                    mxAutoStart(mxModel(classes[[i]], mxData(df[splits == i, , drop = FALSE], type = "raw"), mxFitFunctionML()), type = "ULS")
+                strts <- lapply(1:max(this_class), function(i){
+                    # Re-enable autostart if there is a problem with convergence;
+                    # however, this may introduce problems with > 1 start value for constrained
+                    # parameters
+                    #mxAutoStart(
+                        mxModel(classes[[i]], mxData(df[splits == i, , drop = FALSE], type = "raw"),
+                                mxFitFunctionML())
+                    #, type = "ULS")
                 })
-                tmp <- do.call(mxModel, c(list(model = "start_groups"), start_groups))
-                tmp <- mxRun(omxAssignFirstParameters(tmp))
+                strts <- do.call(mxModel, c(list(model = "mg_starts", mxFitFunctionMultigroup(paste0("class", 1:this_class)), strts)))
+                # Use omxAssignFirstParameters if multiple starting values
+                #omxAssignFirstParameters()
+                strts <- mxRun(strts)
+
                 classes <- mapply(function(cls, strt){
-                    cls$M$values <- tmp[[paste0("class", strt)]]$M$values
-                    cls$S$values <- tmp[[paste0("class", strt)]]$S$values
-                    cls
+                    cls$M$values <- strts[[paste0("class", strt)]]$M$values
+                    cls$S$values <- strts[[paste0("class", strt)]]$S$values
+                    mxModel(cls, mxFitFunctionML(vector=TRUE))
                 }, cls = classes, strt = 1:this_class)
                 # Run analysis ------------------------------------------------------------
                 mix <- mxModel(
