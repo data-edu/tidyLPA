@@ -79,16 +79,39 @@ estimate_profiles_openmx <-
                     #, type = "ULS")
                 })
                 strts <- do.call(mxModel, c(list(model = "mg_starts", mxFitFunctionMultigroup(paste0("class", 1:this_class)), strts)))
+                strts <- mxAutoStart(strts, type = "ULS")
                 # Use omxAssignFirstParameters if multiple starting values
-                #omxAssignFirstParameters()
-                strts <- mxRun(strts)
-
+                #
+                strts_success <- FALSE
+                warns <- NULL
+                tryCatch({
+                    #strts <- mxRun(omxAssignFirstParameters(strts))
+                    suppressMessages(invisible({
+                        strts <- mxRun(strts, silent = TRUE)
+                    }))
+                    strts_success <- TRUE
+                }, error = function(e){
+                    tryCatch({
+                        #strts <<- mxTryHard(omxAssignFirstParameters(strts), extraTries = 100)
+                        suppressMessages(invisible({
+                            strts <- mxAutoStart(strts, type = "DWLS")
+                            strts <<- mxTryHard(strts, extraTries = 100,
+                                                silent = TRUE,
+                                                verbose = FALSE,
+                                                bestInitsOutput = FALSE)
+                        }))
+                        strts_success <<- TRUE
+                    }, error = function(e2){
+                        warns <<- c(warns, "Could not derive suitable starting values.")
+                        })
+                    })
+                # Insert start values into mixture model
                 classes <- mapply(function(cls, strt){
                     cls$M$values <- strts[[paste0("class", strt)]]$M$values
                     cls$S$values <- strts[[paste0("class", strt)]]$S$values
                     mxModel(cls, mxFitFunctionML(vector=TRUE))
                 }, cls = classes, strt = 1:this_class)
-                # Run analysis ------------------------------------------------------------
+                # Prepare mixture model
                 mix <- mxModel(
                     model = paste0("mix", this_class),
                     classes,
@@ -96,16 +119,23 @@ estimate_profiles_openmx <-
                     mxMatrix(values=1, nrow=1, ncol=this_class, free=c(FALSE,rep(TRUE, this_class-1)), name="weights"),
                     mxExpectationMixture(paste0("class", 1:this_class), scale="softmax"),
                     mxFitFunctionML())
-                warns <- NULL
+                # Run analysis ------------------------------------------------------------
                 suppressMessages(invisible({
-                    mix_fit <- mxRun(mix, silent = TRUE)
-                    mix_fit <- tryCatch({mxTryHard(mix_fit, extraTries = 100,
-                                                   intervals=TRUE,
-                                                   silent = TRUE,
-                                                   verbose = FALSE,
-                                                   bestInitsOutput = FALSE)
-                    }, warning = function(w){
-                        warns <- w
+                    mix_fit <- tryCatch({
+                        mxTryHard(mix,
+                                  extraTries = 100,
+                                  intervals=TRUE,
+                                  silent = TRUE,
+                                  verbose = FALSE,
+                                  bestInitsOutput = FALSE,
+                                  exhaustive = TRUE)
+                    },
+                    error = function(e){
+                        warns <<- c(warns, "Model did not converge.")
+                        NULL
+                    },
+                    warning = function(w){
+                        warns <<- c(warns, w)
                     })
                    }))
 
@@ -148,8 +178,8 @@ estimate_profiles_openmx <-
                           "LogLik" = NA, "AIC" = NA, "AWE" = NA, "BIC" = NA, "CAIC" = NA, "CLC" = NA, "KIC" = NA, "SABIC" = NA, "ICL" = NA, "Entropy" = NA, "prob_min" = NA, "prob_max" = NA, "n_min" = NA, "n_max" = NA, "BLRT_val" = NA, "BLRT_p" = NA)
                     out$estimates <- NULL
                 }
-                if(length(warns)) out$warns <- warns
-                class(out) <- c("tidyProfile.mplus", "tidyProfile", "list")
+                if(length(warns) > 0) out$warnings <- warns
+                class(out) <- c("tidyProfile.OpenMx", "tidyProfile", "list")
                 out
             },
             this_class = run_models$prof,
@@ -158,5 +188,29 @@ estimate_profiles_openmx <-
         )
         names(out_list) <-
             paste("model_", run_models$mod, "_class_", run_models$prof, sep = "")
+        # Arguments for mxCompare ----------------------------------------
+        if(length(out_list) > 1){
+            dots <- list(...)
+            Args_boot <- dots[which(names(dots) %in% c("replications", "previousRun", "checkHess"))]
+            if(is.null(Args_boot[["replications"]])) Args_boot[["replications"]] <- 100
+            Args_boot$boot <- TRUE
+            for(this_mod in 1:(length(res)-1)){
+                Args_boot[["base"]] <- out_list[[(this_mod+1)]][["model"]]
+                Args_boot[["comparison"]] <- out_list[[this_mod]][["model"]]
+                warnopt <- getOption("warn")
+                options(warn = 1)
+                theoutput <- capture.output({out <- tryCatch({do.call(mxCompare, Args_boot)}, error = function(e){NULL})}, type = "message")
+                options(warn = warnopt)
+                if(is.null(out)){
+                    out_list[[(this_mod+1)]][["warns"]] <- c(out_list[[(this_mod+1)]][["warns"]], "Unable to perform BLRT.")
+                } else {
+                    out_list[[(this_mod+1)]]$fit["BLRT_val"] <- out$diffLL[2]
+                    out_list[[(this_mod+1)]]$fit["BLRT_p"] <- out$p[2]
+                }
+                if(length(theoutput) > 0){
+                    out_list[[(this_mod+1)]][["warnings"]] <- c(out_list[[(this_mod+1)]][["warnings"]], theoutput)
+                }
+            }
+        }
         out_list
     }
