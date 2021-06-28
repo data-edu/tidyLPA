@@ -337,15 +337,24 @@ calc_fitindices <- function(model, fitindices, ...){
 
 calc_fitindices.Mclust <- function(model, fitindices, ...){
   # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
+  dots <- list(...)
   ll <- model$loglik
-  nvars <- nrow(model$parameters$mean)
+  if(is.null(dim(model$parameters$mean))){
+    nvars <- length(model$parameters$mean)
+  } else {
+    nvars <- nrow(model$parameters$mean)
+  }
+
   nclass <- model$G
                 # Prob     + means            + (co)vars, depending on model
-  parameters <- (nclass-1) + (nvars * nclass) + switch(model$call$modelNames,
+  parameters <- (nclass-1) + (nvars * nclass) + switch(dots$modelname,
                                                        "EEI" = nvars, # One variance per variable
                                                        "VVI" = (nvars * nclass), # One variance per variable per class
                                                        "EEE" = nvars + (nvars * (nvars-1)),
                                                        "VVV" = (nvars * nclass) + ((nvars * (nvars-1)) * nclass))
+  # parameters <- (length(model$parameters$pro)-1) +
+  #   length(model$parameters$mean) +
+  #   ifelse(is.null(model$parameters$variance$sigma), model$parameters$variance$sigmasq, length(unique(model$parameters$variance$sigma))
 
   n <- model$n
   post_prob <- model$z
