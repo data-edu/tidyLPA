@@ -50,8 +50,8 @@
 #' \code{models = c(4, 5)} are not available. Use \code{package = 'OpenMx'} or
 #' \code{package = 'Mplus'} to estimate these models.
 #' @examples
-#'
-#' iris_sample <- iris[c(1:4, 51:54, 101:104), ] # to make example run more quickly
+#' # to make example run more quickly
+#' iris_sample <- iris[c(1:10, 51:60, 101:114), ]
 #'
 #' # Example 1:
 #' iris_sample %>%
