@@ -17,8 +17,10 @@
 #' @importFrom methods hasArg
 #' @importFrom OpenMx mxAutoStart mxData mxExpectationMixture mxPath
 #' @importFrom OpenMx mxFitFunctionML mxMatrix mxModel mxRun mxTryHard
-#' @importFrom OpenMx omxAssignFirstParameters
+#' @importFrom OpenMx omxAssignFirstParameters mxCompare mxFitFunctionMultigroup
 #' @importFrom lavaan mplus2lavaan.modelSyntax
+#' @importFrom stats cutree dist hclust
+#' @importFrom utils capture.output
 # @import OpenMx
 estimate_profiles_openmx <-
     function(df, n_profiles, model_numbers, select_vars, ...) {
@@ -194,7 +196,7 @@ estimate_profiles_openmx <-
             Args_boot <- dots[which(names(dots) %in% c("replications", "previousRun", "checkHess"))]
             if(is.null(Args_boot[["replications"]])) Args_boot[["replications"]] <- 100
             Args_boot$boot <- TRUE
-            for(this_mod in 1:(length(res)-1)){
+            for(this_mod in 1:(length(out_list)-1)){
                 Args_boot[["base"]] <- out_list[[(this_mod+1)]][["model"]]
                 Args_boot[["comparison"]] <- out_list[[this_mod]][["model"]]
                 warnopt <- getOption("warn")
