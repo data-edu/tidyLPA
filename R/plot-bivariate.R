@@ -72,53 +72,58 @@ get_cordat <- function(est){
     df_cors[, c("Parameter", "xvar", "yvar", "Class", "Model", "Classes", "Correlation", "xmean", "ymean", "xsd", "ysd")]
 }
 
-#' Create correlation plots for a mixture model
-#'
-#' Creates a faceted plot of two-dimensional correlation plots and
-#' unidimensional density plots for an object of class 'tidyProfile'.
-#' @param x tidyProfile object to plot. A tidyProfile is one element of a
-#' tidyLPA analysis.
-#' @param variables Which variables to plot. If NULL, plots all variables that
-#' are present in all models.
-#' @param sd Logical. Whether to show the estimated standard deviations as lines
-#' emanating from the cluster centroid.
-#' @param cors Logical. Whether to show the estimated correlation (standardized
-#' covariance) as ellipses surrounding the cluster centroid.
-#' @param rawdata Logical. Whether to plot raw data, weighted by posterior class
-#' probability.
-#' @param bw Logical. Whether to make a black and white plot (for print) or a
-#' color plot. Defaults to FALSE, because these density plots are hard to read
-#' in black and white.
-#' @param alpha_range Numeric vector (0-1). Sets
-#' the transparency of geom_density and geom_point.
-#' @param return_list Logical. Whether to return a list of ggplot objects, or
-#' just the final plot. Defaults to FALSE.
-#' @return An object of class 'ggplot'.
-#' @author Caspar J. van Lissa
+# Create correlation plots for a mixture model
+#
+# Creates a faceted plot of two-dimensional correlation plots and
+# unidimensional density plots for an object of class 'tidyProfile'.
+# @param x tidyProfile object to plot. A tidyProfile is one element of a
+# tidyLPA analysis.
+# @param variables Which variables to plot. If NULL, plots all variables that
+# are present in all models.
+# @param sd Logical. Whether to show the estimated standard deviations as lines
+# emanating from the cluster centroid.
+# @param cors Logical. Whether to show the estimated correlation (standardized
+# covariance) as ellipses surrounding the cluster centroid.
+# @param rawdata Logical. Whether to plot raw data, weighted by posterior class
+# probability.
+# @param bw Logical. Whether to make a black and white plot (for print) or a
+# color plot. Defaults to FALSE, because these density plots are hard to read
+# in black and white.
+# @param alpha_range Numeric vector (0-1). Sets
+# the transparency of geom_density and geom_point.
+# @param return_list Logical. Whether to return a list of ggplot objects, or
+# just the final plot. Defaults to FALSE.
+# @return An object of class 'ggplot'.
+# @author Caspar J. van Lissa
+# @export
+# @examples
+# # Example 1
+# iris_sample <- iris[c(1:10, 51:60, 101:110), ] # to make example run more quickly
+# \dontrun{
+# iris_sample %>%
+#  subset(select = c("Sepal.Length", "Sepal.Width")) %>%
+#  estimate_profiles(n_profiles = 2, models = 1) %>%
+#  plot_bivariate()
+#}
+# # Example 2
+# \dontrun{
+# mtcars %>%
+#   subset(select = c("wt", "qsec", "drat")) %>%
+#   poms() %>%
+#   estimate_profiles(3) %>%
+#   plot_bivariate()
+#}
+# @keywords mixture correlation plot
+# @rdname plot_bivariate
+# @export
+# plot_bivariate <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE){
+#    UseMethod("plot_bivariate", x)
+# }
+
+#' @importFrom tidySEM plot_bivariate
 #' @export
-#' @examples
-#' # Example 1
-#' iris_sample <- iris[c(1:10, 51:60, 101:110), ] # to make example run more quickly
-#' \dontrun{
-#' iris_sample %>%
-#'  subset(select = c("Sepal.Length", "Sepal.Width")) %>%
-#'  estimate_profiles(n_profiles = 2, models = 1) %>%
-#'  plot_bivariate()
-#'}
-#' # Example 2
-#' \dontrun{
-#' mtcars %>%
-#'   subset(select = c("wt", "qsec", "drat")) %>%
-#'   poms() %>%
-#'   estimate_profiles(3) %>%
-#'   plot_bivariate()
-#'}
-#' @keywords mixture correlation plot
-#' @rdname plot_bivariate
-#' @export
-plot_bivariate <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE){
-    UseMethod("plot_bivariate", x)
-}
+tidySEM::plot_bivariate
+
 
 #' @method plot_bivariate tidyLPA
 #' @export
@@ -132,6 +137,7 @@ plot_bivariate.tidyLPA <- function(x, variables = NULL, sd = TRUE, cors = TRUE, 
         stop("plot_bivariate can only plot a single tidyProfile object. This tidyLPA object contains ", length(x), " tidyProfile objects. Extract one of these objects using '$' or '[[]]' and try again.")
     }
 }
+
 
 #' @method plot_bivariate tidyProfile
 #' @export

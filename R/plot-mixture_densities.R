@@ -1,110 +1,112 @@
-#' Create density plots for mixture models
-#'
-#' Creates a faceted plot of density plots for an object of class 'tidyLPA'. For
-#' each variable, a Total density plot will be shown, along with separate
-#' density plots for each latent class, where cases are weighted by the
-#' posterior probability of being assigned to that class.
-#' @param x Object to plot.
-#' @param variables Which variables to plot. If NULL, plots all variables that
-#' are present in all models.
-#' @param bw Logical. Whether to make a black and white plot (for print) or a
-#' color plot. Defaults to FALSE, because these density plots are hard to read
-#' in black and white.
-#' @param conditional Logical. Whether to show a conditional density plot
-#' (surface area is divided amongst the latent classes), or a classic density
-#' plot (surface area of the total density plot is equal to one, and is
-#' subdivided amongst the classes).
-#' @param alpha Numeric (0-1). Only used when bw and conditional are FALSE. Sets
-#' the transparency of geom_density, so that classes with a small number of
-#' cases remain visible.
-#' @param facet_labels Named character vector, the names of which should
-#' correspond to the facet labels one wishes to rename, and the values of which
-#' provide new names for these facets. For example, to rename variables, in the
-#' example with the 'iris' data below, one could specify:
-#' \code{facet_labels = c("Pet_leng" = "Petal length")}.
-#' @return An object of class 'ggplot'.
-#' @author Caspar J. van Lissa
+# Create density plots for mixture models
+#
+# Creates a faceted plot of density plots for an object of class 'tidyLPA'. For
+# each variable, a Total density plot will be shown, along with separate
+# density plots for each latent class, where cases are weighted by the
+# posterior probability of being assigned to that class.
+# @param x Object to plot.
+# @param variables Which variables to plot. If NULL, plots all variables that
+# are present in all models.
+# @param bw Logical. Whether to make a black and white plot (for print) or a
+# color plot. Defaults to FALSE, because these density plots are hard to read
+# in black and white.
+# @param conditional Logical. Whether to show a conditional density plot
+# (surface area is divided amongst the latent classes), or a classic density
+# plot (surface area of the total density plot is equal to one, and is
+# subdivided amongst the classes).
+# @param alpha Numeric (0-1). Only used when bw and conditional are FALSE. Sets
+# the transparency of geom_density, so that classes with a small number of
+# cases remain visible.
+# @param facet_labels Named character vector, the names of which should
+# correspond to the facet labels one wishes to rename, and the values of which
+# provide new names for these facets. For example, to rename variables, in the
+# example with the 'iris' data below, one could specify:
+# \code{facet_labels = c("Pet_leng" = "Petal length")}.
+# @return An object of class 'ggplot'.
+# @author Caspar J. van Lissa
+# @export
+# @import ggplot2
+# @keywords mixture density plot
+# @examples
+# \dontrun{
+# results <- iris %>%
+#   subset(select = c("Sepal.Length", "Sepal.Width",
+#     "Petal.Length", "Petal.Width")) %>%
+#   estimate_profiles(1:3)
+# }
+# \dontrun{
+# plot_density(results, variables = "Petal.Length")
+# }
+# \dontrun{
+# plot_density(results, bw = TRUE)
+# }
+# \dontrun{
+# plot_density(results, bw = FALSE, conditional = TRUE)
+# }
+# \dontrun{
+# plot_density(results[[2]], variables = "Petal.Length")
+# }
+# plot_density <-
+#     function(x,
+#              variables = NULL,
+#              bw = FALSE,
+#              conditional = FALSE,
+#              alpha = .2,
+#              facet_labels = NULL) {
+#         UseMethod("plot_density", x)
+#     }
+#' @importFrom tidySEM plot_density
 #' @export
-#' @import ggplot2
-#' @keywords mixture density plot
-#' @examples
-#' \dontrun{
-#' results <- iris %>%
-#'   subset(select = c("Sepal.Length", "Sepal.Width",
-#'     "Petal.Length", "Petal.Width")) %>%
-#'   estimate_profiles(1:3)
-#' }
-#' \dontrun{
-#' plot_density(results, variables = "Petal.Length")
-#' }
-#' \dontrun{
-#' plot_density(results, bw = TRUE)
-#' }
-#' \dontrun{
-#' plot_density(results, bw = FALSE, conditional = TRUE)
-#' }
-#' \dontrun{
-#' plot_density(results[[2]], variables = "Petal.Length")
-#' }
-plot_density <-
-    function(x,
-             variables = NULL,
-             bw = FALSE,
-             conditional = FALSE,
-             alpha = .2,
-             facet_labels = NULL) {
-        UseMethod("plot_density", x)
-    }
+tidySEM::plot_density
 
-
-#' @method plot_density default
-#' @export
-plot_density.default <-
-    function(x,
-             variables = NULL,
-             bw = FALSE,
-             conditional = FALSE,
-             alpha = .2,
-             facet_labels = NULL) {
-        plot_df <- x
-        if(!inherits(plot_df[["Title"]], "factor")){
-            plot_df[["Title"]] <- factor(plot_df[["Title"]])
-        }
-        # Plot figure
-        Args <- as.list(match.call()[-1])
-        Args <- Args[which(names(Args) %in% c("variables", "bw", "conditional", "alpha"))]
-        Args <- c(Args, list(plot_df = plot_df))
-        density_plot <- do.call(.plot_density_fun, Args)
-        # Relabel facets
-        label_facets <- c(levels(plot_df$Variable), levels(plot_df$Title))
-        names(label_facets) <- label_facets
-        if(!is.null(facet_labels)){
-            label_facets[which(tolower(names(label_facets)) %in% tolower(names(facet_labels)))] <- facet_labels[which(tolower(names(facet_labels)) %in% tolower(names(label_facets)))]
-        }
-        # Facet the plot
-        if (length(unique(plot_df$Title)) > 1) {
-            if (length(variables) > 1) {
-
-                density_plot <- density_plot +
-                    facet_grid(Title ~ Variable, labeller = labeller(Title = label_facets, Variable = label_facets), scales = "free_x")
-
-            } else {
-                density_plot <- density_plot +
-                    facet_grid( ~ Title, labeller = labeller(Title = label_facets))
-            }
-        } else {
-            if (length(variables) > 1) {
-                density_plot <- density_plot +
-                    facet_grid( ~ Variable, labeller = labeller(Variable = label_facets))
-            }
-        }
-
-        density_plot <- density_plot +
-            theme_bw()
-
-        suppressWarnings(print(density_plot))
-        return(invisible(density_plot))
-    }
+# @method plot_density default
+# @export
+# plot_density.default <-
+#     function(x,
+#              variables = NULL,
+#              bw = FALSE,
+#              conditional = FALSE,
+#              alpha = .2,
+#              facet_labels = NULL) {
+#         plot_df <- x
+#         if(!inherits(plot_df[["Title"]], "factor")){
+#             plot_df[["Title"]] <- factor(plot_df[["Title"]])
+#         }
+#         # Plot figure
+#         Args <- as.list(match.call()[-1])
+#         Args <- Args[which(names(Args) %in% c("variables", "bw", "conditional", "alpha"))]
+#         Args <- c(Args, list(plot_df = plot_df))
+#         density_plot <- do.call(.plot_density_fun, Args)
+#         # Relabel facets
+#         label_facets <- c(levels(plot_df$Variable), levels(plot_df$Title))
+#         names(label_facets) <- label_facets
+#         if(!is.null(facet_labels)){
+#             label_facets[which(tolower(names(label_facets)) %in% tolower(names(facet_labels)))] <- facet_labels[which(tolower(names(facet_labels)) %in% tolower(names(label_facets)))]
+#         }
+#         # Facet the plot
+#         if (length(unique(plot_df$Title)) > 1) {
+#             if (length(variables) > 1) {
+#
+#                 density_plot <- density_plot +
+#                     facet_grid(Title ~ Variable, labeller = labeller(Title = label_facets, Variable = label_facets), scales = "free_x")
+#
+#             } else {
+#                 density_plot <- density_plot +
+#                     facet_grid( ~ Title, labeller = labeller(Title = label_facets))
+#             }
+#         } else {
+#             if (length(variables) > 1) {
+#                 density_plot <- density_plot +
+#                     facet_grid( ~ Variable, labeller = labeller(Variable = label_facets))
+#             }
+#         }
+#
+#         density_plot <- density_plot +
+#             theme_bw()
+#
+#         suppressWarnings(print(density_plot))
+#         return(invisible(density_plot))
+#     }
 
 
 #' @method plot_density tidyLPA
