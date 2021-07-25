@@ -52,7 +52,7 @@ Imports:
     mix,
     MplusAutomation,
     tibble,
-    tidySEM (>= 0.2.0),
+    tidySEM,
     OpenMx,
     lavaan 
 Suggests: 
