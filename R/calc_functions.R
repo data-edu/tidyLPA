@@ -238,35 +238,23 @@ estimates.Mclust <- function(model){
 
 }
 
+#' @importFrom tidySEM table_results
 estimates.MxModel <- function(model){
   # Select means, variances, covariances of class-specific parameters; drop est_se
   df <- tryCatch({
-    sums <- summary(model)
-    sums$parameters
+    table_results(model, columns = NULL)
   }, error = function(e){ return(NULL) })
-  df$Class <- suppressWarnings(as.integer(gsub("^class(\\d+)\\..$", "\\1", df$matrix))) # Because only weights throws warning
-  df$Category <- NA
-  df$Category[grepl("\\.S$", df$matrix)] <- "Variances"
-  df$Category[grepl("\\.M$", df$matrix)] <- "Means"
+  df$Class <- suppressWarnings(as.integer(gsub("^class(\\d{0,})\\..+$", "\\1", df$openmx.label))) # Because only weights throws warning
+  if(all(is.na(df$Class))) df$Class[!is.na(df$est)] <- 1
+  df$Category <- gsub("^(.+?)\\..*$", "\\1", df$label)
   df <- df[!is.na(df$Category), ]
-  covariances <- df$Category == "Variances" & !(df$row == df$col)
-  df$Category[covariances] <- "Covariances"
-  df$col[covariances] <- paste(df$row[covariances], df$col[covariances], sep = ".")
-  df$p <- 2*pnorm(abs(df$Estimate/df$Std.Error), lower.tail=FALSE)
+  df <- df[df$Category %in% c("Variances", "Covariances", "Means"), ]
+  df$col[df$Category == "Covariances"] <- paste(df$row[df$Category == "Covariances"], df$col[df$Category == "Covariances"], sep = ".")
   df$Parameter <- df$col
-  df$se <- df$Std.Error
-  # Because constrained parameters only occur in class 1
-  if(max(df$Class) > 1){
-    df$id <- do.call("paste0", df[c("Category", "col")])
-    df_lst <- split(df, df$Class)
-    only_one <- df_lst[[1]]$id[!df_lst[[1]]$id %in% df_lst[[2]]$id]
-    df_lst[-1] <- lapply(df_lst[-1], function(x){
-      out <- rbind(x, df_lst[[1]][df_lst[[1]]$id %in% only_one, ])
-      out$Class <- out$Class[1]
-      out})
-    df <- do.call(rbind, df_lst)
-  }
   row.names(df) <- NULL
+  df$Estimate <- df$est
+  df$p <- df$pvalue
+  df <- df[!is.na(df$Class), ]
   df[order(df$Class, ordered(df$Category, levels = c("Means", "Variances", "Covariances"))), c("Category", "Parameter", "Estimate", "se", "p", "Class")]
 }
 
@@ -292,6 +280,14 @@ get_modelname <- function(number){
 get_model_number <- function(variances, covariances){
     ((which(c("zero", "equal", "varying") == covariances)-1)*2)+which(c("equal", "varying") == variances)
 }
+
+number_to_varcov <- function(number){
+  list(
+    variances = c("varying", "equal")[(number %% 2)+1],
+    covariances = c("zero", "equal", "varying")[ceiling(number / 2)]
+  )
+}
+
 
 # Dynamic syntax generation -----------------------------------------------
 syntax_cor <- function(x, y, all = TRUE){
@@ -474,44 +470,39 @@ calc_fitindices.MplusObject <- function(model, fitindices, ...){
 
 calc_fitindices.mplus.model <- calc_fitindices.MplusObject
 
+#' @importFrom utils getFromNamespace
+#' @importFrom tidySEM class_prob
+table_fit.mixture_list <- getFromNamespace("table_fit.mixture_list", "tidySEM")
 calc_fitindices.MxModel <- function (model, fitindices, ...){
-  sums <- summary(model)
-  ll <- sums$Minus2LogLikelihood/-2
-  parameters <- sums$estimatedParameters
-  n <- model$data$numObs
-
-  post_prob <- extract_postprob(model)
-  class <- apply(post_prob, 1, which.max)
-  class_tab <- table(class)
-  if (length(class_tab) == ncol(post_prob)) {
-    prop_n <- range(prop.table(class_tab))
+  sums <- do.call(table_fit.mixture_list, list(list(model)))
+  ll <- sums$LL
+  parameters <- sums$Parameters
+  n <- sums$n
+  all_probs <- class_prob(model)
+  post_prob <- all_probs$individual
+  fits <- data.frame()
+  if(any(c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p") %in% names(sums))){
+    fits <- sums[c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")[which(c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p") %in% names(sums))]]
   }
-  else {
-    prop_n <- c(0, max(prop.table(class_tab)))
+  if(any(!c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p") %in% names(sums))){
+    fits[1,c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")[which(!c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p") %in% names(sums))]] <- NA_real_
   }
-  fits <- c(
-    ifelse(ncol(post_prob) == 1, 1, 1 + (1/(nrow(post_prob) *
-                                                      log(ncol(post_prob)))) * (sum(rowSums(post_prob *
-                                                                                              log(post_prob + 1e-12))))),
-            range(diag(classification_probs_mostlikely(post_prob, class))),
-            prop_n,
-            NA, #model$LRTS,
-            NA) #model$LRTS_p)
-  names(fits) <- c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")
+  fits <- fits[,c("Entropy", "prob_min", "prob_max", "n_min", "n_max", "BLRT_val", "BLRT_p")]
   make_fitvector(ll = ll, parameters = parameters, n = n, postprob = post_prob, fits = fits)
 }
 
 make_fitvector <- function(ll, parameters, n, postprob, fits){
+  if(!is.data.frame(fits)) fits <- as.data.frame(t(fits))
   LogLik = ll
   AIC = -2*ll + (2*parameters)
-  AWE = -2*(ll + unname(fits[1])) + 2*parameters*(3/2 + log(n))
+  AWE = -2*(ll + unname(unlist(fits[1]))) + 2*parameters*(3/2 + log(n))
   BIC = -2*ll + (parameters * log(n))
   CAIC = -2*ll + (parameters * (log(n)+1))
-  CLC = -2*ll + (2*unname(fits[1]))
+  CLC = -2*ll + (2*unname(unlist(fits[1])))
   KIC = -2*ll + (3*(parameters + 1))
   SABIC = -2*ll + (parameters * log(((n+2)/24)))
   ICL = icl_default(postprob, BIC)
-  c("LogLik" = LogLik,
+  cbind("LogLik" = LogLik,
     "parameters" = parameters,
     "n" = n,
     "AIC" = AIC,

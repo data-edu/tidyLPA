@@ -48,89 +48,20 @@ estimate_profiles_openmx <-
 
         run_models <-
             expand.grid(prof = n_profiles, mod = model_numbers)
-        # Prepare initial clustering
-        clusts <- hclust(dist(df))
         # Create outlist
         out_list <- mapply(
             FUN = function(this_class, this_model) {
-                # Generate specific Mplus object for each individual model
-                model_class_specific <-
-                    gsub("  ",
-                         "\n",
-                         syntax_class_specific(this_model, param_names))
-                model_class_specific <- mplus2lavaan.modelSyntax(model_class_specific)
-                model_class_specific <- paste0(
-                    paste0(param_names, "~ m", param_names, "{C}*1\n", collapse = ""),
-                    model_class_specific)
-
-                classes <- lapply(1:this_class, function(i){
-                    mxModel(as_ram(gsub("{C}", i, model_class_specific, fixed = TRUE)),
-                            # Do not yet give fit function here, because model is run as multigroup first
-                            #mxFitFunctionML(vector=TRUE),
-                            name = paste0("class", i))
-                })
-
-                splits <- cutree(tree = clusts, k = this_class)
-                strts <- lapply(1:max(this_class), function(i){
-                    # Re-enable autostart if there is a problem with convergence;
-                    # however, this may introduce problems with > 1 start value for constrained
-                    # parameters
-                    #mxAutoStart(
-                        mxModel(classes[[i]], mxData(df[splits == i, , drop = FALSE], type = "raw"),
-                                mxFitFunctionML())
-                    #, type = "ULS")
-                })
-                strts <- do.call(mxModel, c(list(model = "mg_starts", mxFitFunctionMultigroup(paste0("class", 1:this_class)), strts)))
-                strts <- mxAutoStart(strts, type = "ULS")
-                # Use omxAssignFirstParameters if multiple starting values
-                #
-                strts_success <- FALSE
                 warns <- NULL
-                tryCatch({
-                    #strts <- mxRun(omxAssignFirstParameters(strts))
-                    suppressMessages(invisible({
-                        strts <- mxRun(strts, silent = TRUE, suppressWarnings = TRUE)
-                    }))
-                    strts_success <- TRUE
-                }, error = function(e){
-                    tryCatch({
-                        #strts <<- mxTryHard(omxAssignFirstParameters(strts), extraTries = 100)
-                        suppressMessages(invisible({
-                            strts <- mxAutoStart(strts, type = "DWLS")
-                            strts <<- mxTryHard(strts, extraTries = 100,
-                                                silent = TRUE,
-                                                verbose = FALSE,
-                                                bestInitsOutput = FALSE)
-                        }))
-                        strts_success <<- TRUE
-                    }, error = function(e2){
-                        warns <<- c(warns, "Could not derive suitable starting values.")
-                        })
-                    })
-                # Insert start values into mixture model
-                classes <- mapply(function(cls, strt){
-                    cls$M$values <- strts[[paste0("class", strt)]]$M$values
-                    cls$S$values <- strts[[paste0("class", strt)]]$S$values
-                    mxModel(cls, mxFitFunctionML(vector=TRUE))
-                }, cls = classes, strt = 1:this_class)
-                # Prepare mixture model
-                mix <- mxModel(
-                    model = paste0("mix", this_class),
-                    classes,
-                    mxData(df, "raw"),
-                    mxMatrix(values=1, nrow=1, ncol=this_class, free=c(FALSE,rep(TRUE, this_class-1)), name="weights"),
-                    mxExpectationMixture(paste0("class", 1:this_class), scale="softmax"),
-                    mxFitFunctionML())
+
                 # Run analysis ------------------------------------------------------------
                 suppressMessages(invisible({
                     mix_fit <- tryCatch({
-                        mxTryHard(mix,
-                                  extraTries = 100,
-                                  intervals=TRUE,
-                                  silent = TRUE,
-                                  verbose = FALSE,
-                                  bestInitsOutput = FALSE,
-                                  exhaustive = TRUE)
+                        Args_mx <- c(list(
+                            data = df,
+                            classes = this_class),
+                            number_to_varcov(this_model),
+                            Args)
+                        do.call(tidySEM::mx_profiles, Args_mx)
                     },
                     error = function(e){
                         warns <<- c(warns, "Model did not converge.")
@@ -138,13 +69,13 @@ estimate_profiles_openmx <-
                     },
                     warning = function(w){
                         warns <<- c(warns, w)
+                        NULL
                     })
                    }))
-
                 out <- list(model = mix_fit)
-                if(mix_fit$output$status$code == 0){
+                if(isTRUE(mix_fit$output$status$code == 0)){
                     out$fit <-
-                        c(Model = this_model,
+                        cbind(Model = this_model,
                           Classes = this_class,
                           calc_fitindices(mix_fit))
                     estimates <- estimates(out$model)
@@ -154,7 +85,7 @@ estimate_profiles_openmx <-
                     }
                     out$estimates <- estimates
 
-                    outdat <- extract_postprob(mix_fit)
+                    outdat <- class_prob(mix_fit)$individual
                     outdat <- cbind(outdat, apply(outdat, 1, which.max))
                     dff <- matrix(NA_real_, dim(df_full)[1], dim(outdat)[2])
                     dff[!all_na_rows, ] <- outdat
@@ -192,26 +123,38 @@ estimate_profiles_openmx <-
             paste("model_", run_models$mod, "_class_", run_models$prof, sep = "")
         # Arguments for mxCompare ----------------------------------------
         if(length(out_list) > 1){
-            dots <- list(...)
-            Args_boot <- dots[which(names(dots) %in% c("replications", "previousRun", "checkHess"))]
-            if(is.null(Args_boot[["replications"]])) Args_boot[["replications"]] <- 100
-            Args_boot$boot <- TRUE
-            for(this_mod in 1:(length(out_list)-1)){
-                Args_boot[["base"]] <- out_list[[(this_mod+1)]][["model"]]
-                Args_boot[["comparison"]] <- out_list[[this_mod]][["model"]]
-                warnopt <- getOption("warn")
-                options(warn = 1)
-                theoutput <- capture.output({out <- tryCatch({do.call(mxCompare, Args_boot)}, error = function(e){NULL})}, type = "message")
-                options(warn = warnopt)
-                if(is.null(out)){
-                    out_list[[(this_mod+1)]][["warns"]] <- c(out_list[[(this_mod+1)]][["warns"]], "Unable to perform BLRT.")
-                } else {
-                    out_list[[(this_mod+1)]]$fit["BLRT_val"] <- out$diffLL[2]
-                    out_list[[(this_mod+1)]]$fit["BLRT_p"] <- out$p[2]
+            comparethese <- rep(TRUE, length(out_list)-1)
+            nclasses <- sapply(out_list, function(i)tryCatch({i$fit$Classes}, error = function(e){NA}))
+            nclasses <- diff(nclasses)
+            comparethese[which(nclasses < 0 | is.na(nclasses))] <- FALSE
+            complexity <- sapply(out_list, function(i)tryCatch({i$fit$parameters}, error = function(e){NA}))
+            complexity <- diff(complexity)
+            comparethese[which(complexity < 0 | is.na(complexity))] <- FALSE
+            if(any(comparethese)){
+                comparisons <- cbind(1:(length(out_list)-1), 2:length(out_list))
+                comparisons <- comparisons[comparethese, , drop = FALSE]
+                dots <- list(...)
+                Args_boot <- dots[which(names(dots) %in% c("replications", "previousRun", "checkHess"))]
+                if(is.null(Args_boot[["replications"]])) Args_boot[["replications"]] <- 100
+                Args_boot$boot <- TRUE
+                for(this_comp in 1:nrow(comparisons)){
+                    Args_boot[["base"]] <- out_list[[comparisons[this_comp, 2]]][["model"]]
+                    Args_boot[["comparison"]] <- out_list[[comparisons[this_comp, 1]]][["model"]]
+                    warnopt <- getOption("warn")
+                    options(warn = 1)
+                    theoutput <- capture.output({out <- tryCatch({do.call(mxCompare, Args_boot)}, error = function(e){NULL})}, type = "message")
+                    options(warn = warnopt)
+                    if(is.null(out)){
+                        out_list[[comparisons[this_comp, 2]]][["warns"]] <- c(out_list[[comparisons[this_comp, 2]]][["warns"]], "Unable to perform BLRT.")
+                    } else {
+                        out_list[[comparisons[this_comp, 2]]]$fit["BLRT_val"] <- out$diffLL[2]
+                        out_list[[comparisons[this_comp, 2]]]$fit["BLRT_p"] <- out$p[2]
+                    }
+                    if(length(theoutput) > 0){
+                        out_list[[comparisons[this_comp, 2]]][["warnings"]] <- c(out_list[[comparisons[this_comp, 2]]][["warnings"]], theoutput)
+                    }
                 }
-                if(length(theoutput) > 0){
-                    out_list[[(this_mod+1)]][["warnings"]] <- c(out_list[[(this_mod+1)]][["warnings"]], theoutput)
-                }
+
             }
         }
         out_list

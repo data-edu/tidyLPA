@@ -80,7 +80,7 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, select_vars,
             out$model$mclustBootstrap <- do.call(MclustBootstrap, Args_mclustbootstrap)
             out$model$LRTS <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$obs[this_class-1])
             out$model$LRTS_p <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$p.value[this_class-1])
-            out$fit <- c(Model = this_model, Classes = this_class, calc_fitindices(out$model, modelname = Args_mclust[["modelName"]]))
+            out$fit <- cbind(Model = this_model, Classes = this_class, calc_fitindices(out$model, modelname = Args_mclust[["modelName"]]))
             estimates <- estimates(out$model)
             estimates$Model <- this_model
             estimates$Classes <- this_class

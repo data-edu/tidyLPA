@@ -41,7 +41,10 @@ License: MIT + file LICENSE
 URL: https://data-edu.github.io/tidyLPA/
 BugReports: https://github.com/data-edu/tidyLPA/issues
 Depends: 
-    R (>= 2.10)
+    R (>= 2.10),
+    tidySEM (>= 0.2.0),
+    OpenMx,
+    lavaan
 Imports: 
     dplyr,
     ggplot2,
@@ -51,10 +54,7 @@ Imports:
     methods,
     mix,
     MplusAutomation,
-    tibble,
-    tidySEM,
-    OpenMx,
-    lavaan 
+    tibble
 Suggests: 
     knitr,
     lme4,
@@ -67,4 +67,4 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

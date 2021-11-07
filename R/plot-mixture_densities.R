@@ -120,7 +120,11 @@ plot_density.tidyLPA <-
              facet_labels = NULL,
              ...) {
         Args <- as.list(match.call()[-c(1,2)])
-
+        remove_these <- sapply(x, function(i){is.null(i[["model"]])})
+        if(all(remove_these)){
+            stop("No valid models.")
+        }
+        x <- x[-which(remove_these)]
         # If no variables have been specified, use all variables
         var_names <-
             names(x[[1]]$dff)[-grep("^(model_number|classes_number|CPROB\\d+|Class)$",

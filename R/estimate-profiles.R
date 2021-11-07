@@ -285,11 +285,13 @@ get_fit <- function(x, ...) {
     UseMethod("get_fit", x)
 }
 
+#' @importFrom utils getFromNamespace
+bind_list <- getFromNamespace("bind_list", "tidySEM")
 #' @describeIn get_fit Get fit indices for a latent profile analysis with
 #' multiple numbers of classes and models, of class 'tidyLPA'.
 #' @export
 get_fit.tidyLPA <- function(x, ...) {
-    as_tibble(t(sapply(x, `[[`, "fit")))
+    as_tibble(bind_list(lapply(x, `[[`, "fit")))
 }
 
 #' @describeIn get_fit Get fit indices for a single latent profile analysis
@@ -423,25 +425,22 @@ print.tidyLPA <-
              digits = 2,
              na.print = "",
              ...) {
-        fits <- get_fit(x)
+        fits <- as.data.frame(get_fit(x))
         if(all(is.na(fits[, -c(1,2)]))){
             stop("This tidyLPA analysis does not contain any valid results. Most likely, all models failed to converge.", call. = FALSE)
         }
-        dat <- as.matrix(fits[, c("Model", "Classes", stats)])
+        dat <- fits[, c("Model", "Classes", stats)]
         miss_val <- is.na(dat)
+        formatthese <- which(!(sapply(dat, inherits, what = "character") | sapply(dat, is.wholenumber)))
+        dat[formatthese] <- lapply(dat[formatthese], formatC, digits = digits, format = "f")
         #dat$Model <- paste("Model ", dat$Model)
         #sprintf("%-9s", paste0(names(x$fitindices), ":")),
-        dat[, 3:ncol(dat)] <-
-            sapply(dat[, 3:ncol(dat)], formatC, digits = digits, format = "f")
         dat[miss_val] <- ""
-        #rownames(dat) <- ""
         cat("tidyLPA analysis using", paste0(gsub("^tidyProfile\\.", "", class(x[[1]])[1]), ":"), "\n\n")
-
-        prmatrix(dat,
-                 rowlab = rep("", nrow(dat)),
-                 quote = FALSE,
-                 na.print = na.print)
+        print.data.frame(dat, quote = FALSE, digits = digits)
     }
+
+is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)all(  abs(x - round(x)) < tol)
 
 #' @title Print tidyProfile
 #' @description S3 method 'print' for class 'tidyProfile'.
