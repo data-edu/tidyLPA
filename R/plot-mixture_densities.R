@@ -124,7 +124,7 @@ plot_density.tidyLPA <-
         if(all(remove_these)){
             stop("No valid models.")
         }
-        x <- x[-which(remove_these)]
+        if(any(remove_these)) x <- x[-which(remove_these)]
         # If no variables have been specified, use all variables
         var_names <-
             names(x[[1]]$dff)[-grep("^(model_number|classes_number|CPROB\\d+|Class)$",
