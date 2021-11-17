@@ -2,7 +2,7 @@
 
 ## Comments to maintainer
 
-This was in response to feedback on our last submission; we corrected the URLs.
+This was in response to feedback on our last submission; we corrected the URL.
 
 ## Test environments
 * local local Windows 10 install, R 3.6.1
