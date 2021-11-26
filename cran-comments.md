@@ -1,8 +1,6 @@
 # CRAN comments
 
-## Comments to maintainer
-
-This was in response to feedback on our last submission; we corrected the URL.
+* Add support for OpenMx
 
 ## Test environments
 * local local Windows 10 install, R 3.6.1

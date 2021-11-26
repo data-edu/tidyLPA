@@ -20,6 +20,10 @@ if(getOption("test_mplus")) {
             2,
             "LogLik",
             -271.2943387,
+            "parameters",
+            7,
+            "n",
+            32,
             "AIC",
             556.5886774,
             "AWE",
@@ -68,6 +72,10 @@ if(getOption("test_mplus")) {
                 2,
                 "LogLik",
                 -271.292,
+                "parameters",
+                7,
+                "n",
+                32,
                 "AIC",
                 556.584,
                 "BIC",
@@ -90,6 +98,12 @@ if(getOption("test_mplus")) {
                                            n_profiles = 2,
                                            models = 1)
 
+        m_cars_mx <- estimate_profiles(mtcars[, c("mpg", "hp")],
+                                           n_profiles = 2,
+                                           models = 1, package = "openmx")
+
+
+
         expect_equal(as.vector(m_cars_mplus$model_1_class_2$fit),
                      tab_mclust$val,
                      tolerance = .0001)
@@ -100,6 +114,16 @@ if(getOption("test_mplus")) {
             as.vector(m_cars_mplus$model_1_class_2$fit),
             as.vector(m_cars_mclust$model_1_class_2$fit),
             tolerance = .0001
+        )
+        expect_equal(
+            as.vector(m_cars_mplus$model_1_class_2$fit[1:18]),
+            as.vector(m_cars_mx$model_1_class_2$fit[1:18]),
+            tolerance = .001
+        )
+        expect_equal(
+            as.vector(m_cars_mclust$model_1_class_2$fit[1:18]),
+            as.vector(m_cars_mx$model_1_class_2$fit[1:18]),
+            tolerance = .001
         )
 
         kept_cases <-

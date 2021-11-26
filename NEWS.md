@@ -1,3 +1,7 @@
+# tidyLPA 2.0.0
+
+* Add support for OpenMx
+
 # tidyLPA 1.1.0
 
 * Minor edits to introduction to tidyLPA vignette and README

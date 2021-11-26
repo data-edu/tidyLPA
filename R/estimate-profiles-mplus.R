@@ -215,7 +215,7 @@ estimate_profiles_mplus2 <-
                 warnings <- NULL
                 if(!is.null(out$model$summaries$LL)){
                     out$fit <-
-                        c(Model = this_model,
+                        cbind(Model = this_model,
                           Classes = this_class,
                           calc_fitindices(out$model))
                     estimates <- estimates(out$model)
