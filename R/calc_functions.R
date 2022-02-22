@@ -244,9 +244,11 @@ estimates.MxModel <- function(model){
   df <- tryCatch({
     table_results(model, columns = NULL)
   }, error = function(e){ return(NULL) })
-  df$Class <- suppressWarnings(as.integer(gsub("^class(\\d{0,})\\..+$", "\\1", df$openmx.label))) # Because only weights throws warning
-  if(all(is.na(df$Class))) df$Class[!is.na(df$est)] <- 1
-  df$Category <- gsub("^(.+?)\\..*$", "\\1", df$label)
+  theclass <- suppressWarnings(as.integer(gsub("^class(\\d{0,})\\..+$", "\\1", df$openmx.label))) # Because only weights throws warning
+  if(!isTRUE(length(theclass) == nrow(df))) theclass <- 1
+  df$Class <- theclass
+
+  #df$Category <- gsub("^(.+?)\\..*$", "\\1", df$label)
   df <- df[!is.na(df$Category), ]
   df <- df[df$Category %in% c("Variances", "Covariances", "Means"), ]
   df$col[df$Category == "Covariances"] <- paste(df$row[df$Category == "Covariances"], df$col[df$Category == "Covariances"], sep = ".")
