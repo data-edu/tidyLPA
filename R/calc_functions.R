@@ -653,7 +653,7 @@ calc_lrt_internal <- function(null, alt){
   if(!alt[4]>null[4]){
     stop("Alternative model does not have more classes than null model.")
   }
-  lr_test_stat = 2 * log(alt[1] - null[1])
+  lr_test_stat = 2 * (alt[1] - null[1])
   modlr_test_stat <- lr_test_stat / (1 + (((3 * alt[4] - 1) - (3 * null[4] - 1)) * log(n))^-1)
   df <- (alt[2] - null[2])
   lmrt_p <- pchisq(q = modlr_test_stat, df = df, lower.tail = FALSE)
