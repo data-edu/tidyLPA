@@ -85,7 +85,7 @@
 
 * change the compare_solutions_mplus() functions Mplus to still allow for the specification of six models, but to use the same four as compare_solutions() (which uses the mclust package, not MPlus) by default
 
-# Minor changes: 
+## Minor changes
 
 * improve NAMESPACE documentation
 * add option to return original data frame for functions that use MPlus
