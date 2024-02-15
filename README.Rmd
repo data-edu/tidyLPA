@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
 [![R-CMD-check](https://github.com/data-edu/tidyLPA/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/data-edu/tidyLPA/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/data-edu/tidyLPA/graph/badge.svg?token=mNzn6tyjzS)](https://codecov.io/gh/data-edu/tidyLPA)
+[![test-coverage](https://github.com/data-edu/tidyLPA/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/data-edu/tidyLPA/actions/workflows/test-coverage.yaml)
 
 ## Background
 

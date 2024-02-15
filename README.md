@@ -7,7 +7,7 @@ status](https://www.r-pkg.org/badges/version/tidyLPA)](https://cran.r-project.or
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00978/status.svg)](https://doi.org/10.21105/joss.00978)
 [![R-CMD-check](https://github.com/data-edu/tidyLPA/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/data-edu/tidyLPA/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/data-edu/tidyLPA/graph/badge.svg?token=mNzn6tyjzS)](https://codecov.io/gh/data-edu/tidyLPA)
+[![test-coverage](https://github.com/data-edu/tidyLPA/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/data-edu/tidyLPA/actions/workflows/test-coverage.yaml)
 
 ## Background
 
@@ -70,7 +70,7 @@ pisaUSA15[1:100, ] %>%
 #> tidyLPA analysis using mclust: 
 #> 
 #>  Model Classes AIC    BIC    Entropy prob_min prob_max n_min n_max BLRT_p
-#>  1     3       634.79 671.27 0.64    0.76     0.86     0.18  0.51  0.05
+#>  1     3       639.76 676.23 0.81    0.85     0.95     0.03  0.65  0.01
 ```
 
 A simple summary of the analysis is printed to the console (and its
