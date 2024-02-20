@@ -127,7 +127,7 @@ tidySEM::plot_bivariate
 
 #' @method plot_bivariate tidyLPA
 #' @export
-plot_bivariate.tidyLPA <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE){
+plot_bivariate.tidyLPA <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE, ...){
     Args <- match.call()
     if(length(x) == 1){
         Args$x <- x[[1]]
@@ -141,7 +141,7 @@ plot_bivariate.tidyLPA <- function(x, variables = NULL, sd = TRUE, cors = TRUE, 
 
 #' @method plot_bivariate tidyProfile
 #' @export
-plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE){
+plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE, ...){
     est <- get_estimates(x)
     if(is.null(est)){
         stop("Cannot plot this tidyProfile, because it does not contain estimates. Check whether this model has converged.", call. = FALSE)
