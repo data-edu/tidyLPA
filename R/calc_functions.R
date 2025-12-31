@@ -245,7 +245,7 @@ estimates.MxModel <- function(model, ...){
   df <- tryCatch({
     table_results(model, columns = NULL)
   }, error = function(e){ return(NULL) })
-  theclass <- suppressWarnings(as.integer(gsub("^class(\\d{0,})\\..+$", "\\1", df$openmx.label))) # Because only weights throws warning
+  theclass <- suppressWarnings(as.integer(gsub("class", "", df$class))) # Because only weights throws warning
   if(!isTRUE(length(theclass) == nrow(df))) theclass <- 1
   df$Class <- theclass
 
@@ -258,7 +258,7 @@ estimates.MxModel <- function(model, ...){
   df$Estimate <- df$est
   df$p <- df$pvalue
   df <- df[!is.na(df$Class), ]
-  df[order(df$Class, ordered(df$Category, levels = c("Means", "Variances", "Covariances"))), c("Category", "Parameter", "Estimate", "se", "p", "Class")]
+  df[order(df$Class, ordered(df$Category, levels = c("Means", "Variances", "Covariances"))), c("Category", "Parameter", "Estimate", "se", "pval", "Class")]
 }
 
 

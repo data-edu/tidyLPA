@@ -1,6 +1,7 @@
 #' Estimate latent profiles using OpenMx
 #'
-#' Estimates latent profiles (finite mixture models) using the R-package OpenMx.
+#' Estimates latent profiles using the R-package `OpenMx`.
+#' Note that this requires installing `OpenMx` and running `library(OpenMx)`.
 #' @param df data.frame with two or more columns with continuous variables
 #' @param n_profiles Numeric vector. The number of profiles (or mixture
 #' components) to be estimated. Each number in the vector corresponds to an
@@ -15,15 +16,15 @@
 #' @author Caspar J. van Lissa
 #' @return An object of class 'tidyLPA' and 'list'
 #' @importFrom methods hasArg
-#' @importFrom OpenMx mxAutoStart mxData mxExpectationMixture mxPath
-#' @importFrom OpenMx mxFitFunctionML mxMatrix mxModel mxRun mxTryHard
-#' @importFrom OpenMx omxAssignFirstParameters mxCompare mxFitFunctionMultigroup
-#' @importFrom lavaan mplus2lavaan.modelSyntax
 #' @importFrom stats cutree dist hclust
 #' @importFrom utils capture.output
 # @import OpenMx
 estimate_profiles_openmx <-
     function(df, n_profiles, model_numbers, select_vars, ...) {
+
+        if(!requireNamespace("OpenMx", quietly = TRUE)){
+            return(NULL)
+        }
         arg_list <- as.list(match.call())[-1]
         df_full <- df
         df <- df[, select_vars, drop = FALSE]
@@ -142,7 +143,7 @@ estimate_profiles_openmx <-
                     Args_boot[["comparison"]] <- out_list[[comparisons[this_comp, 1]]][["model"]]
                     warnopt <- getOption("warn")
                     options(warn = 1)
-                    theoutput <- capture.output({out <- tryCatch({do.call(mxCompare, Args_boot)}, error = function(e){NULL})}, type = "message")
+                    theoutput <- capture.output({out <- tryCatch({do.call(OpenMx::mxCompare, Args_boot)}, error = function(e){NULL})}, type = "message")
                     options(warn = warnopt)
                     if(is.null(out)){
                         out_list[[comparisons[this_comp, 2]]][["warns"]] <- c(out_list[[comparisons[this_comp, 2]]][["warns"]], "Unable to perform BLRT.")

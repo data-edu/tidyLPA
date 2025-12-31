@@ -27,7 +27,8 @@ variables in \code{df} are used.}
 An object of class 'tidyLPA' and 'list'
 }
 \description{
-Estimates latent profiles (finite mixture models) using the R-package OpenMx.
+Estimates latent profiles using the R-package `OpenMx`.
+Note that this requires installing `OpenMx` and running `library(OpenMx)`.
 }
 \author{
 Caspar J. van Lissa

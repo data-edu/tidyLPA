@@ -42,12 +42,10 @@ URL: https://data-edu.github.io/tidyLPA/
 BugReports: https://github.com/data-edu/tidyLPA/issues
 Depends: 
     R (>= 2.10),
-    tidySEM (>= 0.2.0),
-    OpenMx,
-    lavaan
+    tidySEM (>= 0.2.9)
 Imports: 
     dplyr,
-    ggplot2,
+    ggplot2 (>= 4.0.1),
     mclust,
     methods,
     MplusAutomation,
@@ -61,6 +59,7 @@ Suggests:
     pillar,
     rmarkdown,
     testthat,
+    OpenMx,
     mix
 VignetteBuilder: 
     knitr
