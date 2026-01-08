@@ -46,16 +46,25 @@ blrt_mclust <- function (data, modelName = NULL, nboot = 999, level = 0.05,
             b <- b + 1
             bootSample <- sim(Mod0$modelName, Mod0$parameters,
                               n = Mod0$n)
-            param0 <- em(data = bootSample[, -1], modelName = modelName,
+            if (Mod0$modelName == "X") {
+                loglik0 <- mvnX(data = bootSample[, -1], parameters = Mod0$parameters,
+                                warn = FALSE, ...)$loglik
+            }
+            else if (Mod0$modelName %in% c("XII", "XXI", "XXX")) {
+                loglik0 <- mvnXXX(data = bootSample[, -1], parameters = Mod0$parameters,
+                                  warn = FALSE, ...)$loglik
+            }
+            else {
+                param0 <- em(data = bootSample[, -1], modelName = Mod0$modelName,
                              parameters = Mod0$parameters, warn = FALSE,
                              ...)$parameters
-            loglik0 <- estep(data = bootSample[, -1], modelName = modelName,
+                loglik0 <- estep(data = bootSample[, -1], modelName = Mod0$modelName,
                                  parameters = param0, warn = FALSE, ...)$loglik
-
-            param1 <- em(data = bootSample[, -1], modelName = modelName,
+            }
+            param1 <- em(data = bootSample[, -1], modelName = Mod1$modelName,
                          parameters = Mod1$parameters, warn = FALSE,
                          ...)$parameters
-            loglik1 <- estep(data = bootSample[, -1], modelName = modelName,
+            loglik1 <- estep(data = bootSample[, -1], modelName = Mod1$modelName,
                              parameters = param1, warn = FALSE, ...)$loglik
             LRTS <- 2 * (loglik1 - loglik0)
             if (is.na(LRTS)) {
