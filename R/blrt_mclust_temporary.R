@@ -40,6 +40,13 @@ blrt_mclust <- function (data, modelName = NULL, nboot = 999, level = 0.05,
         g <- g + 1
         Mod0 <- summary(BIC, data, G = g, modelNames = modelName)
         Mod1 <- summary(BIC, data, G = g + 1, modelNames = modelName)
+        if (is.null(Mod0$loglik) || is.null(Mod1$loglik)) {
+            warning(paste("Model with G =", g, "or G =", g + 1,
+                          "failed to converge. BLRT comparison skipped."))
+            obsLRTS[g] <- NA
+            p.value[g] <- NA
+            next
+        }
         obsLRTS[g] <- 2 * (Mod1$loglik - Mod0$loglik)
         b <- 0
         while (b < nboot) {

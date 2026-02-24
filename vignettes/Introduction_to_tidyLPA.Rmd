@@ -109,9 +109,10 @@ A simple summary of the analysis is printed to the console (and its posterior pr
 
 If you have Mplus installed, you can call the version of this function that uses MPlus in the same way, by adding the argument `package = "MplusAutomation`.
 
-We can plot the profiles by piping the output to `plot_profiles()`:
+We can plot the profiles by piping the output to `plot_profiles()`. We add a random seed as the BLRT calculation is stochastic:
 
 ```{r, eval = TRUE}
+set.seed(42)
 pisaUSA15[1:100, ] %>%
     select(broad_interest, enjoyment, self_efficacy) %>%
     single_imputation() %>%
