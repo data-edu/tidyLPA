@@ -85,15 +85,15 @@
 
 # tidyLPA 0.2.0
 
-## Major breaking change:
+**Major breaking change:**
 
 * change how models are specified; instead of using the model argument, whether and how the variances are covariances are estimated are passed the the variances and covariances argument; there are details in the readme and vignette and if a model argument is passed to a function, a message is returned describing how to specify the model using the variances and covariances arguments
 
-## Major change
+**Major change:**
 
 * change the compare_solutions_mplus() functions Mplus to still allow for the specification of six models, but to use the same four as compare_solutions() (which uses the mclust package, not MPlus) by default
 
-## Minor changes
+**Minor changes:**
 
 * improve NAMESPACE documentation
 * add option to return original data frame for functions that use MPlus
@@ -109,7 +109,7 @@
 * remove the messages about the software being in beta
 * how the Mplus syntax is generated was substantially changed/improved; thanks @gbiele
 
-## Bug fixes
+**Bug fixes:**
 
 * change include_LMR argument to include VLMR
 * remove scale_fill_brewer("", type = "qual", palette = "Set3") so that solutions with larger numbers of profiles may be plotted

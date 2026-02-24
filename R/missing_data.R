@@ -2,13 +2,13 @@
 #' @description This function accommodates several methods for single imputation
 #' of data. Currently, the following methods are defined:
 #' \describe{
-#' \item{imputeData}{Applies the mclust native imputation function
-#' \code{\link[mclust]{imputeData}}}
-#' \item{missForest}{Applies non-parameteric, random-forest based data
-#' imputation using \code{\link[missForest]{missForest}}. Radom forests can
-#' accommodate any complex interactions and non-linear relations in the data. My
-#' simulation studies indicate that this method is preferable to mclust's
-#' \code{imputeData} (see examples).}
+#'   \item{imputeData}{Applies the mclust native imputation function
+#'   \code{\link[mclust]{imputeData}}.}
+#'   \item{missForest}{Applies non-parametric, random-forest based data
+#'   imputation using \code{\link[missForest]{missForest}}. Random forests can
+#'   accommodate any complex interactions and non-linear relations in the data.
+#'   Simulation studies indicate that this method is preferable to mclust's
+#'   \code{imputeData} (see examples).}
 #' }
 #' @param x A data.frame or matrix.
 #' @param method Character. Imputation method to apply, Default: 'imputeData'
