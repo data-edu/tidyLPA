@@ -12,11 +12,10 @@
 #' covariances) are estimated and to specify (and compare solutions for) the
 #' number of profiles to estimate.
 #'
-#' @docType package
 #' @name tidyLPA
 #' @import ggplot2
 #' @import mclust
 #' @import tibble
 #' @importFrom dplyr "%>%"
 #' @importFrom stats complete.cases sd reshape quantile qnorm pnorm
-NULL
+"_PACKAGE"
