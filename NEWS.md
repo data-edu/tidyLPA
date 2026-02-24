@@ -1,3 +1,11 @@
+# tidyLPA 2.0.2
+
+* Important bug fixes
+
+# tidyLPA 2.0.1
+
+* Very minor edits (address warning, fix badges, update docs and site)
+
 # tidyLPA 2.0.0
 
 * Add support for OpenMx
