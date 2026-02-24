@@ -28,3 +28,4 @@
 ^.*\.RData$
 ^\.github$
 ^CRAN-SUBMISSION$
+^\.claude$
