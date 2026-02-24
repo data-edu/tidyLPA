@@ -161,8 +161,8 @@ estimates <- function(model, ...){
     UseMethod("estimates")
 }
 
-
-estimates.mplus.model <- function(model){
+#' @export
+estimates.mplus.model <- function(model, ...){
   # Select means, variances, covariances of class-specific parameters; drop est_se
     df <- suppressWarnings(subset(model$parameters[["unstandardized"]], grepl("(^Means$|^Intercepts$|^Variances$|\\.WITH$)", model$parameters[["unstandardized"]]$paramHeader) & !is.na(as.numeric(model$parameters[["unstandardized"]]$LatentClass)), select = -5))
     # Extract original variable names
@@ -189,8 +189,8 @@ estimates.mplus.model <- function(model){
     df[!df$p == 999, ]
 }
 
-
-estimates.Mclust <- function(model){
+#' @export
+estimates.Mclust <- function(model, ...){
     ses_mean <- apply(model$mclustBootstrap$mean, 3, colSD)
     ses_var <- apply(model$mclustBootstrap$variance, 4, function(x) {
         apply(x, 3, colSD)
@@ -238,13 +238,14 @@ estimates.Mclust <- function(model){
 
 }
 
+#' @export
 #' @importFrom tidySEM table_results
-estimates.MxModel <- function(model){
+estimates.MxModel <- function(model, ...){
   # Select means, variances, covariances of class-specific parameters; drop est_se
   df <- tryCatch({
     table_results(model, columns = NULL)
   }, error = function(e){ return(NULL) })
-  theclass <- suppressWarnings(as.integer(gsub("^class(\\d{0,})\\..+$", "\\1", df$openmx.label))) # Because only weights throws warning
+  theclass <- suppressWarnings(as.integer(gsub("class", "", df$class))) # Because only weights throws warning
   if(!isTRUE(length(theclass) == nrow(df))) theclass <- 1
   df$Class <- theclass
 
@@ -257,7 +258,7 @@ estimates.MxModel <- function(model){
   df$Estimate <- df$est
   df$p <- df$pvalue
   df <- df[!is.na(df$Class), ]
-  df[order(df$Class, ordered(df$Category, levels = c("Means", "Variances", "Covariances"))), c("Category", "Parameter", "Estimate", "se", "p", "Class")]
+  df[order(df$Class, ordered(df$Category, levels = c("Means", "Variances", "Covariances"))), c("Category", "Parameter", "Estimate", "se", "pval", "Class")]
 }
 
 
@@ -333,6 +334,7 @@ calc_fitindices <- function(model, fitindices, ...){
   UseMethod("calc_fitindices", model)
 }
 
+#' @export
 calc_fitindices.Mclust <- function(model, fitindices, ...){
   # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
   dots <- list(...)
@@ -449,7 +451,7 @@ one_mplus_model <- function(x){
   out
 }
 
-
+#' @export
 calc_fitindices.MplusObject <- function(model, fitindices, ...){
   model <- one_mplus_model(model)
   # CAIC and BIC are much better than AIC, and slightly better than aBIC: https://www.statmodel.com/download/LCA_tech11_nylund_v83.pdf
@@ -472,9 +474,14 @@ calc_fitindices.MplusObject <- function(model, fitindices, ...){
 
 calc_fitindices.mplus.model <- calc_fitindices.MplusObject
 
+table_fit <- getFromNamespace("table_fit", "tidySEM")
+
 #' @importFrom utils getFromNamespace
 #' @importFrom tidySEM class_prob
+#' @export
 table_fit.mixture_list <- getFromNamespace("table_fit.mixture_list", "tidySEM")
+
+#' @export
 calc_fitindices.MxModel <- function (model, fitindices, ...){
   sums <- do.call(table_fit.mixture_list, list(list(model)))
   ll <- sums$LL
@@ -559,6 +566,7 @@ avgprobs_mostlikely <- function (post_prob, class)
   }))
 }
 
+#' @export
 icl.MxModel <- function (object, ...)
 {
 
@@ -587,6 +595,7 @@ classification_probs_mostlikely <- function(post_prob, class){
 
 # ICL method for mplus.model ----------------------------------------------
 
+#' @export
 icl.mplus.model <- function(object, ...)
 {
     n <- object$summaries$Observations

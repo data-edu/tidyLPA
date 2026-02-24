@@ -2,6 +2,7 @@
 % Please edit documentation in R/tidylpa.r
 \docType{package}
 \name{tidyLPA}
+\alias{tidyLPA-package}
 \alias{tidyLPA}
 \title{tidyLPA: Functionality to carry out Latent Profile Analysis in R}
 \description{
@@ -17,4 +18,29 @@ tidyLPA provides functionality to specify different models that determine
 whether and how different parameters (i.e., means, variances, and
 covariances) are estimated and to specify (and compare solutions for) the
 number of profiles to estimate.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://data-edu.github.io/tidyLPA/}
+  \item Report bugs at \url{https://github.com/data-edu/tidyLPA/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Joshua M Rosenberg \email{jmrosenberg@utk.edu}
+
+Authors:
+\itemize{
+  \item Caspar van Lissa \email{c.j.vanlissa@uu.nl}
+}
+
+Other contributors:
+\itemize{
+  \item Jennifer A Schmidt \email{jaschmid@msu.edu} [contributor]
+  \item Patrick N Beymer \email{beymerpa@msu.edu} [contributor]
+  \item Daniel Anderson \email{daniela@uoregon.edu} [contributor]
+  \item Matthew J. Schell \email{schellma@msu.edu} [contributor]
+}
+
 }

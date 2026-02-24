@@ -17,7 +17,7 @@ A data.frame
 \description{
 This function accommodates several methods for single imputation
 of data. Currently, the following methods are defined:
-\itemize{
+\describe{
 \item{"imputeData"}{Applies the mclust native imputation function
 \code{\link[mclust]{imputeData}}}
 \item{"missForest"}{Applies non-parameteric, random-forest based data

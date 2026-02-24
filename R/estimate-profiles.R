@@ -74,6 +74,20 @@
 #'                     covariances = c("zero", "zero"))
 #' }
 #'
+#' \donttest{
+#' if(requireNamespace("OpenMx", quietly = TRUE)){
+#' # to make example run more quickly
+#' iris_sample <- iris[c(1:10, 51:60, 101:114), ]
+#'
+#' # Example 1:
+#' library(OpenMx)
+#' iris_rename <- iris_sample
+#' names(iris_sample) <- letters[seq_along(names(iris_sample))]
+#' iris_sample %>%
+#'   subset(select = c("a", "b", "c")) %>%
+#'   estimate_profiles(3, package = "OpenMx") -> res
+#' }
+#' }
 #' @export
 estimate_profiles <- function(df,
                               n_profiles,

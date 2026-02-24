@@ -34,12 +34,13 @@ get_cordat <- function(est){
     df_cors <- est[est$Category == "Covariances", -match("p", names(est)), drop = FALSE]
     if(nrow(df_cors) == 0){
         vars <- est[est$Class == 1 & est$Category == "Means", ]$Parameter
-        cors <- apply(expand.grid(vars, vars), 1, paste0, collapse = ".WITH.")[which(upper.tri(diag(vars)))]
+        cors <- matrix(0, nrow = length(vars), ncol = length(vars), dimnames = list(vars, vars))
+        cors <- as.data.frame.table(cors)[which(upper.tri(cors)), , drop = FALSE]
         df_cors <- data.frame(Category = "Covariances",
-                              Parameter = cors,
+                              Parameter = paste0(cors$Var1, ".WITH.", cors$Var2),
                               Estimate = 0,
                               se = 0,
-                              Class = rep(unique(est$Class), each = length(cors)),
+                              Class = rep(unique(est$Class), each = nrow(cors)),
                               Model = est$Model[1],
                               Classes = est$Classes[1])
 
@@ -124,7 +125,7 @@ get_cordat <- function(est){
 #' @export
 tidySEM::plot_bivariate
 
-
+#' @importFrom rlang .data
 #' @method plot_bivariate tidyLPA
 #' @export
 plot_bivariate.tidyLPA <- function(x, variables = NULL, sd = TRUE, cors = TRUE, rawdata = TRUE, bw = FALSE, alpha_range = c(0, .1), return_list = FALSE, ...){
@@ -149,7 +150,6 @@ plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TR
     df_plot <- get_cordat(as.data.frame(est))
 
     df_plot$Class <- ordered(df_plot$Class)
-
     if (rawdata) {
         df_raw <- .extract_rawdata(x, select_vars = unique(c(df_plot$xvar, df_plot$yvar)))
         df_raw$Class <- ordered(df_raw$Class, levels = levels(df_plot$Class))
@@ -182,7 +182,7 @@ plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TR
 
     cor_plotlist <- lapply(unique(df_plot$Parameter), function(this_cor){
         df_plot <- df_plot[df_plot$Parameter == this_cor, ]
-        p <- p + geom_point(data = df_plot, aes_string(x = "xmean", y = "ymean"))
+        p <- p + geom_point(data = df_plot, aes(x = .data$xmean, y = .data$ymean))
         if(sd){
             df_sd <- df_plot
             df_sd$sdminx <- df_sd$xmean - df_sd$xsd
@@ -190,15 +190,15 @@ plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TR
             df_sd$sdminy <- df_sd$ymean - df_sd$ysd
             df_sd$sdmaxy <- df_sd$ymean + df_sd$ysd
             p <- p +
-                geom_errorbar(data = df_sd, aes_string(
-                    x = "xmean",
-                    ymin = "sdminy",
-                    ymax = "sdmaxy"),
+                geom_errorbar(data = df_sd, aes(
+                    x = .data$xmean,
+                    ymin = .data$sdminy,
+                    ymax = .data$sdmaxy),
                     width = .0) +
-                geom_errorbarh(data = df_sd, aes_string(
-                    y = "ymean",
-                    xmin = "sdminx",
-                    xmax = "sdmaxx"),
+                geom_errorbarh(data = df_sd, aes(
+                    y = .data$ymean,
+                    xmin = .data$sdminx,
+                    xmax = .data$sdmaxx),
                     height = .0)
         }
         if(cors){
@@ -208,17 +208,17 @@ plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TR
                                    as.list(as.numeric(x[c(7:11)]))),
                            t(x[c(1:6)]))
             }))
-            p <- p + geom_path(data = df_ellipse, aes_string(x = "x",
-                                                             y = "y"))
+            p <- p + geom_path(data = df_ellipse, aes(x = .data$x,
+                                                             y = .data$y))
         }
         if (rawdata) {
             p <- p +
                 geom_point(
                     data = df_raw,
-                    aes_string(
-                        x = df_plot$xvar[1],
-                        y = df_plot$yvar[1],
-                        alpha = "Probability"
+                    aes(
+                        x = .data[[df_plot$xvar[1]]],
+                        y = .data[[df_plot$yvar[1]]],
+                        alpha = .data$Probability
                     )
                 ) +
                 scale_alpha_continuous(range = alpha_range, guide = FALSE)
@@ -235,26 +235,26 @@ plot_bivariate.tidyProfile <- function(x, variables = NULL, sd = TRUE, cors = TR
 }
 
 
-
+#' @importFrom rlang .data
 .base_plot <- function(num_colors) {
     p <- ggplot(NULL,
-               aes_string(
-                   group = "Class",
-                   linetype = "Class",
-                   shape = "Class"
+               aes(
+                   group = .data$Class,
+                   linetype = .data$Class,
+                   shape = .data$Class
                ))
     if(num_colors > 0){
-        p <- p + aes_string(colour = "Class") +
+        p <- p + aes(colour = .data$Class) +
             scale_colour_manual(values = get_palette(num_colors))
     }
-    p + theme(
+    return(p + theme(
             legend.direction = "vertical",
             legend.box = "horizontal",
             legend.position = c(1, .997),
             legend.justification = c(1, 1)
         ) + theme_bw() +
         scale_x_continuous(expand = c(0, 0))+
-        scale_y_continuous(expand = c(0, 0))
+        scale_y_continuous(expand = c(0, 0)))
 
 }
 
@@ -276,118 +276,5 @@ get_palette <- function(x){
     }
 }
 
-#' @import grid gtable
-#' @importFrom stats na.omit
-merge_corplots <- function(plots, ...) {
-    suppressWarnings({
-        suppressMessages({
-
-            n_vars <- sqrt(length(plots))
-
-            null_grobs <- sapply(plots, inherits, what = "NULL")
-            plots[null_grobs] <- lapply(1:sum(null_grobs), nullGrob)
-
-            plot2_grobs <- ggplot_gtable(ggplot_build(plots[[2]]))
-            grob_legend <-
-                plot2_grobs$grobs[[which(sapply(plot2_grobs$grobs, `[[`, "name") == "guide-box")]]
-            width_grob <- grobWidth(plot2_grobs$grobs[[grep("^axis.title.y.left", sapply(plot2_grobs$grobs, `[[`, "name"))]])
-
-            # axes <- lapply(plots[1:n_vars], function(x){
-            #     tmp <- ggplot_gtable(ggplot_build(x))
-            #     tmp$grobs[[grep("^axis.title.y.left", sapply(tmp$grobs, `[[`, "name"))]]
-            #     })
-
-            model_mat <- matrix(1L:(n_vars * n_vars), nrow = n_vars)
-            model_mat[upper.tri(model_mat)] <- NA
-
-            no_x_y <- na.omit(as.vector(model_mat[-nrow(model_mat),-1]))
-            keep_x <- model_mat[nrow(model_mat),-1, drop = TRUE]
-            keep_y <- model_mat[-nrow(model_mat), 1, drop = TRUE]
-
-            #     This is to remove legends and axis and adjust width
-            plots[[n_vars]] <-
-                ggplotGrob(plots[[n_vars]] + theme(legend.position = "none"))
-            fixed_widths <- plots[[n_vars]]$widths
-            fixed_heights <- plots[[n_vars]]$heights
-
-            plots[keep_y] <- lapply(plots[keep_y], function(this_plot) {
-                if (inherits(this_plot, "ggplot")) {
-                    ggplotGrob(
-                        this_plot + theme(
-                            axis.title.x = element_blank(),
-                            axis.text.x = element_blank(),
-                            axis.ticks.x = element_blank(),
-                            legend.position = "none"
-                        )
-                    )
-                }
-            })
-            plots[keep_x] <- lapply(plots[keep_x], function(this_plot) {
-                if (inherits(this_plot, "ggplot")) {
-                    ggplotGrob(
-                        this_plot + theme(
-                            axis.title.y = element_blank(),
-                            axis.text.y = element_blank(),
-                            axis.ticks.y = element_blank(),
-                            legend.position = "none"
-                        )
-                    )
-                }
-            })
-            plots[no_x_y] <- lapply(plots[no_x_y], function(this_plot) {
-                if (inherits(this_plot, "ggplot")) {
-                    ggplotGrob(
-                        this_plot + theme(
-                            axis.title.x = element_blank(),
-                            axis.text.x = element_blank(),
-                            axis.ticks.x = element_blank(),
-                            axis.title.y = element_blank(),
-                            axis.text.y = element_blank(),
-                            axis.ticks.y = element_blank(),
-                            legend.position = "none"
-                        )
-                    )
-                }
-            })
-
-            for(x in 1:length(plots)){
-                plots[[x]]$widths <- fixed_widths
-                if(x > n_vars){
-                    plots[[x]]$widths[c(1,3)] <- unit(0, "cm")
-                    plots[[x]]$widths[4] <- plots[[x]]$widths[4]+width_grob
-                }
-                plots[[x]]$heights <- fixed_heights
-                if(!x %in% model_mat[nrow(model_mat), ]){
-                    plots[[x]]$heights[c(1,9)] <- unit(0, "cm")
-                    plots[[x]]$heights[8] <- plots[[x]]$heights[8]+width_grob
-                }
-            }
-            #plots[-c(1:n_vars)] <- lapply(plots[-c(1:n_vars)], function(x) {
-
-
-                #x$heights <- fixed_heights
-            #    x
-            #})
-
-            plots[[((n_vars - 1) * n_vars) + 1]] <- grob_legend
-
-            gt <- gtable_matrix(
-                "corr_plot",
-                matrix(plots, nrow = n_vars, ncol = n_vars),
-                widths = unit(rep(1, n_vars), "null"),
-                heights = unit(rep(1, n_vars), "null")
-            )
-
-
-            #left <- textGrob(ylab, rot = 90, just = c(.5, .5))
-            #gt <- gtable_add_cols(gt, widths = grobWidth(axes[[1]])+ unit(0.5, "line"), 0)
-            #gt <- gtable_add_grob(gt, axes, t = 1, b = nrow(gt),
-            #                       l = 1, r = 1, z = Inf)
-            # gt <- gtable_add_cols(gt, widths = unit(0.5, "line"))
-
-            grid.newpage()
-            grid.draw(gt)
-            invisible(gt)
-        })
-    })
-}
+#' @importFrom utils getFromNamespace
+merge_corplots <- getFromNamespace("merge_corplots", "tidySEM")

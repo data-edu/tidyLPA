@@ -5,7 +5,7 @@ plot.tidyLPA <- function(x,
                          ...,
                          statistics = NULL) {
     if(is.null(statistics)) statistics <- "BIC"
-    p <- plot_tidyLPA(data.frame(t(sapply(x, `[[`, "fit"))), statistics)
+    p <- plot_tidyLPA(data.frame(do.call(rbind, lapply(x, `[[`, "fit"))), statistics)
     suppressMessages(suppressWarnings(print(p)))
     invisible(p)
 }
@@ -63,11 +63,11 @@ plot_tidyLPA <- function(x,
             factor(plotdat$Statistic, labels = paste0(statistics, c(lowerbetter, higherbetter)[match(statistics, names(c(lowerbetter, higherbetter)))]))
         p <- ggplot(
             plotdat,
-            aes_string(
-                x = "Classes",
-                y = "Value",
-                color = "Model",
-                group = "Model"
+            aes(
+                x = .data$Classes,
+                y = .data$Value,
+                color = .data$Model,
+                group = .data$Model
             )
         ) +
             geom_line(na.rm = TRUE) +
@@ -79,11 +79,11 @@ plot_tidyLPA <- function(x,
     } else {
         p <- ggplot(
             plotdat,
-            aes_string(
-                x = "Classes",
+            aes(
+                x = .data$Classes,
                 y = statistics,
-                color = "`Model`",
-                group = "`Model`"
+                color = .data$`Model`,
+                group = .data$`Model`
             )
         ) +
             geom_line(na.rm = TRUE) +
