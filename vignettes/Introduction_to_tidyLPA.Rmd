@@ -352,7 +352,7 @@ Descriptions of these fit indices follows:
 
 This is related to [prcr](https://github.com/jrosen48/prcr), for use of two-step cluster analysis to carry out person-oriented analyses.
 
-To contribute, file issues via GitHub [here](https://github.com/data-edu/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [Twitter](https://twitter.com/jrosenberg6432).
+To contribute, file issues via GitHub [here](https://github.com/data-edu/tidyLPA/issues) or get in touch [via email](mailto:jrosen@msu.edu) or [X](https://x.com/jrosenberg6432).
 
 **References**
 
@@ -360,7 +360,7 @@ Pastor, D. A., Barron, K. E., Miller, B. J., & Davis, S. L. (2007). A latent pro
 
 **Helpful resources**
 
-* [Hennig et al's (2015)](https://www.amazon.com/Handbook-Cluster-Analysis-Handbooks-Statistical/dp/1466551887/ref=sr_1_1?ie=UTF8&qid=1517773186&sr=8-1&keywords=cluster+analysis+handbook) handbook for an overview of mixture models, of which LPA is often considered an instance of.
+* Hennig et al's (2015) *Handbook of Cluster Analysis* for an overview of mixture models, of which LPA is often considered an instance of.
 
 * [Collins and Lanza (2013)](https://books.Google.com/books?hl=en&lr=&id=gPJQWKsgh3YC&oi=fnd&pg=PT12&dq=collins+lanza&ots=_0L9qnxxun&sig=Vx9RhJgIv0zbttIgvYLxaUQwtFI#v=onepage&q=collins%20lanza&f=false) for a book on the related approach (for use with dichotomous, rather than continuous variables used to create the profiles) Latent Class Analysis (LCA)
 
