@@ -6,20 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introduction to tidyLPA • tidyLPA</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to tidyLPA">
-<meta property="og:description" content="tidyLPA">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidyLPA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
       </span>
     </div>
 
@@ -45,15 +44,15 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
+      <a href="../articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
     </li>
     <li>
-      <a href="../articles/benchmarking-mclust-and-mplus.html">Benchmarking mclust and MPlus</a>
+      <a href="../articles/Introduction_to_tidyLPA.html">Introduction to tidyLPA</a>
     </li>
   </ul>
 </li>
@@ -65,7 +64,7 @@
 <li>
   <a href="https://github.com/data-edu/tidyLPA/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -76,7 +75,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -85,7 +84,7 @@
                         <h4 data-toc-skip class="author">Joshua M.
 Rosenberg</h4>
             
-            <h4 data-toc-skip class="date">2024-02-14</h4>
+            <h4 data-toc-skip class="date">2026-02-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/data-edu/tidyLPA/blob/HEAD/vignettes/Introduction_to_tidyLPA.Rmd" class="external-link"><code>vignettes/Introduction_to_tidyLPA.Rmd</code></a></small>
       <div class="hidden name"><code>Introduction_to_tidyLPA.Rmd</code></div>
@@ -259,7 +258,7 @@ relevant variables, and then to <code>estimate_profiles</code>:</p>
 <span><span class="co">#&gt; tidyLPA analysis using mclust: </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Model Classes    AIC    BIC Entropy prob_min prob_max n_min n_max BLRT_p</span></span>
-<span><span class="co">#&gt; 1     1       3 629.67 666.14    0.76     0.83     0.91  0.21  0.55   0.03</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     1       3 640.64 677.11    0.81     0.84     0.95  0.03  0.65   0.01</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="mplus">Mplus<a class="anchor" aria-label="anchor" href="#mplus"></a>
@@ -281,15 +280,17 @@ can be embedded in a tidy analysis pipeline.</p>
 function that uses MPlus in the same way, by adding the argument
 <code>package = "MplusAutomation</code>.</p>
 <p>We can plot the profiles by piping the output to
-<code><a href="https://cjvanlissa.github.io/tidySEM/reference/plot_profiles.html" class="external-link">plot_profiles()</a></code>:</p>
+<code><a href="https://cjvanlissa.github.io/tidySEM/reference/plot_profiles.html" class="external-link">plot_profiles()</a></code>. We add a random seed as the BLRT
+calculation is stochastic:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pisaUSA15</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
+<span><span class="va">pisaUSA15</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">broad_interest</span>, <span class="va">enjoyment</span>, <span class="va">self_efficacy</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/single_imputation.html">single_imputation</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/plot_profiles.html" class="external-link">plot_profiles</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="comparing-a-wide-range-of-solutions">Comparing a wide range of solutions<a class="anchor" aria-label="anchor" href="#comparing-a-wide-range-of-solutions"></a>
@@ -313,12 +314,12 @@ specifications:</p>
 <span><span class="co">#&gt; Compare tidyLPA solutions:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Model Classes AIC     BIC    </span></span>
-<span><span class="co">#&gt;  1     1       671.638 687.269</span></span>
-<span><span class="co">#&gt;  1     2       636.011 662.062</span></span>
-<span><span class="co">#&gt;  1     3       627.399 663.872</span></span>
-<span><span class="co">#&gt;  6     1       624.079 655.341</span></span>
-<span><span class="co">#&gt;  6     2       630.363 695.492</span></span>
-<span><span class="co">#&gt;  6     3       633.765 732.761</span></span>
+<span><span class="co">#&gt;  1     1       670.672 686.303</span></span>
+<span><span class="co">#&gt;  1     2       634.432 660.484</span></span>
+<span><span class="co">#&gt;  1     3       625.457 661.929</span></span>
+<span><span class="co">#&gt;  6     1       623.392 654.654</span></span>
+<span><span class="co">#&gt;  6     2       636.057 701.186</span></span>
+<span><span class="co">#&gt;  6     3       629.751 728.747</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Best model according to AIC is Model 6 with 1 classes.</span></span>
 <span><span class="co">#&gt; Best model according to BIC is Model 6 with 1 classes.</span></span>
@@ -391,7 +392,7 @@ covariances (Model 6):</p>
 <span><span class="co">#&gt; tidyLPA analysis using mclust: </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Model Classes    AIC    BIC Entropy prob_min prob_max n_min n_max BLRT_p</span></span>
-<span><span class="co">#&gt; 1     6       3 601.13 697.78    0.86     0.87     0.98  0.16  0.62   0.12</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     6       3 601.13 697.78    0.86     0.87     0.98  0.16  0.62   0.02</span></span></code></pre></div>
 <p>In general, the approach to choosing the model is similar to choosing
 the number of profiles, requiring <strong>deciding on the basis of
 evidence from multiple sources</strong>, including information criteria,
@@ -428,12 +429,9 @@ more parameters–as in the other models–may better explain the data,
 justifying the addition in complexity that their addition involves (and
 their reduction in degrees of freedom). This model is sometimes referred
 to as a <em>class-invariant</em> parameterization.</p>
-<p><span class="math display">\[
-\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; { \sigma  }_{ 2 }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; {
-\sigma  }_{ 3 }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4
-}^{ 2 } \end{matrix} \right]
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>3</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>4</mn><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; { \sigma  }_{ 2 }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; { \sigma  }_{ 3 }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="varying-variances-and-covariances-fixed-to-0-model-2">2. Varying variances and covariances fixed to 0 (model 2)<a class="anchor" aria-label="anchor" href="#varying-variances-and-covariances-fixed-to-0-model-2"></a>
@@ -447,12 +445,9 @@ constrained to zero.</p>
 in terms of the covariances, is more constrained than model 2. This
 model is sometimes referred to as a <em>class-varying diagonal</em>
 parameterization.</p>
-<p><span class="math display">\[
-\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; 0 &amp; 0 &amp; 0
-\\ 0 &amp; { \sigma  }_{ 2p }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; {
-\sigma  }_{ 3p }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{
-4p }^{ 2 } \end{matrix} \right]
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>3</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>4</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex"> 
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; { \sigma  }_{ 2p }^{ 2 } &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; { \sigma  }_{ 3p }^{ 2 } &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="equal-variances-and-equal-covariances-model-3">3. Equal variances and equal covariances (model 3)<a class="anchor" aria-label="anchor" href="#equal-variances-and-equal-covariances-model-3"></a>
@@ -469,15 +464,9 @@ more information that can be used to better understand the
 characteristics of the profiles (and, potentially, better explain the
 data). This model is sometimes referred to as a <em>class-invariant
 unrestricted</em> parameterization.</p>
-<p><span class="math display">\[
-\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21 }
-&amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 }
-&amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; {
-\sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; {
-\sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 }
-&amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4
-}^{ 2 } \end{matrix} \right]
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>41</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>23</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>24</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>13</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>3</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>33</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>14</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>4</mn><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21 } &amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] 
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="varying-means-varying-variances-and-equal-covariances-model-4">4. Varying means, varying variances, and equal covariances (model
@@ -491,15 +480,9 @@ across profiles, extends model 3.</p>
 <p>Unfortunately, this model cannot be specified with mclust, though it
 can be with MPlus; this model <em>can</em> be used with the functions to
 interface to MPlus described below.</p>
-<p><span class="math display">\[
-\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21 }
-&amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 }
-&amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; {
-\sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; {
-\sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 }
-&amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4p
-}^{ 2 } \end{matrix} \right]
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>41</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>23</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>24</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>13</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>3</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>33</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>14</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>4</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21 } &amp; { \sigma  }_{ 31 } &amp; { \sigma  }_{ 41 } \\ { \sigma  }_{ 12 } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23 } &amp; { \sigma  }_{ 24 } \\ { \sigma  }_{ 13 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33 } \\ { \sigma  }_{ 14 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 12 } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="varying-means-equal-variances-and-varying-covariances-model-5">5. Varying means, equal variances, and varying covariances (model
@@ -513,15 +496,9 @@ profiles.</p>
 <p>Like model 4, this model cannot be specified with mclust, though it
 can be with MPlus. Again, this model <em>can</em> be used with the
 functions to interface to MPlus described below.</p>
-<p><span class="math display">\[
-\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21p }
-&amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p
-} &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; {
-\sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp;
-{ \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p }
-&amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{
-4 }^{ 2 } \end{matrix} \right] \quad
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>21</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>31</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>41</mn><mi>p</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>12</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>23</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>24</mn><mi>p</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>13</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>12</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>3</mn><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>33</mn><mi>p</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>14</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>12</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>12</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mn>4</mn><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mspace width="1.0em"></mspace></mrow><annotation encoding="application/x-tex">
+\left[ \begin{matrix} { \sigma  }_{ 1 }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2 }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3 }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4 }^{ 2 } \end{matrix} \right] \quad 
+</annotation></semantics></math></p>
 </div>
 <div class="section level4">
 <h4 id="varying-variances-and-varying-covariances-model-6">6. Varying variances and varying covariances (model 6)<a class="anchor" aria-label="anchor" href="#varying-variances-and-varying-covariances-model-6"></a>
@@ -538,15 +515,9 @@ than all of the other models, and the added parameters should be
 considered in light of how preferred this model is relative to those
 with more simple specifications. This model is sometimes referred to as
 a <em>class-varying unrestricted</em> parameterization.</p>
-<p><span class="math display">\[
-\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21p }
-&amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p
-} &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; {
-\sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp;
-{ \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p
-} &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; {
-\sigma  }_{ 4p }^{ 2 } \end{matrix} \right]
-\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>21</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>31</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>41</mn><mi>p</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>12</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>23</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>24</mn><mi>p</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>13</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>12</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>3</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>33</mn><mi>p</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>14</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>12</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>12</mn><mi>p</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mrow><mn>4</mn><mi>p</mi></mrow><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">
+\left[ \begin{matrix} { \sigma  }_{ 1p }^{ 2 } &amp; { \sigma  }_{ 21p } &amp; { \sigma  }_{ 31p } &amp; { \sigma  }_{ 41p } \\ { \sigma  }_{ 12p } &amp; { \sigma  }_{ 2p }^{ 2 } &amp; { \sigma  }_{ 23p } &amp; { \sigma  }_{ 24p } \\ { \sigma  }_{ 13p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 3p }^{ 2 } &amp; { \sigma  }_{ 33p } \\ { \sigma  }_{ 14p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 12p } &amp; { \sigma  }_{ 4p }^{ 2 } \end{matrix} \right] 
+</annotation></semantics></math></p>
 </div>
 </div>
 <div class="section level3">
@@ -569,24 +540,24 @@ the <code><a href="../reference/get_estimates.html">get_estimates()</a></code> f
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 18 × 8</span></span></span>
 <span><span class="co">#&gt;    Category  Parameter      Estimate     se         p Class Model Classes</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Means     broad_interest    3.09  0.188  1.08<span style="color: #949494;">e</span><span style="color: #BB0000;">- 60</span>     1     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Means     enjoyment         3.51  0.190  2.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 76</span>     1     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Means     self_efficacy     1.58  0.185  1.10<span style="color: #949494;">e</span><span style="color: #BB0000;">- 17</span>     1     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Variances broad_interest    0.489 0.125  9.21<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     1     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Variances enjoyment         0.230 0.053<span style="text-decoration: underline;">6</span> 1.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     1     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Variances self_efficacy     0.246 0.051<span style="text-decoration: underline;">0</span> 1.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-  6</span>     1     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Means     broad_interest    1.14  0.491  2.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-  2</span>     2     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Means     enjoyment         1.14  0.395  3.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-  3</span>     2     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Means     self_efficacy     3.39  0.614  3.25<span style="color: #949494;">e</span><span style="color: #BB0000;">-  8</span>     2     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Variances broad_interest    0.489 0.125  9.21<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     2     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Variances enjoyment         0.230 0.053<span style="text-decoration: underline;">6</span> 1.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     2     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Variances self_efficacy     0.246 0.051<span style="text-decoration: underline;">0</span> 1.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-  6</span>     2     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Means     broad_interest    2.27  0.244  1.59<span style="color: #949494;">e</span><span style="color: #BB0000;">- 20</span>     3     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Means     enjoyment         2.49  0.201  3.16<span style="color: #949494;">e</span><span style="color: #BB0000;">- 35</span>     3     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Means     self_efficacy     2.26  0.105  5.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-103</span>     3     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> Variances broad_interest    0.489 0.125  9.21<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     3     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> Variances enjoyment         0.230 0.053<span style="text-decoration: underline;">6</span> 1.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     3     1       3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> Variances self_efficacy     0.246 0.051<span style="text-decoration: underline;">0</span> 1.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-  6</span>     3     1       3</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Means     broad_interest    3.09  0.207  1.42<span style="color: #949494;">e</span><span style="color: #BB0000;">- 50</span>     1     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Means     enjoyment         3.51  0.183  6.68<span style="color: #949494;">e</span><span style="color: #BB0000;">- 82</span>     1     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Means     self_efficacy     1.58  0.184  9.84<span style="color: #949494;">e</span><span style="color: #BB0000;">- 18</span>     1     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Variances broad_interest    0.489 0.114  1.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     1     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Variances enjoyment         0.230 0.058<span style="text-decoration: underline;">2</span> 7.60<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     1     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Variances self_efficacy     0.246 0.045<span style="text-decoration: underline;">5</span> 6.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-  8</span>     1     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Means     broad_interest    1.14  0.343  8.72<span style="color: #949494;">e</span><span style="color: #BB0000;">-  4</span>     2     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Means     enjoyment         1.14  0.292  9.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     2     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Means     self_efficacy     3.39  0.482  1.86<span style="color: #949494;">e</span><span style="color: #BB0000;">- 12</span>     2     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Variances broad_interest    0.489 0.114  1.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     2     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Variances enjoyment         0.230 0.058<span style="text-decoration: underline;">2</span> 7.60<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     2     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Variances self_efficacy     0.246 0.045<span style="text-decoration: underline;">5</span> 6.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-  8</span>     2     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Means     broad_interest    2.27  0.226  1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">- 23</span>     3     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> Means     enjoyment         2.49  0.167  3.09<span style="color: #949494;">e</span><span style="color: #BB0000;">- 50</span>     3     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Means     self_efficacy     2.26  0.100  4.12<span style="color: #949494;">e</span><span style="color: #BB0000;">-112</span>     3     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> Variances broad_interest    0.489 0.114  1.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     3     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> Variances enjoyment         0.230 0.058<span style="text-decoration: underline;">2</span> 7.60<span style="color: #949494;">e</span><span style="color: #BB0000;">-  5</span>     3     1       3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> Variances self_efficacy     0.246 0.045<span style="text-decoration: underline;">5</span> 6.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-  8</span>     3     1       3</span></span></code></pre></div>
 <p>Other options include how the raw data is processed.</p>
 <p>We can center or scale the data before estimating the profiles with
 the <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> or <code><a href="../reference/poms.html">poms()</a></code> functions:</p>
@@ -597,7 +568,7 @@ the <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scal
 <span>    <span class="fu"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/plot_profiles.html" class="external-link">plot_profiles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using OpenMx, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></span></code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">pisaUSA15</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -606,7 +577,7 @@ the <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scal
 <span>    <span class="fu"><a href="../reference/estimate_profiles.html">estimate_profiles</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://cjvanlissa.github.io/tidySEM/reference/plot_profiles.html" class="external-link">plot_profiles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in estimate_profiles_mclust(df_full, n_profiles, model_numbers, : The mclust algorithm does not allow for missing data. Some rows were omitted from analysis. Consider using OpenMx, which accounts for cases with partially missing data, or use a non-parametric single imputation technique prior to analysis, such as the R-package 'missForest'.</span></span></code></pre></div>
-<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-12-2.png" width="700"></p>
+<p><img src="Introduction_to_tidyLPA_files/figure-html/unnamed-chunk-12-2.png" class="r-plt" alt="" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -626,16 +597,16 @@ posterior probabilities), using the function
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 9</span></span></span>
 <span><span class="co">#&gt;    model_number classes_number broad_interest enjoyment self_efficacy     CPROB1</span></span>
 <span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>            1              3            3.8       4            1       1.00<span style="color: #949494;">e</span>+0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>            1              3            3         3            2.75    8.29<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>            1              3            1.8       2.8          3.38    8.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>            1              3            1.4       1            2.75    8.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            1              3            1.8       2.2          2       2.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            1              3            1.6       1.6          1.88    1.88<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>            1              3            3         3.8          2.25    9.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>            1              3            2.6       2.2          2       1.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            1              3            1         2.8          2.62    1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            1              3            2.2       2            1.75    4.32<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>            1              3            3.8       4            1      1.000<span style="color: #949494;">e</span>+0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>            1              3            3         3            2.75   8.29 <span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>            1              3            1.8       2.8          3.38   8.73 <span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>            1              3            1.4       1            2.75   8.31 <span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            1              3            1.8       2.2          2      2.69 <span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            1              3            1.6       1.6          1.88   1.88 <span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>            1              3            3         3.8          2.25   9.27 <span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>            1              3            2.6       2.2          2      1.03 <span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            1              3            1         2.8          2.62   1.81 <span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            1              3            2.2       2            1.75   4.32 <span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 90 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: CPROB2 &lt;dbl&gt;, CPROB3 &lt;dbl&gt;, Class &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>We note that <em>if more than one model is fit at once, then the data
@@ -655,12 +626,12 @@ e.g.:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>            1              3            3         3            2.75     3</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>            1              3            1.8       2.8          3.38     3</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>            1              3            1.4       1            2.75     2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            1              3            1.8       2.2          2        3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            1              3            1.6       1.6          1.88     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            1              3            1.8       2.2          2        2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            1              3            1.6       1.6          1.88     2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>            1              3            3         3.8          2.25     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>            1              3            2.6       2.2          2        3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            1              3            1         2.8          2.62     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            1              3            2.2       2            1.75     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            1              3            1         2.8          2.62     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            1              3            2.2       2            1.75     2</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 690 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: Class_prob &lt;int&gt;, Probability &lt;dbl&gt;, id &lt;int&gt;</span></span></span></code></pre></div>
 </div>
@@ -674,8 +645,8 @@ can use the <code><a href="../reference/get_fit.html">get_fit()</a></code> funct
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 20</span></span></span>
 <span><span class="co">#&gt;   Model Classes LogLik parameters     n   AIC   AWE   BIC  CAIC   CLC   KIC</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1       3  -<span style="color: #BB0000;">300.</span>         14   100  628.  770.  665.  679.  602.  645.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1       4  -<span style="color: #BB0000;">299.</span>         18   100  634.  816.  681.  699.  599.  655.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1       3  -<span style="color: #BB0000;">302.</span>         14   100  632.  773.  668.  682.  605.  649.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1       4  -<span style="color: #BB0000;">290.</span>         18   100  616.  798.  662.  680.  581.  637.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: SABIC &lt;dbl&gt;, ICL &lt;dbl&gt;, Entropy &lt;dbl&gt;, prob_min &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   prob_max &lt;dbl&gt;, n_min &lt;dbl&gt;, n_max &lt;dbl&gt;, BLRT_val &lt;dbl&gt;, BLRT_p &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>Descriptions of these fit indices follows:</p>
@@ -738,7 +709,7 @@ test.</li>
 <p>This is related to <a href="https://github.com/jrosen48/prcr" class="external-link">prcr</a>, for use of two-step
 cluster analysis to carry out person-oriented analyses.</p>
 <p>To contribute, file issues via GitHub <a href="https://github.com/data-edu/tidyLPA/issues" class="external-link">here</a> or get in
-touch <a href="mailto:jrosen@msu.edu">via email</a> or <a href="https://twitter.com/jrosenberg6432" class="external-link">Twitter</a>.</p>
+touch <a href="mailto:jrosen@msu.edu">via email</a> or <a href="https://x.com/jrosenberg6432" class="external-link">X</a>.</p>
 <p><strong>References</strong></p>
 <p>Pastor, D. A., Barron, K. E., Miller, B. J., &amp; Davis, S. L.
 (2007). A latent profile analysis of college students’ achievement goal
@@ -746,9 +717,9 @@ orientation. <em>Contemporary Educational Psychology, 32</em>(1), 8-47.
 (<a href="https://www.sciencedirect.com/science/article/pii/S0361476X06000543" class="external-link uri">https://www.sciencedirect.com/science/article/pii/S0361476X06000543</a></p>
 <p><strong>Helpful resources</strong></p>
 <ul>
-<li><p><a href="https://www.amazon.com/Handbook-Cluster-Analysis-Handbooks-Statistical/dp/1466551887/ref=sr_1_1?ie=UTF8&amp;qid=1517773186&amp;sr=8-1&amp;keywords=cluster+analysis+handbook" class="external-link">Hennig
-et al’s (2015)</a> handbook for an overview of mixture models, of which
-LPA is often considered an instance of.</p></li>
+<li><p>Hennig et al’s (2015) <em>Handbook of Cluster Analysis</em> for
+an overview of mixture models, of which LPA is often considered an
+instance of.</p></li>
 <li><p><a href="https://books.Google.com/books?hl=en&amp;lr=&amp;id=gPJQWKsgh3YC&amp;oi=fnd&amp;pg=PT12&amp;dq=collins+lanza&amp;ots=_0L9qnxxun&amp;sig=Vx9RhJgIv0zbttIgvYLxaUQwtFI#v=onepage&amp;q=collins%20lanza&amp;f=false" class="external-link">Collins
 and Lanza (2013)</a> for a book on the related approach (for use with
 dichotomous, rather than continuous variables used to create the
@@ -784,9 +755,7 @@ Science Foundation.</p>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -799,16 +768,16 @@ Science Foundation.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
