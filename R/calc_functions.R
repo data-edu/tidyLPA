@@ -354,8 +354,8 @@ calc_fitindices.Mclust <- function(model, fitindices, ...){
                                                        "V" = (nvars * nclass),
                                                        "VVI" = (nvars * nclass),
                                                        # Add covariances
-                                                       "EEE" = nvars + (nvars * (nvars-1)),
-                                                       "VVV" = (nvars * nclass) + ((nvars * (nvars-1)) * nclass),
+                                                       "EEE" = nvars + (nvars * (nvars-1) / 2),
+                                                       "VVV" = (nvars * nclass) + ((nvars * (nvars-1) / 2) * nclass),
                                                        nvars)# "E" partially matches EXPR, so use default option for "E" models.
 
   n <- model$n
