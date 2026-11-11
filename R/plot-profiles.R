@@ -159,8 +159,11 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
         df_plot$Classes <- length(unique(df_plot$Class))
     }
     # Drop useless stuff
-    df_plot <- df_plot[grepl("(^Means$|^Variances$)", df_plot$Category),
-                       -match(c("p"), names(df_plot))]
+    df_plot <- df_plot[
+        grepl("^(Means|Variances)$", df_plot$Category),
+        !names(df_plot) %in% c("p", "pval"),
+        drop = FALSE
+    ]
     df_plot$Variable <- ordered(df_plot$Variable, levels = unique(df_plot$Variable))
     # Select only requested variables, or else, all variables
     if (!is.null(variables)) {
@@ -199,10 +202,18 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
     } else {
         df_raw <- NULL
     }
-
+    if(length(unique(df_plot$Model)) > 1 || length(unique(df_plot$Classes)) > 1){
+        df_plot$facet <- paste0("model ", df_plot$Model, " class", df_plot$Classes)
+        if(!is.null(df_raw)){
+            df_raw$facet <- paste0("model ", df_raw$Model, " class ", df_raw$Classes)
+        }
+    }
     Args[["x"]] <- list(df_plot = df_plot, df_raw = df_raw)
-
-    do.call(plot_profiles, Args)
+    out <- do.call(plot_profiles, Args)
+    if(length(unique(df_plot$Model)) > 1 || length(unique(df_plot$Classes)) > 1){
+        return(out + ggplot2::facet_wrap(~facet))
+    }
+    out
 }
 
 #' @method plot_profiles tidyProfile
@@ -260,6 +271,6 @@ plot_profiles.tidyProfile <- function(x, variables = NULL, ci = .95, sd = TRUE, 
     }
 
     Args[["x"]] <- list(df_plot = df_plot, df_raw = df_raw)
-
     do.call(plot_profiles, Args)
+
 }

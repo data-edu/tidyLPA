@@ -41,18 +41,11 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, select_vars,
     Args_boot[["data"]] <- full_data
     if(is.null(Args_boot[["nboot"]])) Args_boot[["nboot"]] <- 100
     if(is.null(Args_boot[["verbose"]])) Args_boot[["verbose"]] <- FALSE
-
     boot_blrt <- lapply(boot_model_names, function(mod_name){
         Args_boot[["modelName"]] <- mod_name
-        # tryCatch(do.call(mclustBootstrapLRT, Args_boot), error = function(e){
-        #     tryCatch(
-                do.call(blrt_mclust, Args_boot)
-        #         , error = function(e){
-        #         list(obs = rep(NA, max(n_profiles)),
-        #              p.value = rep(NA, max(n_profiles)))
-        #     })
-        # })
-        })
+        tryCatch(do.call(mclust::mclustBootstrapLRT, Args_boot), error = function(e){
+            NA})})
+
     # Arguments for Mclust ----------------------------------------------------
     Args_mclust <- dots[which(names(dots) %in% c("prior", "control", "initialization", "warn", "verbose"))]
     Args_mclust[["data"]] <- full_data
@@ -78,7 +71,7 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, select_vars,
             if(is.null(Args_mclustbootstrap[["nboot"]])) Args_mclustbootstrap[["nboot"]] <- 100
             if(is.null(Args_mclustbootstrap[["verbose"]])) Args_mclustbootstrap[["verbose"]] <- FALSE
             if(is.null(Args_mclustbootstrap[["type"]])) Args_mclustbootstrap[["type"]] <- "bs"
-            out$model$mclustBootstrap <- do.call(MclustBootstrap, Args_mclustbootstrap)
+            out$model$mclustBootstrap <- do.call(mclust::MclustBootstrap, Args_mclustbootstrap)
             out$model$LRTS <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$obs[this_class-1])
             out$model$LRTS_p <- ifelse(this_class == 1, NA, boot_blrt[[which(model_numbers == this_model)]]$p.value[this_class-1])
             out$fit <- cbind(Model = this_model, Classes = this_class, calc_fitindices(out$model, modelname = Args_mclust[["modelName"]]))
