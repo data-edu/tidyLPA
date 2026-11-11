@@ -14,6 +14,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{tidySEM}{\code{\link[tidySEM]{plot_bivariate}}, \code{\link[tidySEM]{plot_density}}, \code{\link[tidySEM]{plot_profiles}}}
+  \item{tidySEM}{\code{\link[tidySEM:plot_bivariate]{plot_bivariate()}}, \code{\link[tidySEM:plot_density]{plot_density()}}, \code{\link[tidySEM:plot_profiles]{plot_profiles()}}}
 }}
 

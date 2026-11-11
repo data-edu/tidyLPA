@@ -85,11 +85,14 @@ estimate_profiles_openmx <-
                         estimates$Classes <- this_class
                     }
                     out$estimates <- estimates
-
                     outdat <- class_prob(mix_fit)$individual
-                    outdat <- cbind(outdat, apply(outdat, 1, which.max))
-                    dff <- matrix(NA_real_, dim(df_full)[1], dim(outdat)[2])
-                    dff[!all_na_rows, ] <- outdat
+                    #outdat <- cbind(outdat, apply(outdat, 1, which.max))
+                    if(any(all_na_rows)){
+                        dff <- matrix(NA_real_, dim(df_full)[1], dim(outdat)[2])
+                        dff[!all_na_rows, ] <- outdat
+                    } else {
+                        dff <- outdat
+                    }
                     colnames(dff) <- c(paste0("CPROB", 1:(ncol(dff)-1)), "Class")
                     out$dff <- as_tibble(cbind(df_full, dff))
                     out$dff$model_number <- this_model

@@ -1,3 +1,12 @@
+# tidyLPA 2.0.3
+
+* Fix degrees of freedom for mclust models
+* Fix overplotting for plot_profiles
+* Fix class probability extraction for OpenMx models
+* Fix plot_density() for OpenMx models
+* Remove unnecessary parallel Suggests
+
+
 # tidyLPA 2.0.2
 
 * Important bug fixes

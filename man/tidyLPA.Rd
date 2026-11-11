@@ -32,6 +32,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Joshua M Rosenberg \email{jmrosenberg@utk.edu}
   \item Caspar van Lissa \email{c.j.vanlissa@uu.nl}
 }
 
