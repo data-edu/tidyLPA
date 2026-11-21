@@ -37,8 +37,8 @@ to an assumption of conditional independence of the indicators); other
 options are "equal" (estimate covariances between items, constrained across
 profiles), and "varying" (free covariances across profiles).}
 
-\item{package}{Character. Which package to use; 'OpenMx', 'mclust', or
-'MplusAutomation' (requires Mplus to be installed). Default: 'OpenMx'.}
+\item{package}{Character. Which package to use; 'mclust', 'OpenMx', or
+'MplusAutomation' (requires Mplus to be installed). Default: 'mclust'.}
 
 \item{select_vars}{Character. Optional vector of variable names in \code{df},
 to be used for model estimation. Defaults to \code{NULL}, which means all

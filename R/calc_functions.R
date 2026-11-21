@@ -243,7 +243,7 @@ estimates.Mclust <- function(model, ...){
 estimates.MxModel <- function(model, ...){
   # Select means, variances, covariances of class-specific parameters; drop est_se
   df <- tryCatch({
-    table_results(model, columns = NULL)
+    table_results(model, columns = NULL, format_numeric = FALSE)
   }, error = function(e){ return(NULL) })
   theclass <- suppressWarnings(as.integer(gsub("class", "", df$class))) # Because only weights throws warning
   if(!isTRUE(length(theclass) == nrow(df))) theclass <- 1
