@@ -86,7 +86,6 @@ estimate_profiles_openmx <-
                     }
                     out$estimates <- estimates
                     outdat <- class_prob(mix_fit)$individual
-                    #outdat <- cbind(outdat, apply(outdat, 1, which.max))
                     if(any(all_na_rows)){
                         dff <- matrix(NA_real_, dim(df_full)[1], dim(outdat)[2])
                         dff[!all_na_rows, ] <- outdat

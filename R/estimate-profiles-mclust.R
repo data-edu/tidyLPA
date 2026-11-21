@@ -43,8 +43,7 @@ estimate_profiles_mclust <- function(df, n_profiles, model_numbers, select_vars,
     if(is.null(Args_boot[["verbose"]])) Args_boot[["verbose"]] <- FALSE
     boot_blrt <- lapply(boot_model_names, function(mod_name){
         Args_boot[["modelName"]] <- mod_name
-        tryCatch(do.call(mclust::mclustBootstrapLRT, Args_boot), error = function(e){
-            NA})})
+        tryCatch(do.call(mclust::mclustBootstrapLRT, Args_boot), error = function(e){ list(obs = rep(NA, max(n_profiles)), p.value = rep(NA, max(n_profiles)))})})
 
     # Arguments for Mclust ----------------------------------------------------
     Args_mclust <- dots[which(names(dots) %in% c("prior", "control", "initialization", "warn", "verbose"))]

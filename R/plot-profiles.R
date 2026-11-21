@@ -203,7 +203,7 @@ plot_profiles.tidyLPA <- function(x, variables = NULL, ci = .95, sd = TRUE, add_
         df_raw <- NULL
     }
     if(length(unique(df_plot$Model)) > 1 || length(unique(df_plot$Classes)) > 1){
-        df_plot$facet <- paste0("model ", df_plot$Model, " class", df_plot$Classes)
+        df_plot$facet <- paste0("model ", df_plot$Model, " class ", df_plot$Classes)
         if(!is.null(df_raw)){
             df_raw$facet <- paste0("model ", df_raw$Model, " class ", df_raw$Classes)
         }
